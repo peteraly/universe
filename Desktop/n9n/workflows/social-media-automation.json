@@ -1,0 +1,127 @@
+{
+  "id": "social-media-automation",
+  "name": "Social Media Automation",
+  "description": "Automatically posts content to multiple social media platforms",
+  "createdAt": "2025-06-24T13:50:00.000Z",
+  "updatedAt": "2025-06-24T13:50:00.000Z",
+  "nodes": [
+    {
+      "id": "webhook_trigger",
+      "type": "webhook",
+      "position": { "x": 100, "y": 200 },
+      "data": {
+        "label": "Social Media Webhook",
+        "url": "/webhook/social-media-automation",
+        "method": "POST",
+        "description": "Triggered when new content needs to be posted"
+      }
+    },
+    {
+      "id": "validate_content",
+      "type": "code",
+      "position": { "x": 400, "y": 200 },
+      "data": {
+        "label": "Validate Content",
+        "code": "const content = data.webhook?.body?.content || data.content;\nconst platforms = data.webhook?.body?.platforms || data.platforms || ['twitter', 'linkedin'];\n\nif (!content || content.length < 10) {\n  throw new Error('Content must be at least 10 characters long');\n}\n\nreturn {\n  content: content,\n  platforms: platforms,\n  timestamp: new Date().toISOString(),\n  author: data.webhook?.body?.author || 'System'\n};"
+      }
+    },
+    {
+      "id": "post_to_twitter",
+      "type": "httpRequest",
+      "position": { "x": 700, "y": 100 },
+      "data": {
+        "label": "Post to Twitter",
+        "method": "POST",
+        "url": "https://api.twitter.com/2/tweets",
+        "headers": {
+          "Authorization": "Bearer {{TWITTER_TOKEN}}",
+          "Content-Type": "application/json"
+        },
+        "body": "{\n  \"text\": \"{{content}}\"\n}",
+        "description": "Posts content to Twitter/X"
+      }
+    },
+    {
+      "id": "post_to_linkedin",
+      "type": "httpRequest",
+      "position": { "x": 700, "y": 300 },
+      "data": {
+        "label": "Post to LinkedIn",
+        "method": "POST",
+        "url": "https://api.linkedin.com/v2/ugcPosts",
+        "headers": {
+          "Authorization": "Bearer {{LINKEDIN_TOKEN}}",
+          "Content-Type": "application/json"
+        },
+        "body": "{\n  \"author\": \"urn:li:person:{{LINKEDIN_USER_ID}}\",\n  \"lifecycleState\": \"PUBLISHED\",\n  \"specificContent\": {\n    \"com.linkedin.ugc.ShareContent\": {\n      \"shareCommentary\": {\n        \"text\": \"{{content}}\"\n      },\n      \"shareMediaCategory\": \"NONE\"\n    }\n  },\n  \"visibility\": {\n    \"com.linkedin.ugc.MemberNetworkVisibility\": \"PUBLIC\"\n  }\n}",
+        "description": "Posts content to LinkedIn"
+      }
+    },
+    {
+      "id": "log_success",
+      "type": "code",
+      "position": { "x": 1000, "y": 200 },
+      "data": {
+        "label": "Log Success",
+        "code": "console.log(`✅ Social media posts completed at ${new Date().toISOString()}`);\nconsole.log(`📱 Platforms: ${data.platforms.join(', ')}`);\nconsole.log(`📝 Content: ${data.content.substring(0, 50)}...`);\n\nreturn {\n  success: true,\n  platforms: data.platforms,\n  content: data.content,\n  timestamp: new Date().toISOString(),\n  message: 'Social media posts published successfully'\n};"
+      }
+    },
+    {
+      "id": "error_handler",
+      "type": "code",
+      "position": { "x": 700, "y": 400 },
+      "data": {
+        "label": "Error Handler",
+        "code": "console.error('❌ Social media automation error:', data.error || data);\n\nreturn {\n  success: false,\n  error: data.error || 'Unknown error occurred',\n  timestamp: new Date().toISOString(),\n  message: 'Social media automation failed'\n};"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "webhook_to_validate",
+      "source": "webhook_trigger",
+      "target": "validate_content",
+      "type": "default"
+    },
+    {
+      "id": "validate_to_twitter",
+      "source": "validate_content",
+      "target": "post_to_twitter",
+      "type": "default"
+    },
+    {
+      "id": "validate_to_linkedin",
+      "source": "validate_content",
+      "target": "post_to_linkedin",
+      "type": "default"
+    },
+    {
+      "id": "twitter_to_log",
+      "source": "post_to_twitter",
+      "target": "log_success",
+      "type": "default"
+    },
+    {
+      "id": "linkedin_to_log",
+      "source": "post_to_linkedin",
+      "target": "log_success",
+      "type": "default"
+    },
+    {
+      "id": "webhook_to_error",
+      "source": "webhook_trigger",
+      "target": "error_handler",
+      "type": "default",
+      "animated": true,
+      "style": { "stroke": "#ff4444" }
+    },
+    {
+      "id": "validate_to_error",
+      "source": "validate_content",
+      "target": "error_handler",
+      "type": "default",
+      "animated": true,
+      "style": { "stroke": "#ff4444" }
+    }
+  ]
+} 

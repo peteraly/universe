@@ -1,0 +1,340 @@
+{
+  "id": "sample-workflow",
+  "name": "Sample Webhook to Slack Workflow",
+  "description": "A simple workflow that receives webhook data and sends it to Slack",
+  "createdAt": "2024-01-01T00:00:00.000Z",
+  "updatedAt": "2025-06-24T16:23:04.283Z",
+  "nodes": [
+    {
+      "id": "node_webhook_001",
+      "type": "webhook",
+      "position": {
+        "x": 100,
+        "y": 100
+      },
+      "data": {
+        "label": "Webhook Trigger",
+        "path": "/webhook/sample",
+        "method": "POST"
+      }
+    },
+    {
+      "id": "node_delay_001",
+      "type": "delay",
+      "position": {
+        "x": 250,
+        "y": 100
+      },
+      "data": {
+        "label": "Delay",
+        "duration": 5000
+      }
+    },
+    {
+      "id": "node_http_001",
+      "type": "httpRequest",
+      "position": {
+        "x": 400,
+        "y": 100
+      },
+      "data": {
+        "label": "Process Data",
+        "url": "https://jsonplaceholder.typicode.com/posts",
+        "method": "POST",
+        "headers": {
+          "Content-Type": "application/json"
+        },
+        "body": {
+          "title": "{{data.title}}",
+          "body": "{{data.body}}",
+          "userId": 1
+        }
+      }
+    },
+    {
+      "id": "node_delay_002",
+      "type": "delay",
+      "position": {
+        "x": 550,
+        "y": 100
+      },
+      "data": {
+        "label": "Delay",
+        "duration": 3000
+      }
+    },
+    {
+      "id": "node_slack_001",
+      "type": "slack",
+      "position": {
+        "x": 700,
+        "y": 100
+      },
+      "data": {
+        "label": "Send to Slack",
+        "webhookUrl": "https://hooks.slack.com/services/YOUR/SLACK/WEBHOOK",
+        "channel": "#general",
+        "message": "New webhook received: {{data.title}} - {{data.body}}"
+      }
+    },
+    {
+      "id": "delay_1750772232193",
+      "type": "delay",
+      "position": {
+        "x": 300,
+        "y": 200
+      },
+      "data": {
+        "label": "Delay",
+        "delay": 5000,
+        "description": "Wait for 5 seconds"
+      }
+    },
+    {
+      "id": "delay_1750772378406",
+      "type": "delay",
+      "position": {
+        "x": 300,
+        "y": 200
+      },
+      "data": {
+        "label": "Delay",
+        "delay": 5000,
+        "description": "Wait for 5 seconds"
+      }
+    },
+    {
+      "id": "delay_1750774603507",
+      "type": "delay",
+      "position": {
+        "x": 300,
+        "y": 200
+      },
+      "data": {
+        "label": "Delay",
+        "delay": 5000,
+        "description": "Wait for 5 seconds"
+      }
+    },
+    {
+      "id": "delay_1750775015965",
+      "type": "delay",
+      "position": {
+        "x": 300,
+        "y": 200
+      },
+      "data": {
+        "label": "Delay",
+        "delay": 5000,
+        "description": "Wait for 5 seconds"
+      }
+    },
+    {
+      "id": "delay_1750775593656",
+      "type": "delay",
+      "position": {
+        "x": 300,
+        "y": 200
+      },
+      "data": {
+        "label": "Delay",
+        "delay": 5000,
+        "description": "Wait for 5 seconds"
+      }
+    },
+    {
+      "id": "delay_1750777804561",
+      "type": "delay",
+      "position": {
+        "x": 300,
+        "y": 200
+      },
+      "data": {
+        "label": "Delay",
+        "delay": 5000,
+        "description": "Wait for 5 seconds"
+      }
+    },
+    {
+      "id": "delay_1750778513891",
+      "type": "delay",
+      "position": {
+        "x": 300,
+        "y": 200
+      },
+      "data": {
+        "label": "Delay",
+        "delay": 5000,
+        "description": "Wait for 5 seconds"
+      }
+    },
+    {
+      "id": "delay_1750781808153",
+      "type": "delay",
+      "position": {
+        "x": 300,
+        "y": 200
+      },
+      "data": {
+        "label": "Delay",
+        "delay": 5000,
+        "description": "Wait for 5 seconds"
+      }
+    },
+    {
+      "id": "delay_1750782172901",
+      "type": "delay",
+      "position": {
+        "x": 300,
+        "y": 200
+      },
+      "data": {
+        "label": "Delay",
+        "delay": 5000,
+        "description": "Wait for 5 seconds before proceeding"
+      }
+    },
+    {
+      "id": "email_1750782176901",
+      "type": "email",
+      "position": {
+        "x": 350,
+        "y": 250
+      },
+      "data": {
+        "label": "Send Email",
+        "to": "{{recipient}}",
+        "subject": "{{subject}}",
+        "body": "{{message}}",
+        "description": "Send email notification"
+      }
+    },
+    {
+      "id": "slack_1750782180580",
+      "type": "slack",
+      "position": {
+        "x": 450,
+        "y": 200
+      },
+      "data": {
+        "label": "Slack Message",
+        "channel": "#general",
+        "message": "{{message}}",
+        "description": "Send message to Slack channel"
+      }
+    },
+    {
+      "id": "code_1750782184283",
+      "type": "code",
+      "position": {
+        "x": 200,
+        "y": 100
+      },
+      "data": {
+        "label": "Custom Code",
+        "code": "// Add your custom logic here\nreturn data;",
+        "description": "Execute custom JavaScript code"
+      }
+    },
+    {
+      "id": "delay_1750786517278",
+      "type": "delay",
+      "position": {
+        "x": 400,
+        "y": 200
+      },
+      "data": {
+        "label": "Delay Node",
+        "config": {
+          "duration": 5000,
+          "unit": "milliseconds"
+        }
+      }
+    },
+    {
+      "id": "delay_1750786578644",
+      "type": "delay",
+      "position": {
+        "x": 400,
+        "y": 200
+      },
+      "data": {
+        "label": "Delay Node",
+        "config": {
+          "duration": 5000,
+          "unit": "milliseconds"
+        }
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "edge_001",
+      "source": "node_webhook_001",
+      "target": "node_delay_001"
+    },
+    {
+      "id": "edge_003",
+      "source": "node_delay_001",
+      "target": "node_http_001"
+    },
+    {
+      "id": "edge_004",
+      "source": "node_http_001",
+      "target": "node_delay_002"
+    },
+    {
+      "id": "edge_002",
+      "source": "node_delay_002",
+      "target": "node_slack_001"
+    },
+    {
+      "id": "edge_1750772232193",
+      "source": "node_webhook_001",
+      "target": "delay_1750772232193"
+    },
+    {
+      "id": "edge_1750772378406",
+      "source": "node_webhook_001",
+      "target": "delay_1750772378406"
+    },
+    {
+      "id": "edge_1750774603507",
+      "source": "node_webhook_001",
+      "target": "delay_1750774603507"
+    },
+    {
+      "id": "edge_1750775015965",
+      "source": "node_webhook_001",
+      "target": "delay_1750775015965"
+    },
+    {
+      "id": "edge_1750775593656",
+      "source": "node_webhook_001",
+      "target": "delay_1750775593656"
+    },
+    {
+      "id": "edge_1750777804561",
+      "source": "node_webhook_001",
+      "target": "delay_1750777804561"
+    },
+    {
+      "id": "edge_1750778513891",
+      "source": "node_webhook_001",
+      "target": "delay_1750778513891"
+    },
+    {
+      "id": "edge_1750781808153",
+      "source": "node_webhook_001",
+      "target": "delay_1750781808153"
+    },
+    {
+      "id": "edge_1750782172901",
+      "source": "node_webhook_001",
+      "target": "delay_1750782172901"
+    }
+  ],
+  "aiGenerated": true,
+  "mockResponse": true,
+  "mockReason": "AI disabled or API unavailable"
+}

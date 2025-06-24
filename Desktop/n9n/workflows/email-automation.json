@@ -1,0 +1,125 @@
+{
+  "id": "email-automation",
+  "name": "Email Automation Workflow",
+  "description": "Sends a welcome email when someone enters their email and clicks a button",
+  "createdAt": "2025-06-24T13:40:00.000Z",
+  "updatedAt": "2025-06-24T16:17:53.455Z",
+  "nodes": [
+    {
+      "id": "webhook_trigger",
+      "type": "webhook",
+      "position": {
+        "x": 100,
+        "y": 200
+      },
+      "data": {
+        "label": "Email Form Webhook",
+        "url": "/webhook/email-automation",
+        "method": "POST",
+        "description": "Triggered when user submits email form"
+      }
+    },
+    {
+      "id": "validate_email",
+      "type": "code",
+      "position": {
+        "x": 400,
+        "y": 200
+      },
+      "data": {
+        "label": "Validate Email",
+        "code": "console.log('DEBUG validate_email data:', JSON.stringify(data));\nconst email = data.webhook?.body?.email || data.email;\n\nif (!email || !/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/.test(email)) {\n  throw new Error('Invalid email address');\n}\n\nreturn {\n  email: email,\n  timestamp: new Date().toISOString(),\n  userId: data.webhook?.body?.userId || 'anonymous'\n};"
+      }
+    },
+    {
+      "id": "send_welcome_email",
+      "type": "email",
+      "position": {
+        "x": 700,
+        "y": 200
+      },
+      "data": {
+        "label": "Send Welcome Email",
+        "to": "{{email}}",
+        "subject": "Welcome to Our Platform! 🎉",
+        "body": "Hi there!\\n\\nThank you for signing up with us. We're excited to have you on board!\\n\\nHere's what you can expect:\\n• Weekly updates and tips\\n• Exclusive content and offers\\n• 24/7 customer support\\n\\nIf you have any questions, just reply to this email.\\n\\nBest regards,\\nThe Team\\n\\n---\\nSigned up at: {{timestamp}}"
+      }
+    },
+    {
+      "id": "log_success",
+      "type": "code",
+      "position": {
+        "x": 1000,
+        "y": 200
+      },
+      "data": {
+        "label": "Log Success",
+        "code": "// Log successful email send\nconsole.log(`✅ Welcome email sent to ${data.email} at ${new Date().toISOString()}`);\n\nreturn {\n  success: true,\n  email: data.email,\n  message: 'Welcome email sent successfully',\n  timestamp: new Date().toISOString()\n};"
+      }
+    },
+    {
+      "id": "error_handler",
+      "type": "code",
+      "position": {
+        "x": 700,
+        "y": 400
+      },
+      "data": {
+        "label": "Error Handler",
+        "code": "// Handle any errors\nconsole.error('❌ Email automation error:', data.error || data);\n\nreturn {\n  success: false,\n  error: data.error || 'Unknown error occurred',\n  timestamp: new Date().toISOString()\n};"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "webhook_to_validate",
+      "source": "webhook_trigger",
+      "target": "validate_email",
+      "type": "default"
+    },
+    {
+      "id": "validate_to_email",
+      "source": "validate_email",
+      "target": "send_welcome_email",
+      "type": "default"
+    },
+    {
+      "id": "email_to_log",
+      "source": "send_welcome_email",
+      "target": "log_success",
+      "type": "default"
+    },
+    {
+      "id": "webhook_to_error",
+      "source": "webhook_trigger",
+      "target": "error_handler",
+      "type": "default",
+      "animated": true,
+      "style": {
+        "stroke": "#ff4444"
+      }
+    },
+    {
+      "id": "validate_to_error",
+      "source": "validate_email",
+      "target": "error_handler",
+      "type": "default",
+      "animated": true,
+      "style": {
+        "stroke": "#ff4444"
+      }
+    },
+    {
+      "id": "email_to_error",
+      "source": "send_welcome_email",
+      "target": "error_handler",
+      "type": "default",
+      "animated": true,
+      "style": {
+        "stroke": "#ff4444"
+      }
+    }
+  ],
+  "aiGenerated": true,
+  "mockResponse": true
+}

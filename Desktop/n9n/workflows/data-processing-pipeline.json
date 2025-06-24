@@ -1,0 +1,136 @@
+{
+  "id": "data-processing-pipeline",
+  "name": "Data Processing Pipeline",
+  "description": "Fetches data from API, processes it, and stores results in database",
+  "createdAt": "2025-06-24T13:51:00.000Z",
+  "updatedAt": "2025-06-24T13:51:00.000Z",
+  "nodes": [
+    {
+      "id": "cron_trigger",
+      "type": "cron",
+      "position": { "x": 100, "y": 200 },
+      "data": {
+        "label": "Daily Data Sync",
+        "schedule": "0 2 * * *",
+        "description": "Runs daily at 2 AM to sync data"
+      }
+    },
+    {
+      "id": "fetch_data",
+      "type": "httpRequest",
+      "position": { "x": 400, "y": 200 },
+      "data": {
+        "label": "Fetch Data from API",
+        "method": "GET",
+        "url": "https://jsonplaceholder.typicode.com/posts",
+        "headers": {
+          "Accept": "application/json"
+        },
+        "description": "Fetches posts data from external API"
+      }
+    },
+    {
+      "id": "process_data",
+      "type": "code",
+      "position": { "x": 700, "y": 200 },
+      "data": {
+        "label": "Process Data",
+        "code": "const posts = data.response?.data || [];\n\n// Process and transform data\nconst processedData = posts.map(post => ({\n  id: post.id,\n  title: post.title,\n  body: post.body,\n  userId: post.userId,\n  wordCount: post.body.split(' ').length,\n  processedAt: new Date().toISOString(),\n  status: 'processed'\n}));\n\n// Calculate statistics\nconst stats = {\n  totalPosts: processedData.length,\n  averageWordCount: processedData.reduce((sum, post) => sum + post.wordCount, 0) / processedData.length,\n  uniqueUsers: new Set(processedData.map(post => post.userId)).size,\n  processedAt: new Date().toISOString()\n};\n\nreturn {\n  processedData: processedData,\n  statistics: stats,\n  message: `Processed ${processedData.length} posts successfully`\n};"
+      }
+    },
+    {
+      "id": "store_data",
+      "type": "httpRequest",
+      "position": { "x": 1000, "y": 200 },
+      "data": {
+        "label": "Store in Database",
+        "method": "POST",
+        "url": "https://api.example.com/data/bulk-insert",
+        "headers": {
+          "Authorization": "Bearer {{DB_API_TOKEN}}",
+          "Content-Type": "application/json"
+        },
+        "body": "{\n  \"data\": {{processedData}},\n  \"batch_id\": \"{{timestamp}}\"\n}",
+        "description": "Stores processed data in database"
+      }
+    },
+    {
+      "id": "send_notification",
+      "type": "slack",
+      "position": { "x": 1300, "y": 200 },
+      "data": {
+        "label": "Send Slack Notification",
+        "channel": "#data-pipeline",
+        "message": "✅ Data processing completed!\\n📊 Processed {{statistics.totalPosts}} posts\\n📈 Average word count: {{statistics.averageWordCount}}\\n👥 Unique users: {{statistics.uniqueUsers}}\\n⏰ Completed at: {{statistics.processedAt}}",
+        "description": "Sends completion notification to Slack"
+      }
+    },
+    {
+      "id": "error_handler",
+      "type": "code",
+      "position": { "x": 1000, "y": 400 },
+      "data": {
+        "label": "Error Handler",
+        "code": "console.error('❌ Data processing error:', data.error || data);\n\n// Send error notification\nconst errorMessage = `❌ Data processing failed!\\nError: ${data.error || 'Unknown error'}\\nTime: ${new Date().toISOString()}`;\n\nreturn {\n  success: false,\n  error: data.error || 'Unknown error occurred',\n  timestamp: new Date().toISOString(),\n  message: errorMessage\n};"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "cron_to_fetch",
+      "source": "cron_trigger",
+      "target": "fetch_data",
+      "type": "default"
+    },
+    {
+      "id": "fetch_to_process",
+      "source": "fetch_data",
+      "target": "process_data",
+      "type": "default"
+    },
+    {
+      "id": "process_to_store",
+      "source": "process_data",
+      "target": "store_data",
+      "type": "default"
+    },
+    {
+      "id": "store_to_notify",
+      "source": "store_data",
+      "target": "send_notification",
+      "type": "default"
+    },
+    {
+      "id": "cron_to_error",
+      "source": "cron_trigger",
+      "target": "error_handler",
+      "type": "default",
+      "animated": true,
+      "style": { "stroke": "#ff4444" }
+    },
+    {
+      "id": "fetch_to_error",
+      "source": "fetch_data",
+      "target": "error_handler",
+      "type": "default",
+      "animated": true,
+      "style": { "stroke": "#ff4444" }
+    },
+    {
+      "id": "process_to_error",
+      "source": "process_data",
+      "target": "error_handler",
+      "type": "default",
+      "animated": true,
+      "style": { "stroke": "#ff4444" }
+    },
+    {
+      "id": "store_to_error",
+      "source": "store_data",
+      "target": "error_handler",
+      "type": "default",
+      "animated": true,
+      "style": { "stroke": "#ff4444" }
+    }
+  ]
+} 

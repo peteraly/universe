@@ -1,0 +1,215 @@
+{
+  "id": "ecommerce-order-processing",
+  "name": "E-commerce Order Processing",
+  "description": "Processes e-commerce orders, updates inventory, and sends notifications",
+  "createdAt": "2025-06-24T13:53:00.000Z",
+  "updatedAt": "2025-06-24T13:53:00.000Z",
+  "nodes": [
+    {
+      "id": "webhook_trigger",
+      "type": "webhook",
+      "position": { "x": 100, "y": 200 },
+      "data": {
+        "label": "Order Webhook",
+        "url": "/webhook/ecommerce-order-processing",
+        "method": "POST",
+        "description": "Triggered when new order is placed"
+      }
+    },
+    {
+      "id": "validate_order",
+      "type": "code",
+      "position": { "x": 400, "y": 200 },
+      "data": {
+        "label": "Validate Order",
+        "code": "const order = data.webhook?.body || data;\n\n// Validate order data\nconst orderData = {\n  orderId: order.orderId || order.id || `order-${Date.now()}`,\n  customerEmail: order.customerEmail || order.email,\n  customerName: order.customerName || order.name,\n  items: order.items || [],\n  total: order.total || 0,\n  shippingAddress: order.shippingAddress || {},\n  paymentStatus: order.paymentStatus || 'pending',\n  timestamp: new Date().toISOString()\n};\n\n// Validate required fields\nif (!orderData.customerEmail || !orderData.items || orderData.items.length === 0) {\n  throw new Error('Missing required fields: customer email and order items');\n}\n\n// Validate payment\nif (orderData.paymentStatus !== 'paid') {\n  throw new Error('Order payment not completed');\n}\n\nreturn orderData;"
+      }
+    },
+    {
+      "id": "check_inventory",
+      "type": "httpRequest",
+      "position": { "x": 700, "y": 200 },
+      "data": {
+        "label": "Check Inventory",
+        "method": "POST",
+        "url": "https://api.example.com/inventory/check",
+        "headers": {
+          "Authorization": "Bearer {{INVENTORY_API_TOKEN}}",
+          "Content-Type": "application/json"
+        },
+        "body": "{\n  \"items\": {{items}},\n  \"order_id\": \"{{orderId}}\"\n}",
+        "description": "Checks inventory availability for all items"
+      }
+    },
+    {
+      "id": "process_inventory",
+      "type": "code",
+      "position": { "x": 1000, "y": 200 },
+      "data": {
+        "label": "Process Inventory",
+        "code": "const inventoryResponse = data.response?.data || {};\nconst availableItems = inventoryResponse.available || [];\nconst unavailableItems = inventoryResponse.unavailable || [];\n\n// Determine order status\nlet orderStatus = 'processing';\nlet canFulfill = true;\n\nif (unavailableItems.length > 0) {\n  orderStatus = 'partial';\n  if (availableItems.length === 0) {\n    orderStatus = 'cancelled';\n    canFulfill = false;\n  }\n}\n\n// Calculate adjusted total\nconst adjustedTotal = availableItems.reduce((sum, item) => sum + item.price * item.quantity, 0);\n\nreturn {\n  ...data,\n  availableItems: availableItems,\n  unavailableItems: unavailableItems,\n  orderStatus: orderStatus,\n  canFulfill: canFulfill,\n  adjustedTotal: adjustedTotal,\n  inventoryChecked: true\n};"
+      }
+    },
+    {
+      "id": "update_inventory",
+      "type": "httpRequest",
+      "position": { "x": 1300, "y": 100 },
+      "data": {
+        "label": "Update Inventory",
+        "method": "POST",
+        "url": "https://api.example.com/inventory/update",
+        "headers": {
+          "Authorization": "Bearer {{INVENTORY_API_TOKEN}}",
+          "Content-Type": "application/json"
+        },
+        "body": "{\n  \"order_id\": \"{{orderId}}\",\n  \"items\": {{availableItems}},\n  \"action\": \"reserve\"\n}",
+        "description": "Reserves inventory for available items"
+      }
+    },
+    {
+      "id": "create_shipment",
+      "type": "httpRequest",
+      "position": { "x": 1300, "y": 300 },
+      "data": {
+        "label": "Create Shipment",
+        "method": "POST",
+        "url": "https://api.example.com/shipping/create",
+        "headers": {
+          "Authorization": "Bearer {{SHIPPING_API_TOKEN}}",
+          "Content-Type": "application/json"
+        },
+        "body": "{\n  \"order_id\": \"{{orderId}}\",\n  \"customer_name\": \"{{customerName}}\",\n  \"shipping_address\": {{shippingAddress}},\n  \"items\": {{availableItems}},\n  \"total\": {{adjustedTotal}}\n}",
+        "description": "Creates shipping label and tracking"
+      }
+    },
+    {
+      "id": "send_order_confirmation",
+      "type": "email",
+      "position": { "x": 1600, "y": 200 },
+      "data": {
+        "label": "Send Order Confirmation",
+        "to": "{{customerEmail}}",
+        "subject": "Order Confirmation - #{{orderId}}",
+        "body": "Dear {{customerName}},\\n\\nThank you for your order! We're excited to process it for you.\\n\\n📦 Order Details:\\nOrder ID: {{orderId}}\\nStatus: {{orderStatus}}\\nTotal: ${{adjustedTotal}}\\n\\n📋 Items:\\n{{#each availableItems}}\\n- {{name}} (Qty: {{quantity}}) - ${{price}}\\n{{/each}}\\n\\n{{#if unavailableItems}}\\n❌ Unavailable Items:\\n{{#each unavailableItems}}\\n- {{name}} (Qty: {{quantity}}) - Out of stock\\n{{/each}}\\n{{/if}}\\n\\n🚚 Shipping:\\nWe'll send you a tracking number once your order ships.\\n\\n📞 Questions?\\nContact us at support@example.com\\n\\nBest regards,\\nThe Team\\n\\n---\\nOrder placed: {{timestamp}}",
+        "description": "Sends order confirmation email to customer"
+      }
+    },
+    {
+      "id": "notify_warehouse",
+      "type": "slack",
+      "position": { "x": 1900, "y": 200 },
+      "data": {
+        "label": "Notify Warehouse",
+        "channel": "#warehouse-orders",
+        "message": "📦 New order received!\\n\\n🆔 Order ID: {{orderId}}\\n👤 Customer: {{customerName}}\\n💰 Total: ${{adjustedTotal}}\\n📊 Status: {{orderStatus}}\\n\\n📋 Items to fulfill:\\n{{#each availableItems}}\\n- {{name}} (Qty: {{quantity}})\\n{{/each}}\\n\\n{{#unless canFulfill}}⚠️ Some items unavailable{{/unless}}",
+        "description": "Notifies warehouse team of new order"
+      }
+    },
+    {
+      "id": "log_completion",
+      "type": "code",
+      "position": { "x": 2200, "y": 200 },
+      "data": {
+        "label": "Log Completion",
+        "code": "console.log(`✅ Order processed: ${data.orderId}`);\nconsole.log(`👤 Customer: ${data.customerName}`);\nconsole.log(`📊 Status: ${data.orderStatus}`);\nconsole.log(`💰 Total: $${data.adjustedTotal}`);\nconsole.log(`📦 Items: ${data.availableItems.length} available, ${data.unavailableItems.length} unavailable`);\n\nreturn {\n  success: true,\n  orderId: data.orderId,\n  customerName: data.customerName,\n  orderStatus: data.orderStatus,\n  adjustedTotal: data.adjustedTotal,\n  availableItems: data.availableItems.length,\n  unavailableItems: data.unavailableItems.length,\n  timestamp: new Date().toISOString(),\n  message: 'Order processing completed successfully'\n};"
+      }
+    },
+    {
+      "id": "error_handler",
+      "type": "code",
+      "position": { "x": 1300, "y": 400 },
+      "data": {
+        "label": "Error Handler",
+        "code": "console.error('❌ Order processing error:', data.error || data);\n\nreturn {\n  success: false,\n  error: data.error || 'Unknown error occurred',\n  timestamp: new Date().toISOString(),\n  message: 'Order processing failed'\n};"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "webhook_to_validate",
+      "source": "webhook_trigger",
+      "target": "validate_order",
+      "type": "default"
+    },
+    {
+      "id": "validate_to_inventory",
+      "source": "validate_order",
+      "target": "check_inventory",
+      "type": "default"
+    },
+    {
+      "id": "inventory_to_process",
+      "source": "check_inventory",
+      "target": "process_inventory",
+      "type": "default"
+    },
+    {
+      "id": "process_to_update",
+      "source": "process_inventory",
+      "target": "update_inventory",
+      "type": "default"
+    },
+    {
+      "id": "process_to_shipment",
+      "source": "process_inventory",
+      "target": "create_shipment",
+      "type": "default"
+    },
+    {
+      "id": "update_to_confirmation",
+      "source": "update_inventory",
+      "target": "send_order_confirmation",
+      "type": "default"
+    },
+    {
+      "id": "shipment_to_confirmation",
+      "source": "create_shipment",
+      "target": "send_order_confirmation",
+      "type": "default"
+    },
+    {
+      "id": "confirmation_to_notify",
+      "source": "send_order_confirmation",
+      "target": "notify_warehouse",
+      "type": "default"
+    },
+    {
+      "id": "notify_to_log",
+      "source": "notify_warehouse",
+      "target": "log_completion",
+      "type": "default"
+    },
+    {
+      "id": "webhook_to_error",
+      "source": "webhook_trigger",
+      "target": "error_handler",
+      "type": "default",
+      "animated": true,
+      "style": { "stroke": "#ff4444" }
+    },
+    {
+      "id": "validate_to_error",
+      "source": "validate_order",
+      "target": "error_handler",
+      "type": "default",
+      "animated": true,
+      "style": { "stroke": "#ff4444" }
+    },
+    {
+      "id": "inventory_to_error",
+      "source": "check_inventory",
+      "target": "error_handler",
+      "type": "default",
+      "animated": true,
+      "style": { "stroke": "#ff4444" }
+    },
+    {
+      "id": "process_to_error",
+      "source": "process_inventory",
+      "target": "error_handler",
+      "type": "default",
+      "animated": true,
+      "style": { "stroke": "#ff4444" }
+    }
+  ]
+} 

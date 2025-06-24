@@ -1,0 +1,163 @@
+{
+  "id": "customer-support-automation",
+  "name": "Customer Support Automation",
+  "description": "Automatically processes support tickets and sends appropriate responses",
+  "createdAt": "2025-06-24T13:52:00.000Z",
+  "updatedAt": "2025-06-24T13:52:00.000Z",
+  "nodes": [
+    {
+      "id": "webhook_trigger",
+      "type": "webhook",
+      "position": { "x": 100, "y": 200 },
+      "data": {
+        "label": "Support Ticket Webhook",
+        "url": "/webhook/customer-support-automation",
+        "method": "POST",
+        "description": "Triggered when new support ticket is created"
+      }
+    },
+    {
+      "id": "parse_ticket",
+      "type": "code",
+      "position": { "x": 400, "y": 200 },
+      "data": {
+        "label": "Parse Support Ticket",
+        "code": "const ticket = data.webhook?.body || data;\n\n// Extract ticket information\nconst ticketData = {\n  id: ticket.id || `ticket-${Date.now()}`,\n  customerEmail: ticket.email || ticket.customerEmail,\n  subject: ticket.subject || 'Support Request',\n  message: ticket.message || ticket.description,\n  priority: ticket.priority || 'medium',\n  category: ticket.category || 'general',\n  timestamp: new Date().toISOString()\n};\n\n// Validate required fields\nif (!ticketData.customerEmail || !ticketData.message) {\n  throw new Error('Missing required fields: email and message');\n}\n\nreturn ticketData;"
+      }
+    },
+    {
+      "id": "classify_ticket",
+      "type": "code",
+      "position": { "x": 700, "y": 200 },
+      "data": {
+        "label": "Classify Ticket",
+        "code": "const message = data.message.toLowerCase();\nconst subject = data.subject.toLowerCase();\n\n// Simple keyword-based classification\nlet category = 'general';\nlet priority = 'medium';\nlet autoResponse = false;\n\n// Check for urgent keywords\nif (message.includes('urgent') || message.includes('broken') || message.includes('error')) {\n  priority = 'high';\n}\n\n// Check for billing issues\nif (message.includes('billing') || message.includes('payment') || message.includes('charge')) {\n  category = 'billing';\n  autoResponse = true;\n}\n\n// Check for technical issues\nif (message.includes('bug') || message.includes('crash') || message.includes('not working')) {\n  category = 'technical';\n}\n\n// Check for account issues\nif (message.includes('login') || message.includes('password') || message.includes('account')) {\n  category = 'account';\n  autoResponse = true;\n}\n\nreturn {\n  ...data,\n  category: category,\n  priority: priority,\n  autoResponse: autoResponse,\n  assignedTo: autoResponse ? 'system' : 'support-team'\n};"
+      }
+    },
+    {
+      "id": "send_auto_response",
+      "type": "email",
+      "position": { "x": 1000, "y": 100 },
+      "data": {
+        "label": "Send Auto Response",
+        "to": "{{customerEmail}}",
+        "subject": "Re: {{subject}} - Ticket #{{id}}",
+        "body": "Dear Customer,\\n\\nThank you for contacting our support team. We have received your ticket (#{{id}}) and it has been classified as {{category}} with {{priority}} priority.\\n\\n{{#if autoResponse}}\\nWe are working on resolving your {{category}} issue. You can expect a detailed response within 24 hours.\\n\\nIn the meantime, you may find answers to common questions in our FAQ: https://example.com/faq\\n{{else}}\\nOur support team will review your request and respond within 24-48 hours.\\n{{/if}}\\n\\nBest regards,\\nSupport Team\\n\\n---\\nTicket ID: {{id}}\\nCategory: {{category}}\\nPriority: {{priority}}\\nSubmitted: {{timestamp}}",
+        "description": "Sends automated response to customer"
+      }
+    },
+    {
+      "id": "create_ticket_record",
+      "type": "httpRequest",
+      "position": { "x": 1000, "y": 300 },
+      "data": {
+        "label": "Create Ticket Record",
+        "method": "POST",
+        "url": "https://api.example.com/support/tickets",
+        "headers": {
+          "Authorization": "Bearer {{SUPPORT_API_TOKEN}}",
+          "Content-Type": "application/json"
+        },
+        "body": "{\n  \"ticket_id\": \"{{id}}\",\n  \"customer_email\": \"{{customerEmail}}\",\n  \"subject\": \"{{subject}}\",\n  \"message\": \"{{message}}\",\n  \"category\": \"{{category}}\",\n  \"priority\": \"{{priority}}\",\n  \"assigned_to\": \"{{assignedTo}}\",\n  \"created_at\": \"{{timestamp}}\",\n  \"status\": \"{{#if autoResponse}}auto_responded{{else}}pending{{/if}}\"\n}",
+        "description": "Creates ticket record in support system"
+      }
+    },
+    {
+      "id": "notify_team",
+      "type": "slack",
+      "position": { "x": 1300, "y": 200 },
+      "data": {
+        "label": "Notify Support Team",
+        "channel": "#support-tickets",
+        "message": "🎫 New support ticket received!\\n\\n📧 Customer: {{customerEmail}}\\n📝 Subject: {{subject}}\\n🏷️ Category: {{category}}\\n⚡ Priority: {{priority}}\\n🆔 Ticket ID: {{id}}\\n\\n{{#unless autoResponse}}⚠️ Requires manual review{{else}}✅ Auto-response sent{{/unless}}",
+        "description": "Notifies support team of new ticket"
+      }
+    },
+    {
+      "id": "log_completion",
+      "type": "code",
+      "position": { "x": 1600, "y": 200 },
+      "data": {
+        "label": "Log Completion",
+        "code": "console.log(`✅ Support ticket processed: ${data.id}`);\nconsole.log(`📧 Customer: ${data.customerEmail}`);\nconsole.log(`🏷️ Category: ${data.category}`);\nconsole.log(`⚡ Priority: ${data.priority}`);\nconsole.log(`🤖 Auto-response: ${data.autoResponse ? 'Yes' : 'No'}`);\n\nreturn {\n  success: true,\n  ticketId: data.id,\n  customerEmail: data.customerEmail,\n  category: data.category,\n  priority: data.priority,\n  autoResponse: data.autoResponse,\n  timestamp: new Date().toISOString(),\n  message: 'Support ticket processed successfully'\n};"
+      }
+    },
+    {
+      "id": "error_handler",
+      "type": "code",
+      "position": { "x": 1000, "y": 400 },
+      "data": {
+        "label": "Error Handler",
+        "code": "console.error('❌ Support automation error:', data.error || data);\n\nreturn {\n  success: false,\n  error: data.error || 'Unknown error occurred',\n  timestamp: new Date().toISOString(),\n  message: 'Support ticket processing failed'\n};"
+      }
+    }
+  ],
+  "edges": [
+    {
+      "id": "webhook_to_parse",
+      "source": "webhook_trigger",
+      "target": "parse_ticket",
+      "type": "default"
+    },
+    {
+      "id": "parse_to_classify",
+      "source": "parse_ticket",
+      "target": "classify_ticket",
+      "type": "default"
+    },
+    {
+      "id": "classify_to_response",
+      "source": "classify_ticket",
+      "target": "send_auto_response",
+      "type": "default"
+    },
+    {
+      "id": "classify_to_record",
+      "source": "classify_ticket",
+      "target": "create_ticket_record",
+      "type": "default"
+    },
+    {
+      "id": "response_to_notify",
+      "source": "send_auto_response",
+      "target": "notify_team",
+      "type": "default"
+    },
+    {
+      "id": "record_to_notify",
+      "source": "create_ticket_record",
+      "target": "notify_team",
+      "type": "default"
+    },
+    {
+      "id": "notify_to_log",
+      "source": "notify_team",
+      "target": "log_completion",
+      "type": "default"
+    },
+    {
+      "id": "webhook_to_error",
+      "source": "webhook_trigger",
+      "target": "error_handler",
+      "type": "default",
+      "animated": true,
+      "style": { "stroke": "#ff4444" }
+    },
+    {
+      "id": "parse_to_error",
+      "source": "parse_ticket",
+      "target": "error_handler",
+      "type": "default",
+      "animated": true,
+      "style": { "stroke": "#ff4444" }
+    },
+    {
+      "id": "classify_to_error",
+      "source": "classify_ticket",
+      "target": "error_handler",
+      "type": "default",
+      "animated": true,
+      "style": { "stroke": "#ff4444" }
+    }
+  ]
+} 
