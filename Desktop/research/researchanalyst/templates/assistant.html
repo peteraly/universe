@@ -1,0 +1,401 @@
+{% extends "base.html" %}
+
+{% block title %}AI Assistant - Research Analyst{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <!-- Page Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="h2 mb-0">
+                <i class="bi bi-robot text-warning"></i>
+                AI Research Assistant
+            </h1>
+            <p class="text-muted">Your intelligent research copilot with memory and context awareness.</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Chat Interface -->
+        <div class="col-lg-8 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="bi bi-chat-dots"></i>
+                        Research Assistant Chat
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="chat-container" id="chatContainer" style="height: 500px; overflow-y: auto;">
+                        {% for message in chat_history %}
+                            <div class="chat-message {{ 'ai-message' if message.type == 'ai' else 'user-message' }}">
+                                {% if message.type == 'ai' %}
+                                    <i class="bi bi-robot"></i>
+                                {% endif %}
+                                <div class="message-content">
+                                    <div class="message-text">{{ message.content }}</div>
+                                    <div class="message-timestamp">{{ message.timestamp }}</div>
+                                </div>
+                                {% if message.type == 'user' %}
+                                    <i class="bi bi-person"></i>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                        
+                        {% if not chat_history %}
+                            <div class="text-center text-muted py-5">
+                                <i class="bi bi-robot display-1"></i>
+                                <h4 class="mt-3">Welcome to your AI Research Assistant!</h4>
+                                <p class="mt-2">I can help you with:</p>
+                                <ul class="list-unstyled">
+                                    <li><i class="bi bi-check-circle text-success"></i> Task analysis and recommendations</li>
+                                    <li><i class="bi bi-check-circle text-success"></i> Research brief generation</li>
+                                    <li><i class="bi bi-check-circle text-success"></i> Source discovery and tagging</li>
+                                    <li><i class="bi bi-check-circle text-success"></i> Deliverable drafting</li>
+                                </ul>
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="chat-input mt-3">
+                        <div class="input-group">
+                            <input type="text" id="chatInput" class="form-control" placeholder="Ask me about research tasks, sources, or deliverables...">
+                            <button class="btn btn-primary" onclick="sendMessage()">
+                                <i class="bi bi-send"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- AI Memory & Context -->
+        <div class="col-lg-4 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="bi bi-brain"></i>
+                        AI Memory & Context
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-4">
+                        <h6 class="text-warning">
+                            <i class="bi bi-lightbulb"></i>
+                            Active Research Context
+                        </h6>
+                        <div class="context-item">
+                            <strong>Current Focus:</strong>
+                            <span class="badge badge-primary">BNPL Market Analysis</span>
+                        </div>
+                        <div class="context-item">
+                            <strong>Recent Sources:</strong>
+                            <span class="badge badge-info">CB Insights</span>
+                            <span class="badge badge-info">PitchBook</span>
+                        </div>
+                        <div class="context-item">
+                            <strong>Stakeholders:</strong>
+                            <span class="badge badge-success">Product Team</span>
+                            <span class="badge badge-success">VP Strategy</span>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <h6 class="text-info">
+                            <i class="bi bi-gear"></i>
+                            AI Capabilities
+                        </h6>
+                        <div class="capability-item">
+                            <i class="bi bi-check-circle text-success"></i>
+                            <span>Task Analysis & Prioritization</span>
+                        </div>
+                        <div class="capability-item">
+                            <i class="bi bi-check-circle text-success"></i>
+                            <span>Research Brief Generation</span>
+                        </div>
+                        <div class="capability-item">
+                            <i class="bi bi-check-circle text-success"></i>
+                            <span>Source Discovery & Tagging</span>
+                        </div>
+                        <div class="capability-item">
+                            <i class="bi bi-check-circle text-success"></i>
+                            <span>Deliverable Drafting</span>
+                        </div>
+                        <div class="capability-item">
+                            <i class="bi bi-check-circle text-success"></i>
+                            <span>Stakeholder Communication</span>
+                        </div>
+                    </div>
+
+                    <div class="mb-4">
+                        <h6 class="text-success">
+                            <i class="bi bi-clock-history"></i>
+                            Quick Actions
+                        </h6>
+                        <div class="d-grid gap-2">
+                            <button class="btn btn-sm btn-outline-primary" onclick="generateBrief()">
+                                <i class="bi bi-file-earmark-text"></i>
+                                Generate Executive Brief
+                            </button>
+                            <button class="btn btn-sm btn-outline-warning" onclick="analyzeTasks()">
+                                <i class="bi bi-graph-up"></i>
+                                Analyze Task Performance
+                            </button>
+                            <button class="btn btn-sm btn-outline-info" onclick="findSources()">
+                                <i class="bi bi-search"></i>
+                                Find Related Sources
+                            </button>
+                            <button class="btn btn-sm btn-outline-success" onclick="draftDeliverable()">
+                                <i class="bi bi-pencil"></i>
+                                Draft Deliverable
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Suggestions -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="bi bi-lightbulb"></i>
+                        AI Suggestions
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <div class="suggestion-card">
+                                <div class="suggestion-icon">
+                                    <i class="bi bi-exclamation-triangle text-warning"></i>
+                                </div>
+                                <div class="suggestion-content">
+                                    <h6>Priority Alert</h6>
+                                    <p>Task "BNPL Market Analysis" is approaching deadline. Consider accelerating research phase.</p>
+                                    <button class="btn btn-sm btn-warning">Take Action</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="suggestion-card">
+                                <div class="suggestion-icon">
+                                    <i class="bi bi-journal-plus text-info"></i>
+                                </div>
+                                <div class="suggestion-content">
+                                    <h6>Source Recommendation</h6>
+                                    <p>New CB Insights report on BNPL trends available. Would you like me to analyze it?</p>
+                                    <button class="btn btn-sm btn-info">Review Source</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="suggestion-card">
+                                <div class="suggestion-icon">
+                                    <i class="bi bi-graph-up text-success"></i>
+                                </div>
+                                <div class="suggestion-content">
+                                    <h6>Performance Insight</h6>
+                                    <p>Research efficiency improved 15% this week. Content curation tasks are ahead of schedule.</p>
+                                    <button class="btn btn-sm btn-success">View Details</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.chat-container {
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1rem;
+    background-color: var(--bg-tertiary);
+}
+
+.chat-message {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    gap: 0.5rem;
+}
+
+.chat-message.ai-message {
+    flex-direction: row;
+}
+
+.chat-message.user-message {
+    flex-direction: row-reverse;
+}
+
+.chat-message i {
+    color: var(--visa-gold);
+    font-size: 1.2rem;
+    margin-top: 0.25rem;
+}
+
+.message-content {
+    background-color: var(--bg-secondary);
+    padding: 0.75rem;
+    border-radius: 12px;
+    max-width: 80%;
+    word-wrap: break-word;
+}
+
+.ai-message .message-content {
+    background-color: var(--visa-blue);
+    color: var(--text-primary);
+}
+
+.user-message .message-content {
+    background-color: var(--visa-gold);
+    color: var(--visa-blue-dark);
+}
+
+.message-timestamp {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    margin-top: 0.25rem;
+}
+
+.context-item, .capability-item {
+    margin-bottom: 0.5rem;
+    padding: 0.5rem;
+    background-color: var(--bg-tertiary);
+    border-radius: 6px;
+}
+
+.capability-item i {
+    margin-right: 0.5rem;
+}
+
+.suggestion-card {
+    display: flex;
+    align-items: start;
+    gap: 1rem;
+    padding: 1rem;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.suggestion-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.suggestion-icon {
+    font-size: 2rem;
+    flex-shrink: 0;
+}
+
+.suggestion-content h6 {
+    margin-bottom: 0.5rem;
+    color: var(--text-primary);
+}
+
+.suggestion-content p {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    margin-bottom: 0.75rem;
+}
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function sendMessage() {
+        const input = document.getElementById('chatInput');
+        const message = input.value.trim();
+        
+        if (message) {
+            addMessage('user', message);
+            input.value = '';
+            
+            // Simulate AI response
+            setTimeout(() => {
+                const responses = [
+                    "I understand you're asking about " + message + ". Let me analyze the available data and provide you with insights.",
+                    "Based on your query about " + message + ", I can help you with that. Let me check the current research context.",
+                    "Great question about " + message + "! I'll search through our research sources and task database to find relevant information.",
+                    "I'm processing your request about " + message + ". This relates to several active research tasks in our system."
+                ];
+                const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                addMessage('ai', randomResponse);
+            }, 1000);
+        }
+    }
+
+    function addMessage(type, content) {
+        const container = document.getElementById('chatContainer');
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `chat-message ${type}-message`;
+        
+        const timestamp = new Date().toLocaleTimeString();
+        
+        if (type === 'ai') {
+            messageDiv.innerHTML = `
+                <i class="bi bi-robot"></i>
+                <div class="message-content">
+                    <div class="message-text">${content}</div>
+                    <div class="message-timestamp">${timestamp}</div>
+                </div>
+            `;
+        } else {
+            messageDiv.innerHTML = `
+                <div class="message-content">
+                    <div class="message-text">${content}</div>
+                    <div class="message-timestamp">${timestamp}</div>
+                </div>
+                <i class="bi bi-person"></i>
+            `;
+        }
+        
+        container.appendChild(messageDiv);
+        container.scrollTop = container.scrollHeight;
+    }
+
+    // Enter key support
+    document.getElementById('chatInput').addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            sendMessage();
+        }
+    });
+
+    // Quick action functions
+    function generateBrief() {
+        addMessage('user', 'Generate an executive brief for the BNPL market analysis');
+        setTimeout(() => {
+            addMessage('ai', 'I\'ll generate an executive brief for the BNPL market analysis. This will include key findings, market trends, competitive landscape, and strategic recommendations based on our research sources.');
+        }, 1000);
+    }
+
+    function analyzeTasks() {
+        addMessage('user', 'Analyze current task performance');
+        setTimeout(() => {
+            addMessage('ai', 'Analyzing task performance... I can see that research efficiency has improved by 15% this week. Content curation tasks are ahead of schedule, while strategic analysis tasks need attention.');
+        }, 1000);
+    }
+
+    function findSources() {
+        addMessage('user', 'Find related sources for BNPL research');
+        setTimeout(() => {
+            addMessage('ai', 'I found several relevant sources for BNPL research: CB Insights Q3 report, PitchBook market analysis, and recent regulatory updates. Would you like me to analyze any specific source?');
+        }, 1000);
+    }
+
+    function draftDeliverable() {
+        addMessage('user', 'Draft a deliverable for the BNPL analysis');
+        setTimeout(() => {
+            addMessage('ai', 'I\'ll draft a comprehensive deliverable for the BNPL analysis. This will include executive summary, methodology, key findings, market analysis, and actionable recommendations.');
+        }, 1000);
+    }
+</script>
+{% endblock %} 

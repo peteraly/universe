@@ -1,0 +1,393 @@
+{% extends "base.html" %}
+
+{% block title %}Corporate Strategy - Research Analyst{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <!-- Page Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="h2 mb-0">
+                <i class="bi bi-briefcase text-warning"></i>
+                Corporate Strategy
+            </h1>
+            <p class="text-muted">Strategic analysis, market positioning, and competitive intelligence tasks.</p>
+        </div>
+    </div>
+
+    <!-- Strategy KPIs -->
+    <div class="row mb-4">
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="kpi-card">
+                <div class="kpi-value">{{ tasks|length }}</div>
+                <div class="kpi-label">Strategy Tasks</div>
+                <div class="mt-2">
+                    <span class="badge badge-primary">Active</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="kpi-card">
+                <div class="kpi-value">{{ tasks|selectattr('status', 'equalto', 'Completed')|list|length }}</div>
+                <div class="kpi-label">Completed</div>
+                <div class="mt-2">
+                    <span class="badge badge-success">Done</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="kpi-card">
+                <div class="kpi-value">{{ tasks|selectattr('status', 'equalto', 'In Progress')|list|length }}</div>
+                <div class="kpi-label">In Progress</div>
+                <div class="mt-2">
+                    <span class="badge badge-warning">Working</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="kpi-card">
+                <div class="kpi-value">{{ (tasks|selectattr('status', 'equalto', 'Completed')|list|length / tasks|length * 100)|round(1) if tasks|length > 0 else 0 }}%</div>
+                <div class="kpi-label">Completion Rate</div>
+                <div class="mt-2">
+                    <span class="badge badge-info">Progress</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Strategy Tasks -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        <i class="bi bi-list-task"></i>
+                        Strategy Tasks
+                    </h5>
+                    <button class="btn btn-primary" onclick="createTask()">
+                        <i class="bi bi-plus-circle"></i>
+                        New Task
+                    </button>
+                </div>
+                <div class="card-body">
+                    {% if tasks %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Task</th>
+                                        <th>Stakeholders</th>
+                                        <th>Status</th>
+                                        <th>Progress</th>
+                                        <th>Due Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for task in tasks %}
+                                        <tr>
+                                            <td>
+                                                <div>
+                                                    <strong>{{ task.title }}</strong>
+                                                    <div class="text-muted small">{{ task.description or 'No description' }}</div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                {% for stakeholder in task.stakeholders %}
+                                                    <span class="badge badge-info">{{ stakeholder }}</span>
+                                                {% endfor %}
+                                            </td>
+                                            <td>
+                                                <span class="badge badge-{{ 'success' if task.status == 'Completed' else 'warning' if task.status == 'In Progress' else 'info' }}">
+                                                    {{ task.status }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <div class="progress" style="width: 100px;">
+                                                    <div class="progress-bar" style="width: {{ task.progress }}%"></div>
+                                                </div>
+                                                <small class="text-muted">{{ task.progress }}%</small>
+                                            </td>
+                                            <td>{{ task.due_date or 'No due date' }}</td>
+                                            <td>
+                                                <div class="btn-group" role="group">
+                                                    <button class="btn btn-sm btn-outline-primary" onclick="editTask('{{ task.id }}')">
+                                                        <i class="bi bi-pencil"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-success" onclick="generateBrief('{{ task.id }}')">
+                                                        <i class="bi bi-robot"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-info" onclick="viewDetails('{{ task.id }}')">
+                                                        <i class="bi bi-eye"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center text-muted py-5">
+                            <i class="bi bi-briefcase display-1"></i>
+                            <h4 class="mt-3">No Strategy Tasks</h4>
+                            <p class="mt-2">Create your first corporate strategy task to get started.</p>
+                            <button class="btn btn-primary" onclick="createTask()">
+                                <i class="bi bi-plus-circle"></i>
+                                Create Task
+                            </button>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- AI Strategy Assistant -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="bi bi-robot"></i>
+                        AI Strategy Assistant
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <h6 class="text-primary">Quick Actions</h6>
+                            <div class="d-grid gap-2">
+                                <button class="btn btn-outline-primary" onclick="generateMarketAnalysis()">
+                                    <i class="bi bi-graph-up"></i>
+                                    Generate Market Analysis
+                                </button>
+                                <button class="btn btn-outline-warning" onclick="createCompetitiveIntel()">
+                                    <i class="bi bi-shield-check"></i>
+                                    Competitive Intelligence
+                                </button>
+                                <button class="btn btn-outline-info" onclick="draftStrategyBrief()">
+                                    <i class="bi bi-file-earmark-text"></i>
+                                    Draft Strategy Brief
+                                </button>
+                                <button class="btn btn-outline-success" onclick="analyzeTrends()">
+                                    <i class="bi bi-trending-up"></i>
+                                    Analyze Industry Trends
+                                </button>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <h6 class="text-success">Strategy Insights</h6>
+                            <div class="insights-container">
+                                <div class="insight-item">
+                                    <i class="bi bi-lightbulb text-warning"></i>
+                                    <div>
+                                        <strong>Market Opportunity</strong>
+                                        <p class="small mb-0">BNPL market expected to grow 25% YoY in 2025</p>
+                                    </div>
+                                </div>
+                                <div class="insight-item">
+                                    <i class="bi bi-exclamation-triangle text-danger"></i>
+                                    <div>
+                                        <strong>Competitive Threat</strong>
+                                        <p class="small mb-0">New fintech entrants targeting underserved segments</p>
+                                    </div>
+                                </div>
+                                <div class="insight-item">
+                                    <i class="bi bi-check-circle text-success"></i>
+                                    <div>
+                                        <strong>Strategic Advantage</strong>
+                                        <p class="small mb-0">Strong regulatory relationships and compliance framework</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Strategy Resources -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="bi bi-journal-text"></i>
+                        Strategy Resources
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <div class="resource-card">
+                                <div class="resource-icon">
+                                    <i class="bi bi-graph-up text-primary"></i>
+                                </div>
+                                <div class="resource-content">
+                                    <h6>Market Reports</h6>
+                                    <p class="small">Access latest market analysis and industry reports</p>
+                                    <button class="btn btn-sm btn-outline-primary">Browse Reports</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="resource-card">
+                                <div class="resource-icon">
+                                    <i class="bi bi-shield-check text-warning"></i>
+                                </div>
+                                <div class="resource-content">
+                                    <h6>Competitive Intel</h6>
+                                    <p class="small">Track competitor activities and market positioning</p>
+                                    <button class="btn btn-sm btn-outline-warning">View Intel</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="resource-card">
+                                <div class="resource-icon">
+                                    <i class="bi bi-file-earmark-text text-success"></i>
+                                </div>
+                                <div class="resource-content">
+                                    <h6>Strategy Templates</h6>
+                                    <p class="small">Use AI-powered templates for strategy documents</p>
+                                    <button class="btn btn-sm btn-outline-success">Use Templates</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.insights-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.insight-item {
+    display: flex;
+    align-items: start;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    background-color: var(--bg-tertiary);
+    border-radius: 8px;
+    border-left: 3px solid var(--visa-gold);
+}
+
+.insight-item i {
+    font-size: 1.2rem;
+    margin-top: 0.25rem;
+}
+
+.insight-item strong {
+    color: var(--text-primary);
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+.insight-item p {
+    color: var(--text-secondary);
+    margin: 0;
+}
+
+.resource-card {
+    display: flex;
+    align-items: start;
+    gap: 1rem;
+    padding: 1rem;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    height: 100%;
+}
+
+.resource-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.resource-icon {
+    font-size: 2rem;
+    flex-shrink: 0;
+}
+
+.resource-content h6 {
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.resource-content p {
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+}
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function createTask() {
+        console.log('Creating new strategy task');
+        alert('Create task functionality would open a task creation modal');
+    }
+
+    function editTask(taskId) {
+        console.log('Editing task:', taskId);
+        alert('Edit task functionality would open a task editing modal');
+    }
+
+    function generateBrief(taskId) {
+        console.log('Generating brief for task:', taskId);
+        
+        fetch('/api/generate', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                type: 'brief',
+                task_id: taskId
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert('Strategy brief generated: ' + data.content.substring(0, 100) + '...');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error generating brief');
+        });
+    }
+
+    function viewDetails(taskId) {
+        console.log('Viewing details for task:', taskId);
+        alert('View details functionality would show comprehensive task information');
+    }
+
+    function generateMarketAnalysis() {
+        console.log('Generating market analysis');
+        alert('AI will generate a comprehensive market analysis based on current data and trends');
+    }
+
+    function createCompetitiveIntel() {
+        console.log('Creating competitive intelligence');
+        alert('AI will analyze competitor activities and create competitive intelligence report');
+    }
+
+    function draftStrategyBrief() {
+        console.log('Drafting strategy brief');
+        alert('AI will draft a strategic brief based on current market conditions and company objectives');
+    }
+
+    function analyzeTrends() {
+        console.log('Analyzing industry trends');
+        alert('AI will analyze current industry trends and provide strategic insights');
+    }
+</script>
+{% endblock %} 

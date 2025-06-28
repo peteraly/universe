@@ -1,0 +1,342 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard - Research Analyst{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <!-- Page Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="h2 mb-0">
+                <i class="bi bi-speedometer2 text-warning"></i>
+                Research Analyst Dashboard
+            </h1>
+            <p class="text-muted">Welcome back! Here's your research overview.</p>
+        </div>
+    </div>
+
+    <!-- KPI Cards -->
+    <div class="row mb-4">
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="kpi-card">
+                <div class="kpi-value">{{ kpis.completed_tasks }}/{{ kpis.total_tasks }}</div>
+                <div class="kpi-label">Tasks Completed</div>
+                <div class="progress mt-2">
+                    <div class="progress-bar" style="width: {{ (kpis.completed_tasks / kpis.total_tasks * 100) if kpis.total_tasks > 0 else 0 }}%"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="kpi-card">
+                <div class="kpi-value">{{ kpis.research_requests }}</div>
+                <div class="kpi-label">Research Requests</div>
+                <div class="mt-2">
+                    <span class="badge badge-primary">Active</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="kpi-card">
+                <div class="kpi-value">{{ sources|length }}</div>
+                <div class="kpi-label">Research Sources</div>
+                <div class="mt-2">
+                    <span class="badge badge-success">Available</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="kpi-card">
+                <div class="kpi-value">{{ kpis.health_status }}</div>
+                <div class="kpi-label">Health Status</div>
+                <div class="mt-2">
+                    <span class="badge badge-success">{{ kpis.health_status }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content Grid -->
+    <div class="row">
+        <!-- Priority Matrix -->
+        <div class="col-lg-8 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="bi bi-grid-3x3-gap"></i>
+                        Priority Matrix
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="priority-matrix">
+                        <div class="priority-quadrant high-urgent">
+                            <h6 class="text-danger mb-3">
+                                <i class="bi bi-exclamation-triangle"></i>
+                                High Priority, Urgent
+                            </h6>
+                            {% for task in tasks %}
+                                {% if task.status == 'In Progress' and task.progress < 50 %}
+                                    <div class="task-item mb-2">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span class="small">{{ task.title[:30] }}...</span>
+                                            <span class="badge badge-danger">Due Soon</span>
+                                        </div>
+                                        <div class="progress mt-1" style="height: 4px;">
+                                            <div class="progress-bar" style="width: {{ task.progress }}%"></div>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        
+                        <div class="priority-quadrant high-not-urgent">
+                            <h6 class="text-warning mb-3">
+                                <i class="bi bi-clock"></i>
+                                High Priority, Not Urgent
+                            </h6>
+                            {% for task in tasks %}
+                                {% if task.status == 'New' and task.category == 'Corporate Strategy' %}
+                                    <div class="task-item mb-2">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span class="small">{{ task.title[:30] }}...</span>
+                                            <span class="badge badge-warning">Strategy</span>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        
+                        <div class="priority-quadrant low-urgent">
+                            <h6 class="text-info mb-3">
+                                <i class="bi bi-lightning"></i>
+                                Low Priority, Urgent
+                            </h6>
+                            {% for task in tasks %}
+                                {% if task.status == 'New' and task.category == 'Content Curation' %}
+                                    <div class="task-item mb-2">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span class="small">{{ task.title[:30] }}...</span>
+                                            <span class="badge badge-info">Content</span>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                        
+                        <div class="priority-quadrant low-not-urgent">
+                            <h6 class="text-success mb-3">
+                                <i class="bi bi-check-circle"></i>
+                                Low Priority, Not Urgent
+                            </h6>
+                            {% for task in tasks %}
+                                {% if task.status == 'Completed' %}
+                                    <div class="task-item mb-2">
+                                        <div class="d-flex justify-content-between align-items-center">
+                                            <span class="small">{{ task.title[:30] }}...</span>
+                                            <span class="badge badge-success">Done</span>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Recent Activity -->
+        <div class="col-lg-4 mb-4">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="bi bi-activity"></i>
+                        Recent Activity
+                    </h5>
+                </div>
+                <div class="card-body">
+                    {% for activity in recent_activity %}
+                        <div class="activity-item">
+                            <div class="d-flex justify-content-between align-items-start">
+                                <div>
+                                    <strong>{{ activity.title }}</strong>
+                                    <div class="text-muted small">{{ activity.status }}</div>
+                                </div>
+                                <span class="activity-timestamp">{{ activity.timestamp[:10] }}</span>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    
+                    {% if not recent_activity %}
+                        <div class="text-center text-muted py-3">
+                            <i class="bi bi-inbox display-4"></i>
+                            <p class="mt-2">No recent activity</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Deliverables Progress -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="bi bi-file-earmark-text"></i>
+                        Deliverables Progress
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Deliverable</th>
+                                    <th>Task</th>
+                                    <th>Status</th>
+                                    <th>Progress</th>
+                                    <th>Due Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for deliverable in deliverables %}
+                                    <tr>
+                                        <td>
+                                            <strong>{{ deliverable.title }}</strong>
+                                            <div class="text-muted small">{{ deliverable.type }}</div>
+                                        </td>
+                                        <td>
+                                            {% for task in tasks %}
+                                                {% if task.id == deliverable.task_id %}
+                                                    {{ task.title }}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </td>
+                                        <td>
+                                            <span class="badge badge-{{ 'success' if deliverable.status == 'Completed' else 'warning' if deliverable.status == 'In Progress' else 'info' }}">
+                                                {{ deliverable.status }}
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <div class="progress" style="width: 100px;">
+                                                <div class="progress-bar" style="width: {{ 100 if deliverable.status == 'Completed' else 60 if deliverable.status == 'In Progress' else 0 }}%"></div>
+                                            </div>
+                                        </td>
+                                        <td>{{ deliverable.created_at[:10] }}</td>
+                                        <td>
+                                            <button class="btn btn-sm btn-outline-primary" onclick="editDeliverable('{{ deliverable.id }}')">
+                                                <i class="bi bi-pencil"></i>
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-success" onclick="generateAI('{{ deliverable.id }}')">
+                                                <i class="bi bi-robot"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                
+                                {% if not deliverables %}
+                                    <tr>
+                                        <td colspan="6" class="text-center text-muted py-4">
+                                            <i class="bi bi-file-earmark-text display-4"></i>
+                                            <p class="mt-2">No deliverables yet</p>
+                                        </td>
+                                    </tr>
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="bi bi-lightning"></i>
+                        Quick Actions
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <a href="{{ url_for('simulation') }}" class="btn btn-primary w-100">
+                                <i class="bi bi-play-circle"></i>
+                                Start Simulation
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <a href="{{ url_for('research_sources') }}" class="btn btn-outline-primary w-100">
+                                <i class="bi bi-journal-text"></i>
+                                Browse Sources
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <a href="{{ url_for('assistant') }}" class="btn btn-outline-warning w-100">
+                                <i class="bi bi-robot"></i>
+                                AI Assistant
+                            </a>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <button class="btn btn-outline-success w-100" onclick="generateReport()">
+                                <i class="bi bi-file-earmark-arrow-down"></i>
+                                Generate Report
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function editDeliverable(deliverableId) {
+        // Mock function for editing deliverables
+        console.log('Editing deliverable:', deliverableId);
+        alert('Edit functionality would open a modal or redirect to edit page');
+    }
+
+    function generateAI(deliverableId) {
+        // Mock AI generation
+        console.log('Generating AI content for:', deliverableId);
+        
+        fetch('/api/generate', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                type: 'deliverable',
+                task_id: deliverableId
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert('AI content generated: ' + data.content.substring(0, 100) + '...');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error generating AI content');
+        });
+    }
+
+    function generateReport() {
+        // Mock report generation
+        console.log('Generating comprehensive report');
+        alert('Report generation started. This would create a comprehensive analysis of all current tasks and deliverables.');
+    }
+
+    // Auto-refresh dashboard data every 30 seconds
+    setInterval(() => {
+        // In a real app, this would fetch updated data
+        console.log('Refreshing dashboard data...');
+    }, 30000);
+</script>
+{% endblock %} 

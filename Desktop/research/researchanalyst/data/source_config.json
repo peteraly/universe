@@ -1,0 +1,192 @@
+{
+  "external_sources": {
+    "news_apis": {
+      "news_api": {
+        "enabled": true,
+        "base_url": "https://newsapi.org/v2",
+        "endpoints": {
+          "search": "/everything",
+          "headlines": "/top-headlines",
+          "sources": "/sources"
+        },
+        "rate_limit": "1000 requests per day",
+        "categories": ["business", "technology", "finance", "politics"]
+      },
+      "guardian_api": {
+        "enabled": false,
+        "base_url": "https://content.guardianapis.com",
+        "api_key_required": true
+      }
+    },
+    "financial_apis": {
+      "alpha_vantage": {
+        "enabled": true,
+        "base_url": "https://www.alphavantage.co/query",
+        "rate_limit": "5 requests per minute",
+        "endpoints": {
+          "company_overview": "OVERVIEW",
+          "income_statement": "INCOME_STATEMENT",
+          "balance_sheet": "BALANCE_SHEET"
+        }
+      },
+      "yahoo_finance": {
+        "enabled": true,
+        "base_url": "https://query1.finance.yahoo.com/v8/finance",
+        "rate_limit": "2000 requests per hour"
+      },
+      "bloomberg": {
+        "enabled": false,
+        "base_url": "https://api.bloomberg.com",
+        "api_key_required": true,
+        "subscription_required": true
+      },
+      "pitchbook": {
+        "enabled": false,
+        "base_url": "https://api.pitchbook.com",
+        "api_key_required": true,
+        "subscription_required": true
+      }
+    },
+    "rss_feeds": [
+      {
+        "name": "BBC Business",
+        "url": "https://feeds.bbci.co.uk/news/business/rss.xml",
+        "enabled": true,
+        "category": "business"
+      },
+      {
+        "name": "Financial Times",
+        "url": "https://www.ft.com/rss/home",
+        "enabled": true,
+        "category": "business"
+      },
+      {
+        "name": "Reuters Business",
+        "url": "https://feeds.reuters.com/reuters/businessNews",
+        "enabled": true,
+        "category": "business"
+      },
+      {
+        "name": "The Economist",
+        "url": "https://www.economist.com/finance-and-economics/rss.xml",
+        "enabled": true,
+        "category": "economics"
+      },
+      {
+        "name": "TechCrunch",
+        "url": "https://techcrunch.com/feed/",
+        "enabled": true,
+        "category": "technology"
+      },
+      {
+        "name": "Harvard Business Review",
+        "url": "https://hbr.org/feed",
+        "enabled": true,
+        "category": "management"
+      }
+    ],
+    "web_scraping": {
+      "enabled": true,
+      "user_agent": "ResearchAnalyst/1.0",
+      "timeout": 10,
+      "rate_limit": "1 request per 2 seconds",
+      "allowed_domains": [
+        "reuters.com",
+        "bloomberg.com",
+        "ft.com",
+        "wsj.com",
+        "cnbc.com",
+        "forbes.com"
+      ],
+      "blocked_domains": [
+        "facebook.com",
+        "twitter.com",
+        "instagram.com"
+      ]
+    },
+    "academic_sources": {
+      "arxiv": {
+        "enabled": true,
+        "base_url": "http://export.arxiv.org/api/query",
+        "categories": ["cs", "econ", "q-fin"]
+      },
+      "google_scholar": {
+        "enabled": false,
+        "requires_scraping": true
+      }
+    }
+  },
+  "internal_sources": {
+    "slack": {
+      "enabled": false,
+      "channels": ["strategy", "research", "compliance", "general"],
+      "api_token_required": true,
+      "rate_limit": "50 requests per minute"
+    },
+    "sharepoint": {
+      "enabled": false,
+      "sites": ["research", "strategy", "compliance", "documents"],
+      "authentication": "oauth2",
+      "api_version": "v1.0"
+    },
+    "notion": {
+      "enabled": false,
+      "databases": ["research_notes", "strategy_docs", "compliance_reports"],
+      "api_token_required": true,
+      "rate_limit": "3 requests per second"
+    },
+    "onedrive": {
+      "enabled": false,
+      "folders": ["research", "strategy", "compliance"],
+      "authentication": "oauth2"
+    },
+    "email": {
+      "enabled": false,
+      "providers": ["outlook", "gmail"],
+      "folders": ["inbox", "sent", "research"],
+      "authentication": "oauth2"
+    }
+  },
+  "source_ranking": {
+    "relevance_weights": {
+      "title_match": 0.4,
+      "content_match": 0.3,
+      "recency": 0.2,
+      "source_authority": 0.1
+    },
+    "authority_scores": {
+      "bloomberg": 0.9,
+      "reuters": 0.9,
+      "ft": 0.9,
+      "wsj": 0.9,
+      "cnbc": 0.8,
+      "forbes": 0.8,
+      "techcrunch": 0.7,
+      "hbr": 0.8,
+      "arxiv": 0.7,
+      "rss_feed": 0.6,
+      "web_scraped": 0.5
+    },
+    "recency_boost": {
+      "same_day": 1.3,
+      "within_week": 1.2,
+      "within_month": 1.1,
+      "older": 1.0
+    }
+  },
+  "content_processing": {
+    "max_content_length": 10000,
+    "min_content_length": 100,
+    "extract_keywords": true,
+    "detect_language": true,
+    "summarize_long_content": true,
+    "extract_entities": true
+  },
+  "api_keys": {
+    "news_api": "YOUR_NEWS_API_KEY",
+    "alpha_vantage": "YOUR_ALPHA_VANTAGE_KEY",
+    "bloomberg": "YOUR_BLOOMBERG_KEY",
+    "pitchbook": "YOUR_PITCHBOOK_KEY",
+    "openai": "YOUR_OPENAI_KEY"
+  }
+} 

@@ -1,0 +1,84 @@
+{
+  "format_detection": {
+    "executive_brief": {
+      "triggers": ["executive", "brief", "summary", "overview", "dashboard", "update"],
+      "stakeholder_levels": ["executive", "vp", "director", "c-suite", "ceo", "cfo"],
+      "urgency_levels": ["high", "critical", "urgent"],
+      "task_categories": ["strategy", "overview", "summary", "update"],
+      "estimated_length": "2-3 pages",
+      "output_formats": ["pdf", "docx"],
+      "tone": "concise, actionable, executive-level",
+      "target_audience": "executive leadership"
+    },
+    "market_analysis": {
+      "triggers": ["market", "analysis", "research", "trends", "competitive", "industry", "landscape"],
+      "stakeholder_levels": ["strategy", "marketing", "product", "business", "analyst"],
+      "urgency_levels": ["medium", "high"],
+      "task_categories": ["research", "analysis", "market", "competitive"],
+      "estimated_length": "10-15 pages",
+      "output_formats": ["pdf", "docx", "pptx"],
+      "tone": "analytical, data-driven, comprehensive",
+      "target_audience": "strategy and business teams"
+    },
+    "policy_memo": {
+      "triggers": ["policy", "regulatory", "compliance", "legal", "government", "regulation"],
+      "stakeholder_levels": ["legal", "compliance", "regulatory", "government", "policy"],
+      "urgency_levels": ["high", "critical"],
+      "task_categories": ["policy", "regulatory", "compliance", "legal"],
+      "estimated_length": "3-5 pages",
+      "output_formats": ["pdf", "docx"],
+      "tone": "objective, analytical, policy-focused",
+      "target_audience": "legal and compliance teams"
+    },
+    "regulatory_roadmap": {
+      "triggers": ["regulatory", "compliance", "roadmap", "timeline", "deadline", "implementation"],
+      "stakeholder_levels": ["compliance", "legal", "regulatory", "operations"],
+      "urgency_levels": ["medium", "high"],
+      "task_categories": ["compliance", "regulatory", "implementation"],
+      "estimated_length": "5-8 pages",
+      "output_formats": ["pdf", "docx", "pptx"],
+      "tone": "structured, actionable, timeline-focused",
+      "target_audience": "compliance and operations teams"
+    },
+    "strategy_deck": {
+      "triggers": ["strategy", "presentation", "deck", "pitch", "proposal", "plan"],
+      "stakeholder_levels": ["executive", "strategy", "business", "board"],
+      "urgency_levels": ["medium", "high"],
+      "task_categories": ["strategy", "presentation", "planning"],
+      "estimated_length": "15-20 slides",
+      "output_formats": ["pptx", "pdf"],
+      "tone": "strategic, visual, presentation-ready",
+      "target_audience": "executive and strategy teams"
+    },
+    "research_report": {
+      "triggers": ["research", "study", "investigation", "analysis", "deep dive"],
+      "stakeholder_levels": ["research", "analyst", "academic", "specialist"],
+      "urgency_levels": ["low", "medium"],
+      "task_categories": ["research", "analysis", "investigation"],
+      "estimated_length": "20-30 pages",
+      "output_formats": ["pdf", "docx"],
+      "tone": "detailed, academic, comprehensive",
+      "target_audience": "research and specialist teams"
+    },
+    "compliance_assessment": {
+      "triggers": ["compliance", "audit", "assessment", "review", "check"],
+      "stakeholder_levels": ["compliance", "audit", "risk", "legal"],
+      "urgency_levels": ["medium", "high"],
+      "task_categories": ["compliance", "audit", "risk"],
+      "estimated_length": "8-12 pages",
+      "output_formats": ["pdf", "docx"],
+      "tone": "thorough, compliance-focused, evidence-based",
+      "target_audience": "compliance and risk teams"
+    }
+  },
+  "format_priorities": {
+    "high_priority_formats": ["executive_brief", "policy_memo"],
+    "medium_priority_formats": ["market_analysis", "regulatory_roadmap", "strategy_deck"],
+    "low_priority_formats": ["research_report", "compliance_assessment"]
+  },
+  "format_combinations": {
+    "executive_brief": ["market_analysis", "policy_memo"],
+    "strategy_deck": ["market_analysis", "regulatory_roadmap"],
+    "research_report": ["market_analysis", "compliance_assessment"]
+  }
+} 

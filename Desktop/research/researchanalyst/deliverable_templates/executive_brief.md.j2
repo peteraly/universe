@@ -1,0 +1,69 @@
+# {{ task.title }}
+
+**Prepared for:** {{ task.stakeholders|join(', ') }}  
+**Date:** {{ deliverable.created_at|datetime }}  
+**Status:** {{ deliverable.status }}  
+
+---
+
+## Executive Summary
+
+{{ deliverable.executive_summary|default('Executive summary will be generated based on key findings and strategic implications.') }}
+
+---
+
+## Key Findings
+
+{% for finding in deliverable.key_findings %}
+### {{ finding.title }}
+{{ finding.content }}
+
+{% if finding.source %}
+*Source: {{ finding.source }}*
+{% endif %}
+{% endfor %}
+
+---
+
+## Strategic Implications
+
+{% for implication in deliverable.strategic_implications %}
+### {{ implication.title }}
+{{ implication.content }}
+
+**Impact Level:** {{ implication.impact_level }}  
+**Timeline:** {{ implication.timeline }}
+{% endfor %}
+
+---
+
+## Recommendations
+
+{% for recommendation in deliverable.recommendations %}
+### {{ recommendation.title }}
+{{ recommendation.content }}
+
+**Priority:** {{ recommendation.priority }}  
+**Owner:** {{ recommendation.owner }}  
+**Timeline:** {{ recommendation.timeline }}
+{% endfor %}
+
+---
+
+## Next Steps
+
+{% for step in deliverable.next_steps %}
+{{ loop.index }}. **{{ step.action }}** - {{ step.description }} (Due: {{ step.due_date }})
+{% endfor %}
+
+---
+
+## Sources and Citations
+
+{% for source in task.sources %}
+- **{{ source.title }}** - {{ source.url }} (Accessed: {{ source.freshness|datetime }})
+{% endfor %}
+
+---
+
+*This document was generated using the Research Analyst Dashboard AI system.* 

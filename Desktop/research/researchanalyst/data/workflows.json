@@ -1,0 +1,82 @@
+[
+  {
+    "id": "workflow-001",
+    "name": "Market Analysis Workflow",
+    "description": "Standard workflow for conducting comprehensive market analysis",
+    "steps": [
+      "Define research objectives",
+      "Identify data sources",
+      "Collect market data",
+      "Analyze competitive landscape",
+      "Synthesize findings",
+      "Create executive summary",
+      "Review and finalize"
+    ],
+    "estimated_duration": "2-3 weeks",
+    "category": "Research Support"
+  },
+  {
+    "id": "workflow-002",
+    "name": "Competitive Intelligence Workflow",
+    "description": "Systematic approach to gathering and analyzing competitor information",
+    "steps": [
+      "Identify key competitors",
+      "Set up monitoring systems",
+      "Gather competitor data",
+      "Analyze competitive moves",
+      "Assess market positioning",
+      "Generate insights report",
+      "Present findings to stakeholders"
+    ],
+    "estimated_duration": "1-2 weeks",
+    "category": "Corporate Strategy"
+  },
+  {
+    "id": "workflow-003",
+    "name": "Content Curation Workflow",
+    "description": "Process for curating and summarizing industry content",
+    "steps": [
+      "Define content themes",
+      "Source relevant articles",
+      "Review and filter content",
+      "Summarize key points",
+      "Add insights and analysis",
+      "Format for distribution",
+      "Publish and track engagement"
+    ],
+    "estimated_duration": "3-5 days",
+    "category": "Content Curation"
+  },
+  {
+    "id": "workflow-004",
+    "name": "Executive Brief Workflow",
+    "description": "Streamlined process for creating executive-level briefs",
+    "steps": [
+      "Understand executive needs",
+      "Gather relevant data",
+      "Structure key insights",
+      "Draft executive summary",
+      "Add supporting details",
+      "Review with stakeholders",
+      "Finalize and distribute"
+    ],
+    "estimated_duration": "1 week",
+    "category": "Corporate Strategy"
+  },
+  {
+    "id": "workflow-005",
+    "name": "Regulatory Research Workflow",
+    "description": "Comprehensive approach to regulatory compliance research",
+    "steps": [
+      "Identify regulatory scope",
+      "Research current regulations",
+      "Monitor regulatory changes",
+      "Assess business impact",
+      "Develop compliance recommendations",
+      "Create action plan",
+      "Present findings to legal team"
+    ],
+    "estimated_duration": "2-4 weeks",
+    "category": "Research Support"
+  }
+] 

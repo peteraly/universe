@@ -1,0 +1,141 @@
+{
+  "deliverable_formats": {
+    "executive_brief": {
+      "name": "Executive Brief",
+      "description": "2-3 page concise analysis for senior leadership",
+      "template": "executive_brief.md.j2",
+      "prompt_chain": [
+        {
+          "step": "format_detection",
+          "prompt": "Analyze the task and determine if this requires an executive brief format. Consider: stakeholder seniority, urgency, complexity level, and decision-making needs."
+        },
+        {
+          "step": "content_structure",
+          "prompt": "Create a structured executive brief with: Executive Summary, Key Findings, Strategic Implications, Recommendations, Next Steps. Keep each section concise and actionable."
+        },
+        {
+          "step": "source_integration",
+          "prompt": "Integrate relevant sources with inline citations. Include key quotes, data points, and insights from the tagged sources. Use footnotes for detailed references."
+        }
+      ],
+      "output_formats": ["pdf", "docx", "html"],
+      "estimated_length": "2-3 pages"
+    },
+    "market_analysis": {
+      "name": "Market Analysis Report",
+      "description": "Comprehensive market research with data visualization",
+      "template": "market_analysis.md.j2",
+      "prompt_chain": [
+        {
+          "step": "market_overview",
+          "prompt": "Provide a comprehensive market overview including: market size, growth trends, key players, competitive landscape, and market dynamics."
+        },
+        {
+          "step": "data_analysis",
+          "prompt": "Analyze quantitative data from sources. Include market size figures, growth rates, market share data, and trend analysis with proper citations."
+        },
+        {
+          "step": "strategic_insights",
+          "prompt": "Extract strategic insights and implications for the business. Include opportunities, threats, and actionable recommendations."
+        }
+      ],
+      "output_formats": ["pdf", "docx", "pptx"],
+      "estimated_length": "5-10 pages"
+    },
+    "regulatory_roadmap": {
+      "name": "Regulatory Roadmap",
+      "description": "Compliance timeline and impact analysis",
+      "template": "regulatory_roadmap.md.j2",
+      "prompt_chain": [
+        {
+          "step": "regulatory_landscape",
+          "prompt": "Map the current regulatory landscape, including existing regulations, proposed changes, and timeline for implementation."
+        },
+        {
+          "step": "impact_analysis",
+          "prompt": "Analyze the business impact of regulatory changes. Include compliance requirements, operational implications, and cost considerations."
+        },
+        {
+          "step": "action_plan",
+          "prompt": "Create a detailed action plan with milestones, responsibilities, and resource requirements for regulatory compliance."
+        }
+      ],
+      "output_formats": ["pdf", "docx", "xlsx"],
+      "estimated_length": "3-5 pages"
+    },
+    "slide_deck": {
+      "name": "Presentation Deck",
+      "description": "PowerPoint-style presentation for stakeholder meetings",
+      "template": "slide_deck.md.j2",
+      "prompt_chain": [
+        {
+          "step": "deck_structure",
+          "prompt": "Create a presentation structure with: Title slide, Agenda, Key findings (3-5 slides), Analysis, Recommendations, Next steps, Q&A."
+        },
+        {
+          "step": "visual_content",
+          "prompt": "Design slide content with bullet points, key metrics, charts, and visual elements. Keep text concise and impactful."
+        },
+        {
+          "step": "speaker_notes",
+          "prompt": "Generate speaker notes for each slide with talking points, key messages, and potential questions to address."
+        }
+      ],
+      "output_formats": ["pptx", "pdf"],
+      "estimated_length": "10-15 slides"
+    },
+    "policy_memo": {
+      "name": "Policy Memo",
+      "description": "Internal policy recommendation document",
+      "template": "policy_memo.md.j2",
+      "prompt_chain": [
+        {
+          "step": "policy_analysis",
+          "prompt": "Analyze the policy issue, including background, current state, stakeholder perspectives, and policy options."
+        },
+        {
+          "step": "recommendation",
+          "prompt": "Provide clear policy recommendations with rationale, implementation considerations, and expected outcomes."
+        },
+        {
+          "step": "risk_assessment",
+          "prompt": "Assess potential risks, challenges, and mitigation strategies for the proposed policy."
+        }
+      ],
+      "output_formats": ["pdf", "docx"],
+      "estimated_length": "3-4 pages"
+    }
+  },
+  "format_detection_rules": {
+    "executive_brief": {
+      "triggers": ["executive", "brief", "summary", "overview", "senior", "leadership"],
+      "stakeholder_levels": ["C-level", "VP", "Director"],
+      "urgency": ["high", "critical"],
+      "complexity": ["low", "medium"]
+    },
+    "market_analysis": {
+      "triggers": ["market", "analysis", "research", "trends", "competitive", "industry"],
+      "stakeholder_levels": ["Manager", "VP", "Director"],
+      "urgency": ["medium", "high"],
+      "complexity": ["medium", "high"]
+    },
+    "regulatory_roadmap": {
+      "triggers": ["regulatory", "compliance", "policy", "legal", "requirements", "timeline"],
+      "stakeholder_levels": ["Compliance", "Legal", "VP"],
+      "urgency": ["high", "critical"],
+      "complexity": ["medium", "high"]
+    },
+    "slide_deck": {
+      "triggers": ["presentation", "deck", "slides", "meeting", "stakeholder"],
+      "stakeholder_levels": ["all"],
+      "urgency": ["medium", "high"],
+      "complexity": ["low", "medium"]
+    },
+    "policy_memo": {
+      "triggers": ["policy", "memo", "recommendation", "internal", "procedure"],
+      "stakeholder_levels": ["Manager", "VP"],
+      "urgency": ["medium"],
+      "complexity": ["medium"]
+    }
+  }
+} 

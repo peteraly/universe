@@ -1,0 +1,529 @@
+{% extends "base.html" %}
+
+{% block title %}Search - Research Analyst{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <!-- Page Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="h2 mb-0">
+                <i class="bi bi-search text-warning"></i>
+                Unified Search
+            </h1>
+            <p class="text-muted">Search across tasks, deliverables, sources, and documents.</p>
+        </div>
+    </div>
+
+    <!-- Search Interface -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="bi bi-search"></i>
+                        Search Everything
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form method="GET" action="{{ url_for('search') }}">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <div class="input-group">
+                                    <input type="text" class="form-control form-control-lg" name="q" value="{{ query }}" placeholder="Search tasks, sources, deliverables...">
+                                    <button class="btn btn-primary" type="submit">
+                                        <i class="bi bi-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <select class="form-select" name="category">
+                                    <option value="">All Categories</option>
+                                    <option value="Corporate Strategy" {{ 'selected' if category == 'Corporate Strategy' }}>Corporate Strategy</option>
+                                    <option value="Research Support" {{ 'selected' if category == 'Research Support' }}>Research Support</option>
+                                    <option value="Content Curation" {{ 'selected' if category == 'Content Curation' }}>Content Curation</option>
+                                    <option value="Communications" {{ 'selected' if category == 'Communications' }}>Communications</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <select class="form-select" name="status">
+                                    <option value="">All Status</option>
+                                    <option value="New" {{ 'selected' if status == 'New' }}>New</option>
+                                    <option value="In Progress" {{ 'selected' if status == 'In Progress' }}>In Progress</option>
+                                    <option value="Completed" {{ 'selected' if status == 'Completed' }}>Completed</option>
+                                    <option value="Blocked" {{ 'selected' if status == 'Blocked' }}>Blocked</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2 mb-3">
+                                <button type="button" class="btn btn-outline-secondary w-100" onclick="clearSearch()">
+                                    <i class="bi bi-x-circle"></i>
+                                    Clear
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search Results -->
+    {% if query %}
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        <i class="bi bi-list-ul"></i>
+                        Search Results
+                    </h5>
+                    <span class="badge badge-primary">{{ results|length }} results found</span>
+                </div>
+                <div class="card-body">
+                    {% if results %}
+                        <div class="search-results">
+                            {% for result in results %}
+                                <div class="search-result-item">
+                                    <div class="result-header">
+                                        <div class="result-type">
+                                            {% if result.type == 'task' %}
+                                                <i class="bi bi-list-task text-primary"></i>
+                                                <span class="badge badge-primary">Task</span>
+                                            {% elif result.type == 'source' %}
+                                                <i class="bi bi-journal-text text-info"></i>
+                                                <span class="badge badge-info">Source</span>
+                                            {% elif result.type == 'deliverable' %}
+                                                <i class="bi bi-file-earmark-text text-success"></i>
+                                                <span class="badge badge-success">Deliverable</span>
+                                            {% endif %}
+                                        </div>
+                                        <div class="result-actions">
+                                            <button class="btn btn-sm btn-outline-primary" onclick="viewResult('{{ result.type }}', '{{ result.data.id }}')">
+                                                <i class="bi bi-eye"></i>
+                                                View
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-success" onclick="editResult('{{ result.type }}', '{{ result.data.id }}')">
+                                                <i class="bi bi-pencil"></i>
+                                                Edit
+                                            </button>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="result-content">
+                                        <h6 class="result-title">{{ result.data.title }}</h6>
+                                        
+                                        {% if result.type == 'task' %}
+                                            <div class="result-meta">
+                                                <span class="meta-item">
+                                                    <i class="bi bi-tag"></i>
+                                                    {{ result.data.category }}
+                                                </span>
+                                                <span class="meta-item">
+                                                    <i class="bi bi-people"></i>
+                                                    {{ result.data.stakeholders|length }} stakeholders
+                                                </span>
+                                                <span class="meta-item">
+                                                    <i class="bi bi-calendar"></i>
+                                                    {{ result.data.due_date or 'No due date' }}
+                                                </span>
+                                            </div>
+                                            <div class="result-progress">
+                                                <div class="progress">
+                                                    <div class="progress-bar" style="width: {{ result.data.progress }}%"></div>
+                                                </div>
+                                                <span class="progress-text">{{ result.data.progress }}% complete</span>
+                                            </div>
+                                        {% elif result.type == 'source' %}
+                                            <div class="result-meta">
+                                                <span class="meta-item">
+                                                    <i class="bi bi-tag"></i>
+                                                    {{ result.data.type }}
+                                                </span>
+                                                <span class="meta-item">
+                                                    <i class="bi bi-link-45deg"></i>
+                                                    <a href="{{ result.data.url }}" target="_blank">{{ result.data.url[:50] }}...</a>
+                                                </span>
+                                                <span class="meta-item">
+                                                    <i class="bi bi-calendar"></i>
+                                                    {{ result.data.added_at[:10] }}
+                                                </span>
+                                            </div>
+                                            <div class="result-tags">
+                                                {% for tag in result.data.tags %}
+                                                    <span class="badge badge-info">{{ tag }}</span>
+                                                {% endfor %}
+                                            </div>
+                                        {% elif result.type == 'deliverable' %}
+                                            <div class="result-meta">
+                                                <span class="meta-item">
+                                                    <i class="bi bi-tag"></i>
+                                                    {{ result.data.type }}
+                                                </span>
+                                                <span class="meta-item">
+                                                    <i class="bi bi-calendar"></i>
+                                                    {{ result.data.created_at[:10] }}
+                                                </span>
+                                                <span class="meta-item">
+                                                    <i class="bi bi-check-circle"></i>
+                                                    {{ result.data.status }}
+                                                </span>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="text-center text-muted py-5">
+                            <i class="bi bi-search display-1"></i>
+                            <h4 class="mt-3">No results found</h4>
+                            <p class="mt-2">Try adjusting your search terms or filters</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+
+    <!-- Quick Search Suggestions -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="bi bi-lightbulb"></i>
+                        Quick Search Suggestions
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <div class="suggestion-card">
+                                <h6 class="text-primary">
+                                    <i class="bi bi-list-task"></i>
+                                    Popular Tasks
+                                </h6>
+                                <div class="suggestion-list">
+                                    <a href="?q=BNPL" class="suggestion-item">BNPL Market Analysis</a>
+                                    <a href="?q=fintech" class="suggestion-item">Fintech Trends</a>
+                                    <a href="?q=compliance" class="suggestion-item">Compliance Research</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="suggestion-card">
+                                <h6 class="text-info">
+                                    <i class="bi bi-journal-text"></i>
+                                    Top Sources
+                                </h6>
+                                <div class="suggestion-list">
+                                    <a href="?q=CB Insights" class="suggestion-item">CB Insights</a>
+                                    <a href="?q=PitchBook" class="suggestion-item">PitchBook</a>
+                                    <a href="?q=McKinsey" class="suggestion-item">McKinsey Reports</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="suggestion-card">
+                                <h6 class="text-success">
+                                    <i class="bi bi-file-earmark-text"></i>
+                                    Recent Deliverables
+                                </h6>
+                                <div class="suggestion-list">
+                                    <a href="?q=market analysis" class="suggestion-item">Market Analysis</a>
+                                    <a href="?q=executive brief" class="suggestion-item">Executive Briefs</a>
+                                    <a href="?q=research report" class="suggestion-item">Research Reports</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="suggestion-card">
+                                <h6 class="text-warning">
+                                    <i class="bi bi-tags"></i>
+                                    Popular Tags
+                                </h6>
+                                <div class="suggestion-list">
+                                    <a href="?q=fintech" class="suggestion-item">#fintech</a>
+                                    <a href="?q=payments" class="suggestion-item">#payments</a>
+                                    <a href="?q=compliance" class="suggestion-item">#compliance</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Search Analytics -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="bi bi-graph-up"></i>
+                        Search Analytics
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <div class="analytics-card">
+                                <div class="analytics-icon">
+                                    <i class="bi bi-search text-primary"></i>
+                                </div>
+                                <div class="analytics-content">
+                                    <h4>1,247</h4>
+                                    <p>Total Searches Today</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="analytics-card">
+                                <div class="analytics-icon">
+                                    <i class="bi bi-clock text-warning"></i>
+                                </div>
+                                <div class="analytics-content">
+                                    <h4>2.3s</h4>
+                                    <p>Average Search Time</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="analytics-card">
+                                <div class="analytics-icon">
+                                    <i class="bi bi-check-circle text-success"></i>
+                                </div>
+                                <div class="analytics-content">
+                                    <h4>94%</h4>
+                                    <p>Search Success Rate</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.search-result-item {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+}
+
+.search-result-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    border-color: var(--visa-gold);
+}
+
+.result-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.result-type {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.result-type i {
+    font-size: 1.2rem;
+}
+
+.result-actions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.result-title {
+    color: var(--text-primary);
+    margin-bottom: 0.75rem;
+    font-weight: 600;
+}
+
+.result-meta {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
+
+.meta-item {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.meta-item i {
+    color: var(--visa-gold);
+}
+
+.meta-item a {
+    color: var(--info-color);
+    text-decoration: none;
+}
+
+.result-progress {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.progress {
+    flex: 1;
+    height: 8px;
+}
+
+.progress-text {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    min-width: 80px;
+}
+
+.result-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem;
+}
+
+.suggestion-card {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1rem;
+    transition: all 0.3s ease;
+}
+
+.suggestion-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.suggestion-card h6 {
+    margin-bottom: 0.75rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.suggestion-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.suggestion-item {
+    color: var(--text-secondary);
+    text-decoration: none;
+    font-size: 0.875rem;
+    transition: color 0.3s ease;
+}
+
+.suggestion-item:hover {
+    color: var(--visa-gold);
+}
+
+.analytics-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.analytics-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.analytics-icon {
+    font-size: 2rem;
+    flex-shrink: 0;
+}
+
+.analytics-content h4 {
+    margin: 0;
+    color: var(--text-primary);
+    font-weight: 700;
+}
+
+.analytics-content p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+}
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function clearSearch() {
+        window.location.href = "{{ url_for('search') }}";
+    }
+
+    function viewResult(type, id) {
+        console.log('Viewing result:', type, id);
+        
+        switch(type) {
+            case 'task':
+                alert('View task functionality would show detailed task information');
+                break;
+            case 'source':
+                alert('View source functionality would show detailed source information');
+                break;
+            case 'deliverable':
+                alert('View deliverable functionality would show detailed deliverable information');
+                break;
+        }
+    }
+
+    function editResult(type, id) {
+        console.log('Editing result:', type, id);
+        
+        switch(type) {
+            case 'task':
+                alert('Edit task functionality would open task editing modal');
+                break;
+            case 'source':
+                alert('Edit source functionality would open source editing modal');
+                break;
+            case 'deliverable':
+                alert('Edit deliverable functionality would open deliverable editing modal');
+                break;
+        }
+    }
+
+    // Keyboard shortcuts
+    document.addEventListener('keydown', function(e) {
+        // Ctrl/Cmd + K for search focus
+        if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+            e.preventDefault();
+            document.querySelector('input[name="q"]').focus();
+        }
+    });
+
+    // Auto-focus search input on page load
+    document.addEventListener('DOMContentLoaded', function() {
+        const searchInput = document.querySelector('input[name="q"]');
+        if (searchInput && !searchInput.value) {
+            searchInput.focus();
+        }
+    });
+</script>
+{% endblock %} 

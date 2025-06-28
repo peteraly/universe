@@ -1,0 +1,562 @@
+[
+  {
+    "id": "task-001",
+    "title": "Digital Payment Adoption in Emerging Markets",
+    "description": "Research and analyze the adoption rates of mobile money platforms (M-Pesa, Paytm, WeChat Pay) in Kenya, India, and China to identify key success factors and market entry opportunities for Visa's digital payment solutions. Focus on rural vs. urban adoption patterns, regulatory barriers, and consumer behavior drivers.",
+    "category": "Corporate Strategy",
+    "objectives": [
+      "Analyze mobile money adoption patterns in Kenya, India, and China",
+      "Identify key success factors for digital payment platforms",
+      "Assess market entry opportunities for Visa",
+      "Evaluate regulatory barriers and consumer behavior drivers"
+    ],
+    "stakeholders": ["VP Strategy", "Market Development", "Product Strategy"],
+    "status": "In Progress",
+    "due_date": "2025-03-15",
+    "progress": 65,
+    "sources": ["CB Insights", "McKinsey Reports", "Local market data"],
+    "deliverable": "15-page market entry strategy report with country-specific recommendations and 5-year adoption projections",
+    "output_type": "market_analysis",
+    "context": {
+      "region": "Global",
+      "risk_level": "Medium",
+      "urgency": "High",
+      "dependencies": ["Market Research", "Regulatory Review"],
+      "estimated_effort": "3-4 weeks"
+    },
+    "created_at": "2025-01-15T10:30:00Z",
+    "last_updated": "2025-01-20T14:45:00Z"
+  },
+  {
+    "id": "task-002",
+    "title": "Competitive Analysis: PayPal vs. Stripe vs. Square",
+    "description": "Conduct a detailed competitive analysis of PayPal's recent acquisition of Honey, Stripe's expansion into banking services, and Square's cryptocurrency initiatives. Analyze their technology stack, pricing models, market positioning, and strategic partnerships to identify competitive threats and partnership opportunities for Visa.",
+    "category": "Corporate Strategy",
+    "objectives": [
+      "Analyze PayPal's Honey acquisition and strategic implications",
+      "Evaluate Stripe's banking services expansion",
+      "Assess Square's cryptocurrency initiatives",
+      "Identify competitive threats and partnership opportunities"
+    ],
+    "stakeholders": ["Executive Team", "Competitive Intelligence", "Product Strategy"],
+    "status": "New",
+    "due_date": "2025-02-28",
+    "progress": 0,
+    "sources": ["Competitor websites", "Industry reports", "Financial filings"],
+    "deliverable": "Executive competitive intelligence briefing with SWOT analysis and strategic recommendations",
+    "output_type": "executive_brief",
+    "context": {
+      "region": "Global",
+      "risk_level": "High",
+      "urgency": "High",
+      "dependencies": ["Competitive Intelligence", "Financial Analysis"],
+      "estimated_effort": "2-3 weeks"
+    },
+    "created_at": "2025-01-18T09:15:00Z",
+    "last_updated": "2025-01-18T09:15:00Z"
+  },
+  {
+    "id": "task-003",
+    "title": "Regulatory Impact Assessment: PSD3 Implementation",
+    "description": "Research the European Commission's proposed PSD3 directive changes, specifically focusing on new requirements for open banking APIs, enhanced security standards, and expanded scope to include crypto-asset service providers. Assess impact on Visa's European operations, compliance costs, and required technology investments.",
+    "category": "Research Support",
+    "objectives": [
+      "Research PSD3 directive changes and requirements",
+      "Assess impact on Visa's European operations",
+      "Calculate compliance costs and technology investments",
+      "Develop risk mitigation strategies"
+    ],
+    "stakeholders": ["Legal Team", "Compliance Officer", "European Operations"],
+    "status": "Completed",
+    "due_date": "2025-01-31",
+    "progress": 100,
+    "sources": ["Regulatory databases", "Legal publications", "EU Commission"],
+    "deliverable": "Regulatory compliance roadmap with timeline, cost estimates, and risk mitigation strategies",
+    "output_type": "regulatory_roadmap",
+    "context": {
+      "region": "Europe",
+      "risk_level": "Critical",
+      "urgency": "Critical",
+      "dependencies": ["Legal Review", "Technology Assessment"],
+      "estimated_effort": "4-5 weeks"
+    },
+    "created_at": "2025-01-10T11:20:00Z",
+    "last_updated": "2025-01-25T16:30:00Z"
+  },
+  {
+    "id": "task-004",
+    "title": "Fintech Investment Landscape Q4 2024",
+    "description": "Analyze venture capital investments in fintech startups during Q4 2024, focusing on payment processing, digital banking, and financial infrastructure companies. Identify emerging trends, valuation multiples, and strategic acquisition targets for Visa's corporate development team.",
+    "category": "Corporate Strategy",
+    "objectives": [
+      "Analyze Q4 2024 fintech VC investment trends",
+      "Identify emerging trends and valuation multiples",
+      "Evaluate strategic acquisition targets",
+      "Provide strategic fit assessment"
+    ],
+    "stakeholders": ["Corporate Development", "VP Strategy", "Investment Team"],
+    "status": "In Progress",
+    "due_date": "2025-02-10",
+    "progress": 75,
+    "sources": ["PitchBook", "CB Insights", "Crunchbase"],
+    "deliverable": "Investment landscape report with top 10 acquisition targets, valuation analysis, and strategic fit assessment",
+    "output_type": "market_analysis",
+    "context": {
+      "region": "Global",
+      "risk_level": "Medium",
+      "urgency": "Medium",
+      "dependencies": ["Financial Analysis", "Strategic Review"],
+      "estimated_effort": "2-3 weeks"
+    },
+    "created_at": "2025-01-22T13:45:00Z",
+    "last_updated": "2025-01-24T10:20:00Z"
+  },
+  {
+    "id": "task-005",
+    "title": "Consumer Payment Preferences: Gen Z vs. Millennials",
+    "description": "Research payment method preferences among Gen Z (18-26) and Millennials (27-42) across different transaction types (online shopping, peer-to-peer, subscription services, in-store purchases). Analyze factors influencing choice including security concerns, convenience, rewards programs, and social influence.",
+    "category": "Research Support",
+    "objectives": [
+      "Research payment preferences of Gen Z and Millennials",
+      "Analyze factors influencing payment method choice",
+      "Compare preferences across transaction types",
+      "Provide product development recommendations"
+    ],
+    "stakeholders": ["Product Marketing", "Consumer Insights", "UX Research"],
+    "status": "New",
+    "due_date": "2025-03-30",
+    "progress": 0,
+    "sources": ["Consumer surveys", "Transaction data", "Market research"],
+    "deliverable": "Consumer behavior report with demographic breakdowns, preference drivers, and product development recommendations",
+    "output_type": "market_analysis",
+    "context": {
+      "region": "Global",
+      "risk_level": "Low",
+      "urgency": "Medium",
+      "dependencies": ["Consumer Research", "Data Analysis"],
+      "estimated_effort": "3-4 weeks"
+    },
+    "created_at": "2025-01-20T15:30:00Z",
+    "last_updated": "2025-01-20T15:30:00Z"
+  },
+  {
+    "id": "task-006",
+    "title": "CBDC Implementation Status: Global Overview",
+    "description": "Research the current status of Central Bank Digital Currency (CBDC) pilots and implementations across 15 major economies including China's e-CNY, Sweden's e-krona, and the Bahamas' Sand Dollar. Analyze technical architectures, use cases, adoption rates, and implications for traditional payment networks.",
+    "category": "Research Support",
+    "objectives": [
+      "Research CBDC pilots across 15 major economies",
+      "Analyze technical architectures and use cases",
+      "Assess adoption rates and implications",
+      "Evaluate impact on traditional payment networks"
+    ],
+    "stakeholders": ["CTO", "Regulatory Affairs", "Product Strategy"],
+    "status": "In Progress",
+    "due_date": "2025-04-15",
+    "progress": 40,
+    "sources": ["Central bank reports", "Academic papers", "Industry analysis"],
+    "deliverable": "CBDC status report with implementation timeline, technical analysis, and strategic implications for Visa",
+    "output_type": "market_analysis",
+    "context": {
+      "region": "Global",
+      "risk_level": "High",
+      "urgency": "Medium",
+      "dependencies": ["Technical Analysis", "Regulatory Review"],
+      "estimated_effort": "4-5 weeks"
+    },
+    "created_at": "2025-01-16T12:00:00Z",
+    "last_updated": "2025-01-23T14:15:00Z"
+  },
+  {
+    "id": "task-007",
+    "title": "Open Banking Ecosystem Analysis",
+    "description": "Research the open banking ecosystem in the UK, EU, and Australia, analyzing API standards, third-party provider landscape, and consumer adoption of account aggregation and payment initiation services. Identify opportunities for Visa to participate in or enhance open banking infrastructure.",
+    "category": "Research Support",
+    "objectives": [
+      "Analyze open banking ecosystem in UK, EU, and Australia",
+      "Evaluate API standards and third-party providers",
+      "Assess consumer adoption of open banking services",
+      "Identify partnership opportunities for Visa"
+    ],
+    "stakeholders": ["Product Development", "API Team", "Strategic Partnerships"],
+    "status": "Completed",
+    "due_date": "2025-01-31",
+    "progress": 100,
+    "sources": ["Open banking APIs", "Industry reports", "Regulatory guidelines"],
+    "deliverable": "Open banking ecosystem map with partnership opportunities and strategic recommendations",
+    "output_type": "market_analysis",
+    "context": {
+      "region": "Europe",
+      "risk_level": "Medium",
+      "urgency": "Medium",
+      "dependencies": ["API Analysis", "Partnership Review"],
+      "estimated_effort": "3-4 weeks"
+    },
+    "created_at": "2025-01-05T08:45:00Z",
+    "last_updated": "2025-01-28T17:00:00Z"
+  },
+  {
+    "id": "task-008",
+    "title": "Small Business Digital Payment Adoption",
+    "description": "Research digital payment adoption among small businesses (under 50 employees) in the US, focusing on barriers to adoption, preferred payment methods, and the impact of COVID-19 on digital transformation. Analyze specific industries including retail, food service, and professional services.",
+    "category": "Research Support",
+    "objectives": [
+      "Research SMB digital payment adoption in the US",
+      "Identify barriers to adoption and preferred methods",
+      "Analyze COVID-19 impact on digital transformation",
+      "Provide industry-specific insights and recommendations"
+    ],
+    "stakeholders": ["SMB Sales", "Product Marketing", "Market Research"],
+    "status": "New",
+    "due_date": "2025-03-20",
+    "progress": 0,
+    "sources": ["SMB surveys", "Transaction data", "Industry reports"],
+    "deliverable": "SMB adoption study with industry-specific insights and go-to-market strategy recommendations",
+    "output_type": "market_analysis",
+    "context": {
+      "region": "Americas",
+      "risk_level": "Low",
+      "urgency": "Medium",
+      "dependencies": ["Market Research", "Sales Analysis"],
+      "estimated_effort": "3-4 weeks"
+    },
+    "created_at": "2025-01-19T10:00:00Z",
+    "last_updated": "2025-01-19T10:00:00Z"
+  },
+  {
+    "id": "task-009",
+    "title": "Cybersecurity Threats in Digital Payments",
+    "description": "Research emerging cybersecurity threats specifically targeting digital payment systems, including account takeover attacks, synthetic identity fraud, and supply chain vulnerabilities. Analyze recent high-profile breaches, attack vectors, and mitigation strategies used by financial institutions.",
+    "category": "Research Support",
+    "objectives": [
+      "Research emerging cybersecurity threats in digital payments",
+      "Analyze recent high-profile breaches and attack vectors",
+      "Evaluate mitigation strategies from financial institutions",
+      "Provide security recommendations and risk assessment"
+    ],
+    "stakeholders": ["Cybersecurity Team", "Risk Management", "Product Security"],
+    "status": "In Progress",
+    "due_date": "2025-02-28",
+    "progress": 55,
+    "sources": ["Security reports", "Breach databases", "Industry analysis"],
+    "deliverable": "Security threat assessment with risk matrix, mitigation strategies, and technology recommendations",
+    "output_type": "policy_memo",
+    "context": {
+      "region": "Global",
+      "risk_level": "Critical",
+      "urgency": "High",
+      "dependencies": ["Security Assessment", "Risk Analysis"],
+      "estimated_effort": "3-4 weeks"
+    },
+    "created_at": "2025-01-17T14:30:00Z",
+    "last_updated": "2025-01-22T11:45:00Z"
+  },
+  {
+    "id": "task-010",
+    "title": "Mobile Payment Trends in APAC Region",
+    "description": "Research mobile payment adoption and innovation trends across Asia-Pacific markets, focusing on super apps (WeChat, Grab, GoPay), QR code payments, and biometric authentication. Analyze regulatory frameworks, consumer behavior, and competitive landscape in Japan, South Korea, Singapore, and Indonesia.",
+    "category": "Content Curation",
+    "objectives": [
+      "Research mobile payment trends across APAC markets",
+      "Analyze super apps, QR payments, and biometric authentication",
+      "Evaluate regulatory frameworks and consumer behavior",
+      "Assess competitive landscape in key markets"
+    ],
+    "stakeholders": ["APAC Operations", "Product Strategy", "Market Development"],
+    "status": "In Progress",
+    "due_date": "2025-03-10",
+    "progress": 70,
+    "sources": ["Local market data", "App analytics", "Regulatory reports"],
+    "deliverable": "Regional trend report with market-specific insights and partnership opportunities",
+    "output_type": "market_analysis",
+    "context": {
+      "region": "APAC",
+      "risk_level": "Medium",
+      "urgency": "Medium",
+      "dependencies": ["Market Analysis", "Regulatory Review"],
+      "estimated_effort": "3-4 weeks"
+    },
+    "created_at": "2025-01-14T16:20:00Z",
+    "last_updated": "2025-01-21T13:10:00Z"
+  },
+  {
+    "id": "task-011",
+    "title": "AI/ML Applications in Payment Processing",
+    "description": "Research artificial intelligence and machine learning applications in payment processing, focusing on fraud detection, risk assessment, customer service automation, and transaction routing optimization. Analyze vendor landscape, implementation case studies, and ROI metrics from financial institutions.",
+    "category": "Research Support",
+    "objectives": [
+      "Research AI/ML applications in payment processing",
+      "Analyze vendor landscape and implementation case studies",
+      "Evaluate ROI metrics from financial institutions",
+      "Provide technology assessment and implementation roadmap"
+    ],
+    "stakeholders": ["CTO", "Data Science", "Product Development"],
+    "status": "New",
+    "due_date": "2025-04-30",
+    "progress": 0,
+    "sources": ["Vendor reports", "Case studies", "Academic papers"],
+    "deliverable": "Technology assessment report with vendor evaluation, implementation roadmap, and ROI projections",
+    "output_type": "market_analysis",
+    "context": {
+      "region": "Global",
+      "risk_level": "Medium",
+      "urgency": "Low",
+      "dependencies": ["Technology Assessment", "Vendor Evaluation"],
+      "estimated_effort": "4-5 weeks"
+    },
+    "created_at": "2025-01-21T09:45:00Z",
+    "last_updated": "2025-01-21T09:45:00Z"
+  },
+  {
+    "id": "task-012",
+    "title": "Contactless Payment Adoption Post-COVID",
+    "description": "Research the long-term impact of COVID-19 on contactless payment adoption, analyzing transaction data, consumer surveys, and merchant acceptance rates. Focus on behavioral changes, security perceptions, and the future of physical vs. digital payment methods.",
+    "category": "Content Curation",
+    "objectives": [
+      "Analyze COVID-19 impact on contactless payment adoption",
+      "Research behavioral changes and security perceptions",
+      "Evaluate merchant acceptance rates and trends",
+      "Predict future of physical vs. digital payment methods"
+    ],
+    "stakeholders": ["Product Marketing", "Consumer Insights", "Merchant Services"],
+    "status": "In Progress",
+    "due_date": "2025-02-15",
+    "progress": 80,
+    "sources": ["Transaction data", "Consumer surveys", "Merchant data"],
+    "deliverable": "Adoption analysis report with behavioral insights and future trend predictions",
+    "output_type": "market_analysis",
+    "context": {
+      "region": "Global",
+      "risk_level": "Low",
+      "urgency": "Medium",
+      "dependencies": ["Data Analysis", "Consumer Research"],
+      "estimated_effort": "2-3 weeks"
+    },
+    "created_at": "2025-01-12T11:30:00Z",
+    "last_updated": "2025-01-19T15:20:00Z"
+  },
+  {
+    "id": "task-013",
+    "title": "Blockchain Use Cases in Financial Services",
+    "description": "Research practical blockchain applications in financial services beyond cryptocurrency, including cross-border payments, trade finance, identity verification, and supply chain finance. Analyze pilot programs, regulatory considerations, and scalability challenges.",
+    "category": "Research Support",
+    "objectives": [
+      "Research blockchain applications beyond cryptocurrency",
+      "Analyze pilot programs and regulatory considerations",
+      "Evaluate scalability challenges and implementation barriers",
+      "Provide use case analysis and implementation recommendations"
+    ],
+    "stakeholders": ["Innovation Team", "Product Strategy", "Technology"],
+    "status": "New",
+    "due_date": "2025-05-15",
+    "progress": 0,
+    "sources": ["Pilot reports", "Academic papers", "Industry analysis"],
+    "deliverable": "Blockchain assessment report with use case analysis and implementation recommendations",
+    "output_type": "market_analysis",
+    "context": {
+      "region": "Global",
+      "risk_level": "Medium",
+      "urgency": "Low",
+      "dependencies": ["Technology Research", "Regulatory Review"],
+      "estimated_effort": "4-5 weeks"
+    },
+    "created_at": "2025-01-23T13:15:00Z",
+    "last_updated": "2025-01-23T13:15:00Z"
+  },
+  {
+    "id": "task-014",
+    "title": "Cross-Border Payment Regulations",
+    "description": "Research regulatory requirements for cross-border payments across major corridors (US-EU, US-APAC, EU-APAC), focusing on anti-money laundering (AML), know-your-customer (KYC), and sanctions compliance. Analyze recent regulatory changes and their impact on payment processing costs and timelines.",
+    "category": "Research Support",
+    "objectives": [
+      "Research cross-border payment regulations across major corridors",
+      "Analyze AML, KYC, and sanctions compliance requirements",
+      "Assess impact of regulatory changes on costs and timelines",
+      "Provide compliance guide with implementation checklist"
+    ],
+    "stakeholders": ["Legal Team", "Compliance", "International Operations"],
+    "status": "In Progress",
+    "due_date": "2025-03-25",
+    "progress": 45,
+    "sources": ["Regulatory databases", "Legal publications", "Industry reports"],
+    "deliverable": "Regulatory compliance guide with country-specific requirements and implementation checklist",
+    "output_type": "regulatory_roadmap",
+    "context": {
+      "region": "Global",
+      "risk_level": "High",
+      "urgency": "High",
+      "dependencies": ["Legal Review", "Compliance Assessment"],
+      "estimated_effort": "3-4 weeks"
+    },
+    "created_at": "2025-01-13T10:45:00Z",
+    "last_updated": "2025-01-20T16:30:00Z"
+  },
+  {
+    "id": "task-015",
+    "title": "E-commerce Payment Security Standards",
+    "description": "Research evolving security standards for e-commerce payments, including PCI DSS updates, 3D Secure 2.0 implementation, and emerging authentication methods like biometrics and behavioral analysis. Analyze compliance requirements, implementation costs, and security effectiveness.",
+    "category": "Research Support",
+    "objectives": [
+      "Research evolving e-commerce payment security standards",
+      "Analyze PCI DSS updates and 3D Secure 2.0 implementation",
+      "Evaluate emerging authentication methods",
+      "Assess compliance requirements and implementation costs"
+    ],
+    "stakeholders": ["Security Team", "Compliance", "Product Development"],
+    "status": "In Progress",
+    "due_date": "2025-02-20",
+    "progress": 60,
+    "sources": ["Security standards", "Compliance reports", "Industry analysis"],
+    "deliverable": "Security standards assessment with compliance roadmap and cost analysis",
+    "output_type": "policy_memo",
+    "context": {
+      "region": "Global",
+      "risk_level": "High",
+      "urgency": "Medium",
+      "dependencies": ["Security Assessment", "Compliance Review"],
+      "estimated_effort": "2-3 weeks"
+    },
+    "created_at": "2025-01-15T14:20:00Z",
+    "last_updated": "2025-01-18T12:30:00Z"
+  },
+  {
+    "id": "task-016",
+    "title": "Digital Identity Solutions for Payments",
+    "description": "Research digital identity solutions and their integration with payment systems, including government-issued digital IDs, biometric authentication, and decentralized identity platforms. Analyze implementation challenges, privacy considerations, and regulatory frameworks across different jurisdictions.",
+    "category": "Research Support",
+    "objectives": [
+      "Research digital identity solutions for payment integration",
+      "Analyze implementation challenges and privacy considerations",
+      "Evaluate regulatory frameworks across jurisdictions",
+      "Provide implementation recommendations and risk assessment"
+    ],
+    "stakeholders": ["Identity Team", "Privacy Officer", "Product Strategy"],
+    "status": "New",
+    "due_date": "2025-04-20",
+    "progress": 0,
+    "sources": ["Identity standards", "Privacy regulations", "Implementation reports"],
+    "deliverable": "Digital identity assessment with implementation roadmap and privacy compliance guide",
+    "output_type": "policy_memo",
+    "context": {
+      "region": "Global",
+      "risk_level": "High",
+      "urgency": "Medium",
+      "dependencies": ["Privacy Review", "Regulatory Assessment"],
+      "estimated_effort": "4-5 weeks"
+    },
+    "created_at": "2025-01-24T11:00:00Z",
+    "last_updated": "2025-01-24T11:00:00Z"
+  },
+  {
+    "id": "task-017",
+    "title": "Real-Time Payment Infrastructure Analysis",
+    "description": "Research real-time payment infrastructure implementations globally, including RTP in the US, Faster Payments in the UK, and SEPA Instant in the EU. Analyze technical architectures, adoption rates, use cases, and implications for traditional payment networks.",
+    "category": "Research Support",
+    "objectives": [
+      "Research real-time payment infrastructure globally",
+      "Analyze technical architectures and adoption rates",
+      "Evaluate use cases and implementation success",
+      "Assess implications for traditional payment networks"
+    ],
+    "stakeholders": ["Infrastructure Team", "Product Development", "Technology"],
+    "status": "In Progress",
+    "due_date": "2025-03-05",
+    "progress": 85,
+    "sources": ["Infrastructure reports", "Technical documentation", "Adoption data"],
+    "deliverable": "Real-time payment infrastructure analysis with technical assessment and strategic recommendations",
+    "output_type": "market_analysis",
+    "context": {
+      "region": "Global",
+      "risk_level": "Medium",
+      "urgency": "High",
+      "dependencies": ["Technical Analysis", "Infrastructure Assessment"],
+      "estimated_effort": "3-4 weeks"
+    },
+    "created_at": "2025-01-11T09:30:00Z",
+    "last_updated": "2025-01-22T15:45:00Z"
+  },
+  {
+    "id": "task-018",
+    "title": "Merchant Payment Technology Preferences",
+    "description": "Research merchant preferences for payment technologies, including point-of-sale systems, mobile payment acceptance, and integrated payment solutions. Analyze factors influencing technology choices, implementation challenges, and ROI expectations across different merchant segments.",
+    "category": "Content Curation",
+    "objectives": [
+      "Research merchant payment technology preferences",
+      "Analyze factors influencing technology choices",
+      "Evaluate implementation challenges and ROI expectations",
+      "Provide segment-specific insights and recommendations"
+    ],
+    "stakeholders": ["Merchant Services", "Product Marketing", "Sales"],
+    "status": "New",
+    "due_date": "2025-03-15",
+    "progress": 0,
+    "sources": ["Merchant surveys", "Technology reports", "Sales data"],
+    "deliverable": "Merchant technology preferences report with segment analysis and go-to-market recommendations",
+    "output_type": "market_analysis",
+    "context": {
+      "region": "Global",
+      "risk_level": "Low",
+      "urgency": "Medium",
+      "dependencies": ["Market Research", "Sales Analysis"],
+      "estimated_effort": "2-3 weeks"
+    },
+    "created_at": "2025-01-25T13:45:00Z",
+    "last_updated": "2025-01-25T13:45:00Z"
+  },
+  {
+    "id": "task-019",
+    "title": "Payment Fraud Prevention Strategies",
+    "description": "Research advanced fraud prevention strategies in digital payments, including machine learning algorithms, behavioral analysis, and real-time fraud detection systems. Analyze effectiveness rates, false positive management, and cost-benefit analysis of different prevention approaches.",
+    "category": "Research Support",
+    "objectives": [
+      "Research advanced fraud prevention strategies",
+      "Analyze machine learning algorithms and behavioral analysis",
+      "Evaluate effectiveness rates and false positive management",
+      "Provide cost-benefit analysis and implementation recommendations"
+    ],
+    "stakeholders": ["Fraud Prevention", "Risk Management", "Data Science"],
+    "status": "In Progress",
+    "due_date": "2025-02-25",
+    "progress": 70,
+    "sources": ["Fraud reports", "Technology analysis", "Industry benchmarks"],
+    "deliverable": "Fraud prevention strategy report with technology assessment and implementation roadmap",
+    "output_type": "policy_memo",
+    "context": {
+      "region": "Global",
+      "risk_level": "Critical",
+      "urgency": "High",
+      "dependencies": ["Risk Assessment", "Technology Evaluation"],
+      "estimated_effort": "3-4 weeks"
+    },
+    "created_at": "2025-01-16T16:15:00Z",
+    "last_updated": "2025-01-21T10:30:00Z"
+  },
+  {
+    "id": "task-020",
+    "title": "Sustainable Payment Solutions",
+    "description": "Research sustainable and environmentally conscious payment solutions, including digital receipts, paperless billing, and carbon footprint reduction in payment processing. Analyze consumer preferences, implementation costs, and environmental impact metrics.",
+    "category": "Communications",
+    "objectives": [
+      "Research sustainable payment solutions and practices",
+      "Analyze consumer preferences for eco-friendly options",
+      "Evaluate implementation costs and environmental impact",
+      "Provide sustainability recommendations and implementation guide"
+    ],
+    "stakeholders": ["Sustainability Team", "Product Development", "Communications"],
+    "status": "New",
+    "due_date": "2025-04-10",
+    "progress": 0,
+    "sources": ["Sustainability reports", "Consumer surveys", "Environmental data"],
+    "deliverable": "Sustainable payment solutions report with implementation guide and environmental impact assessment",
+    "output_type": "executive_brief",
+    "context": {
+      "region": "Global",
+      "risk_level": "Low",
+      "urgency": "Low",
+      "dependencies": ["Environmental Assessment", "Consumer Research"],
+      "estimated_effort": "3-4 weeks"
+    },
+    "created_at": "2025-01-26T10:20:00Z",
+    "last_updated": "2025-01-26T10:20:00Z"
+  }
+] 

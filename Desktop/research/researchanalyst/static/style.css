@@ -1,0 +1,525 @@
+/* Visa Brand Colors */
+:root {
+    --visa-blue: #1a1f71;
+    --visa-gold: #f7b600;
+    --visa-blue-light: #2a2f81;
+    --visa-blue-dark: #0f1441;
+    --visa-gold-light: #ffc425;
+    --visa-gold-dark: #e6a500;
+    
+    /* Dark theme colors */
+    --bg-primary: #0d1117;
+    --bg-secondary: #161b22;
+    --bg-tertiary: #21262d;
+    --text-primary: #f0f6fc;
+    --text-secondary: #8b949e;
+    --border-color: #30363d;
+    --success-color: #238636;
+    --warning-color: #f78166;
+    --danger-color: #f85149;
+    --info-color: #58a6ff;
+}
+
+/* Global Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    line-height: 1.6;
+}
+
+.dark-theme {
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+}
+
+/* Navigation */
+.navbar {
+    background: linear-gradient(135deg, var(--visa-blue), var(--visa-blue-dark));
+    border-bottom: 2px solid var(--visa-gold);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+}
+
+.navbar-brand {
+    font-weight: 700;
+    color: var(--visa-gold) !important;
+    font-size: 1.5rem;
+}
+
+.navbar-brand i {
+    margin-right: 0.5rem;
+}
+
+.nav-link {
+    color: var(--text-primary) !important;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+    color: var(--visa-gold) !important;
+    transform: translateY(-1px);
+}
+
+.nav-link i {
+    margin-right: 0.5rem;
+}
+
+.dropdown-menu {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+}
+
+.dropdown-item {
+    color: var(--text-primary);
+    transition: all 0.3s ease;
+}
+
+.dropdown-item:hover {
+    background-color: var(--visa-blue);
+    color: var(--visa-gold);
+}
+
+/* Cards and Components */
+.card {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    transition: all 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.card-header {
+    background: linear-gradient(135deg, var(--visa-blue), var(--visa-blue-light));
+    color: var(--text-primary);
+    border-bottom: 1px solid var(--border-color);
+    border-radius: 12px 12px 0 0 !important;
+    font-weight: 600;
+}
+
+/* KPI Cards */
+.kpi-card {
+    background: linear-gradient(135deg, var(--bg-secondary), var(--bg-tertiary));
+    border-left: 4px solid var(--visa-gold);
+    padding: 1.5rem;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+}
+
+.kpi-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+}
+
+.kpi-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: var(--visa-gold);
+    margin-bottom: 0.5rem;
+}
+
+.kpi-label {
+    color: var(--text-secondary);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-size: 0.875rem;
+}
+
+/* Buttons */
+.btn-primary {
+    background: linear-gradient(135deg, var(--visa-blue), var(--visa-blue-light));
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, var(--visa-blue-light), var(--visa-blue));
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(26, 31, 113, 0.4);
+}
+
+.btn-outline-light {
+    border-color: var(--border-color);
+    color: var(--text-primary);
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+.btn-outline-light:hover {
+    background-color: var(--visa-blue);
+    border-color: var(--visa-blue);
+    color: var(--visa-gold);
+}
+
+.btn-success {
+    background: linear-gradient(135deg, var(--success-color), #2ea043);
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.btn-warning {
+    background: linear-gradient(135deg, var(--warning-color), #f0883e);
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+.btn-danger {
+    background: linear-gradient(135deg, var(--danger-color), #da3633);
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+}
+
+/* Progress Bars */
+.progress {
+    background-color: var(--bg-tertiary);
+    border-radius: 8px;
+    height: 8px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    background: linear-gradient(90deg, var(--visa-gold), var(--visa-gold-light));
+    border-radius: 8px;
+}
+
+/* Task Cards */
+.task-card {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.task-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    border-color: var(--visa-gold);
+}
+
+.task-status {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.status-new { background-color: var(--info-color); color: white; }
+.status-in-progress { background-color: var(--warning-color); color: white; }
+.status-completed { background-color: var(--success-color); color: white; }
+.status-blocked { background-color: var(--danger-color); color: white; }
+
+/* Priority Matrix */
+.priority-matrix {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.priority-quadrant {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1rem;
+    min-height: 200px;
+}
+
+.priority-quadrant.high-urgent {
+    border-left: 4px solid var(--danger-color);
+}
+
+.priority-quadrant.high-not-urgent {
+    border-left: 4px solid var(--warning-color);
+}
+
+.priority-quadrant.low-urgent {
+    border-left: 4px solid var(--info-color);
+}
+
+.priority-quadrant.low-not-urgent {
+    border-left: 4px solid var(--success-color);
+}
+
+/* Activity Feed */
+.activity-item {
+    padding: 1rem;
+    border-left: 3px solid var(--visa-gold);
+    background-color: var(--bg-secondary);
+    margin-bottom: 0.5rem;
+    border-radius: 0 8px 8px 0;
+    transition: all 0.3s ease;
+}
+
+.activity-item:hover {
+    background-color: var(--bg-tertiary);
+    transform: translateX(5px);
+}
+
+.activity-timestamp {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+}
+
+/* Copilot Panel */
+.copilot-panel {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 350px;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+    z-index: 1000;
+    overflow: hidden;
+}
+
+.copilot-header {
+    background: linear-gradient(135deg, var(--visa-blue), var(--visa-blue-light));
+    color: var(--text-primary);
+    padding: 1rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+}
+
+.copilot-header h6 {
+    margin: 0;
+    font-weight: 600;
+}
+
+.copilot-content {
+    max-height: 400px;
+    display: flex;
+    flex-direction: column;
+}
+
+.copilot-chat {
+    flex: 1;
+    max-height: 300px;
+    overflow-y: auto;
+    padding: 1rem;
+}
+
+.chat-message {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    gap: 0.5rem;
+}
+
+.chat-message.ai-message {
+    flex-direction: row;
+}
+
+.chat-message.user-message {
+    flex-direction: row-reverse;
+}
+
+.chat-message i {
+    color: var(--visa-gold);
+    font-size: 1.2rem;
+    margin-top: 0.25rem;
+}
+
+.message-content {
+    background-color: var(--bg-tertiary);
+    padding: 0.75rem;
+    border-radius: 12px;
+    max-width: 80%;
+    word-wrap: break-word;
+}
+
+.ai-message .message-content {
+    background-color: var(--visa-blue);
+    color: var(--text-primary);
+}
+
+.user-message .message-content {
+    background-color: var(--visa-gold);
+    color: var(--visa-blue-dark);
+}
+
+.copilot-input {
+    display: flex;
+    gap: 0.5rem;
+    padding: 1rem;
+    border-top: 1px solid var(--border-color);
+}
+
+.copilot-input input {
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    border-radius: 8px;
+}
+
+.copilot-input input:focus {
+    background-color: var(--bg-tertiary);
+    border-color: var(--visa-gold);
+    color: var(--text-primary);
+    box-shadow: 0 0 0 0.2rem rgba(247, 182, 0, 0.25);
+}
+
+/* Forms */
+.form-control {
+    background-color: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    color: var(--text-primary);
+    border-radius: 8px;
+}
+
+.form-control:focus {
+    background-color: var(--bg-tertiary);
+    border-color: var(--visa-gold);
+    color: var(--text-primary);
+    box-shadow: 0 0 0 0.2rem rgba(247, 182, 0, 0.25);
+}
+
+.form-label {
+    color: var(--text-primary);
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+}
+
+/* Tables */
+.table {
+    color: var(--text-primary);
+    background-color: var(--bg-secondary);
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.table th {
+    background-color: var(--visa-blue);
+    color: var(--text-primary);
+    border-color: var(--border-color);
+    font-weight: 600;
+}
+
+.table td {
+    border-color: var(--border-color);
+    vertical-align: middle;
+}
+
+.table tbody tr:hover {
+    background-color: var(--bg-tertiary);
+}
+
+/* Badges */
+.badge {
+    font-weight: 600;
+    border-radius: 6px;
+    padding: 0.5rem 0.75rem;
+}
+
+.badge-primary {
+    background-color: var(--visa-blue);
+    color: var(--text-primary);
+}
+
+.badge-success {
+    background-color: var(--success-color);
+    color: white;
+}
+
+.badge-warning {
+    background-color: var(--warning-color);
+    color: white;
+}
+
+.badge-danger {
+    background-color: var(--danger-color);
+    color: white;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .copilot-panel {
+        width: calc(100vw - 40px);
+        right: 20px;
+        left: 20px;
+    }
+    
+    .priority-matrix {
+        grid-template-columns: 1fr;
+    }
+    
+    .kpi-value {
+        font-size: 2rem;
+    }
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.fade-in {
+    animation: fadeIn 0.5s ease-out;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-tertiary);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--visa-blue);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--visa-blue-light);
+}
+
+/* Loading States */
+.loading {
+    opacity: 0.6;
+    pointer-events: none;
+}
+
+.spinner {
+    border: 2px solid var(--bg-tertiary);
+    border-top: 2px solid var(--visa-gold);
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+} 

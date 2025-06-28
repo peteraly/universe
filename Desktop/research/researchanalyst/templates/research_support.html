@@ -1,0 +1,276 @@
+{% extends "base.html" %}
+
+{% block title %}Research Support - Research Analyst{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <!-- Page Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="h2 mb-0">
+                <i class="bi bi-search text-warning"></i>
+                Research Support
+            </h1>
+            <p class="text-muted">Comprehensive research support for market analysis, competitive intelligence, and strategic insights.</p>
+        </div>
+    </div>
+
+    <!-- Research Support KPIs -->
+    <div class="row mb-4">
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="kpi-card">
+                <div class="kpi-value">{{ tasks|length }}</div>
+                <div class="kpi-label">Research Tasks</div>
+                <div class="mt-2">
+                    <span class="badge badge-primary">Active</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="kpi-card">
+                <div class="kpi-value">{{ tasks|selectattr('status', 'equalto', 'Completed')|list|length }}</div>
+                <div class="kpi-label">Completed</div>
+                <div class="mt-2">
+                    <span class="badge badge-success">Done</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="kpi-card">
+                <div class="kpi-value">{{ tasks|selectattr('status', 'equalto', 'In Progress')|list|length }}</div>
+                <div class="kpi-label">In Progress</div>
+                <div class="mt-2">
+                    <span class="badge badge-warning">Working</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="kpi-card">
+                <div class="kpi-value">{{ (tasks|selectattr('status', 'equalto', 'Completed')|list|length / tasks|length * 100)|round(1) if tasks|length > 0 else 0 }}%</div>
+                <div class="kpi-label">Completion Rate</div>
+                <div class="mt-2">
+                    <span class="badge badge-info">Progress</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Research Tasks -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        <i class="bi bi-list-task"></i>
+                        Research Tasks
+                    </h5>
+                    <button class="btn btn-primary" onclick="createResearchTask()">
+                        <i class="bi bi-plus-circle"></i>
+                        New Research Task
+                    </button>
+                </div>
+                <div class="card-body">
+                    {% if tasks %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Research Task</th>
+                                        <th>Stakeholders</th>
+                                        <th>Status</th>
+                                        <th>Progress</th>
+                                        <th>Due Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for task in tasks %}
+                                        <tr>
+                                            <td>
+                                                <div>
+                                                    <strong>{{ task.title }}</strong>
+                                                    <div class="text-muted small">{{ task.description or 'No description' }}</div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                {% for stakeholder in task.stakeholders %}
+                                                    <span class="badge badge-info">{{ stakeholder }}</span>
+                                                {% endfor %}
+                                            </td>
+                                            <td>
+                                                <span class="badge badge-{{ 'success' if task.status == 'Completed' else 'warning' if task.status == 'In Progress' else 'info' }}">
+                                                    {{ task.status }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <div class="progress" style="width: 100px;">
+                                                    <div class="progress-bar" style="width: {{ task.progress }}%"></div>
+                                                </div>
+                                                <small class="text-muted">{{ task.progress }}%</small>
+                                            </td>
+                                            <td>{{ task.due_date or 'No due date' }}</td>
+                                            <td>
+                                                <div class="btn-group" role="group">
+                                                    <button class="btn btn-sm btn-outline-primary" onclick="editResearchTask('{{ task.id }}')">
+                                                        <i class="bi bi-pencil"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-success" onclick="generateResearchReport('{{ task.id }}')">
+                                                        <i class="bi bi-robot"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-info" onclick="viewResearchDetails('{{ task.id }}')">
+                                                        <i class="bi bi-eye"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center text-muted py-5">
+                            <i class="bi bi-search display-1"></i>
+                            <h4 class="mt-3">No Research Tasks</h4>
+                            <p class="mt-2">Create your first research support task to get started.</p>
+                            <button class="btn btn-primary" onclick="createResearchTask()">
+                                <i class="bi bi-plus-circle"></i>
+                                Create Research Task
+                            </button>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Research Tools -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="bi bi-tools"></i>
+                        Research Tools & Resources
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <div class="tool-card">
+                                <div class="tool-icon">
+                                    <i class="bi bi-graph-up text-primary"></i>
+                                </div>
+                                <div class="tool-content">
+                                    <h6>Market Analysis Tools</h6>
+                                    <p class="small">Access advanced market analysis and trend identification tools</p>
+                                    <button class="btn btn-sm btn-outline-primary">Launch Tools</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="tool-card">
+                                <div class="tool-icon">
+                                    <i class="bi bi-database text-warning"></i>
+                                </div>
+                                <div class="tool-content">
+                                    <h6>Data Sources</h6>
+                                    <p class="small">Connect to premium research databases and industry reports</p>
+                                    <button class="btn btn-sm btn-outline-warning">Browse Sources</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <div class="tool-card">
+                                <div class="tool-icon">
+                                    <i class="bi bi-robot text-success"></i>
+                                </div>
+                                <div class="tool-content">
+                                    <h6>AI Research Assistant</h6>
+                                    <p class="small">Get AI-powered insights and automated research summaries</p>
+                                    <button class="btn btn-sm btn-outline-success">Start AI Research</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.tool-card {
+    display: flex;
+    align-items: start;
+    gap: 1rem;
+    padding: 1rem;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    height: 100%;
+}
+
+.tool-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.tool-icon {
+    font-size: 2rem;
+    flex-shrink: 0;
+}
+
+.tool-content h6 {
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.tool-content p {
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+}
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function createResearchTask() {
+        console.log('Creating new research task');
+        alert('Create research task functionality would open a task creation modal');
+    }
+
+    function editResearchTask(taskId) {
+        console.log('Editing research task:', taskId);
+        alert('Edit research task functionality would open a task editing modal');
+    }
+
+    function generateResearchReport(taskId) {
+        console.log('Generating research report for task:', taskId);
+        
+        fetch('/api/generate', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                type: 'research_report',
+                task_id: taskId
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert('Research report generated: ' + data.content.substring(0, 100) + '...');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error generating research report');
+        });
+    }
+
+    function viewResearchDetails(taskId) {
+        console.log('Viewing research details for task:', taskId);
+        alert('View research details functionality would show comprehensive research information');
+    }
+</script>
+{% endblock %} 

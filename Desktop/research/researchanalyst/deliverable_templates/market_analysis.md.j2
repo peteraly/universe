@@ -1,0 +1,98 @@
+# Market Analysis: {{ task.title }}
+
+**Analysis Date:** {{ deliverable.created_at|datetime }}  
+**Market Scope:** {{ deliverable.market_scope|default('Global') }}  
+**Report Type:** {{ deliverable.report_type|default('Comprehensive Market Analysis') }}
+
+---
+
+## Market Overview
+
+### Market Size and Growth
+{{ deliverable.market_size|default('Market size data will be populated from sources.') }}
+
+### Key Market Drivers
+{% for driver in deliverable.market_drivers %}
+- **{{ driver.title }}**: {{ driver.description }}
+{% endfor %}
+
+### Competitive Landscape
+{% for competitor in deliverable.competitors %}
+#### {{ competitor.name }}
+- **Market Share:** {{ competitor.market_share }}
+- **Key Strengths:** {{ competitor.strengths }}
+- **Recent Developments:** {{ competitor.developments }}
+{% endfor %}
+
+---
+
+## Data Analysis
+
+### Market Trends
+{% for trend in deliverable.trends %}
+#### {{ trend.title }}
+{{ trend.description }}
+
+**Data Points:**
+{% for point in trend.data_points %}
+- {{ point.label }}: {{ point.value }} ({{ point.period }})
+{% endfor %}
+{% endfor %}
+
+### Growth Projections
+{{ deliverable.growth_projections|default('Growth projections will be calculated based on market data and trends.') }}
+
+---
+
+## Strategic Insights
+
+### Opportunities
+{% for opportunity in deliverable.opportunities %}
+#### {{ opportunity.title }}
+{{ opportunity.description }}
+
+**Potential Impact:** {{ opportunity.impact }}  
+**Timeline:** {{ opportunity.timeline }}  
+**Resource Requirements:** {{ opportunity.resources }}
+{% endfor %}
+
+### Threats and Challenges
+{% for threat in deliverable.threats %}
+#### {{ threat.title }}
+{{ threat.description }}
+
+**Risk Level:** {{ threat.risk_level }}  
+**Mitigation Strategies:** {{ threat.mitigation }}
+{% endfor %}
+
+---
+
+## Recommendations
+
+{% for recommendation in deliverable.recommendations %}
+### {{ recommendation.title }}
+{{ recommendation.description }}
+
+**Priority:** {{ recommendation.priority }}  
+**Implementation Timeline:** {{ recommendation.timeline }}  
+**Expected Outcomes:** {{ recommendation.outcomes }}
+{% endfor %}
+
+---
+
+## Methodology and Sources
+
+### Data Sources
+{% for source in task.sources %}
+- **{{ source.title }}** - {{ source.url }}
+  - **Type:** {{ source.media_type }}
+  - **Relevance Score:** {{ source.relevance_score }}
+  - **Access Date:** {{ source.freshness|datetime }}
+{% endfor %}
+
+### Analysis Framework
+{{ deliverable.methodology|default('Standard market analysis framework including Porter\'s Five Forces, PEST analysis, and competitive benchmarking.') }}
+
+---
+
+*This market analysis was generated using AI-powered research tools and validated against multiple data sources.* 

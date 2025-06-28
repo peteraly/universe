@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Research Analyst Dashboard{% endblock %}</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Custom CSS -->
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="dark-theme">
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{{ url_for('dashboard') }}">
+                <i class="bi bi-graph-up-arrow"></i>
+                ResearchAnalyst
+            </a>
+            
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('dashboard') }}">
+                            <i class="bi bi-speedometer2"></i> Dashboard
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('simulation') }}">
+                            <i class="bi bi-play-circle"></i> Simulation
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('research_sources') }}">
+                            <i class="bi bi-journal-text"></i> Sources
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ url_for('search') }}">
+                            <i class="bi bi-search"></i> Search
+                        </a>
+                    </li>
+                </ul>
+                
+                <!-- Duty Pages Dropdown -->
+                <ul class="navbar-nav me-3">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="bi bi-briefcase"></i> Duties
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="dropdown-item" href="{{ url_for('corporate_strategy') }}">Corporate Strategy</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('research_support') }}">Research Support</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('content_curation') }}">Content Curation</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('communications') }}">Communications</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                
+                <!-- Search Bar -->
+                <form class="d-flex" action="{{ url_for('search') }}" method="GET">
+                    <input class="form-control me-2" type="search" name="q" placeholder="Search tasks, sources..." aria-label="Search">
+                    <button class="btn btn-outline-light" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container-fluid">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Copilot Assistant Panel (Fixed Bottom Right) -->
+    <div class="copilot-panel" id="copilotPanel">
+        <div class="copilot-header">
+            <h6><i class="bi bi-robot"></i> AI Copilot</h6>
+            <button class="btn btn-sm btn-outline-light" onclick="toggleCopilot()">
+                <i class="bi bi-chevron-down"></i>
+            </button>
+        </div>
+        <div class="copilot-content" id="copilotContent">
+            <div class="copilot-chat" id="copilotChat">
+                <div class="chat-message ai-message">
+                    <i class="bi bi-robot"></i>
+                    <div class="message-content">
+                        Hello! I'm your AI research assistant. How can I help you today?
+                    </div>
+                </div>
+            </div>
+            <div class="copilot-input">
+                <input type="text" id="copilotInput" placeholder="Ask me anything..." class="form-control">
+                <button class="btn btn-primary" onclick="sendCopilotMessage()">
+                    <i class="bi bi-send"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script>
+        // Copilot functionality
+        function toggleCopilot() {
+            const content = document.getElementById('copilotContent');
+            const button = document.querySelector('.copilot-header button i');
+            
+            if (content.style.display === 'none') {
+                content.style.display = 'block';
+                button.className = 'bi bi-chevron-down';
+            } else {
+                content.style.display = 'none';
+                button.className = 'bi bi-chevron-up';
+            }
+        }
+
+        function sendCopilotMessage() {
+            const input = document.getElementById('copilotInput');
+            const message = input.value.trim();
+            
+            if (message) {
+                addCopilotMessage('user', message);
+                input.value = '';
+                
+                // Enhanced AI responses with source matching awareness
+                setTimeout(() => {
+                    const responses = [
+                        "I can help you with that! Let me analyze the available data and suggest relevant sources...",
+                        "Based on your request, I recommend checking the research sources page. I've found 3 relevant sources for this topic.",
+                        "I'll generate a brief for you based on the current tasks. I can also suggest 5 relevant sources from our database.",
+                        "Let me search through the deliverables for relevant information. I've identified 2 sources that might be helpful.",
+                        "I can help you with source matching! When you create a new task, I automatically scan and suggest relevant articles, reports, and data sources.",
+                        "I've detected you're working on a research task. Would you like me to suggest relevant sources from our database?",
+                        "I can help you find sources for your research. I scan articles, podcasts, videos, and databases to match them to your tasks."
+                    ];
+                    const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                    addCopilotMessage('ai', randomResponse);
+                }, 1000);
+            }
+        }
+
+        function addCopilotMessage(type, content) {
+            const chat = document.getElementById('copilotChat');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `chat-message ${type}-message`;
+            
+            if (type === 'ai') {
+                messageDiv.innerHTML = `<i class="bi bi-robot"></i><div class="message-content">${content}</div>`;
+            } else {
+                messageDiv.innerHTML = `<div class="message-content">${content}</div><i class="bi bi-person"></i>`;
+            }
+            
+            chat.appendChild(messageDiv);
+            chat.scrollTop = chat.scrollHeight;
+        }
+
+        // Enhanced Copilot with source suggestion notifications
+        function showSourceSuggestion(taskId, taskTitle, sourceCount) {
+            const chat = document.getElementById('copilotChat');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = 'chat-message ai-message source-suggestion';
+            messageDiv.innerHTML = `
+                <i class="bi bi-lightbulb"></i>
+                <div class="message-content">
+                    <strong>Source Suggestions Available!</strong><br>
+                    I found ${sourceCount} relevant sources for "${taskTitle}". 
+                    <button class="btn btn-sm btn-primary mt-2" onclick="viewSuggestedSources('${taskId}')">
+                        View Sources
+                    </button>
+                </div>
+            `;
+            chat.appendChild(messageDiv);
+            chat.scrollTop = chat.scrollHeight;
+        }
+
+        function viewSuggestedSources(taskId) {
+            // Navigate to simulation page and select the task
+            window.location.href = `/simulation?task=${taskId}`;
+        }
+
+        // Enter key support for copilot input
+        document.getElementById('copilotInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendCopilotMessage();
+            }
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            // Ctrl/Cmd + K for search
+            if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+                e.preventDefault();
+                document.querySelector('input[name="q"]').focus();
+            }
+            
+            // Ctrl/Cmd + / for copilot
+            if ((e.ctrlKey || e.metaKey) && e.key === '/') {
+                e.preventDefault();
+                document.getElementById('copilotInput').focus();
+            }
+        });
+
+        // Initialize Copilot with enhanced welcome message
+        document.addEventListener('DOMContentLoaded', function() {
+            setTimeout(() => {
+                addCopilotMessage('ai', "Hello! I'm your AI research assistant. I can help you with task management, source matching, and content generation. Try asking me about creating new tasks or finding relevant sources!");
+            }, 1000);
+        });
+    </script>
+    
+    {% block scripts %}{% endblock %}
+</body>
+</html> 

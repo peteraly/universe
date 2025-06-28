@@ -1,0 +1,288 @@
+{% extends "base.html" %}
+
+{% block title %}Communications - Research Analyst{% endblock %}
+
+{% block content %}
+<div class="container-fluid py-4">
+    <!-- Page Header -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <h1 class="h2 mb-0">
+                <i class="bi bi-chat-dots text-warning"></i>
+                Communications
+            </h1>
+            <p class="text-muted">Manage stakeholder communications, messaging, and strategic communications.</p>
+        </div>
+    </div>
+
+    <!-- Communications KPIs -->
+    <div class="row mb-4">
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="kpi-card">
+                <div class="kpi-value">{{ tasks|length }}</div>
+                <div class="kpi-label">Communication Tasks</div>
+                <div class="mt-2">
+                    <span class="badge badge-primary">Active</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="kpi-card">
+                <div class="kpi-value">{{ tasks|selectattr('status', 'equalto', 'Completed')|list|length }}</div>
+                <div class="kpi-label">Delivered</div>
+                <div class="mt-2">
+                    <span class="badge badge-success">Done</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="kpi-card">
+                <div class="kpi-value">{{ tasks|selectattr('status', 'equalto', 'In Progress')|list|length }}</div>
+                <div class="kpi-label">In Progress</div>
+                <div class="mt-2">
+                    <span class="badge badge-warning">Working</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6 mb-3">
+            <div class="kpi-card">
+                <div class="kpi-value">95%</div>
+                <div class="kpi-label">Stakeholder Satisfaction</div>
+                <div class="mt-2">
+                    <span class="badge badge-info">High</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Communication Tasks -->
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">
+                        <i class="bi bi-list-task"></i>
+                        Communication Tasks
+                    </h5>
+                    <button class="btn btn-primary" onclick="createCommunicationTask()">
+                        <i class="bi bi-plus-circle"></i>
+                        New Communication Task
+                    </button>
+                </div>
+                <div class="card-body">
+                    {% if tasks %}
+                        <div class="table-responsive">
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Communication Task</th>
+                                        <th>Stakeholders</th>
+                                        <th>Status</th>
+                                        <th>Progress</th>
+                                        <th>Due Date</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for task in tasks %}
+                                        <tr>
+                                            <td>
+                                                <div>
+                                                    <strong>{{ task.title }}</strong>
+                                                    <div class="text-muted small">{{ task.description or 'No description' }}</div>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                {% for stakeholder in task.stakeholders %}
+                                                    <span class="badge badge-info">{{ stakeholder }}</span>
+                                                {% endfor %}
+                                            </td>
+                                            <td>
+                                                <span class="badge badge-{{ 'success' if task.status == 'Completed' else 'warning' if task.status == 'In Progress' else 'info' }}">
+                                                    {{ task.status }}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <div class="progress" style="width: 100px;">
+                                                    <div class="progress-bar" style="width: {{ task.progress }}%"></div>
+                                                </div>
+                                                <small class="text-muted">{{ task.progress }}%</small>
+                                            </td>
+                                            <td>{{ task.due_date or 'No due date' }}</td>
+                                            <td>
+                                                <div class="btn-group" role="group">
+                                                    <button class="btn btn-sm btn-outline-primary" onclick="editCommunicationTask('{{ task.id }}')">
+                                                        <i class="bi bi-pencil"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-success" onclick="generateCommunication('{{ task.id }}')">
+                                                        <i class="bi bi-robot"></i>
+                                                    </button>
+                                                    <button class="btn btn-sm btn-outline-info" onclick="viewCommunicationDetails('{{ task.id }}')">
+                                                        <i class="bi bi-eye"></i>
+                                                    </button>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <div class="text-center text-muted py-5">
+                            <i class="bi bi-chat-dots display-1"></i>
+                            <h4 class="mt-3">No Communication Tasks</h4>
+                            <p class="mt-2">Create your first communication task to get started.</p>
+                            <button class="btn btn-primary" onclick="createCommunicationTask()">
+                                <i class="bi bi-plus-circle"></i>
+                                Create Communication Task
+                            </button>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Communication Tools -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="bi bi-tools"></i>
+                        Communication Tools
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <div class="tool-card">
+                                <div class="tool-icon">
+                                    <i class="bi bi-envelope text-primary"></i>
+                                </div>
+                                <div class="tool-content">
+                                    <h6>Email Templates</h6>
+                                    <p class="small">Pre-built templates for stakeholder communications</p>
+                                    <button class="btn btn-sm btn-outline-primary">Use Templates</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="tool-card">
+                                <div class="tool-icon">
+                                    <i class="bi bi-presentation text-warning"></i>
+                                </div>
+                                <div class="tool-content">
+                                    <h6>Presentation Builder</h6>
+                                    <p class="small">Create professional presentations for stakeholders</p>
+                                    <button class="btn btn-sm btn-outline-warning">Build Presentation</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="tool-card">
+                                <div class="tool-icon">
+                                    <i class="bi bi-robot text-success"></i>
+                                </div>
+                                <div class="tool-content">
+                                    <h6>AI Message Generator</h6>
+                                    <p class="small">Generate tailored messages for different audiences</p>
+                                    <button class="btn btn-sm btn-outline-success">Generate Message</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="tool-card">
+                                <div class="tool-icon">
+                                    <i class="bi bi-graph-up text-info"></i>
+                                </div>
+                                <div class="tool-content">
+                                    <h6>Engagement Analytics</h6>
+                                    <p class="small">Track communication effectiveness and engagement</p>
+                                    <button class="btn btn-sm btn-outline-info">View Analytics</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.tool-card {
+    display: flex;
+    align-items: start;
+    gap: 1rem;
+    padding: 1rem;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    height: 100%;
+}
+
+.tool-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.tool-icon {
+    font-size: 2rem;
+    flex-shrink: 0;
+}
+
+.tool-content h6 {
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+}
+
+.tool-content p {
+    color: var(--text-secondary);
+    margin-bottom: 1rem;
+}
+</style>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function createCommunicationTask() {
+        console.log('Creating new communication task');
+        alert('Create communication task functionality would open a task creation modal');
+    }
+
+    function editCommunicationTask(taskId) {
+        console.log('Editing communication task:', taskId);
+        alert('Edit communication task functionality would open a task editing modal');
+    }
+
+    function generateCommunication(taskId) {
+        console.log('Generating communication for task:', taskId);
+        
+        fetch('/api/generate', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                type: 'communication',
+                task_id: taskId
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert('Communication generated: ' + data.content.substring(0, 100) + '...');
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            alert('Error generating communication');
+        });
+    }
+
+    function viewCommunicationDetails(taskId) {
+        console.log('Viewing communication details for task:', taskId);
+        alert('View communication details functionality would show comprehensive communication information');
+    }
+</script>
+{% endblock %} 
