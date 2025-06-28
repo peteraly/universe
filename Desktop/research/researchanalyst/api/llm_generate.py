@@ -33,11 +33,17 @@ def check_and_update_usage(tokens_used):
     return estimated_cost
 
 def build_llm_prompt(task, sources):
+    deliverable_type = task.get('deliverable_type') or task.get('output_type', 'Executive Brief')
+    format = task.get('format', 'Narrative')
+    sections = ', '.join(task.get('sections', [])) if task.get('sections') else 'Executive Summary, Key Findings, Recommendations, Sources Cited'
+    instructions = task.get('instructions', '')
     objectives = task.get('objectives', [])
     deliverable_desc = task.get('deliverable', '')
     prompt = f"""
 You are an expert research analyst.
-Write a {task.get('output_type', 'executive brief')} for: {', '.join(task.get('stakeholders', []))}
+Write a {deliverable_type} in the following format: {format}.
+Sections: {sections}.
+{f'Special instructions: {instructions}' if instructions else ''}
 Title: {task.get('title')}
 Description: {task.get('description')}
 Objectives:
@@ -51,8 +57,7 @@ Use these source snippets and cite them inline:
         citation = s.get('title', '')
         prompt += f"- {snippet} [{citation}]\n"
     prompt += """
-Structure: Executive Summary, Key Trends, SWOT Analysis, Strategic Recommendations, Sources Cited.
-Be concise, actionable, and professional.
+Be concise, actionable, and professional. Follow the requested format and structure exactly.
 """
     return prompt
 
