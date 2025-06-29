@@ -316,12 +316,27 @@ def api_tasks():
         return jsonify(tasks)
     
     elif request.method == 'POST':
-        data = request.json
-        origin = data.get('origin', 'analyst')
-        
-        # Use the new task router for creating tasks
-        result = create_task(data, origin)
-        return jsonify(result)
+        try:
+            data = request.get_json()
+            if not data:
+                return jsonify({'error': 'No data provided', 'success': False}), 400
+            
+            origin = data.get('origin', 'analyst')
+            
+            # Use the new task router for creating tasks
+            result = create_task(data, origin)
+            
+            if result.get('success'):
+                return jsonify(result), 201
+            else:
+                return jsonify(result), 400
+                
+        except Exception as e:
+            print(f"Error creating task: {str(e)}")
+            return jsonify({
+                'error': f'Server error: {str(e)}',
+                'success': False
+            }), 500
     
     elif request.method == 'PUT':
         data = request.json

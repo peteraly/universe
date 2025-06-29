@@ -827,7 +827,8 @@
         document.getElementById('aiGenerations').textContent = aiGenerations;
         
         // Calculate efficiency
-        const efficiency = Math.round((completedTasks / {{ tasks|length }}) * 100);
+        const totalTasks = {{ tasks|length }};
+        const efficiency = Math.round((completedTasks / totalTasks) * 100);
         document.getElementById('efficiency').textContent = efficiency + '%';
     }
 
@@ -1078,24 +1079,38 @@
             }
         });
         data['origin'] = 'analyst';
+        
         fetch('/api/tasks', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(data)
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                return response.text().then(text => {
+                    throw new Error(`HTTP ${response.status}: ${text}`);
+                });
+            }
+            return response.json();
+        })
         .then(result => {
-            if (result && result.id) {
+            if (result && result.success && result.id) {
+                // Show success message
+                showNotification('Task created successfully!', 'success');
                 // Close modal and reload
                 var modal = bootstrap.Modal.getInstance(document.getElementById('newTaskModal'));
                 modal.hide();
-                location.reload();
+                // Reset form
+                form.reset();
+                // Reload page to show new task
+                setTimeout(() => location.reload(), 1000);
             } else {
-                alert('Error creating task: ' + (result.error || 'Unknown error'));
+                throw new Error(result.error || 'Unknown error occurred');
             }
         })
         .catch(error => {
-            alert('Error creating task: ' + error);
+            console.error('Error creating task:', error);
+            showNotification('Error creating task: ' + error.message, 'danger');
         });
     }
 </script>
