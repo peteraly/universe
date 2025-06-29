@@ -3,276 +3,890 @@
 {% block title %}Simulation - Research Analyst{% endblock %}
 
 {% block content %}
-<div class="apple-music-sim-container">
-    <!-- Top Navigation -->
-    <div class="amsim-topnav d-flex justify-content-between align-items-center mb-4">
-        <div class="amsim-title h3 mb-0">Work Now</div>
-        <div class="amsim-avatar">
-            <img src="https://ui-avatars.com/api/?name=Analyst&background=FFD700&color=fff&rounded=true" alt="User" width="40" height="40">
+<div class="container-fluid py-4">
+    <!-- Page Header -->
+    <div class="row mb-4">
+        <div class="col-12 d-flex justify-content-between align-items-center">
+            <div>
+                <h1 class="h2 mb-0">
+                    <i class="bi bi-play-circle text-warning"></i>
+                    Research Simulation Panel
+                </h1>
+                <p class="text-muted">Interactive task simulation with AI assistance and real-time editing.</p>
+            </div>
+            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#newTaskModal">
+                <i class="bi bi-plus-circle"></i> New Task
+            </button>
         </div>
     </div>
 
-    <!-- Top Picks (AI Suggested) -->
-    <div class="amsim-section mb-4">
-        <div class="amsim-section-title">Top Picks for You</div>
-        <div class="amsim-scroll-row">
-            {% for task in tasks[:3] %}
-            <div class="amsim-card amsim-card-lg">
-                <div class="amsim-card-cover">
-                    <i class="bi bi-lightbulb-fill amsim-card-icon"></i>
+    <!-- New Task Modal -->
+    <div class="modal fade" id="newTaskModal" tabindex="-1" aria-labelledby="newTaskModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="newTaskModalLabel">Create New Task</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="newTaskForm">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label">Title *</label>
+                  <input type="text" class="form-control" name="title" required>
                 </div>
-                <div class="amsim-card-body">
-                    <div class="amsim-card-title">{{ task.title }}</div>
-                    <div class="amsim-card-meta">{{ task.deliverable_type or 'Executive Brief' }} &bull; Due {{ task.due_date or 'N/A' }}</div>
-                    <div class="amsim-card-progress">
+                <div class="col-md-6">
+                  <label class="form-label">Category</label>
+                  <select class="form-select" name="category">
+                    <option>Corporate Strategy</option>
+                    <option>Research Support</option>
+                    <option>Content Curation</option>
+                    <option>Communications</option>
+                  </select>
+                </div>
+                <div class="col-md-12">
+                  <label class="form-label">Description</label>
+                  <textarea class="form-control" name="description" rows="2"></textarea>
+                </div>
+                <div class="col-md-12">
+                  <label class="form-label">Deliverable Request/Description</label>
+                  <input type="text" class="form-control" name="deliverable">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Deliverable Type</label>
+                  <select class="form-select" name="deliverable_type">
+                    <option>Executive Brief</option>
+                    <option>SWOT Analysis</option>
+                    <option>Market Map</option>
+                    <option>Policy Memo</option>
+                    <option>Slide Deck</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Format</label>
+                  <input type="text" class="form-control" name="format" placeholder="e.g. Table + Narrative, Infographic">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Sections (comma-separated)</label>
+                  <input type="text" class="form-control" name="sections">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Objectives (one per line)</label>
+                  <textarea class="form-control" name="objectives" rows="2"></textarea>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Stakeholders (comma-separated)</label>
+                  <input type="text" class="form-control" name="stakeholders">
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">Due Date</label>
+                  <input type="date" class="form-control" name="due_date">
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">Tags (comma-separated)</label>
+                  <input type="text" class="form-control" name="tags">
+                </div>
+                <div class="col-md-12">
+                  <label class="form-label">Instructions (optional)</label>
+                  <textarea class="form-control" name="instructions" rows="2"></textarea>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-success" onclick="submitNewTask()">Create Task</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Simulation Controls - Simplified -->
+    <div class="row mb-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <div class="row align-items-center">
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label">Simulation Speed</label>
+                            <select class="form-select" id="simulationSpeed">
+                                <option value="1">1x (Real-time)</option>
+                                <option value="2">2x (Fast)</option>
+                                <option value="5">5x (Very Fast)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label">AI Assistance</label>
+                            <select class="form-select" id="aiLevel">
+                                <option value="full">Full AI Support</option>
+                                <option value="partial">Partial AI Support</option>
+                                <option value="minimal">Minimal AI Support</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="form-check form-switch">
+                                <input class="form-check-input" type="checkbox" id="autoGenerate" checked>
+                                <label class="form-check-label" for="autoGenerate">Auto-generate Deliverables</label>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <button class="btn btn-primary w-100" onclick="startSimulation()">
+                                <i class="bi bi-play-fill"></i>
+                                Start Simulation
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Suggested Sources Panel -->
+    <div class="row mb-4" id="suggestedSourcesRow" style="display: none;">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="bi bi-lightbulb"></i>
+                        Suggested Sources for <span id="selectedTaskTitle">Selected Task</span>
+                        <span class="badge badge-warning ms-2" id="sourceCount">0</span>
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div id="suggestedSourcesList">
+                        <!-- Sources will be populated here -->
+                    </div>
+                    <div class="text-center text-muted py-3" id="noSourcesMessage">
+                        <i class="bi bi-inbox display-4"></i>
+                        <p class="mt-2">No sources matched for this task</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Task Simulation Grid - Cleaner Layout -->
+    <div class="row">
+        {% for task in tasks %}
+        <div class="col-lg-6 col-xl-4 mb-4">
+            <div class="task-card" data-task-id="{{ task.id }}" onclick="selectTask('{{ task.id }}', '{{ task.title }}')">
+                <!-- Header -->
+                <div class="task-header">
+                    <div class="task-title">
+                        <h6 class="mb-1">{{ task.title }}</h6>
+                        <span class="badge badge-{{ 'success' if task.status == 'Completed' else 'warning' if task.status == 'In Progress' else 'info' }}">
+                            {{ task.status }}
+                        </span>
+                    </div>
+                    <div class="task-actions">
+                        <button class="btn btn-sm btn-outline-primary" onclick="editTask('{{ task.id }}'); event.stopPropagation();">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-success" onclick="generateDeliverable('{{ task.id }}'); event.stopPropagation();">
+                            <i class="bi bi-robot"></i>
+                        </button>
+                        <a href="{{ url_for('edit_deliverable', task_id=task.id) }}" class="btn btn-sm btn-outline-warning" onclick="event.stopPropagation();">
+                            <i class="bi bi-file-text"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Content -->
+                <div class="task-content">
+                    <div class="task-description">
+                        <p class="small text-muted">{{ task.description or 'No description available' }}</p>
+                    </div>
+
+                    <!-- Key Info -->
+                    <div class="task-info">
+                        <div class="info-item">
+                            <i class="bi bi-tag"></i>
+                            <span>{{ task.category }}</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="bi bi-calendar"></i>
+                            <span>{{ task.due_date or 'No due date' }}</span>
+                        </div>
+                        <div class="info-item">
+                            <i class="bi bi-people"></i>
+                            <span>{{ task.stakeholders|length }} stakeholders</span>
+                        </div>
+                    </div>
+
+                    <!-- Progress -->
+                    <div class="task-progress">
+                        <div class="progress-info">
+                            <span>Progress</span>
+                            <span>{{ task.progress }}%</span>
+                        </div>
                         <div class="progress">
                             <div class="progress-bar" style="width: {{ task.progress }}%"></div>
                         </div>
-                        <span class="amsim-card-progress-label">{{ task.progress }}%</span>
                     </div>
-                    <div class="amsim-card-actions mt-2">
-                        <button class="btn btn-primary btn-sm" onclick="simulateWork('{{ task.id }}'); event.stopPropagation();">Simulate</button>
-                        <button class="btn btn-outline-secondary btn-sm" onclick="viewDetails('{{ task.id }}'); event.stopPropagation();">Details</button>
+
+                    <!-- Deliverable -->
+                    {% if task.deliverable %}
+                    <div class="task-deliverable">
+                        <span class="badge badge-success">{{ task.deliverable }}</span>
                     </div>
+                    {% endif %}
+                </div>
+
+                <!-- Footer -->
+                <div class="task-footer">
+                    <button class="btn btn-sm btn-outline-primary" onclick="simulateWork('{{ task.id }}'); event.stopPropagation();">
+                        <i class="bi bi-play"></i>
+                        Simulate Work
+                    </button>
+                    <button class="btn btn-sm btn-outline-warning" onclick="addSource('{{ task.id }}'); event.stopPropagation();">
+                        <i class="bi bi-plus"></i>
+                        Add Source
+                    </button>
                 </div>
             </div>
-            {% endfor %}
         </div>
+        {% endfor %}
     </div>
 
-    <!-- Recently Played (Recent Tasks) -->
-    <div class="amsim-section mb-4">
-        <div class="amsim-section-title">Recently Played</div>
-        <div class="amsim-scroll-row">
-            {% for task in tasks[-5:] %}
-            <div class="amsim-card amsim-card-sm">
-                <div class="amsim-card-cover-sm">
-                    <i class="bi bi-clock-history amsim-card-icon"></i>
+    <!-- Simulation Results - Simplified -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="bi bi-graph-up"></i>
+                        Simulation Results
+                    </h5>
                 </div>
-                <div class="amsim-card-body-sm">
-                    <div class="amsim-card-title-sm">{{ task.title }}</div>
-                    <div class="amsim-card-meta-sm">{{ task.status }}</div>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-    </div>
-
-    <!-- Playlists (Categories) -->
-    <div class="amsim-section mb-4">
-        <div class="amsim-section-title">Playlists</div>
-        <div class="amsim-playlists d-flex flex-wrap gap-3">
-            <button class="amsim-playlist-btn" onclick="filterCategory('Corporate Strategy')">Corporate Strategy</button>
-            <button class="amsim-playlist-btn" onclick="filterCategory('Research Support')">Research Support</button>
-            <button class="amsim-playlist-btn" onclick="filterCategory('Content Curation')">Content Curation</button>
-            <button class="amsim-playlist-btn" onclick="filterCategory('Communications')">Communications</button>
-        </div>
-    </div>
-
-    <!-- Main Task Grid -->
-    <div class="amsim-section mb-5">
-        <div class="amsim-section-title">All Tasks</div>
-        <div class="row g-4">
-            {% for task in tasks %}
-            <div class="col-md-6 col-lg-4">
-                <div class="amsim-card amsim-card-main">
-                    <div class="amsim-card-cover-main">
-                        <i class="bi bi-folder2-open amsim-card-icon"></i>
-                    </div>
-                    <div class="amsim-card-body-main">
-                        <div class="amsim-card-title-main">{{ task.title }}</div>
-                        <div class="amsim-card-meta-main">{{ task.deliverable_type or 'Executive Brief' }} &bull; Due {{ task.due_date or 'N/A' }}</div>
-                        <div class="amsim-card-progress">
-                            <div class="progress">
-                                <div class="progress-bar" style="width: {{ task.progress }}%"></div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <div class="result-card">
+                                <div class="result-icon">
+                                    <i class="bi bi-clock text-info"></i>
+                                </div>
+                                <div class="result-content">
+                                    <h4 id="totalTime">0h 0m</h4>
+                                    <p>Total Time</p>
+                                </div>
                             </div>
-                            <span class="amsim-card-progress-label">{{ task.progress }}%</span>
                         </div>
-                        <div class="amsim-card-actions mt-2">
-                            <button class="btn btn-primary btn-sm" onclick="simulateWork('{{ task.id }}'); event.stopPropagation();">Simulate</button>
-                            <button class="btn btn-outline-success btn-sm" onclick="generateDeliverable('{{ task.id }}'); event.stopPropagation();">AI</button>
-                            <a href="{{ url_for('edit_deliverable', task_id=task.id) }}" class="btn btn-outline-warning btn-sm" onclick="event.stopPropagation();">Edit</a>
+                        <div class="col-md-3 mb-3">
+                            <div class="result-card">
+                                <div class="result-icon">
+                                    <i class="bi bi-check-circle text-success"></i>
+                                </div>
+                                <div class="result-content">
+                                    <h4 id="completedTasks">0</h4>
+                                    <p>Completed</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="result-card">
+                                <div class="result-icon">
+                                    <i class="bi bi-robot text-warning"></i>
+                                </div>
+                                <div class="result-content">
+                                    <h4 id="aiGenerations">0</h4>
+                                    <p>AI Generations</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <div class="result-card">
+                                <div class="result-icon">
+                                    <i class="bi bi-speedometer2 text-primary"></i>
+                                </div>
+                                <div class="result-content">
+                                    <h4 id="efficiency">0%</h4>
+                                    <p>Efficiency</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            {% endfor %}
         </div>
     </div>
-
-    <!-- Now Working Bar (Mini-Player) -->
-    <div class="amsim-now-working-bar" id="nowWorkingBar" style="display: none;">
-        <div class="amsim-now-working-info">
-            <i class="bi bi-play-circle-fill"></i>
-            <span id="nowWorkingTaskTitle">Now Working: [Task Title]</span>
-            <span class="amsim-now-working-progress" id="nowWorkingTaskProgress">0%</span>
-        </div>
-        <div class="amsim-now-working-actions">
-            <button class="btn btn-sm btn-outline-secondary" onclick="pauseNowWorking()"><i class="bi bi-pause"></i></button>
-            <button class="btn btn-sm btn-outline-success" onclick="completeNowWorking()"><i class="bi bi-check2"></i></button>
-            <button class="btn btn-sm btn-outline-info" onclick="openNowWorkingDetails()"><i class="bi bi-info-circle"></i></button>
-        </div>
-    </div>
-</div>
-
-<!-- Bottom Navigation Bar -->
-<div class="amsim-bottom-nav">
-    <a href="#" class="amsim-nav-item active"><i class="bi bi-house-door"></i><span>Home</span></a>
-    <a href="#" class="amsim-nav-item"><i class="bi bi-grid"></i><span>Browse</span></a>
-    <a href="#" class="amsim-nav-item"><i class="bi bi-robot"></i><span>Copilot</span></a>
-    <a href="#" class="amsim-nav-item"><i class="bi bi-collection"></i><span>Library</span></a>
-    <a href="#" class="amsim-nav-item"><i class="bi bi-search"></i><span>Search</span></a>
 </div>
 
 <style>
-.apple-music-sim-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 2rem 1rem 6rem 1rem;
-    background: linear-gradient(120deg, #fffbe6 0%, #f7faff 100%);
-    border-radius: 24px;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.08);
-}
-.amsim-topnav {
-    padding-bottom: 1rem;
-    border-bottom: 1px solid #f0f0f0;
-}
-.amsim-title {
-    font-family: 'SF Pro Display', Inter, Arial, sans-serif;
-    font-weight: 700;
-    color: #222;
-}
-.amsim-avatar img {
-    border-radius: 50%;
-    border: 2px solid #FFD700;
-}
-.amsim-section-title {
-    font-size: 1.2rem;
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-    color: #222;
-}
-.amsim-scroll-row {
-    display: flex;
-    gap: 1.5rem;
-    overflow-x: auto;
-    padding-bottom: 0.5rem;
-}
-.amsim-card {
-    background: #fff;
-    border-radius: 18px;
-    box-shadow: 0 2px 12px rgba(0,0,0,0.06);
-    min-width: 260px;
-    max-width: 280px;
-    padding: 1.2rem;
+/* Clean Task Card Design */
+.task-card {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+    height: 100%;
     display: flex;
     flex-direction: column;
-    align-items: flex-start;
-    transition: box-shadow 0.2s;
+    position: relative;
 }
-.amsim-card-lg { min-width: 320px; max-width: 340px; }
-.amsim-card-sm { min-width: 160px; max-width: 180px; padding: 0.7rem; }
-.amsim-card-cover, .amsim-card-cover-sm, .amsim-card-cover-main {
-    width: 56px; height: 56px;
-    background: #f7f7f7;
-    border-radius: 12px;
-    display: flex; align-items: center; justify-content: center;
-    margin-bottom: 0.7rem;
-    font-size: 2rem;
-    color: #FFD700;
+
+.task-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    border-color: var(--visa-gold);
 }
-.amsim-card-cover-sm { width: 40px; height: 40px; font-size: 1.3rem; }
-.amsim-card-cover-main { width: 48px; height: 48px; font-size: 1.5rem; }
-.amsim-card-title, .amsim-card-title-main { font-size: 1.1rem; font-weight: 600; color: #222; }
-.amsim-card-title-sm { font-size: 0.95rem; font-weight: 500; color: #444; }
-.amsim-card-meta, .amsim-card-meta-main { font-size: 0.95rem; color: #888; margin-bottom: 0.5rem; }
-.amsim-card-meta-sm { font-size: 0.8rem; color: #aaa; }
-.amsim-card-progress { width: 100%; display: flex; align-items: center; gap: 0.5rem; margin-top: 0.5rem; }
-.amsim-card-progress-label { font-size: 0.85rem; color: #888; }
-.amsim-card-actions .btn { margin-right: 0.5rem; }
-.amsim-playlists { gap: 1rem; }
-.amsim-playlist-btn {
-    background: linear-gradient(90deg, #FFD700 0%, #ffecd2 100%);
-    border: none;
-    border-radius: 16px;
-    padding: 0.8rem 2rem;
-    font-weight: 600;
-    color: #222;
-    font-size: 1rem;
-    box-shadow: 0 2px 8px rgba(255,215,0,0.08);
-    transition: background 0.2s, box-shadow 0.2s;
+
+.task-card.active {
+    border-color: var(--visa-gold);
+    box-shadow: 0 0 0 2px rgba(255, 193, 7, 0.2);
 }
-.amsim-playlist-btn:hover { background: #ffe066; box-shadow: 0 4px 16px rgba(255,215,0,0.15); }
-.amsim-card-main { min-width: 100%; max-width: 100%; flex-direction: row; align-items: center; padding: 1rem; }
-.amsim-card-cover-main { margin-bottom: 0; margin-right: 1rem; }
-.amsim-card-body-main { flex: 1; }
-.amsim-card-title-main { font-size: 1.05rem; font-weight: 600; color: #222; }
-.amsim-card-meta-main { font-size: 0.92rem; color: #888; margin-bottom: 0.3rem; }
-.amsim-now-working-bar {
-    position: fixed;
-    left: 0; right: 0; bottom: 56px;
-    background: rgba(255,255,255,0.98);
-    border-top: 1px solid #eee;
-    box-shadow: 0 -2px 12px rgba(0,0,0,0.06);
-    padding: 0.7rem 2rem;
+
+/* Header */
+.task-header {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    z-index: 1000;
-    font-size: 1rem;
+    align-items: flex-start;
+    margin-bottom: 1rem;
 }
-.amsim-now-working-info { display: flex; align-items: center; gap: 1rem; }
-.amsim-now-working-progress { font-weight: 600; color: #FFD700; margin-left: 1rem; }
-.amsim-now-working-actions .btn { margin-left: 0.5rem; }
-.amsim-bottom-nav {
-    position: fixed;
-    left: 0; right: 0; bottom: 0;
-    background: #fff;
-    border-top: 1px solid #eee;
+
+.task-title h6 {
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+}
+
+.task-actions {
     display: flex;
-    justify-content: space-around;
-    align-items: center;
-    height: 56px;
-    z-index: 1100;
-    box-shadow: 0 -2px 12px rgba(0,0,0,0.04);
+    gap: 0.25rem;
 }
-.amsim-nav-item {
+
+.task-actions .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+}
+
+/* Content */
+.task-content {
+    flex: 1;
     display: flex;
     flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    color: #888;
-    font-size: 1.2rem;
-    text-decoration: none;
-    font-weight: 500;
-    transition: color 0.2s;
+    gap: 1rem;
 }
-.amsim-nav-item.active, .amsim-nav-item:hover { color: #FFD700; }
-.amsim-nav-item span { font-size: 0.8rem; margin-top: 0.1rem; }
+
+.task-description {
+    margin-bottom: 0.5rem;
+}
+
+.task-description p {
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* Info Items */
+.task-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.info-item i {
+    color: var(--visa-gold);
+    width: 16px;
+}
+
+/* Progress */
+.task-progress {
+    margin-bottom: 0.5rem;
+}
+
+.progress-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.progress {
+    height: 6px;
+    background-color: var(--bg-tertiary);
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progress-bar {
+    height: 100%;
+    background-color: var(--visa-gold);
+    transition: width 0.3s ease;
+}
+
+/* Deliverable */
+.task-deliverable {
+    margin-bottom: 0.5rem;
+}
+
+/* Footer */
+.task-footer {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: auto;
+    padding-top: 1rem;
+}
+
+.task-footer .btn {
+    flex: 1;
+    font-size: 0.875rem;
+}
+
+/* Result Cards */
+.result-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem;
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.result-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.result-icon {
+    font-size: 2rem;
+    flex-shrink: 0;
+}
+
+.result-content h4 {
+    margin: 0;
+    color: var(--text-primary);
+    font-weight: 700;
+}
+
+.result-content p {
+    margin: 0;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+}
+
+/* Suggested Sources */
+.source-item {
+    background: var(--bg-secondary);
+    border-color: var(--border-color) !important;
+    transition: all 0.3s ease;
+}
+
+.source-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-color: var(--visa-gold) !important;
+}
+
+.source-actions {
+    display: flex;
+    gap: 0.25rem;
+}
+
+.source-actions .btn {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+}
+
+/* Responsive adjustments */
 @media (max-width: 768px) {
-    .apple-music-sim-container { padding: 1rem 0.2rem 7rem 0.2rem; }
-    .amsim-card-lg, .amsim-card { min-width: 90vw; max-width: 95vw; }
-    .amsim-card-main { flex-direction: column; align-items: flex-start; }
-    .amsim-card-cover-main { margin-right: 0; margin-bottom: 0.7rem; }
+    .task-card {
+        padding: 1rem;
+    }
+    
+    .task-header {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .task-actions {
+        align-self: flex-end;
+    }
+    
+    .task-footer {
+        flex-direction: column;
+    }
 }
 </style>
 {% endblock %}
 
 {% block scripts %}
 <script>
-// Keep all existing JS for simulation, but you can add new functions for the new UI as needed
-// Example: filterCategory, showNowWorkingBar, etc.
-function filterCategory(category) {
-    // For demo: just show a notification
-    showNotification('Filtering by: ' + category, 'info');
-}
-function showNowWorkingBar(taskId, title, progress) {
-    document.getElementById('nowWorkingBar').style.display = 'flex';
-    document.getElementById('nowWorkingTaskTitle').textContent = 'Now Working: ' + title;
-    document.getElementById('nowWorkingTaskProgress').textContent = progress + '%';
-}
-function pauseNowWorking() { showNotification('Paused', 'info'); }
-function completeNowWorking() { showNotification('Completed', 'success'); }
-function openNowWorkingDetails() { showNotification('Open details', 'info'); }
+    let simulationRunning = false;
+    let simulationTimer = null;
+    let totalTime = 0;
+    let completedTasks = 0;
+    let aiGenerations = 0;
+
+    function startSimulation() {
+        if (simulationRunning) {
+            stopSimulation();
+            return;
+        }
+
+        simulationRunning = true;
+        const speed = parseInt(document.getElementById('simulationSpeed').value);
+        const aiLevel = document.getElementById('aiLevel').value;
+        const autoGenerate = document.getElementById('autoGenerate').checked;
+
+        // Update button
+        event.target.innerHTML = '<i class="bi bi-stop-fill"></i> Stop Simulation';
+        event.target.className = 'btn btn-danger w-100';
+
+        // Start timer
+        simulationTimer = setInterval(() => {
+            totalTime += speed;
+            updateResults();
+            
+            // Simulate random task progress
+            simulateRandomProgress();
+        }, 1000);
+
+        console.log(`Simulation started with speed: ${speed}x, AI level: ${aiLevel}, Auto-generate: ${autoGenerate}`);
+    }
+
+    function stopSimulation() {
+        simulationRunning = false;
+        clearInterval(simulationTimer);
+        
+        // Reset button
+        event.target.innerHTML = '<i class="bi bi-play-fill"></i> Start Simulation';
+        event.target.className = 'btn btn-primary w-100';
+        
+        console.log('Simulation stopped');
+    }
+
+    function simulateRandomProgress() {
+        const taskCards = document.querySelectorAll('.task-card');
+        const randomTask = taskCards[Math.floor(Math.random() * taskCards.length)];
+        const taskId = randomTask.dataset.taskId;
+        
+        // Simulate progress increase
+        const progressBar = randomTask.querySelector('.progress-bar');
+        const currentProgress = parseInt(progressBar.style.width) || 0;
+        const newProgress = Math.min(currentProgress + Math.random() * 10, 100);
+        
+        progressBar.style.width = newProgress + '%';
+        randomTask.querySelector('.progress-info span:last-child').textContent = Math.round(newProgress) + '%';
+        
+        // Update task status if completed
+        if (newProgress >= 100) {
+            const statusBadge = randomTask.querySelector('.badge');
+            statusBadge.textContent = 'Completed';
+            statusBadge.className = 'badge badge-success';
+            completedTasks++;
+        }
+        
+        // Simulate AI generation
+        if (Math.random() > 0.7) {
+            aiGenerations++;
+        }
+    }
+
+    function updateResults() {
+        const hours = Math.floor(totalTime / 3600);
+        const minutes = Math.floor((totalTime % 3600) / 60);
+        
+        document.getElementById('totalTime').textContent = `${hours}h ${minutes}m`;
+        document.getElementById('completedTasks').textContent = completedTasks;
+        document.getElementById('aiGenerations').textContent = aiGenerations;
+        
+        // Calculate efficiency
+        const totalTasks = {{ tasks|length }};
+        const efficiency = Math.round((completedTasks / totalTasks) * 100);
+        document.getElementById('efficiency').textContent = efficiency + '%';
+    }
+
+    function editTask(taskId) {
+        console.log('Editing task:', taskId);
+        showNotification('Edit functionality would open a modal for task editing', 'info');
+    }
+
+    function generateDeliverable(taskId) {
+        console.log('Generating deliverable for task:', taskId);
+        
+        fetch('/api/deliverables/generate', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                task_id: taskId,
+                format_type: 'executive_brief'
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            aiGenerations++;
+            updateResults();
+            
+            // Show success message and offer to edit
+            if (confirm('Deliverable generated successfully! Would you like to edit it now?')) {
+                window.location.href = `/edit/${taskId}`;
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+            showNotification('Error generating deliverable', 'danger');
+        });
+    }
+
+    function simulateWork(taskId) {
+        const taskCard = document.querySelector(`[data-task-id="${taskId}"]`);
+        const progressBar = taskCard.querySelector('.progress-bar');
+        const currentProgress = parseInt(progressBar.style.width) || 0;
+        const newProgress = Math.min(currentProgress + 20, 100);
+        
+        progressBar.style.width = newProgress + '%';
+        taskCard.querySelector('.progress-info span:last-child').textContent = Math.round(newProgress) + '%';
+        
+        if (newProgress >= 100) {
+            const statusBadge = taskCard.querySelector('.badge');
+            statusBadge.textContent = 'Completed';
+            statusBadge.className = 'badge badge-success';
+            completedTasks++;
+            updateResults();
+        }
+    }
+
+    function addSource(taskId) {
+        console.log('Adding source to task:', taskId);
+        showNotification('Add source functionality would open a source selection modal', 'info');
+    }
+
+    function viewDetails(taskId) {
+        console.log('Viewing details for task:', taskId);
+        showNotification('Details view would show comprehensive task information and history', 'info');
+    }
+
+    // Initialize progress bars
+    document.addEventListener('DOMContentLoaded', function() {
+        const progressBars = document.querySelectorAll('.progress-bar');
+        progressBars.forEach(bar => {
+            const taskCard = bar.closest('.task-card');
+            const progressText = taskCard.querySelector('.progress-info span:last-child');
+            const progress = parseInt(progressText.textContent);
+            bar.style.width = progress + '%';
+        });
+    });
+
+    // Mock data for suggested sources
+    const mockSources = {
+        'task-001': [
+            {
+                id: 'source-001',
+                title: 'CB Insights - BNPL Market Report Q3 2025',
+                media_type: 'article',
+                relevance_score: 0.92,
+                tags: ['BNPL', 'market analysis', 'fintech'],
+                freshness: '2025-01-15T10:30:00Z'
+            },
+            {
+                id: 'source-003',
+                title: 'McKinsey - Digital Payments in APAC',
+                media_type: 'article',
+                relevance_score: 0.95,
+                tags: ['APAC', 'digital payments', 'market expansion'],
+                freshness: '2025-01-18T09:15:00Z'
+            }
+        ],
+        'task-002': [
+            {
+                id: 'source-008',
+                title: 'Competitor Analysis Database',
+                media_type: 'database',
+                relevance_score: 0.91,
+                tags: ['competitive intelligence', 'internal', 'analysis'],
+                freshness: '2025-01-16T12:45:00Z'
+            }
+        ],
+        'task-003': [
+            {
+                id: 'source-011',
+                title: 'European Commission - PSD3 Directive',
+                media_type: 'article',
+                relevance_score: 0.97,
+                tags: ['PSD3', 'regulatory', 'EU', 'compliance'],
+                freshness: '2025-01-19T14:30:00Z'
+            }
+        ]
+    };
+
+    function selectTask(taskId, taskTitle) {
+        // Remove active class from all tasks
+        document.querySelectorAll('.task-card').forEach(card => {
+            card.classList.remove('active');
+        });
+        
+        // Add active class to selected task
+        const selectedCard = document.querySelector(`[data-task-id="${taskId}"]`);
+        if (selectedCard) {
+            selectedCard.classList.add('active');
+        }
+        
+        // Show suggested sources
+        showSuggestedSources(taskId, taskTitle);
+    }
+
+    function showSuggestedSources(taskId, taskTitle) {
+        const row = document.getElementById('suggestedSourcesRow');
+        const list = document.getElementById('suggestedSourcesList');
+        const noMessage = document.getElementById('noSourcesMessage');
+        const countBadge = document.getElementById('sourceCount');
+        const titleSpan = document.getElementById('selectedTaskTitle');
+        
+        titleSpan.textContent = taskTitle;
+        const sources = mockSources[taskId] || [];
+        
+        if (sources.length > 0) {
+            row.style.display = 'block';
+            noMessage.style.display = 'none';
+            countBadge.textContent = sources.length;
+            
+            list.innerHTML = sources.map(source => `
+                <div class="source-item mb-3 p-3 border rounded">
+                    <div class="d-flex justify-content-between align-items-start mb-2">
+                        <div class="d-flex align-items-center">
+                            <i class="bi bi-${getMediaIcon(source.media_type)} me-2 text-primary"></i>
+                            <h6 class="mb-0">${source.title}</h6>
+                        </div>
+                        <span class="badge badge-success">${Math.round(source.relevance_score * 100)}%</span>
+                    </div>
+                    <div class="mb-2">
+                        ${source.tags.map(tag => `<span class="badge badge-secondary me-1">${tag}</span>`).join('')}
+                    </div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <small class="text-muted">${formatDate(source.freshness)}</small>
+                        <div>
+                            <button class="btn btn-sm btn-success me-1" onclick="acceptSource('${source.id}')">
+                                <i class="bi bi-check"></i> Accept
+                            </button>
+                            <button class="btn btn-sm btn-warning me-1" onclick="markCritical('${source.id}')">
+                                <i class="bi bi-exclamation-triangle"></i> Critical
+                            </button>
+                            <button class="btn btn-sm btn-outline-secondary" onclick="dismissSource('${source.id}')">
+                                <i class="bi bi-x"></i> Dismiss
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        } else {
+            row.style.display = 'none';
+        }
+    }
+
+    function getMediaIcon(mediaType) {
+        const icons = {
+            'article': 'file-text',
+            'video': 'play-circle',
+            'podcast': 'headphones',
+            'database': 'database',
+            'webinar': 'camera-video'
+        };
+        return icons[mediaType] || 'file';
+    }
+
+    function formatDate(dateString) {
+        const date = new Date(dateString);
+        const now = new Date();
+        const diffDays = Math.floor((now - date) / (1000 * 60 * 60 * 24));
+        
+        if (diffDays === 0) return 'Today';
+        if (diffDays === 1) return 'Yesterday';
+        if (diffDays < 7) return `${diffDays} days ago`;
+        return date.toLocaleDateString();
+    }
+
+    function acceptSource(sourceId) {
+        console.log('Source accepted:', sourceId);
+        showNotification('Source accepted and assigned to task', 'success');
+    }
+
+    function markCritical(sourceId) {
+        console.log('Source marked as critical:', sourceId);
+        showNotification('Source marked as critical', 'warning');
+    }
+
+    function dismissSource(sourceId) {
+        console.log('Source dismissed:', sourceId);
+        showNotification('Source suggestion dismissed', 'info');
+    }
+
+    function showNotification(message, type) {
+        const alertDiv = document.createElement('div');
+        alertDiv.className = `alert alert-${type} alert-dismissible fade show position-fixed`;
+        alertDiv.style.cssText = 'top: 20px; right: 20px; z-index: 9999; min-width: 300px;';
+        alertDiv.innerHTML = `
+            ${message}
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        `;
+        document.body.appendChild(alertDiv);
+        
+        setTimeout(() => {
+            if (alertDiv.parentNode) {
+                alertDiv.parentNode.removeChild(alertDiv);
+            }
+        }, 3000);
+    }
+
+    function submitNewTask() {
+        const form = document.getElementById('newTaskForm');
+        const formData = new FormData(form);
+        const data = {};
+        formData.forEach((value, key) => {
+            if (key === 'sections' || key === 'stakeholders' || key === 'tags') {
+                data[key] = value.split(',').map(s => s.trim()).filter(Boolean);
+            } else if (key === 'objectives') {
+                data[key] = value.split('\n').map(s => s.trim()).filter(Boolean);
+            } else {
+                data[key] = value;
+            }
+        });
+        data['origin'] = 'analyst';
+        
+        fetch('/api/tasks', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.text().then(text => {
+                    throw new Error(`HTTP ${response.status}: ${text}`);
+                });
+            }
+            return response.json();
+        })
+        .then(result => {
+            if (result && result.success && result.id) {
+                // Show success message
+                showNotification('Task created successfully!', 'success');
+                // Close modal and reload
+                var modal = bootstrap.Modal.getInstance(document.getElementById('newTaskModal'));
+                modal.hide();
+                // Reset form
+                form.reset();
+                // Reload page to show new task
+                setTimeout(() => location.reload(), 1000);
+            } else {
+                throw new Error(result.error || 'Unknown error occurred');
+            }
+        })
+        .catch(error => {
+            console.error('Error creating task:', error);
+            showNotification('Error creating task: ' + error.message, 'danger');
+        });
+    }
 </script>
 {% endblock %} 
