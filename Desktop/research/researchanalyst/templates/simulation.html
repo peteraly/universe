@@ -6,13 +6,99 @@
 <div class="container-fluid py-4">
     <!-- Page Header -->
     <div class="row mb-4">
-        <div class="col-12">
-            <h1 class="h2 mb-0">
-                <i class="bi bi-play-circle text-warning"></i>
-                Research Simulation Panel
-            </h1>
-            <p class="text-muted">Interactive task simulation with AI assistance and real-time editing.</p>
+        <div class="col-12 d-flex justify-content-between align-items-center">
+            <div>
+                <h1 class="h2 mb-0">
+                    <i class="bi bi-play-circle text-warning"></i>
+                    Research Simulation Panel
+                </h1>
+                <p class="text-muted">Interactive task simulation with AI assistance and real-time editing.</p>
+            </div>
+            <button class="btn btn-success" data-bs-toggle="modal" data-bs-target="#newTaskModal">
+                <i class="bi bi-plus-circle"></i> New Task
+            </button>
         </div>
+    </div>
+
+    <!-- New Task Modal -->
+    <div class="modal fade" id="newTaskModal" tabindex="-1" aria-labelledby="newTaskModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="newTaskModalLabel">Create New Task</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="newTaskForm">
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label">Title *</label>
+                  <input type="text" class="form-control" name="title" required>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Category</label>
+                  <select class="form-select" name="category">
+                    <option>Corporate Strategy</option>
+                    <option>Research Support</option>
+                    <option>Content Curation</option>
+                    <option>Communications</option>
+                  </select>
+                </div>
+                <div class="col-md-12">
+                  <label class="form-label">Description</label>
+                  <textarea class="form-control" name="description" rows="2"></textarea>
+                </div>
+                <div class="col-md-12">
+                  <label class="form-label">Deliverable Request/Description</label>
+                  <input type="text" class="form-control" name="deliverable">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Deliverable Type</label>
+                  <select class="form-select" name="deliverable_type">
+                    <option>Executive Brief</option>
+                    <option>SWOT Analysis</option>
+                    <option>Market Map</option>
+                    <option>Policy Memo</option>
+                    <option>Slide Deck</option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Format</label>
+                  <input type="text" class="form-control" name="format" placeholder="e.g. Table + Narrative, Infographic">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Sections (comma-separated)</label>
+                  <input type="text" class="form-control" name="sections">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Objectives (one per line)</label>
+                  <textarea class="form-control" name="objectives" rows="2"></textarea>
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Stakeholders (comma-separated)</label>
+                  <input type="text" class="form-control" name="stakeholders">
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">Due Date</label>
+                  <input type="date" class="form-control" name="due_date">
+                </div>
+                <div class="col-md-3">
+                  <label class="form-label">Tags (comma-separated)</label>
+                  <input type="text" class="form-control" name="tags">
+                </div>
+                <div class="col-md-12">
+                  <label class="form-label">Instructions (optional)</label>
+                  <textarea class="form-control" name="instructions" rows="2"></textarea>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-success" onclick="submitNewTask()">Create Task</button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Simulation Controls -->
@@ -976,6 +1062,41 @@
                 alertDiv.parentNode.removeChild(alertDiv);
             }
         }, 3000);
+    }
+
+    function submitNewTask() {
+        const form = document.getElementById('newTaskForm');
+        const formData = new FormData(form);
+        const data = {};
+        formData.forEach((value, key) => {
+            if (key === 'sections' || key === 'stakeholders' || key === 'tags') {
+                data[key] = value.split(',').map(s => s.trim()).filter(Boolean);
+            } else if (key === 'objectives') {
+                data[key] = value.split('\n').map(s => s.trim()).filter(Boolean);
+            } else {
+                data[key] = value;
+            }
+        });
+        data['origin'] = 'analyst';
+        fetch('/api/tasks', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        })
+        .then(response => response.json())
+        .then(result => {
+            if (result && result.id) {
+                // Close modal and reload
+                var modal = bootstrap.Modal.getInstance(document.getElementById('newTaskModal'));
+                modal.hide();
+                location.reload();
+            } else {
+                alert('Error creating task: ' + (result.error || 'Unknown error'));
+            }
+        })
+        .catch(error => {
+            alert('Error creating task: ' + error);
+        });
     }
 </script>
 {% endblock %} 
