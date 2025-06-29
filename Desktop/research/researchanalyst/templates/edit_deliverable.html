@@ -14,6 +14,11 @@
                         Edit Deliverable
                     </h1>
                     <p class="text-muted">{{ task.title }}</p>
+                    {% if deliverable_description %}
+                    <div class="alert alert-info" style="margin-bottom: 1rem;">
+                        <strong>Deliverable Request:</strong> {{ deliverable_description }}
+                    </div>
+                    {% endif %}
                 </div>
                 <div class="d-flex gap-2">
                     <button class="btn btn-outline-primary" onclick="saveDraft()">

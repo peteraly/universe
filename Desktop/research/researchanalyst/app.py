@@ -287,7 +287,8 @@ def edit_deliverable(task_id):
                          deliverable=deliverable,
                          sources=task_sources,
                          detected_format=detected_format,
-                         deliverable_content=deliverable.get('content', '') if deliverable else '')
+                         deliverable_content=deliverable.get('content', '') if deliverable else '',
+                         deliverable_description=task.get('deliverable', ''))
 
 # API routes
 @app.route('/api/generate', methods=['POST'])
