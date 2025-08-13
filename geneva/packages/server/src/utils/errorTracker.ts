@@ -68,22 +68,39 @@ class ErrorTracker {
     const errorId = this.generateErrorId()
     const timestamp = new Date().toISOString()
     
-    const errorReport: ErrorReport = {
+    const errorReportData: any = {
       id: errorId,
       timestamp,
       type: 'error',
       severity: context.severity || 'medium',
       message: typeof error === 'string' ? error : error.message,
-      stack: error instanceof Error ? error.stack : undefined,
       context: context,
-      userAgent: context.userAgent,
-      ip: context.ip,
-      url: context.url,
-      method: context.method,
-      userId: context.userId,
-      jobId: context.jobId,
       resolved: false
     }
+    
+    if (error instanceof Error && error.stack) {
+      errorReportData.stack = error.stack
+    }
+    if (context.userAgent) {
+      errorReportData.userAgent = context.userAgent
+    }
+    if (context.ip) {
+      errorReportData.ip = context.ip
+    }
+    if (context.url) {
+      errorReportData.url = context.url
+    }
+    if (context.method) {
+      errorReportData.method = context.method
+    }
+    if (context.userId) {
+      errorReportData.userId = context.userId
+    }
+    if (context.jobId) {
+      errorReportData.jobId = context.jobId
+    }
+    
+    const errorReport: ErrorReport = errorReportData
 
     this.errors.set(errorId, errorReport)
     this.saveErrors()
@@ -133,7 +150,9 @@ class ErrorTracker {
       error.resolved = true
       error.resolvedAt = new Date().toISOString()
       error.resolvedBy = resolvedBy
-      error.notes = notes
+      if (notes) {
+        error.notes = notes
+      }
       this.saveErrors()
       
       logger.info(`Error ${errorId} resolved by ${resolvedBy}`)

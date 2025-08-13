@@ -17,14 +17,17 @@ export const errorHandler = (
   const message = error.message || 'Internal Server Error'
 
   // Track error with context
-  const errorId = errorTracker.trackError(error, {
+  const errorContext: any = {
     severity: statusCode >= 500 ? 'high' : 'medium',
     url: req.url,
     method: req.method,
-    ip: req.ip,
-    userAgent: req.get('User-Agent'),
     statusCode
-  })
+  }
+  
+  if (req.ip) errorContext.ip = req.ip
+  if (req.get('User-Agent')) errorContext.userAgent = req.get('User-Agent')
+  
+  const errorId = errorTracker.trackError(error, errorContext)
 
   // Log error
   logger.error({

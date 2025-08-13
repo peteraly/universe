@@ -74,6 +74,7 @@ export function emitJobUpdate(jobId: string, job: Job) {
 
   const message: WebSocketMessage = {
     type: 'job_update',
+    jobId: jobId,
     data: {
       id: job.id,
       status: job.status,
@@ -97,7 +98,8 @@ export function emitJobComplete(jobId: string, job: Job) {
   }
 
   const message: WebSocketMessage = {
-    type: 'job_complete',
+    type: 'complete',
+    jobId: jobId,
     data: job,
     timestamp: new Date().toISOString()
   }
@@ -114,7 +116,8 @@ export function emitJobError(jobId: string, error: string) {
   }
 
   const message: WebSocketMessage = {
-    type: 'job_error',
+    type: 'error',
+    jobId: jobId,
     data: { error },
     timestamp: new Date().toISOString()
   }
@@ -131,7 +134,8 @@ export function emitFallback(jobId: string, step: string, fallback: string, reas
   }
 
   const message: WebSocketMessage = {
-    type: 'fallback',
+    type: 'error',
+    jobId: jobId,
     data: {
       step,
       fallback,

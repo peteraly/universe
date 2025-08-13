@@ -1,6 +1,7 @@
 import { Router } from 'express'
 import { logger } from '../utils/logger'
 import { jobQueue } from '../services/queue'
+import Redis from 'ioredis'
 
 const router = Router()
 
@@ -19,7 +20,8 @@ router.get('/', (req, res) => {
 router.get('/detailed', async (req, res) => {
   try {
     const queueInfo = await jobQueue.getJobCounts()
-    const redisConnected = jobQueue.client.status === 'ready'
+    const redis = new Redis(process.env.REDIS_URL || 'redis://localhost:6379')
+    const redisConnected = redis.status === 'ready'
 
     res.json({
       status: 'healthy',
@@ -52,7 +54,8 @@ router.get('/detailed', async (req, res) => {
 // Readiness check
 router.get('/ready', async (req, res) => {
   try {
-    const redisConnected = jobQueue.client.status === 'ready'
+    const redis = new Redis(process.env.REDIS_URL || 'redis://localhost:6379')
+    const redisConnected = redis.status === 'ready'
     
     if (!redisConnected) {
       return res.status(503).json({
@@ -62,13 +65,13 @@ router.get('/ready', async (req, res) => {
       })
     }
 
-    res.json({
+    return res.json({
       status: 'ready',
       timestamp: new Date().toISOString()
     })
   } catch (error) {
     logger.error('Readiness check failed:', error)
-    res.status(503).json({
+    return res.status(503).json({
       status: 'not ready',
       timestamp: new Date().toISOString(),
       error: error instanceof Error ? error.message : 'Unknown error'

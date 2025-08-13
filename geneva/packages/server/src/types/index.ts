@@ -129,6 +129,9 @@ export interface CourseData {
   waterFeatures?: any[]
   amenities?: string[]
   boundaries?: any[]
+  satelliteData?: any
+  weatherData?: any
+  elevationData?: any
 }
 
 export interface ErrorLog {

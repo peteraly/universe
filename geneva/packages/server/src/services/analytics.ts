@@ -12,16 +12,14 @@ class AnalyticsService {
   trackJobAnalytics(jobId: string, analytics: Partial<JobAnalytics>): void {
     try {
       const jobAnalytics: JobAnalytics = {
-        startTime: analytics.startTime || new Date().toISOString(),
-        stepDurations: analytics.stepDurations || {},
-        resourceUsage: analytics.resourceUsage || { cpu: 0, memory: 0, diskSpace: 0 },
-        apiCalls: analytics.apiCalls || { geocoding: 0, elevation: 0, satellite: 0, weather: 0, total: 0 },
-        cacheHits: analytics.cacheHits || 0,
-        cacheMisses: analytics.cacheMisses || 0,
-        retries: analytics.retries || 0,
-        userAgent: analytics.userAgent || '',
-        ipAddress: analytics.ipAddress || '',
-        sessionId: analytics.sessionId || ''
+        jobId,
+        courseName: analytics.courseName || '',
+        createdAt: analytics.createdAt || new Date().toISOString(),
+        status: analytics.status || 'pending',
+        ...(analytics.coordinates && { coordinates: analytics.coordinates }),
+        ...(analytics.completedAt && { completedAt: analytics.completedAt }),
+        ...(analytics.duration && { duration: analytics.duration }),
+        ...(analytics.output && { output: analytics.output })
       }
 
       logger.info(`Job analytics tracked for ${jobId}`, { jobId, analytics: jobAnalytics })
@@ -50,11 +48,11 @@ class AnalyticsService {
         },
         technicalQuality: metrics.technicalQuality || {
           renderTime: 0,
-          memoryEfficiency: 0,
-          cpuEfficiency: 0,
+          memoryUsage: 0,
+          cpuUsage: 0,
           errorRate: 0
         },
-        userFeedback: metrics.userFeedback
+        ...(metrics.userFeedback && { userFeedback: metrics.userFeedback })
       }
 
       logger.info(`Quality metrics tracked for ${jobId}`, { jobId, metrics: qualityMetrics })
@@ -75,7 +73,7 @@ class AnalyticsService {
         memoryUsage: this.getMemoryUsage(),
         cpuUsage: this.getCpuUsage(),
         success,
-        error
+        ...(error && { error })
       }
 
       this.performanceLogs.push(performanceLog)
@@ -98,13 +96,11 @@ class AnalyticsService {
       const errorLog: ErrorLog = {
         id: uuidv4(),
         jobId,
-        timestamp: new Date().toISOString(),
-        level,
         step,
         message,
-        stackTrace: context?.stackTrace,
+        level,
         context: context || {},
-        resolved: false
+        timestamp: new Date().toISOString()
       }
 
       this.errorLogs.push(errorLog)
@@ -125,7 +121,6 @@ class AnalyticsService {
     try {
       const session: UserSession = {
         id: sessionId,
-        userId: userData.userId,
         ipAddress: userData.ipAddress || '',
         userAgent: userData.userAgent || '',
         startTime: userData.startTime || new Date().toISOString(),
@@ -136,7 +131,8 @@ class AnalyticsService {
         averageJobDuration: userData.averageJobDuration || 0,
         preferredCourses: userData.preferredCourses || [],
         commonErrors: userData.commonErrors || [],
-        feedback: userData.feedback || []
+        feedback: userData.feedback || [],
+        ...(userData.userId && { userId: userData.userId })
       }
 
       this.userSessions.set(sessionId, session)
@@ -151,25 +147,12 @@ class AnalyticsService {
     try {
       const systemMetrics: SystemMetrics = {
         timestamp: new Date().toISOString(),
+        cpu: metrics.cpu || this.getCpuUsage(),
+        memory: metrics.memory || this.getMemoryUsage(),
+        disk: metrics.disk || this.getDiskUsage(),
+        network: metrics.network || 0,
         activeJobs: metrics.activeJobs || 0,
-        completedJobs: metrics.completedJobs || 0,
-        failedJobs: metrics.failedJobs || 0,
-        averageRenderTime: metrics.averageRenderTime || 0,
-        successRate: metrics.successRate || 0,
-        errorRate: metrics.errorRate || 0,
-        resourceUtilization: metrics.resourceUtilization || {
-          cpu: this.getCpuUsage(),
-          memory: this.getMemoryUsage(),
-          disk: this.getDiskUsage(),
-          network: 0
-        },
-        queueLength: metrics.queueLength || 0,
-        apiResponseTimes: metrics.apiResponseTimes || {
-          geocoding: 0,
-          elevation: 0,
-          satellite: 0,
-          weather: 0
-        }
+        queueLength: metrics.queueLength || 0
       }
 
       this.systemMetrics.push(systemMetrics)

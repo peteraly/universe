@@ -3,6 +3,7 @@ import Joi from 'joi'
 import { createError } from '../middleware/errorHandler'
 import { ApiResponse } from '../types'
 import { jobProcessorService } from '../services/jobProcessor'
+import { JobUpdateRequest } from '../types'
 
 const router: Router = Router()
 
@@ -54,6 +55,62 @@ router.get('/', async (req, res, next) => {
       data: jobs,
       message: `Retrieved ${jobs.length} jobs`
     } as ApiResponse<any[]>)
+  } catch (error) {
+    next(error)
+  }
+})
+
+// Delete a job
+router.delete('/:id', async (req, res, next) => {
+  try {
+    const { id } = req.params
+    const deleted = await jobProcessorService.deleteJob(id)
+
+    if (!deleted) {
+      return next(createError('Job not found', 404))
+    }
+
+    res.json({
+      success: true,
+      message: 'Job deleted successfully'
+    } as ApiResponse<void>)
+  } catch (error) {
+    next(error)
+  }
+})
+
+// Cancel a job
+router.post('/:id/cancel', async (req, res, next) => {
+  try {
+    const { id } = req.params
+    const cancelled = await jobProcessorService.cancelJob(id)
+
+    if (!cancelled) {
+      return next(createError('Job not found', 404))
+    }
+
+    res.json({
+      success: true,
+      message: 'Job cancelled successfully'
+    } as ApiResponse<void>)
+  } catch (error) {
+    next(error)
+  }
+})
+
+// Update a job
+router.patch('/:id', async (req, res, next) => {
+  try {
+    const { id } = req.params
+    const updates = req.body as JobUpdateRequest
+
+    const updatedJob = await jobProcessorService.updateJob(id, updates)
+
+    res.json({
+      success: true,
+      data: updatedJob,
+      message: 'Job updated successfully'
+    })
   } catch (error) {
     next(error)
   }
@@ -186,7 +243,7 @@ router.get('/:id/step-data', async (req, res, next) => {
 
     const job = await jobProcessorService.getJob(id)
     if (!job) {
-      return next(createError(404, 'Job not found'))
+      return next(createError('Job not found', 404))
     }
 
     // Generate live data based on the current step

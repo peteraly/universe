@@ -64,8 +64,10 @@ app.use('/outputs', (req, res, next) => {
   res.header('Access-Control-Allow-Origin', '*')
   res.header('Access-Control-Allow-Methods', 'GET, OPTIONS')
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
+  res.header('Cross-Origin-Resource-Policy', 'cross-origin')
+  res.header('Cross-Origin-Embedder-Policy', 'unsafe-none')
   next()
-}, express.static(path.join(process.cwd(), 'outputs')))
+}, express.static(path.join(__dirname, '../../outputs')))
 
 // API documentation endpoint
 app.get('/api', (req, res) => {

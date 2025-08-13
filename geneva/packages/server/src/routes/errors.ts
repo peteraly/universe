@@ -8,11 +8,14 @@ const router = Router()
 // Get all errors with filters
 router.get('/', (req, res, next) => {
   try {
-    const filters = {
-      resolved: req.query.resolved === undefined ? undefined : req.query.resolved === 'true',
+    const filters: any = {
       severity: req.query.severity as string,
       type: req.query.type as string,
       jobId: req.query.jobId as string
+    }
+    
+    if (req.query.resolved !== undefined) {
+      filters.resolved = req.query.resolved === 'true'
     }
 
     const errors = errorTracker.getErrors(filters)
@@ -162,10 +165,13 @@ router.post('/bulk-resolve', (req, res, next) => {
 // Export errors to JSON
 router.get('/export/json', (req, res, next) => {
   try {
-    const filters = {
-      resolved: req.query.resolved === undefined ? undefined : req.query.resolved === 'true',
+    const filters: any = {
       severity: req.query.severity as string,
       type: req.query.type as string
+    }
+    
+    if (req.query.resolved !== undefined) {
+      filters.resolved = req.query.resolved === 'true'
     }
 
     const errors = errorTracker.getErrors(filters)
