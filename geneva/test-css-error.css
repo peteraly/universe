@@ -1,0 +1,8 @@
+/* Test CSS file with intentional errors to demonstrate auto-fix */
+.test-class {
+  @apply bg-white text-gray-900 border-gray-300  focus-visible:ring-primary-500;
+}
+
+.another-class {
+  @apply ;
+}

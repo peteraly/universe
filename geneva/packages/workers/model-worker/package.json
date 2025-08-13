@@ -1,0 +1,50 @@
+{
+  "name": "@golfvision/model-worker",
+  "version": "1.0.0",
+  "description": "GolfVision 3D Model Generation Worker",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "start": "node dist/index.js",
+    "test": "jest",
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "eslint src/**/*.ts --fix",
+    "clean": "rm -rf dist node_modules"
+  },
+  "dependencies": {
+    "bullmq": "^4.0.0",
+    "ioredis": "^5.0.0",
+    "winston": "^3.0.0",
+    "fs-extra": "^11.0.0",
+    "path": "^0.12.7",
+    "child_process": "^1.0.2",
+    "axios": "^1.6.0",
+    "uuid": "^9.0.0",
+    "dotenv": "^16.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/fs-extra": "^11.0.0",
+    "@types/uuid": "^9.0.0",
+    "typescript": "^5.0.0",
+    "ts-node": "^10.9.0",
+    "jest": "^29.0.0",
+    "@types/jest": "^29.0.0",
+    "eslint": "^8.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "golf",
+    "3d",
+    "blender",
+    "modeling",
+    "rendering"
+  ],
+  "author": "GolfVision Team",
+  "license": "MIT"
+}

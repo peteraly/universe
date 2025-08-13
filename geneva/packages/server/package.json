@@ -1,0 +1,65 @@
+{
+  "name": "@golfvision/server",
+  "version": "1.0.0",
+  "description": "GolfVision API Server",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "start": "node dist/index.js",
+    "test": "jest",
+    "test:unit": "jest --testPathPattern=src/.*\\.test\\.ts",
+    "test:integration": "jest --testPathPattern=src/tests/.*\\.test\\.ts",
+    "test:watch": "jest --watch",
+    "test:coverage": "jest --coverage",
+    "lint": "eslint src/**/*.ts",
+    "lint:fix": "eslint src/**/*.ts --fix",
+    "type-check": "tsc --noEmit",
+    "clean": "rm -rf dist node_modules"
+  },
+  "dependencies": {
+    "express": "^4.18.0",
+    "cors": "^2.8.5",
+    "helmet": "^7.0.0",
+    "compression": "^1.7.4",
+    "morgan": "^1.10.0",
+    "dotenv": "^16.0.0",
+    "bullmq": "^4.0.0",
+    "ioredis": "^5.0.0",
+    "socket.io": "^4.7.0",
+    "joi": "^17.9.0",
+    "winston": "^3.0.0",
+    "express-rate-limit": "^6.7.0",
+    "uuid": "^9.0.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.0",
+    "@types/cors": "^2.8.0",
+    "@types/compression": "^1.7.0",
+    "@types/morgan": "^1.9.0",
+    "@types/node": "^20.0.0",
+    "@types/uuid": "^9.0.0",
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.0.0",
+    "jest": "^29.0.0",
+    "@types/jest": "^29.0.0",
+    "ts-jest": "^29.0.0",
+    "supertest": "^6.3.0",
+    "@types/supertest": "^2.0.0",
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "keywords": [
+    "golf",
+    "api",
+    "express",
+    "bullmq",
+    "websocket"
+  ],
+  "author": "GolfVision Team",
+  "license": "MIT"
+}
