@@ -17,6 +17,8 @@ const ResultsPane: React.FC<ResultsPaneProps> = ({ job, onClose }) => {
   const [isSubmittingFeedback, setIsSubmittingFeedback] = useState(false)
   const [downloadProgress, setDownloadProgress] = useState(0)
   const [isDownloading, setIsDownloading] = useState(false)
+  const [videoLoading, setVideoLoading] = useState(true)
+  const [videoError, setVideoError] = useState<string | null>(null)
 
   const handleDownload = async (type: 'video' | 'captions') => {
     try {
@@ -176,16 +178,54 @@ const ResultsPane: React.FC<ResultsPaneProps> = ({ job, onClose }) => {
       {/* Video Preview */}
       <div className="bg-gray-900 rounded-lg p-8 text-center mb-6">
         {job.output?.videoUrl ? (
-          <div>
+          <div className="relative">
             <video
               className="w-full max-w-2xl mx-auto rounded-lg"
               controls
               poster={job.output.thumbnailUrl}
               preload="metadata"
+              crossOrigin="anonymous"
+              onError={(e) => {
+                console.error('Video error:', e)
+                setVideoError('Failed to load video')
+                setVideoLoading(false)
+              }}
+              onLoadStart={() => {
+                console.log('Video loading started')
+                setVideoLoading(true)
+                setVideoError(null)
+              }}
+              onLoadedData={() => {
+                console.log('Video data loaded')
+                setVideoLoading(false)
+              }}
+              onCanPlay={() => {
+                console.log('Video can play')
+                setVideoLoading(false)
+              }}
             >
               <source src={job.output.videoUrl} type="video/mp4" />
               Your browser does not support the video tag.
             </video>
+            {videoLoading && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-lg">
+                <div className="text-white">Loading video...</div>
+              </div>
+            )}
+            {videoError && (
+              <div className="mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
+                <p>Video loading error: {videoError}</p>
+                <p className="text-sm mt-2">Video URL: {job.output.videoUrl}</p>
+                <a 
+                  href={job.output.videoUrl} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-block mt-2 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+                >
+                  Open Video in New Tab
+                </a>
+              </div>
+            )}
             <p className="text-gray-300 mt-4">
               Your golf course video is ready! Click play to watch the generated content.
             </p>

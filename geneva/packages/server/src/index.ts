@@ -59,8 +59,13 @@ app.get('/health', (req, res) => {
 app.use('/api/jobs', jobsRouter)
 app.use('/api/analytics', analyticsRouter)
 
-// Serve static files (videos, thumbnails, captions)
-app.use('/outputs', express.static(path.join(process.cwd(), 'outputs')))
+// Serve static files (videos, thumbnails, captions) with CORS headers
+app.use('/outputs', (req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*')
+  res.header('Access-Control-Allow-Methods', 'GET, OPTIONS')
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept')
+  next()
+}, express.static(path.join(process.cwd(), 'outputs')))
 
 // API documentation endpoint
 app.get('/api', (req, res) => {

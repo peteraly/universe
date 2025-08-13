@@ -125,6 +125,10 @@ export interface CourseData {
   par: number
   length: number
   features: string[]
+  realHoles?: any[]
+  waterFeatures?: any[]
+  amenities?: string[]
+  boundaries?: any[]
 }
 
 export interface ErrorLog {
