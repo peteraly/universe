@@ -1,0 +1,1740 @@
+[
+  {
+    "id": "user_0001",
+    "name": "Logan Martin",
+    "email": "logan.martin@example.com",
+    "location": {
+      "lat": 40.580759349467165,
+      "lng": -74.16342736386852,
+      "cluster": "Staten Island"
+    },
+    "sportsAffinity": {
+      "Volleyball": 0.7161754115226338,
+      "Board Games": 0.9342489711934155,
+      "Soccer": 0.9223546810699588,
+      "Basketball": 0.1989949845679012,
+      "Running": 0.07739904835390947,
+      "Tennis": 0.46197702331961593,
+      "Hiking": 0.0744849537037037,
+      "Fitness": 0.09687049897119342
+    },
+    "reliability": 0.7148126100743705,
+    "isSuperHost": true,
+    "joinedAt": "2024-07-16T21:23:13.959Z",
+    "friends": [
+      "user_0038",
+      "user_0010",
+      "user_0019",
+      "user_0044",
+      "user_0041"
+    ]
+  },
+  {
+    "id": "user_0002",
+    "name": "Finley Hernandez",
+    "email": "finley.hernandez@example.com",
+    "location": {
+      "lat": 40.751821894665554,
+      "lng": -73.76512603451995,
+      "cluster": "Queens"
+    },
+    "sportsAffinity": {
+      "Basketball": 0.9632934670781892,
+      "Soccer": 0.8022003600823044,
+      "Running": 0.09262152777777778,
+      "Tennis": 0.5918707133058985,
+      "Volleyball": 0.4647342249657065,
+      "Board Games": 0.09588927469135802,
+      "Hiking": 0.060867412551440334,
+      "Fitness": 0.36727537722908093
+    },
+    "reliability": 0.87391251045651,
+    "isSuperHost": false,
+    "joinedAt": "2024-08-26T21:23:13.959Z",
+    "friends": [
+      "user_0039",
+      "user_0026",
+      "user_0020",
+      "user_0025",
+      "user_0037",
+      "user_0043"
+    ]
+  },
+  {
+    "id": "user_0003",
+    "name": "Casey Thompson",
+    "email": "casey.thompson@example.com",
+    "location": {
+      "lat": 40.719797570288335,
+      "lng": -73.77198377790216,
+      "cluster": "Queens"
+    },
+    "sportsAffinity": {
+      "Board Games": 0.870934927983539,
+      "Fitness": 0.8389017489711934,
+      "Basketball": 0.09638888888888889,
+      "Soccer": 0.13613554526748972,
+      "Running": 0.397002743484225,
+      "Tennis": 0.21575102880658437,
+      "Volleyball": 0.10630144032921811,
+      "Hiking": 0.5828772290809328
+    },
+    "reliability": 0.6587508728035181,
+    "isSuperHost": false,
+    "joinedAt": "2024-08-18T21:23:13.959Z",
+    "friends": [
+      "user_0025",
+      "user_0026",
+      "user_0039",
+      "user_0020",
+      "user_0046",
+      "user_0044",
+      "user_0004",
+      "user_0012",
+      "user_0029"
+    ]
+  },
+  {
+    "id": "user_0004",
+    "name": "Rowan Jones",
+    "email": "rowan.jones@example.com",
+    "location": {
+      "lat": 40.7662089189277,
+      "lng": -73.96721077855868,
+      "cluster": "Manhattan"
+    },
+    "sportsAffinity": {
+      "Running": 0.8576363168724279,
+      "Basketball": 0.17612654320987653,
+      "Soccer": 0.05846579218106996,
+      "Tennis": 0.31827846364883405,
+      "Volleyball": 0.16342206790123456,
+      "Board Games": 0.26153635116598084,
+      "Hiking": 0.5337825788751716,
+      "Fitness": 0.13266203703703705
+    },
+    "reliability": 0.8820851024794811,
+    "isSuperHost": false,
+    "joinedAt": "2024-09-06T21:23:13.959Z",
+    "friends": [
+      "user_0018",
+      "user_0041",
+      "user_0045",
+      "user_0027",
+      "user_0014",
+      "user_0024",
+      "user_0006",
+      "user_0044",
+      "user_0035",
+      "user_0003",
+      "user_0040"
+    ]
+  },
+  {
+    "id": "user_0005",
+    "name": "Hayden Wilson",
+    "email": "hayden.wilson@example.com",
+    "location": {
+      "lat": 40.663899632903686,
+      "lng": -73.97164891118146,
+      "cluster": "Brooklyn"
+    },
+    "sportsAffinity": {
+      "Board Games": 0.7339506172839506,
+      "Tennis": 0.8185545267489711,
+      "Basketball": 0.1320486111111111,
+      "Soccer": 0.11762860082304527,
+      "Running": 0.10120241769547325,
+      "Volleyball": 0.27751028806584366,
+      "Hiking": 0.07529449588477366,
+      "Fitness": 0.15840534979423868
+    },
+    "reliability": 0.5347652371682006,
+    "isSuperHost": false,
+    "joinedAt": "2025-03-18T21:23:13.959Z",
+    "friends": [
+      "user_0030",
+      "user_0009",
+      "user_0028",
+      "user_0050",
+      "user_0034",
+      "user_0015",
+      "user_0049",
+      "user_0011",
+      "user_0027",
+      "user_0038"
+    ]
+  },
+  {
+    "id": "user_0006",
+    "name": "Kendall Lee",
+    "email": "kendall.lee@example.com",
+    "location": {
+      "lat": 40.76887855125229,
+      "lng": -73.96632322779081,
+      "cluster": "Manhattan"
+    },
+    "sportsAffinity": {
+      "Volleyball": 0.7372890946502058,
+      "Soccer": 0.9235725308641975,
+      "Board Games": 0.879917695473251,
+      "Basketball": 0.5244821673525377,
+      "Running": 0.43088477366255146,
+      "Tennis": 0.14206918724279838,
+      "Hiking": 0.3066529492455419,
+      "Fitness": 0.31552469135802474
+    },
+    "reliability": 0.7582880144427059,
+    "isSuperHost": false,
+    "joinedAt": "2023-12-26T22:23:13.959Z",
+    "friends": [
+      "user_0004",
+      "user_0027",
+      "user_0035",
+      "user_0024",
+      "user_0041",
+      "user_0014",
+      "user_0018",
+      "user_0042",
+      "user_0044",
+      "user_0048"
+    ]
+  },
+  {
+    "id": "user_0007",
+    "name": "Jamie Garcia",
+    "email": "jamie.garcia@example.com",
+    "location": {
+      "lat": 40.868580585907345,
+      "lng": -73.87556548751502,
+      "cluster": "Bronx"
+    },
+    "sportsAffinity": {
+      "Soccer": 0.9052700617283951,
+      "Fitness": 0.7873572530864197,
+      "Tennis": 0.7645357510288066,
+      "Basketball": 0.2650840192043896,
+      "Running": 0.0997241512345679,
+      "Volleyball": 0.11562821502057613,
+      "Board Games": 0.17397055041152262,
+      "Hiking": 0.300570987654321
+    },
+    "reliability": 0.7520193462992284,
+    "isSuperHost": false,
+    "joinedAt": "2024-06-12T21:23:13.959Z",
+    "friends": [
+      "user_0012",
+      "user_0037",
+      "user_0031",
+      "user_0040",
+      "user_0008",
+      "user_0047",
+      "user_0039",
+      "user_0011"
+    ]
+  },
+  {
+    "id": "user_0008",
+    "name": "Morgan Martinez",
+    "email": "morgan.martinez@example.com",
+    "location": {
+      "lat": 40.853165311297964,
+      "lng": -73.83792120727468,
+      "cluster": "Bronx"
+    },
+    "sportsAffinity": {
+      "Board Games": 0.7190547839506173,
+      "Fitness": 0.8147518004115226,
+      "Running": 0.8867013888888888,
+      "Basketball": 0.08518068415637861,
+      "Soccer": 0.1750045010288066,
+      "Tennis": 0.10911844135802469,
+      "Volleyball": 0.061596579218106996,
+      "Hiking": 0.3358864883401921
+    },
+    "reliability": 0.7848439375089854,
+    "isSuperHost": false,
+    "joinedAt": "2025-02-21T22:23:13.959Z",
+    "friends": [
+      "user_0037",
+      "user_0012",
+      "user_0047",
+      "user_0007",
+      "user_0031",
+      "user_0038",
+      "user_0021",
+      "user_0018"
+    ]
+  },
+  {
+    "id": "user_0009",
+    "name": "Taylor Anderson",
+    "email": "taylor.anderson@example.com",
+    "location": {
+      "lat": 40.685770930157545,
+      "lng": -73.95054287394649,
+      "cluster": "Brooklyn"
+    },
+    "sportsAffinity": {
+      "Tennis": 0.9973932613168723,
+      "Basketball": 0.0980883487654321,
+      "Soccer": 0.5533624828532235,
+      "Running": 0.17048289609053496,
+      "Volleyball": 0.09163387345679014,
+      "Board Games": 0.05337127057613169,
+      "Hiking": 0.3534585048010974,
+      "Fitness": 0.0671238425925926
+    },
+    "reliability": 1,
+    "isSuperHost": false,
+    "joinedAt": "2025-07-01T21:23:13.959Z",
+    "friends": [
+      "user_0005",
+      "user_0028",
+      "user_0030",
+      "user_0015",
+      "user_0016",
+      "user_0017",
+      "user_0036",
+      "user_0048",
+      "user_0050",
+      "user_0027",
+      "user_0042",
+      "user_0020"
+    ]
+  },
+  {
+    "id": "user_0010",
+    "name": "Jamie Brown",
+    "email": "jamie.brown@example.com",
+    "location": {
+      "lat": 40.57688078427334,
+      "lng": -74.15291578609391,
+      "cluster": "Staten Island"
+    },
+    "sportsAffinity": {
+      "Fitness": 0.9278742283950616,
+      "Basketball": 0.48698388203017834,
+      "Soccer": 0.060405735596707824,
+      "Running": 0.08526041666666667,
+      "Tennis": 0.12292373971193415,
+      "Volleyball": 0.05858088991769547,
+      "Board Games": 0.5694084362139917,
+      "Hiking": 0.08683963477366255
+    },
+    "reliability": 0.6283453743916784,
+    "isSuperHost": false,
+    "joinedAt": "2025-04-25T21:23:13.959Z",
+    "friends": [
+      "user_0001",
+      "user_0038",
+      "user_0049",
+      "user_0032"
+    ]
+  },
+  {
+    "id": "user_0011",
+    "name": "Avery Davis",
+    "email": "avery.davis@example.com",
+    "location": {
+      "lat": 40.67457618009038,
+      "lng": -73.9531246336971,
+      "cluster": "Brooklyn"
+    },
+    "sportsAffinity": {
+      "Basketball": 0.7210095164609053,
+      "Soccer": 0.19477301954732512,
+      "Running": 0.4399948559670782,
+      "Tennis": 0.1702539866255144,
+      "Volleyball": 0.15405928497942387,
+      "Board Games": 0.12104359567901235,
+      "Hiking": 0.17861432613168726,
+      "Fitness": 0.27632887517146776
+    },
+    "reliability": 0.8533964266138766,
+    "isSuperHost": false,
+    "joinedAt": "2024-06-28T21:23:13.959Z",
+    "friends": [
+      "user_0005",
+      "user_0033",
+      "user_0029",
+      "user_0043",
+      "user_0019",
+      "user_0023",
+      "user_0049",
+      "user_0028",
+      "user_0030",
+      "user_0036",
+      "user_0048",
+      "user_0047",
+      "user_0007"
+    ]
+  },
+  {
+    "id": "user_0012",
+    "name": "Taylor Jackson",
+    "email": "taylor.jackson@example.com",
+    "location": {
+      "lat": 40.849422958633106,
+      "lng": -73.84843493321335,
+      "cluster": "Bronx"
+    },
+    "sportsAffinity": {
+      "Fitness": 0.9471694958847736,
+      "Basketball": 0.4822582304526749,
+      "Soccer": 0.09536201131687243,
+      "Running": 0.14398212448559672,
+      "Tennis": 0.0646701388888889,
+      "Volleyball": 0.1981667952674897,
+      "Board Games": 0.12965727880658437,
+      "Hiking": 0.15543788580246914
+    },
+    "reliability": 0.6184135993518753,
+    "isSuperHost": true,
+    "joinedAt": "2023-11-22T22:23:13.959Z",
+    "friends": [
+      "user_0007",
+      "user_0008",
+      "user_0031",
+      "user_0040",
+      "user_0047",
+      "user_0037",
+      "user_0003",
+      "user_0018",
+      "user_0046"
+    ]
+  },
+  {
+    "id": "user_0013",
+    "name": "Logan Lee",
+    "email": "logan.lee@example.com",
+    "location": {
+      "lat": 40.66879951004209,
+      "lng": -73.96488118817393,
+      "cluster": "Brooklyn"
+    },
+    "sportsAffinity": {
+      "Soccer": 0.9656134259259259,
+      "Basketball": 0.7964956275720164,
+      "Fitness": 0.7566988168724279,
+      "Running": 0.25175411522633745,
+      "Tennis": 0.19549704218106995,
+      "Volleyball": 0.17513567386831275,
+      "Board Games": 0.18795331790123454,
+      "Hiking": 0.5769530178326474
+    },
+    "reliability": 0.8028820951116389,
+    "isSuperHost": false,
+    "joinedAt": "2024-06-14T21:23:13.959Z",
+    "friends": [
+      "user_0043",
+      "user_0023",
+      "user_0033",
+      "user_0021",
+      "user_0022",
+      "user_0048",
+      "user_0035"
+    ]
+  },
+  {
+    "id": "user_0014",
+    "name": "Avery Wilson",
+    "email": "avery.wilson@example.com",
+    "location": {
+      "lat": 40.78415858677615,
+      "lng": -73.98750858657213,
+      "cluster": "Manhattan"
+    },
+    "sportsAffinity": {
+      "Basketball": 0.7578227880658436,
+      "Fitness": 0.9143222736625514,
+      "Soccer": 0.18525655864197532,
+      "Running": 0.2549468449931413,
+      "Tennis": 0.1150585133744856,
+      "Volleyball": 0.284212962962963,
+      "Board Games": 0.16090985082304526,
+      "Hiking": 0.08823366769547325
+    },
+    "reliability": 0.7948738573426255,
+    "isSuperHost": false,
+    "joinedAt": "2024-12-19T22:23:13.959Z",
+    "friends": [
+      "user_0004",
+      "user_0006",
+      "user_0044",
+      "user_0024",
+      "user_0041",
+      "user_0045",
+      "user_0018",
+      "user_0042",
+      "user_0034",
+      "user_0020",
+      "user_0032",
+      "user_0023",
+      "user_0019",
+      "user_0050"
+    ]
+  },
+  {
+    "id": "user_0015",
+    "name": "Emery Gonzalez",
+    "email": "emery.gonzalez@example.com",
+    "location": {
+      "lat": 40.68425359592042,
+      "lng": -73.96855904787517,
+      "cluster": "Brooklyn"
+    },
+    "sportsAffinity": {
+      "Soccer": 0.8608346193415637,
+      "Basketball": 0.1622164351851852,
+      "Running": 0.17349086934156377,
+      "Tennis": 0.1494257973251029,
+      "Volleyball": 0.5635133744855967,
+      "Board Games": 0.10824009773662552,
+      "Hiking": 0.08371206275720164,
+      "Fitness": 0.1423630401234568
+    },
+    "reliability": 0.7621131573015691,
+    "isSuperHost": false,
+    "joinedAt": "2024-07-09T21:23:13.959Z",
+    "friends": [
+      "user_0005",
+      "user_0009",
+      "user_0048",
+      "user_0036",
+      "user_0023",
+      "user_0017",
+      "user_0032"
+    ]
+  },
+  {
+    "id": "user_0016",
+    "name": "Logan Jones",
+    "email": "logan.jones@example.com",
+    "location": {
+      "lat": 40.6841504738559,
+      "lng": -73.9598874220833,
+      "cluster": "Brooklyn"
+    },
+    "sportsAffinity": {
+      "Tennis": 0.7005748456790123,
+      "Basketball": 0.8083088991769547,
+      "Hiking": 0.9378497942386831,
+      "Soccer": 0.18027649176954735,
+      "Running": 0.20689300411522635,
+      "Volleyball": 0.05992412551440329,
+      "Board Games": 0.07081275720164609,
+      "Fitness": 0.1148804012345679
+    },
+    "reliability": 0.6668483081535216,
+    "isSuperHost": true,
+    "joinedAt": "2025-04-11T21:23:13.959Z",
+    "friends": [
+      "user_0009",
+      "user_0028",
+      "user_0033",
+      "user_0048",
+      "user_0019",
+      "user_0017",
+      "user_0049",
+      "user_0050",
+      "user_0045"
+    ]
+  },
+  {
+    "id": "user_0017",
+    "name": "Avery Moore",
+    "email": "avery.moore@example.com",
+    "location": {
+      "lat": 40.70166632242566,
+      "lng": -73.96162515824322,
+      "cluster": "Brooklyn"
+    },
+    "sportsAffinity": {
+      "Basketball": 0.7706095679012345,
+      "Soccer": 0.07458847736625515,
+      "Running": 0.18408822016460907,
+      "Tennis": 0.09343364197530865,
+      "Volleyball": 0.1600321502057613,
+      "Board Games": 0.08573559670781894,
+      "Hiking": 0.28935185185185186,
+      "Fitness": 0.19408693415637857
+    },
+    "reliability": 0.7354762232489084,
+    "isSuperHost": false,
+    "joinedAt": "2024-11-21T22:23:13.959Z",
+    "friends": [
+      "user_0009",
+      "user_0015",
+      "user_0029",
+      "user_0016",
+      "user_0019",
+      "user_0023",
+      "user_0028",
+      "user_0030",
+      "user_0033",
+      "user_0048",
+      "user_0020",
+      "user_0035"
+    ]
+  },
+  {
+    "id": "user_0018",
+    "name": "Taylor Jones",
+    "email": "taylor.jones@example.com",
+    "location": {
+      "lat": 40.776387190116154,
+      "lng": -73.9750866489418,
+      "cluster": "Manhattan"
+    },
+    "sportsAffinity": {
+      "Running": 0.916059670781893,
+      "Basketball": 0.08234439300411522,
+      "Soccer": 0.1453935185185185,
+      "Tennis": 0.567781207133059,
+      "Volleyball": 0.5869410150891632,
+      "Board Games": 0.1132445987654321,
+      "Hiking": 0.06641718106995885,
+      "Fitness": 0.26170438957475994
+    },
+    "reliability": 0.8004124761467595,
+    "isSuperHost": false,
+    "joinedAt": "2024-05-20T21:23:13.959Z",
+    "friends": [
+      "user_0004",
+      "user_0006",
+      "user_0014",
+      "user_0041",
+      "user_0045",
+      "user_0035",
+      "user_0044",
+      "user_0042",
+      "user_0046",
+      "user_0040",
+      "user_0047",
+      "user_0026",
+      "user_0008",
+      "user_0038",
+      "user_0012",
+      "user_0028"
+    ]
+  },
+  {
+    "id": "user_0019",
+    "name": "Sage Williams",
+    "email": "sage.williams@example.com",
+    "location": {
+      "lat": 40.69250680451122,
+      "lng": -73.94839184312242,
+      "cluster": "Brooklyn"
+    },
+    "sportsAffinity": {
+      "Running": 0.7500900205761316,
+      "Basketball": 0.8169290123456789,
+      "Fitness": 0.7670717592592592,
+      "Soccer": 0.1364769804526749,
+      "Tennis": 0.10407857510288065,
+      "Volleyball": 0.08263695987654321,
+      "Board Games": 0.19622620884773662,
+      "Hiking": 0.5023062414266117
+    },
+    "reliability": 0.807663508824871,
+    "isSuperHost": false,
+    "joinedAt": "2024-03-28T21:23:13.959Z",
+    "friends": [
+      "user_0011",
+      "user_0016",
+      "user_0017",
+      "user_0043",
+      "user_0022",
+      "user_0033",
+      "user_0034",
+      "user_0001",
+      "user_0020",
+      "user_0014"
+    ]
+  },
+  {
+    "id": "user_0020",
+    "name": "Avery Thompson",
+    "email": "avery.thompson@example.com",
+    "location": {
+      "lat": 40.729483151902635,
+      "lng": -73.79142622789347,
+      "cluster": "Queens"
+    },
+    "sportsAffinity": {
+      "Hiking": 0.7555414094650206,
+      "Basketball": 0.5242849794238683,
+      "Soccer": 0.11714056069958848,
+      "Running": 0.18289030349794239,
+      "Tennis": 0.5959619341563787,
+      "Volleyball": 0.07133423353909465,
+      "Board Games": 0.34210048010973937,
+      "Fitness": 0.05730902777777778
+    },
+    "reliability": 0.6024870501525381,
+    "isSuperHost": false,
+    "joinedAt": "2023-10-12T21:23:13.959Z",
+    "friends": [
+      "user_0046",
+      "user_0026",
+      "user_0039",
+      "user_0025",
+      "user_0003",
+      "user_0002",
+      "user_0014",
+      "user_0019",
+      "user_0017",
+      "user_0027",
+      "user_0028",
+      "user_0009",
+      "user_0029"
+    ]
+  },
+  {
+    "id": "user_0021",
+    "name": "Kendall Davis",
+    "email": "kendall.davis@example.com",
+    "location": {
+      "lat": 40.68456544800015,
+      "lng": -73.95798756826457,
+      "cluster": "Brooklyn"
+    },
+    "sportsAffinity": {
+      "Fitness": 0.7415779320987654,
+      "Soccer": 0.8511638374485596,
+      "Board Games": 0.9122929526748971,
+      "Basketball": 0.5345216049382716,
+      "Running": 0.17422003600823044,
+      "Tennis": 0.13765496399176955,
+      "Volleyball": 0.16204668209876544,
+      "Hiking": 0.07146926440329218
+    },
+    "reliability": 0.9509501397544452,
+    "isSuperHost": false,
+    "joinedAt": "2025-03-23T21:23:13.959Z",
+    "friends": [
+      "user_0043",
+      "user_0013",
+      "user_0032",
+      "user_0046",
+      "user_0008",
+      "user_0024",
+      "user_0042"
+    ]
+  },
+  {
+    "id": "user_0022",
+    "name": "Casey Jackson",
+    "email": "casey.jackson@example.com",
+    "location": {
+      "lat": 40.691968078712755,
+      "lng": -73.94687673139852,
+      "cluster": "Brooklyn"
+    },
+    "sportsAffinity": {
+      "Hiking": 0.7236021090534979,
+      "Fitness": 0.7476941872427983,
+      "Basketball": 0.06351658950617284,
+      "Soccer": 0.10488361625514403,
+      "Running": 0.16646669238683126,
+      "Tennis": 0.07789544753086419,
+      "Volleyball": 0.19657728909465022,
+      "Board Games": 0.07436406893004116
+    },
+    "reliability": 0.8263876933027761,
+    "isSuperHost": false,
+    "joinedAt": "2025-02-20T22:23:13.959Z",
+    "friends": [
+      "user_0019",
+      "user_0032",
+      "user_0050",
+      "user_0048",
+      "user_0029",
+      "user_0043",
+      "user_0013",
+      "user_0039"
+    ]
+  },
+  {
+    "id": "user_0023",
+    "name": "Casey Thomas",
+    "email": "casey.thomas@example.com",
+    "location": {
+      "lat": 40.66670679671556,
+      "lng": -73.92331625067268,
+      "cluster": "Brooklyn"
+    },
+    "sportsAffinity": {
+      "Soccer": 0.8719843106995884,
+      "Basketball": 0.8843955761316872,
+      "Running": 0.3794238683127572,
+      "Tennis": 0.31751371742112483,
+      "Volleyball": 0.19106738683127572,
+      "Board Games": 0.08791280864197532,
+      "Hiking": 0.445363511659808,
+      "Fitness": 0.0552147633744856
+    },
+    "reliability": 0.9485473687302729,
+    "isSuperHost": false,
+    "joinedAt": "2024-06-13T21:23:13.959Z",
+    "friends": [
+      "user_0011",
+      "user_0013",
+      "user_0015",
+      "user_0017",
+      "user_0048",
+      "user_0028",
+      "user_0043",
+      "user_0014"
+    ]
+  },
+  {
+    "id": "user_0024",
+    "name": "Logan Garcia",
+    "email": "logan.garcia@example.com",
+    "location": {
+      "lat": 40.78629771620757,
+      "lng": -73.97851197831919,
+      "cluster": "Manhattan"
+    },
+    "sportsAffinity": {
+      "Basketball": 0.9586856995884774,
+      "Soccer": 0.782932098765432,
+      "Running": 0.17750900205761316,
+      "Tennis": 0.0893235596707819,
+      "Volleyball": 0.1398726851851852,
+      "Board Games": 0.16989711934156376,
+      "Hiking": 0.1645820473251029,
+      "Fitness": 0.25393004115226336
+    },
+    "reliability": 0.7824685229562491,
+    "isSuperHost": false,
+    "joinedAt": "2024-03-25T21:23:13.959Z",
+    "friends": [
+      "user_0004",
+      "user_0006",
+      "user_0014",
+      "user_0035",
+      "user_0042",
+      "user_0027",
+      "user_0041",
+      "user_0044",
+      "user_0045",
+      "user_0021"
+    ]
+  },
+  {
+    "id": "user_0025",
+    "name": "Riley Garcia",
+    "email": "riley.garcia@example.com",
+    "location": {
+      "lat": 40.75087266282958,
+      "lng": -73.79426491170635,
+      "cluster": "Queens"
+    },
+    "sportsAffinity": {
+      "Running": 0.7535185185185185,
+      "Fitness": 0.7842168209876543,
+      "Basketball": 0.5695147462277093,
+      "Soccer": 0.06079925411522634,
+      "Tennis": 0.1717650462962963,
+      "Volleyball": 0.06220614711934157,
+      "Board Games": 0.5128206447187929,
+      "Hiking": 0.422309670781893
+    },
+    "reliability": 0.8235451014256276,
+    "isSuperHost": false,
+    "joinedAt": "2023-10-12T21:23:13.959Z",
+    "friends": [
+      "user_0003",
+      "user_0020",
+      "user_0026",
+      "user_0046",
+      "user_0039",
+      "user_0002",
+      "user_0045",
+      "user_0032",
+      "user_0048"
+    ]
+  },
+  {
+    "id": "user_0026",
+    "name": "Reese Lee",
+    "email": "reese.lee@example.com",
+    "location": {
+      "lat": 40.72298999799776,
+      "lng": -73.81705180306034,
+      "cluster": "Queens"
+    },
+    "sportsAffinity": {
+      "Hiking": 0.7048032407407407,
+      "Basketball": 0.9495743312757201,
+      "Running": 0.8332998971193415,
+      "Soccer": 0.06303240740740741,
+      "Tennis": 0.18889017489711935,
+      "Volleyball": 0.17940843621399177,
+      "Board Games": 0.130883487654321,
+      "Fitness": 0.16738940329218105
+    },
+    "reliability": 0.7371308723789256,
+    "isSuperHost": false,
+    "joinedAt": "2024-07-22T21:23:13.959Z",
+    "friends": [
+      "user_0002",
+      "user_0003",
+      "user_0020",
+      "user_0025",
+      "user_0039",
+      "user_0046",
+      "user_0018"
+    ]
+  },
+  {
+    "id": "user_0027",
+    "name": "Kendall White",
+    "email": "kendall.white@example.com",
+    "location": {
+      "lat": 40.776071032716736,
+      "lng": -73.95624030627731,
+      "cluster": "Manhattan"
+    },
+    "sportsAffinity": {
+      "Volleyball": 0.9404423868312757,
+      "Board Games": 0.7187011316872427,
+      "Basketball": 0.40294238683127576,
+      "Soccer": 0.4521433470507545,
+      "Running": 0.2885871056241427,
+      "Tennis": 0.25795267489711937,
+      "Hiking": 0.1674974279835391,
+      "Fitness": 0.07236754115226338
+    },
+    "reliability": 0.6460666829288116,
+    "isSuperHost": false,
+    "joinedAt": "2024-06-11T21:23:13.959Z",
+    "friends": [
+      "user_0004",
+      "user_0006",
+      "user_0024",
+      "user_0041",
+      "user_0035",
+      "user_0042",
+      "user_0045",
+      "user_0009",
+      "user_0032",
+      "user_0048",
+      "user_0005",
+      "user_0020"
+    ]
+  },
+  {
+    "id": "user_0028",
+    "name": "Jordan Jones",
+    "email": "jordan.jones@example.com",
+    "location": {
+      "lat": 40.66455083182902,
+      "lng": -73.92971699164094,
+      "cluster": "Brooklyn"
+    },
+    "sportsAffinity": {
+      "Basketball": 0.8929912551440329,
+      "Tennis": 0.900570987654321,
+      "Soccer": 0.12799511316872428,
+      "Running": 0.18147633744855968,
+      "Volleyball": 0.17369212962962963,
+      "Board Games": 0.0953832304526749,
+      "Hiking": 0.28462620027434843,
+      "Fitness": 0.0790432098765432
+    },
+    "reliability": 1,
+    "isSuperHost": false,
+    "joinedAt": "2023-09-02T21:23:13.959Z",
+    "friends": [
+      "user_0005",
+      "user_0009",
+      "user_0016",
+      "user_0023",
+      "user_0017",
+      "user_0049",
+      "user_0033",
+      "user_0011",
+      "user_0030",
+      "user_0034",
+      "user_0040",
+      "user_0020",
+      "user_0018"
+    ]
+  },
+  {
+    "id": "user_0029",
+    "name": "Alex Williams",
+    "email": "alex.williams@example.com",
+    "location": {
+      "lat": 40.689953265604196,
+      "lng": -73.91457719344453,
+      "cluster": "Brooklyn"
+    },
+    "sportsAffinity": {
+      "Basketball": 0.9711574074074074,
+      "Fitness": 0.9784284979423867,
+      "Soccer": 0.07417695473251029,
+      "Running": 0.18676311728395062,
+      "Tennis": 0.15104681069958847,
+      "Volleyball": 0.08554655349794239,
+      "Board Games": 0.11989197530864197,
+      "Hiking": 0.16149048353909465
+    },
+    "reliability": 0.9858905782605061,
+    "isSuperHost": false,
+    "joinedAt": "2023-11-01T21:23:13.959Z",
+    "friends": [
+      "user_0011",
+      "user_0017",
+      "user_0022",
+      "user_0043",
+      "user_0032",
+      "user_0033",
+      "user_0034",
+      "user_0020",
+      "user_0003"
+    ]
+  },
+  {
+    "id": "user_0030",
+    "name": "Peyton Lopez",
+    "email": "peyton.lopez@example.com",
+    "location": {
+      "lat": 40.69476152633872,
+      "lng": -73.94039424129235,
+      "cluster": "Brooklyn"
+    },
+    "sportsAffinity": {
+      "Board Games": 0.7564223251028807,
+      "Tennis": 0.8226440329218107,
+      "Basketball": 0.16094521604938272,
+      "Soccer": 0.08448816872427983,
+      "Running": 0.13380272633744855,
+      "Volleyball": 0.17185185185185187,
+      "Hiking": 0.18937628600823048,
+      "Fitness": 0.17156121399176955
+    },
+    "reliability": 0.8778473836382776,
+    "isSuperHost": false,
+    "joinedAt": "2024-05-24T21:23:13.959Z",
+    "friends": [
+      "user_0005",
+      "user_0009",
+      "user_0028",
+      "user_0017",
+      "user_0011",
+      "user_0050",
+      "user_0034"
+    ]
+  },
+  {
+    "id": "user_0031",
+    "name": "Taylor Lopez",
+    "email": "taylor.lopez@example.com",
+    "location": {
+      "lat": 40.84610186391612,
+      "lng": -73.86560994908474,
+      "cluster": "Bronx"
+    },
+    "sportsAffinity": {
+      "Fitness": 0.9858230452674897,
+      "Volleyball": 0.8924768518518518,
+      "Basketball": 0.09570730452674897,
+      "Soccer": 0.12650334362139917,
+      "Running": 0.13492283950617284,
+      "Tennis": 0.19503986625514402,
+      "Board Games": 0.12537294238683128,
+      "Hiking": 0.0555516975308642
+    },
+    "reliability": 0.9805289740647715,
+    "isSuperHost": true,
+    "joinedAt": "2025-02-07T22:23:13.959Z",
+    "friends": [
+      "user_0007",
+      "user_0012",
+      "user_0008",
+      "user_0037",
+      "user_0047",
+      "user_0040"
+    ]
+  },
+  {
+    "id": "user_0032",
+    "name": "Emery Martinez",
+    "email": "emery.martinez@example.com",
+    "location": {
+      "lat": 40.674114975968074,
+      "lng": -73.94795655048605,
+      "cluster": "Brooklyn"
+    },
+    "sportsAffinity": {
+      "Fitness": 0.9852854938271605,
+      "Basketball": 0.2925445816186557,
+      "Soccer": 0.36972908093278467,
+      "Running": 0.05910493827160494,
+      "Tennis": 0.0784812242798354,
+      "Volleyball": 0.39634430727023323,
+      "Board Games": 0.057511574074074076,
+      "Hiking": 0.17086934156378603
+    },
+    "reliability": 0.7661438854067096,
+    "isSuperHost": false,
+    "joinedAt": "2025-02-15T22:23:13.959Z",
+    "friends": [
+      "user_0021",
+      "user_0022",
+      "user_0029",
+      "user_0043",
+      "user_0015",
+      "user_0033",
+      "user_0050",
+      "user_0034",
+      "user_0036",
+      "user_0040",
+      "user_0010",
+      "user_0014",
+      "user_0027",
+      "user_0025"
+    ]
+  },
+  {
+    "id": "user_0033",
+    "name": "Peyton Martinez",
+    "email": "peyton.martinez@example.com",
+    "location": {
+      "lat": 40.67655958689597,
+      "lng": -73.91741698444203,
+      "cluster": "Brooklyn"
+    },
+    "sportsAffinity": {
+      "Basketball": 0.8029578189300411,
+      "Soccer": 0.45396776406035666,
+      "Running": 0.14439814814814816,
+      "Tennis": 0.1897003600823045,
+      "Volleyball": 0.06632973251028806,
+      "Board Games": 0.12058256172839507,
+      "Hiking": 0.12653292181069958,
+      "Fitness": 0.052699331275720164
+    },
+    "reliability": 0.8971111389266746,
+    "isSuperHost": false,
+    "joinedAt": "2024-10-21T21:23:13.959Z",
+    "friends": [
+      "user_0011",
+      "user_0013",
+      "user_0016",
+      "user_0019",
+      "user_0028",
+      "user_0029",
+      "user_0032",
+      "user_0017",
+      "user_0036",
+      "user_0048",
+      "user_0049",
+      "user_0045",
+      "user_0035"
+    ]
+  },
+  {
+    "id": "user_0034",
+    "name": "Morgan Taylor",
+    "email": "morgan.taylor@example.com",
+    "location": {
+      "lat": 40.697079568542115,
+      "lng": -73.9192329554199,
+      "cluster": "Brooklyn"
+    },
+    "sportsAffinity": {
+      "Basketball": 0.8425437242798354,
+      "Tennis": 0.8816049382716049,
+      "Fitness": 0.9069495884773662,
+      "Soccer": 0.14476466049382716,
+      "Running": 0.3599314128943759,
+      "Volleyball": 0.4692146776406036,
+      "Board Games": 0.41512345679012347,
+      "Hiking": 0.18986239711934155
+    },
+    "reliability": 0.8075511861279225,
+    "isSuperHost": false,
+    "joinedAt": "2024-04-26T21:23:13.959Z",
+    "friends": [
+      "user_0005",
+      "user_0028",
+      "user_0029",
+      "user_0019",
+      "user_0043",
+      "user_0030",
+      "user_0032",
+      "user_0050",
+      "user_0014"
+    ]
+  },
+  {
+    "id": "user_0035",
+    "name": "Avery Hernandez",
+    "email": "avery.hernandez@example.com",
+    "location": {
+      "lat": 40.783077652844376,
+      "lng": -73.97103598177453,
+      "cluster": "Manhattan"
+    },
+    "sportsAffinity": {
+      "Soccer": 0.7909439300411523,
+      "Basketball": 0.13506430041152265,
+      "Running": 0.18005787037037035,
+      "Tennis": 0.17119341563786006,
+      "Volleyball": 0.5830829903978052,
+      "Board Games": 0.14374228395061728,
+      "Hiking": 0.09552597736625515,
+      "Fitness": 0.5134019204389575
+    },
+    "reliability": 0.9391849066980023,
+    "isSuperHost": false,
+    "joinedAt": "2025-05-21T21:23:13.959Z",
+    "friends": [
+      "user_0006",
+      "user_0018",
+      "user_0024",
+      "user_0027",
+      "user_0045",
+      "user_0004",
+      "user_0041",
+      "user_0044",
+      "user_0013",
+      "user_0033",
+      "user_0017",
+      "user_0047"
+    ]
+  },
+  {
+    "id": "user_0036",
+    "name": "Blake Martinez",
+    "email": "blake.martinez@example.com",
+    "location": {
+      "lat": 40.696237036396205,
+      "lng": -73.92376696895616,
+      "cluster": "Brooklyn"
+    },
+    "sportsAffinity": {
+      "Soccer": 0.7221965020576131,
+      "Running": 0.8529243827160493,
+      "Basketball": 0.060190329218107,
+      "Tennis": 0.28213648834019206,
+      "Volleyball": 0.3811316872427984,
+      "Board Games": 0.1789673353909465,
+      "Hiking": 0.24208504801097394,
+      "Fitness": 0.09133101851851852
+    },
+    "reliability": 0.6350020408828974,
+    "isSuperHost": false,
+    "joinedAt": "2025-06-01T21:23:13.959Z",
+    "friends": [
+      "user_0015",
+      "user_0048",
+      "user_0009",
+      "user_0011",
+      "user_0033",
+      "user_0032",
+      "user_0049",
+      "user_0040"
+    ]
+  },
+  {
+    "id": "user_0037",
+    "name": "Hayden Davis",
+    "email": "hayden.davis@example.com",
+    "location": {
+      "lat": 40.84461755109349,
+      "lng": -73.90442099746636,
+      "cluster": "Bronx"
+    },
+    "sportsAffinity": {
+      "Tennis": 0.9679552469135801,
+      "Board Games": 0.8539300411522633,
+      "Basketball": 0.16239068930041153,
+      "Soccer": 0.3419135802469136,
+      "Running": 0.5738305898491084,
+      "Volleyball": 0.05848251028806584,
+      "Hiking": 0.21173868312757202,
+      "Fitness": 0.3387174211248285
+    },
+    "reliability": 0.8354300002899077,
+    "isSuperHost": false,
+    "joinedAt": "2025-02-17T22:23:13.959Z",
+    "friends": [
+      "user_0007",
+      "user_0008",
+      "user_0012",
+      "user_0031",
+      "user_0047",
+      "user_0040",
+      "user_0044",
+      "user_0002"
+    ]
+  },
+  {
+    "id": "user_0038",
+    "name": "Jamie Johnson",
+    "email": "jamie.johnson@example.com",
+    "location": {
+      "lat": 40.57625388373057,
+      "lng": -74.13940444278708,
+      "cluster": "Staten Island"
+    },
+    "sportsAffinity": {
+      "Basketball": 0.8430349794238683,
+      "Board Games": 0.9768492798353909,
+      "Soccer": 0.1496219135802469,
+      "Running": 0.17918338477366252,
+      "Tennis": 0.19562757201646092,
+      "Volleyball": 0.4095576131687243,
+      "Hiking": 0.13546039094650206,
+      "Fitness": 0.16810828189300409
+    },
+    "reliability": 0.7897063016292253,
+    "isSuperHost": false,
+    "joinedAt": "2023-10-05T21:23:13.959Z",
+    "friends": [
+      "user_0001",
+      "user_0010",
+      "user_0049",
+      "user_0008",
+      "user_0018",
+      "user_0005",
+      "user_0041"
+    ]
+  },
+  {
+    "id": "user_0039",
+    "name": "Finley Taylor",
+    "email": "finley.taylor@example.com",
+    "location": {
+      "lat": 40.73298865347349,
+      "lng": -73.76611055167345,
+      "cluster": "Queens"
+    },
+    "sportsAffinity": {
+      "Basketball": 0.7178060699588477,
+      "Soccer": 0.4856995884773663,
+      "Running": 0.19595807613168725,
+      "Tennis": 0.07721707818930042,
+      "Volleyball": 0.06387731481481482,
+      "Board Games": 0.09667952674897119,
+      "Hiking": 0.11080889917695474,
+      "Fitness": 0.15256172839506174
+    },
+    "reliability": 0.7229117014257852,
+    "isSuperHost": false,
+    "joinedAt": "2025-07-02T21:23:13.959Z",
+    "friends": [
+      "user_0002",
+      "user_0003",
+      "user_0020",
+      "user_0025",
+      "user_0026",
+      "user_0046",
+      "user_0007",
+      "user_0022",
+      "user_0045"
+    ]
+  },
+  {
+    "id": "user_0040",
+    "name": "Cameron Martin",
+    "email": "cameron.martin@example.com",
+    "location": {
+      "lat": 40.83838524675717,
+      "lng": -73.83421040849805,
+      "cluster": "Bronx"
+    },
+    "sportsAffinity": {
+      "Fitness": 0.9515277777777778,
+      "Running": 0.8810210905349793,
+      "Basketball": 0.05325102880658437,
+      "Soccer": 0.06028163580246914,
+      "Tennis": 0.1856764403292181,
+      "Volleyball": 0.5945438957475995,
+      "Board Games": 0.1767438271604938,
+      "Hiking": 0.4118758573388203
+    },
+    "reliability": 0.7840234520870735,
+    "isSuperHost": false,
+    "joinedAt": "2024-08-18T21:23:13.959Z",
+    "friends": [
+      "user_0007",
+      "user_0012",
+      "user_0037",
+      "user_0031",
+      "user_0047",
+      "user_0032",
+      "user_0018",
+      "user_0028",
+      "user_0004",
+      "user_0036"
+    ]
+  },
+  {
+    "id": "user_0041",
+    "name": "Alex Martin",
+    "email": "alex.martin@example.com",
+    "location": {
+      "lat": 40.7673678165977,
+      "lng": -73.97862439057592,
+      "cluster": "Manhattan"
+    },
+    "sportsAffinity": {
+      "Volleyball": 0.7256815843621399,
+      "Running": 0.9474588477366255,
+      "Basketball": 0.5141255144032921,
+      "Soccer": 0.15245113168724278,
+      "Tennis": 0.1795434670781893,
+      "Board Games": 0.062037037037037036,
+      "Hiking": 0.19067258230452677,
+      "Fitness": 0.05063528806584362
+    },
+    "reliability": 0.6717666187401339,
+    "isSuperHost": false,
+    "joinedAt": "2025-04-07T21:23:13.959Z",
+    "friends": [
+      "user_0004",
+      "user_0006",
+      "user_0014",
+      "user_0018",
+      "user_0024",
+      "user_0027",
+      "user_0035",
+      "user_0044",
+      "user_0043",
+      "user_0001",
+      "user_0038"
+    ]
+  },
+  {
+    "id": "user_0042",
+    "name": "Emery Wilson",
+    "email": "emery.wilson@example.com",
+    "location": {
+      "lat": 40.7750235053123,
+      "lng": -73.98448570484047,
+      "cluster": "Manhattan"
+    },
+    "sportsAffinity": {
+      "Board Games": 0.9773045267489712,
+      "Tennis": 0.8728472222222221,
+      "Basketball": 0.9940072016460905,
+      "Soccer": 0.10557741769547326,
+      "Running": 0.15844135802469136,
+      "Volleyball": 0.27911865569272976,
+      "Hiking": 0.08778034979423868,
+      "Fitness": 0.11240354938271604
+    },
+    "reliability": 0.7909043405178473,
+    "isSuperHost": false,
+    "joinedAt": "2023-10-30T21:23:13.959Z",
+    "friends": [
+      "user_0024",
+      "user_0027",
+      "user_0014",
+      "user_0006",
+      "user_0018",
+      "user_0044",
+      "user_0050",
+      "user_0043",
+      "user_0009",
+      "user_0021"
+    ]
+  },
+  {
+    "id": "user_0043",
+    "name": "Quinn White",
+    "email": "quinn.white@example.com",
+    "location": {
+      "lat": 40.70066885509011,
+      "lng": -73.95616836702055,
+      "cluster": "Brooklyn"
+    },
+    "sportsAffinity": {
+      "Basketball": 0.9323225308641975,
+      "Fitness": 0.738667695473251,
+      "Soccer": 0.5361488340192044,
+      "Running": 0.06595679012345679,
+      "Tennis": 0.14644418724279834,
+      "Volleyball": 0.16936985596707818,
+      "Board Games": 0.09769675925925925,
+      "Hiking": 0.17216563786008232
+    },
+    "reliability": 0.941347428297325,
+    "isSuperHost": false,
+    "joinedAt": "2024-02-23T22:23:13.959Z",
+    "friends": [
+      "user_0011",
+      "user_0013",
+      "user_0019",
+      "user_0021",
+      "user_0022",
+      "user_0023",
+      "user_0029",
+      "user_0032",
+      "user_0034",
+      "user_0041",
+      "user_0042",
+      "user_0002"
+    ]
+  },
+  {
+    "id": "user_0044",
+    "name": "River White",
+    "email": "river.white@example.com",
+    "location": {
+      "lat": 40.781879142337,
+      "lng": -73.96884477523813,
+      "cluster": "Manhattan"
+    },
+    "sportsAffinity": {
+      "Tennis": 0.8388837448559671,
+      "Basketball": 0.8819573045267489,
+      "Fitness": 0.8819933127572016,
+      "Soccer": 0.19540380658436213,
+      "Running": 0.4509362139917696,
+      "Volleyball": 0.4964334705075446,
+      "Board Games": 0.5069513031550068,
+      "Hiking": 0.08556327160493828
+    },
+    "reliability": 0.8657611092988513,
+    "isSuperHost": false,
+    "joinedAt": "2024-12-18T22:23:13.959Z",
+    "friends": [
+      "user_0004",
+      "user_0014",
+      "user_0018",
+      "user_0024",
+      "user_0042",
+      "user_0045",
+      "user_0035",
+      "user_0041",
+      "user_0006",
+      "user_0037",
+      "user_0048",
+      "user_0003",
+      "user_0001",
+      "user_0049"
+    ]
+  },
+  {
+    "id": "user_0045",
+    "name": "Reese Moore",
+    "email": "reese.moore@example.com",
+    "location": {
+      "lat": 40.77550576279499,
+      "lng": -73.94822847354135,
+      "cluster": "Manhattan"
+    },
+    "sportsAffinity": {
+      "Volleyball": 0.8286419753086419,
+      "Basketball": 0.11332690329218108,
+      "Soccer": 0.06588220164609054,
+      "Running": 0.470977366255144,
+      "Tennis": 0.5411659807956104,
+      "Board Games": 0.5911899862825789,
+      "Hiking": 0.17085648148148147,
+      "Fitness": 0.576423182441701
+    },
+    "reliability": 0.8188540147677716,
+    "isSuperHost": true,
+    "joinedAt": "2025-05-03T21:23:13.959Z",
+    "friends": [
+      "user_0004",
+      "user_0014",
+      "user_0018",
+      "user_0024",
+      "user_0035",
+      "user_0044",
+      "user_0027",
+      "user_0025",
+      "user_0016",
+      "user_0033",
+      "user_0039"
+    ]
+  },
+  {
+    "id": "user_0046",
+    "name": "Logan Smith",
+    "email": "logan.smith@example.com",
+    "location": {
+      "lat": 40.720152489128,
+      "lng": -73.78223461421364,
+      "cluster": "Queens"
+    },
+    "sportsAffinity": {
+      "Board Games": 0.8268698559670782,
+      "Basketball": 0.13080504115226338,
+      "Soccer": 0.17024305555555555,
+      "Running": 0.3933058984910837,
+      "Tennis": 0.5272805212620028,
+      "Volleyball": 0.1672608024691358,
+      "Hiking": 0.4137482853223594,
+      "Fitness": 0.12993312757201647
+    },
+    "reliability": 0.7456598274435219,
+    "isSuperHost": false,
+    "joinedAt": "2023-10-25T21:23:13.959Z",
+    "friends": [
+      "user_0020",
+      "user_0025",
+      "user_0003",
+      "user_0039",
+      "user_0026",
+      "user_0021",
+      "user_0018",
+      "user_0048",
+      "user_0012"
+    ]
+  },
+  {
+    "id": "user_0047",
+    "name": "Peyton Smith",
+    "email": "peyton.smith@example.com",
+    "location": {
+      "lat": 40.83802990520033,
+      "lng": -73.90391008543104,
+      "cluster": "Bronx"
+    },
+    "sportsAffinity": {
+      "Basketball": 0.8803446502057612,
+      "Tennis": 0.7999614197530864,
+      "Running": 0.9896399176954732,
+      "Soccer": 0.4485562414266118,
+      "Volleyball": 0.12477623456790124,
+      "Board Games": 0.09693029835390946,
+      "Hiking": 0.3640603566529493,
+      "Fitness": 0.4173765432098766
+    },
+    "reliability": 0.7540885775737054,
+    "isSuperHost": false,
+    "joinedAt": "2025-01-11T22:23:13.959Z",
+    "friends": [
+      "user_0008",
+      "user_0012",
+      "user_0031",
+      "user_0037",
+      "user_0040",
+      "user_0007",
+      "user_0011",
+      "user_0018",
+      "user_0035"
+    ]
+  },
+  {
+    "id": "user_0048",
+    "name": "River Martin",
+    "email": "river.martin@example.com",
+    "location": {
+      "lat": 40.6724296787483,
+      "lng": -73.92606621348173,
+      "cluster": "Brooklyn"
+    },
+    "sportsAffinity": {
+      "Hiking": 0.8816589506172839,
+      "Soccer": 0.8898559670781893,
+      "Basketball": 0.15813143004115227,
+      "Running": 0.31574074074074077,
+      "Tennis": 0.14148276748971195,
+      "Volleyball": 0.1875565843621399,
+      "Board Games": 0.07792052469135803,
+      "Fitness": 0.13664866255144031
+    },
+    "reliability": 0.3426249850991784,
+    "isSuperHost": false,
+    "joinedAt": "2024-05-16T21:23:13.959Z",
+    "friends": [
+      "user_0015",
+      "user_0016",
+      "user_0022",
+      "user_0023",
+      "user_0036",
+      "user_0013",
+      "user_0009",
+      "user_0017",
+      "user_0033",
+      "user_0011",
+      "user_0044",
+      "user_0046",
+      "user_0027",
+      "user_0025",
+      "user_0006"
+    ]
+  },
+  {
+    "id": "user_0049",
+    "name": "Rowan Lee",
+    "email": "rowan.lee@example.com",
+    "location": {
+      "lat": 40.67957336417493,
+      "lng": -73.9448102648626,
+      "cluster": "Brooklyn"
+    },
+    "sportsAffinity": {
+      "Basketball": 0.9456275720164609,
+      "Tennis": 0.834997427983539,
+      "Running": 0.9276260288065843,
+      "Soccer": 0.1080349794238683,
+      "Volleyball": 0.13543595679012346,
+      "Board Games": 0.053423353909465024,
+      "Hiking": 0.06384902263374485,
+      "Fitness": 0.12967592592592592
+    },
+    "reliability": 0.9308135708127276,
+    "isSuperHost": true,
+    "joinedAt": "2023-11-01T21:23:13.959Z",
+    "friends": [
+      "user_0005",
+      "user_0011",
+      "user_0028",
+      "user_0036",
+      "user_0016",
+      "user_0033",
+      "user_0010",
+      "user_0038",
+      "user_0044"
+    ]
+  },
+  {
+    "id": "user_0050",
+    "name": "Blake Taylor",
+    "email": "blake.taylor@example.com",
+    "location": {
+      "lat": 40.68934287981938,
+      "lng": -73.96277404600937,
+      "cluster": "Brooklyn"
+    },
+    "sportsAffinity": {
+      "Volleyball": 0.8279783950617283,
+      "Basketball": 0.0639210390946502,
+      "Soccer": 0.07295781893004115,
+      "Running": 0.0540625,
+      "Tennis": 0.5946021947873801,
+      "Board Games": 0.08988297325102881,
+      "Hiking": 0.5362139917695474,
+      "Fitness": 0.5483779149519891
+    },
+    "reliability": 0.8310937283712542,
+    "isSuperHost": false,
+    "joinedAt": "2025-03-25T21:23:13.959Z",
+    "friends": [
+      "user_0005",
+      "user_0022",
+      "user_0030",
+      "user_0032",
+      "user_0009",
+      "user_0016",
+      "user_0034",
+      "user_0042",
+      "user_0014"
+    ]
+  }
+]

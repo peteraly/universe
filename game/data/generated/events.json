@@ -1,0 +1,2614 @@
+[
+  {
+    "id": "evt_user_0001_1755638593963_volleyball",
+    "title": "Casual Volleyball",
+    "hostId": "user_0001",
+    "sport": "Volleyball",
+    "maxSlots": 13,
+    "attendeeCount": 3,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "ended",
+    "createdAt": "2025-08-15T18:00:00.000Z",
+    "location": "Beach Court, Staten Island",
+    "time": {
+      "startAt": "2025-08-18T18:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-08-18T19:15:00.000Z",
+      "durationMinutes": 75,
+      "cutoffMinutes": 30
+    },
+    "description": "Weekly volleyball meetup. Bring your volleyball!",
+    "equipment": [
+      "volleyball"
+    ],
+    "skillLevel": "casual",
+    "isRecurring": true
+  },
+  {
+    "id": "evt_user_0001_1755638593964_soccer",
+    "title": "Morning Soccer",
+    "hostId": "user_0001",
+    "sport": "Soccer",
+    "maxSlots": 15,
+    "attendeeCount": 13,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "ended",
+    "createdAt": "2025-07-23T13:00:00.000Z",
+    "location": "Prospect Park, Staten Island",
+    "time": {
+      "startAt": "2025-08-03T13:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-08-03T14:45:00.000Z",
+      "durationMinutes": 105,
+      "cutoffMinutes": 30
+    },
+    "description": "Casual soccer game. Great way to meet new people and stay active.",
+    "equipment": [
+      "soccer ball",
+      "cleats"
+    ],
+    "skillLevel": "beginner",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0001_1755638593965_board_games",
+    "title": "Open Board Games",
+    "hostId": "user_0001",
+    "sport": "Board Games",
+    "maxSlots": 6,
+    "attendeeCount": 1,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "ended",
+    "createdAt": "2025-07-08T14:00:00.000Z",
+    "location": "Board Game Cafe, Staten Island",
+    "time": {
+      "startAt": "2025-07-20T14:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-07-20T16:00:00.000Z",
+      "durationMinutes": 120,
+      "cutoffMinutes": 30
+    },
+    "description": "Join us for a fun board games session! All skill levels welcome.",
+    "equipment": [
+      "board games"
+    ],
+    "skillLevel": "beginner",
+    "isRecurring": true
+  },
+  {
+    "id": "evt_user_0001_1755638593966_board_games",
+    "title": "Board Games Practice",
+    "hostId": "user_0001",
+    "sport": "Board Games",
+    "maxSlots": 6,
+    "attendeeCount": 2,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "confirmed",
+    "createdAt": "2025-10-06T23:00:00.000Z",
+    "location": "Coffee Shop, Staten Island",
+    "time": {
+      "startAt": "2025-10-10T23:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-10-11T01:00:00.000Z",
+      "durationMinutes": 120,
+      "cutoffMinutes": 30
+    },
+    "description": "Board Games practice session. Perfect for improving your skills!",
+    "equipment": [
+      "board games"
+    ],
+    "skillLevel": "competitive",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0001_1755638593967_board_games",
+    "title": "Board Games Practice",
+    "hostId": "user_0001",
+    "sport": "Board Games",
+    "maxSlots": 5,
+    "attendeeCount": 3,
+    "waitlistCount": 0,
+    "visibility": "invite_auto",
+    "status": "ended",
+    "createdAt": "2025-07-27T10:00:00.000Z",
+    "location": "Coffee Shop, Staten Island",
+    "time": {
+      "startAt": "2025-08-01T10:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-08-01T12:00:00.000Z",
+      "durationMinutes": 120,
+      "cutoffMinutes": 30
+    },
+    "description": "Weekly board games meetup. Bring your board games!",
+    "equipment": [
+      "board games"
+    ],
+    "skillLevel": "competitive",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0001_1755638593968_board_games",
+    "title": "Open Board Games",
+    "hostId": "user_0001",
+    "sport": "Board Games",
+    "maxSlots": 6,
+    "attendeeCount": 5,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "ended",
+    "createdAt": "2025-07-14T00:00:00.000Z",
+    "location": "Board Game Cafe, Staten Island",
+    "time": {
+      "startAt": "2025-07-25T00:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-07-25T02:00:00.000Z",
+      "durationMinutes": 120,
+      "cutoffMinutes": 30
+    },
+    "description": "Looking for players for board games. Come ready to play!",
+    "equipment": [
+      "board games"
+    ],
+    "skillLevel": "beginner",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0001_1755638593969_soccer",
+    "title": "Soccer Meetup",
+    "hostId": "user_0001",
+    "sport": "Soccer",
+    "maxSlots": 17,
+    "attendeeCount": 11,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "ended",
+    "createdAt": "2025-07-29T18:00:00.000Z",
+    "location": "Park, Staten Island",
+    "time": {
+      "startAt": "2025-08-06T18:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-08-06T19:45:00.000Z",
+      "durationMinutes": 105,
+      "cutoffMinutes": 30
+    },
+    "description": "Soccer practice session. Perfect for improving your skills!",
+    "equipment": [
+      "soccer ball",
+      "cleats"
+    ],
+    "skillLevel": "competitive",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0001_1755638593970_board_games",
+    "title": "Board Games Club",
+    "hostId": "user_0001",
+    "sport": "Board Games",
+    "maxSlots": 6,
+    "attendeeCount": 2,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "ended",
+    "createdAt": "2025-07-08T20:00:00.000Z",
+    "location": "Board Game Cafe, Staten Island",
+    "time": {
+      "startAt": "2025-07-20T20:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-07-20T22:00:00.000Z",
+      "durationMinutes": 120,
+      "cutoffMinutes": 30
+    },
+    "description": "Board Games practice session. Perfect for improving your skills!",
+    "equipment": [
+      "board games"
+    ],
+    "skillLevel": "beginner",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0001_1755638593971_board_games",
+    "title": "Casual Board Games",
+    "hostId": "user_0001",
+    "sport": "Board Games",
+    "maxSlots": 6,
+    "attendeeCount": 5,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "confirmed",
+    "createdAt": "2025-08-07T22:00:00.000Z",
+    "location": "Board Game Cafe, Staten Island",
+    "time": {
+      "startAt": "2025-08-21T22:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-08-22T00:00:00.000Z",
+      "durationMinutes": 120,
+      "cutoffMinutes": 30
+    },
+    "description": "Looking for players for board games. Come ready to play!",
+    "equipment": [
+      "board games"
+    ],
+    "skillLevel": "beginner",
+    "isRecurring": true
+  },
+  {
+    "id": "evt_user_0001_1755638593972_volleyball",
+    "title": "Weekly Volleyball",
+    "hostId": "user_0001",
+    "sport": "Volleyball",
+    "maxSlots": 11,
+    "attendeeCount": 1,
+    "waitlistCount": 0,
+    "visibility": "invite_auto",
+    "status": "confirmed",
+    "createdAt": "2025-09-20T00:00:00.000Z",
+    "location": "Beach Court, Staten Island",
+    "time": {
+      "startAt": "2025-10-02T00:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-10-02T01:15:00.000Z",
+      "durationMinutes": 75,
+      "cutoffMinutes": 30
+    },
+    "description": "Join us for a fun volleyball session! All skill levels welcome.",
+    "equipment": [
+      "volleyball"
+    ],
+    "skillLevel": "beginner",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0001_1755638593973_board_games",
+    "title": "Evening Board Games",
+    "hostId": "user_0001",
+    "sport": "Board Games",
+    "maxSlots": 6,
+    "attendeeCount": 4,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "confirmed",
+    "createdAt": "2025-09-14T12:00:00.000Z",
+    "location": "Board Game Cafe, Staten Island",
+    "time": {
+      "startAt": "2025-09-16T12:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-09-16T14:00:00.000Z",
+      "durationMinutes": 120,
+      "cutoffMinutes": 30
+    },
+    "description": "Casual board games game. Great way to meet new people and stay active.",
+    "equipment": [
+      "board games"
+    ],
+    "skillLevel": "casual",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0001_1755638593974_board_games",
+    "title": "Weekly Board Games",
+    "hostId": "user_0001",
+    "sport": "Board Games",
+    "maxSlots": 6,
+    "attendeeCount": 6,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "confirmed",
+    "createdAt": "2025-09-30T23:00:00.000Z",
+    "location": "Community Center, Staten Island",
+    "time": {
+      "startAt": "2025-10-07T23:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-10-08T01:00:00.000Z",
+      "durationMinutes": 120,
+      "cutoffMinutes": 30
+    },
+    "description": "Join us for a fun board games session! All skill levels welcome.",
+    "equipment": [
+      "board games"
+    ],
+    "skillLevel": "competitive",
+    "isRecurring": true
+  },
+  {
+    "id": "evt_user_0012_1755638593975_fitness",
+    "title": "Weekly Fitness",
+    "hostId": "user_0012",
+    "sport": "Fitness",
+    "maxSlots": 7,
+    "attendeeCount": 7,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "confirmed",
+    "createdAt": "2025-08-21T18:00:00.000Z",
+    "location": "Fitness Studio, Bronx",
+    "time": {
+      "startAt": "2025-08-31T18:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-08-31T19:00:00.000Z",
+      "durationMinutes": 60,
+      "cutoffMinutes": 30
+    },
+    "description": "Casual fitness game. Great way to meet new people and stay active.",
+    "equipment": [
+      "workout clothes"
+    ],
+    "skillLevel": "beginner",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0012_1755638593976_basketball",
+    "title": "Weekend Basketball",
+    "hostId": "user_0012",
+    "sport": "Basketball",
+    "maxSlots": 11,
+    "attendeeCount": 2,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "ended",
+    "createdAt": "2025-08-09T23:00:00.000Z",
+    "location": "Community Center, Bronx",
+    "time": {
+      "startAt": "2025-08-11T23:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-08-12T00:30:00.000Z",
+      "durationMinutes": 90,
+      "cutoffMinutes": 30
+    },
+    "description": "Casual basketball game. Great way to meet new people and stay active.",
+    "equipment": [
+      "basketball"
+    ],
+    "skillLevel": "casual",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0012_1755638593977_fitness",
+    "title": "Fitness Practice",
+    "hostId": "user_0012",
+    "sport": "Fitness",
+    "maxSlots": 7,
+    "attendeeCount": 7,
+    "waitlistCount": 5,
+    "visibility": "invite_manual",
+    "status": "confirmed",
+    "createdAt": "2025-10-07T14:00:00.000Z",
+    "location": "Community Center, Bronx",
+    "time": {
+      "startAt": "2025-10-10T14:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-10-10T15:00:00.000Z",
+      "durationMinutes": 60,
+      "cutoffMinutes": 30
+    },
+    "description": "Casual fitness game. Great way to meet new people and stay active.",
+    "equipment": [
+      "workout clothes"
+    ],
+    "skillLevel": "competitive",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0012_1755638593978_fitness",
+    "title": "Fitness Practice",
+    "hostId": "user_0012",
+    "sport": "Fitness",
+    "maxSlots": 7,
+    "attendeeCount": 5,
+    "waitlistCount": 0,
+    "visibility": "invite_auto",
+    "status": "ended",
+    "createdAt": "2025-08-13T22:00:00.000Z",
+    "location": "Community Center, Bronx",
+    "time": {
+      "startAt": "2025-08-15T22:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-08-15T23:00:00.000Z",
+      "durationMinutes": 60,
+      "cutoffMinutes": 30
+    },
+    "description": "Join us for a fun fitness session! All skill levels welcome.",
+    "equipment": [
+      "workout clothes"
+    ],
+    "skillLevel": "competitive",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0012_1755638593979_basketball",
+    "title": "Basketball Game",
+    "hostId": "user_0012",
+    "sport": "Basketball",
+    "maxSlots": 10,
+    "attendeeCount": 8,
+    "waitlistCount": 0,
+    "visibility": "invite_manual",
+    "status": "confirmed",
+    "createdAt": "2025-09-09T14:00:00.000Z",
+    "location": "Community Center, Bronx",
+    "time": {
+      "startAt": "2025-09-14T14:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-09-14T15:30:00.000Z",
+      "durationMinutes": 90,
+      "cutoffMinutes": 30
+    },
+    "description": "Join us for a fun basketball session! All skill levels welcome.",
+    "equipment": [
+      "basketball"
+    ],
+    "skillLevel": "competitive",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0012_1755638593980_fitness",
+    "title": "Evening Fitness",
+    "hostId": "user_0012",
+    "sport": "Fitness",
+    "maxSlots": 8,
+    "attendeeCount": 1,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "confirmed",
+    "createdAt": "2025-09-12T12:00:00.000Z",
+    "location": "Community Center, Bronx",
+    "time": {
+      "startAt": "2025-09-26T12:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-09-26T13:00:00.000Z",
+      "durationMinutes": 60,
+      "cutoffMinutes": 30
+    },
+    "description": "Weekly fitness meetup. Bring your workout clothes!",
+    "equipment": [
+      "workout clothes"
+    ],
+    "skillLevel": "beginner",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0012_1755638593981_basketball",
+    "title": "Basketball Club",
+    "hostId": "user_0012",
+    "sport": "Basketball",
+    "maxSlots": 8,
+    "attendeeCount": 1,
+    "waitlistCount": 0,
+    "visibility": "invite_manual",
+    "status": "ended",
+    "createdAt": "2025-08-07T23:00:00.000Z",
+    "location": "Community Center, Bronx",
+    "time": {
+      "startAt": "2025-08-11T23:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-08-12T00:30:00.000Z",
+      "durationMinutes": 90,
+      "cutoffMinutes": 30
+    },
+    "description": "Join us for a fun basketball session! All skill levels welcome.",
+    "equipment": [
+      "basketball"
+    ],
+    "skillLevel": "competitive",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0012_1755638593982_basketball",
+    "title": "Morning Basketball",
+    "hostId": "user_0012",
+    "sport": "Basketball",
+    "maxSlots": 10,
+    "attendeeCount": 8,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "confirmed",
+    "createdAt": "2025-08-22T22:00:00.000Z",
+    "location": "School Gym, Bronx",
+    "time": {
+      "startAt": "2025-09-05T22:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-09-05T23:30:00.000Z",
+      "durationMinutes": 90,
+      "cutoffMinutes": 30
+    },
+    "description": "Casual basketball game. Great way to meet new people and stay active.",
+    "equipment": [
+      "basketball"
+    ],
+    "skillLevel": "beginner",
+    "isRecurring": true
+  },
+  {
+    "id": "evt_user_0012_1755638593983_basketball",
+    "title": "Basketball Meetup",
+    "hostId": "user_0012",
+    "sport": "Basketball",
+    "maxSlots": 10,
+    "attendeeCount": 10,
+    "waitlistCount": 5,
+    "visibility": "public",
+    "status": "ended",
+    "createdAt": "2025-07-31T23:00:00.000Z",
+    "location": "Recreation Center, Bronx",
+    "time": {
+      "startAt": "2025-08-12T23:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-08-13T00:30:00.000Z",
+      "durationMinutes": 90,
+      "cutoffMinutes": 30
+    },
+    "description": "Basketball practice session. Perfect for improving your skills!",
+    "equipment": [
+      "basketball"
+    ],
+    "skillLevel": "competitive",
+    "isRecurring": true
+  },
+  {
+    "id": "evt_user_0012_1755638593984_basketball",
+    "title": "Basketball Meetup",
+    "hostId": "user_0012",
+    "sport": "Basketball",
+    "maxSlots": 9,
+    "attendeeCount": 9,
+    "waitlistCount": 0,
+    "visibility": "invite_manual",
+    "status": "ended",
+    "createdAt": "2025-07-11T22:00:00.000Z",
+    "location": "School Gym, Bronx",
+    "time": {
+      "startAt": "2025-07-22T22:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-07-22T23:30:00.000Z",
+      "durationMinutes": 90,
+      "cutoffMinutes": 30
+    },
+    "description": "Basketball practice session. Perfect for improving your skills!",
+    "equipment": [
+      "basketball"
+    ],
+    "skillLevel": "beginner",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0012_1755638593985_fitness",
+    "title": "Fitness Session",
+    "hostId": "user_0012",
+    "sport": "Fitness",
+    "maxSlots": 8,
+    "attendeeCount": 5,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "ended",
+    "createdAt": "2025-07-15T23:00:00.000Z",
+    "location": "Community Center, Bronx",
+    "time": {
+      "startAt": "2025-07-21T23:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-07-22T00:00:00.000Z",
+      "durationMinutes": 60,
+      "cutoffMinutes": 30
+    },
+    "description": "Fitness practice session. Perfect for improving your skills!",
+    "equipment": [
+      "workout clothes"
+    ],
+    "skillLevel": "casual",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0012_1755638593986_basketball",
+    "title": "Beginner Basketball",
+    "hostId": "user_0012",
+    "sport": "Basketball",
+    "maxSlots": 11,
+    "attendeeCount": 4,
+    "waitlistCount": 0,
+    "visibility": "invite_auto",
+    "status": "confirmed",
+    "createdAt": "2025-09-28T00:00:00.000Z",
+    "location": "YMCA, Bronx",
+    "time": {
+      "startAt": "2025-10-03T00:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-10-03T01:30:00.000Z",
+      "durationMinutes": 90,
+      "cutoffMinutes": 30
+    },
+    "description": "Casual basketball game. Great way to meet new people and stay active.",
+    "equipment": [
+      "basketball"
+    ],
+    "skillLevel": "competitive",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0016_1755638593987_basketball",
+    "title": "Competitive Basketball",
+    "hostId": "user_0016",
+    "sport": "Basketball",
+    "maxSlots": 11,
+    "attendeeCount": 8,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "confirmed",
+    "createdAt": "2025-09-28T23:00:00.000Z",
+    "location": "School Gym, Brooklyn",
+    "time": {
+      "startAt": "2025-10-10T23:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-10-11T00:30:00.000Z",
+      "durationMinutes": 90,
+      "cutoffMinutes": 30
+    },
+    "description": "Weekly basketball meetup. Bring your basketball!",
+    "equipment": [
+      "basketball"
+    ],
+    "skillLevel": "casual",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0016_1755638593988_basketball",
+    "title": "Basketball Club",
+    "hostId": "user_0016",
+    "sport": "Basketball",
+    "maxSlots": 8,
+    "attendeeCount": 7,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "confirmed",
+    "createdAt": "2025-08-24T22:00:00.000Z",
+    "location": "Recreation Center, Brooklyn",
+    "time": {
+      "startAt": "2025-08-26T22:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-08-26T23:30:00.000Z",
+      "durationMinutes": 90,
+      "cutoffMinutes": 30
+    },
+    "description": "Join us for a fun basketball session! All skill levels welcome.",
+    "equipment": [
+      "basketball"
+    ],
+    "skillLevel": "competitive",
+    "isRecurring": true
+  },
+  {
+    "id": "evt_user_0016_1755638593989_tennis",
+    "title": "Tennis Club",
+    "hostId": "user_0016",
+    "sport": "Tennis",
+    "maxSlots": 4,
+    "attendeeCount": 4,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "confirmed",
+    "createdAt": "2025-08-27T01:00:00.000Z",
+    "location": "Park Courts, Brooklyn",
+    "time": {
+      "startAt": "2025-08-31T01:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-08-31T02:30:00.000Z",
+      "durationMinutes": 90,
+      "cutoffMinutes": 30
+    },
+    "description": "Join us for a fun tennis session! All skill levels welcome.",
+    "equipment": [
+      "tennis racket",
+      "tennis balls"
+    ],
+    "skillLevel": "competitive",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0016_1755638593990_hiking",
+    "title": "Casual Hiking",
+    "hostId": "user_0016",
+    "sport": "Hiking",
+    "maxSlots": 17,
+    "attendeeCount": 17,
+    "waitlistCount": 5,
+    "visibility": "public",
+    "status": "confirmed",
+    "createdAt": "2025-10-05T11:00:00.000Z",
+    "location": "State Park, Brooklyn",
+    "time": {
+      "startAt": "2025-10-15T11:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-10-15T14:00:00.000Z",
+      "durationMinutes": 180,
+      "cutoffMinutes": 30
+    },
+    "description": "Casual hiking game. Great way to meet new people and stay active.",
+    "equipment": [
+      "hiking boots",
+      "backpack"
+    ],
+    "skillLevel": "competitive",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0016_1755638593991_hiking",
+    "title": "Evening Hiking",
+    "hostId": "user_0016",
+    "sport": "Hiking",
+    "maxSlots": 13,
+    "attendeeCount": 12,
+    "waitlistCount": 0,
+    "visibility": "invite_manual",
+    "status": "confirmed",
+    "createdAt": "2025-09-18T12:00:00.000Z",
+    "location": "State Park, Brooklyn",
+    "time": {
+      "startAt": "2025-10-01T12:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-10-01T15:00:00.000Z",
+      "durationMinutes": 180,
+      "cutoffMinutes": 30
+    },
+    "description": "Join us for a fun hiking session! All skill levels welcome.",
+    "equipment": [
+      "hiking boots",
+      "backpack"
+    ],
+    "skillLevel": "casual",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0016_1755638593992_basketball",
+    "title": "Weekly Basketball",
+    "hostId": "user_0016",
+    "sport": "Basketball",
+    "maxSlots": 11,
+    "attendeeCount": 4,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "confirmed",
+    "createdAt": "2025-08-29T00:00:00.000Z",
+    "location": "YMCA, Brooklyn",
+    "time": {
+      "startAt": "2025-08-30T00:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-08-30T01:30:00.000Z",
+      "durationMinutes": 90,
+      "cutoffMinutes": 30
+    },
+    "description": "Looking for players for basketball. Come ready to play!",
+    "equipment": [
+      "basketball"
+    ],
+    "skillLevel": "competitive",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0016_1755638593993_basketball",
+    "title": "Morning Basketball",
+    "hostId": "user_0016",
+    "sport": "Basketball",
+    "maxSlots": 11,
+    "attendeeCount": 3,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "confirmed",
+    "createdAt": "2025-09-13T22:00:00.000Z",
+    "location": "YMCA, Brooklyn",
+    "time": {
+      "startAt": "2025-09-19T22:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-09-19T23:30:00.000Z",
+      "durationMinutes": 90,
+      "cutoffMinutes": 30
+    },
+    "description": "Casual basketball game. Great way to meet new people and stay active.",
+    "equipment": [
+      "basketball"
+    ],
+    "skillLevel": "beginner",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0016_1755638593994_basketball",
+    "title": "Evening Basketball",
+    "hostId": "user_0016",
+    "sport": "Basketball",
+    "maxSlots": 11,
+    "attendeeCount": 10,
+    "waitlistCount": 0,
+    "visibility": "invite_manual",
+    "status": "confirmed",
+    "createdAt": "2025-09-14T23:00:00.000Z",
+    "location": "Community Center, Brooklyn",
+    "time": {
+      "startAt": "2025-09-25T23:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-09-26T00:30:00.000Z",
+      "durationMinutes": 90,
+      "cutoffMinutes": 30
+    },
+    "description": "Casual basketball game. Great way to meet new people and stay active.",
+    "equipment": [
+      "basketball"
+    ],
+    "skillLevel": "beginner",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0016_1755638593995_basketball",
+    "title": "Weekend Basketball",
+    "hostId": "user_0016",
+    "sport": "Basketball",
+    "maxSlots": 9,
+    "attendeeCount": 8,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "confirmed",
+    "createdAt": "2025-09-10T22:00:00.000Z",
+    "location": "YMCA, Brooklyn",
+    "time": {
+      "startAt": "2025-09-17T22:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-09-17T23:30:00.000Z",
+      "durationMinutes": 90,
+      "cutoffMinutes": 30
+    },
+    "description": "Weekly basketball meetup. Bring your basketball!",
+    "equipment": [
+      "basketball"
+    ],
+    "skillLevel": "competitive",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0016_1755638593996_basketball",
+    "title": "Basketball Meetup",
+    "hostId": "user_0016",
+    "sport": "Basketball",
+    "maxSlots": 10,
+    "attendeeCount": 2,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "ended",
+    "createdAt": "2025-07-23T12:00:00.000Z",
+    "location": "YMCA, Brooklyn",
+    "time": {
+      "startAt": "2025-07-26T12:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-07-26T13:30:00.000Z",
+      "durationMinutes": 90,
+      "cutoffMinutes": 30
+    },
+    "description": "Casual basketball game. Great way to meet new people and stay active.",
+    "equipment": [
+      "basketball"
+    ],
+    "skillLevel": "casual",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0031_1755638593997_volleyball",
+    "title": "Volleyball Practice",
+    "hostId": "user_0031",
+    "sport": "Volleyball",
+    "maxSlots": 13,
+    "attendeeCount": 13,
+    "waitlistCount": 0,
+    "visibility": "invite_auto",
+    "status": "confirmed",
+    "createdAt": "2025-10-07T01:00:00.000Z",
+    "location": "Gym, Bronx",
+    "time": {
+      "startAt": "2025-10-11T01:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-10-11T02:15:00.000Z",
+      "durationMinutes": 75,
+      "cutoffMinutes": 30
+    },
+    "description": "Volleyball practice session. Perfect for improving your skills!",
+    "equipment": [
+      "volleyball"
+    ],
+    "skillLevel": "casual",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0031_1755638593998_fitness",
+    "title": "Weekend Fitness",
+    "hostId": "user_0031",
+    "sport": "Fitness",
+    "maxSlots": 8,
+    "attendeeCount": 8,
+    "waitlistCount": 5,
+    "visibility": "public",
+    "status": "ended",
+    "createdAt": "2025-07-25T00:00:00.000Z",
+    "location": "Fitness Studio, Bronx",
+    "time": {
+      "startAt": "2025-08-04T00:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-08-04T01:00:00.000Z",
+      "durationMinutes": 60,
+      "cutoffMinutes": 30
+    },
+    "description": "Fitness practice session. Perfect for improving your skills!",
+    "equipment": [
+      "workout clothes"
+    ],
+    "skillLevel": "competitive",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0031_1755638593999_fitness",
+    "title": "Fitness Night",
+    "hostId": "user_0031",
+    "sport": "Fitness",
+    "maxSlots": 9,
+    "attendeeCount": 7,
+    "waitlistCount": 0,
+    "visibility": "invite_auto",
+    "status": "ended",
+    "createdAt": "2025-08-07T12:00:00.000Z",
+    "location": "Fitness Studio, Bronx",
+    "time": {
+      "startAt": "2025-08-18T12:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-08-18T13:00:00.000Z",
+      "durationMinutes": 60,
+      "cutoffMinutes": 30
+    },
+    "description": "Weekly fitness meetup. Bring your workout clothes!",
+    "equipment": [
+      "workout clothes"
+    ],
+    "skillLevel": "beginner",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0031_1755638594000_fitness",
+    "title": "Fitness Session",
+    "hostId": "user_0031",
+    "sport": "Fitness",
+    "maxSlots": 7,
+    "attendeeCount": 2,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "confirmed",
+    "createdAt": "2025-09-20T13:00:00.000Z",
+    "location": "Gym, Bronx",
+    "time": {
+      "startAt": "2025-09-28T13:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-09-28T14:00:00.000Z",
+      "durationMinutes": 60,
+      "cutoffMinutes": 30
+    },
+    "description": "Looking for players for fitness. Come ready to play!",
+    "equipment": [
+      "workout clothes"
+    ],
+    "skillLevel": "casual",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0031_1755638594001_volleyball",
+    "title": "Weekly Volleyball",
+    "hostId": "user_0031",
+    "sport": "Volleyball",
+    "maxSlots": 11,
+    "attendeeCount": 8,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "confirmed",
+    "createdAt": "2025-09-03T14:00:00.000Z",
+    "location": "Recreation Center, Bronx",
+    "time": {
+      "startAt": "2025-09-12T14:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-09-12T15:15:00.000Z",
+      "durationMinutes": 75,
+      "cutoffMinutes": 30
+    },
+    "description": "Join us for a fun volleyball session! All skill levels welcome.",
+    "equipment": [
+      "volleyball"
+    ],
+    "skillLevel": "competitive",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0031_1755638594002_volleyball",
+    "title": "Open Volleyball",
+    "hostId": "user_0031",
+    "sport": "Volleyball",
+    "maxSlots": 11,
+    "attendeeCount": 9,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "confirmed",
+    "createdAt": "2025-09-12T11:00:00.000Z",
+    "location": "Gym, Bronx",
+    "time": {
+      "startAt": "2025-09-23T11:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-09-23T12:15:00.000Z",
+      "durationMinutes": 75,
+      "cutoffMinutes": 30
+    },
+    "description": "Volleyball practice session. Perfect for improving your skills!",
+    "equipment": [
+      "volleyball"
+    ],
+    "skillLevel": "competitive",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0031_1755638594003_volleyball",
+    "title": "Volleyball Club",
+    "hostId": "user_0031",
+    "sport": "Volleyball",
+    "maxSlots": 12,
+    "attendeeCount": 2,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "ended",
+    "createdAt": "2025-08-10T16:00:00.000Z",
+    "location": "Community Center, Bronx",
+    "time": {
+      "startAt": "2025-08-17T16:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-08-17T17:15:00.000Z",
+      "durationMinutes": 75,
+      "cutoffMinutes": 30
+    },
+    "description": "Casual volleyball game. Great way to meet new people and stay active.",
+    "equipment": [
+      "volleyball"
+    ],
+    "skillLevel": "casual",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0031_1755638594004_fitness",
+    "title": "Fitness Session",
+    "hostId": "user_0031",
+    "sport": "Fitness",
+    "maxSlots": 7,
+    "attendeeCount": 7,
+    "waitlistCount": 0,
+    "visibility": "invite_manual",
+    "status": "ended",
+    "createdAt": "2025-07-28T00:00:00.000Z",
+    "location": "Community Center, Bronx",
+    "time": {
+      "startAt": "2025-08-08T00:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-08-08T01:00:00.000Z",
+      "durationMinutes": 60,
+      "cutoffMinutes": 30
+    },
+    "description": "Weekly fitness meetup. Bring your workout clothes!",
+    "equipment": [
+      "workout clothes"
+    ],
+    "skillLevel": "beginner",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0031_1755638594005_volleyball",
+    "title": "Volleyball Night",
+    "hostId": "user_0031",
+    "sport": "Volleyball",
+    "maxSlots": 11,
+    "attendeeCount": 9,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "ended",
+    "createdAt": "2025-08-04T22:00:00.000Z",
+    "location": "Recreation Center, Bronx",
+    "time": {
+      "startAt": "2025-08-06T22:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-08-06T23:15:00.000Z",
+      "durationMinutes": 75,
+      "cutoffMinutes": 30
+    },
+    "description": "Join us for a fun volleyball session! All skill levels welcome.",
+    "equipment": [
+      "volleyball"
+    ],
+    "skillLevel": "competitive",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0031_1755638594006_fitness",
+    "title": "Fitness Meetup",
+    "hostId": "user_0031",
+    "sport": "Fitness",
+    "maxSlots": 8,
+    "attendeeCount": 6,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "ended",
+    "createdAt": "2025-07-23T23:00:00.000Z",
+    "location": "Community Center, Bronx",
+    "time": {
+      "startAt": "2025-07-30T23:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-07-31T00:00:00.000Z",
+      "durationMinutes": 60,
+      "cutoffMinutes": 30
+    },
+    "description": "Fitness practice session. Perfect for improving your skills!",
+    "equipment": [
+      "workout clothes"
+    ],
+    "skillLevel": "casual",
+    "isRecurring": true
+  },
+  {
+    "id": "evt_user_0031_1755638594007_volleyball",
+    "title": "Weekly Volleyball",
+    "hostId": "user_0031",
+    "sport": "Volleyball",
+    "maxSlots": 12,
+    "attendeeCount": 11,
+    "waitlistCount": 0,
+    "visibility": "invite_manual",
+    "status": "confirmed",
+    "createdAt": "2025-08-25T00:00:00.000Z",
+    "location": "Gym, Bronx",
+    "time": {
+      "startAt": "2025-08-29T00:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-08-29T01:15:00.000Z",
+      "durationMinutes": 75,
+      "cutoffMinutes": 30
+    },
+    "description": "Join us for a fun volleyball session! All skill levels welcome.",
+    "equipment": [
+      "volleyball"
+    ],
+    "skillLevel": "casual",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0031_1755638594008_fitness",
+    "title": "Competitive Fitness",
+    "hostId": "user_0031",
+    "sport": "Fitness",
+    "maxSlots": 7,
+    "attendeeCount": 5,
+    "waitlistCount": 0,
+    "visibility": "invite_auto",
+    "status": "confirmed",
+    "createdAt": "2025-09-19T23:00:00.000Z",
+    "location": "Community Center, Bronx",
+    "time": {
+      "startAt": "2025-09-25T23:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-09-26T00:00:00.000Z",
+      "durationMinutes": 60,
+      "cutoffMinutes": 30
+    },
+    "description": "Looking for players for fitness. Come ready to play!",
+    "equipment": [
+      "workout clothes"
+    ],
+    "skillLevel": "competitive",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0045_1755638594009_volleyball",
+    "title": "Open Volleyball",
+    "hostId": "user_0045",
+    "sport": "Volleyball",
+    "maxSlots": 12,
+    "attendeeCount": 2,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "confirmed",
+    "createdAt": "2025-08-07T12:00:00.000Z",
+    "location": "Beach Court, Manhattan",
+    "time": {
+      "startAt": "2025-08-20T12:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-08-20T13:15:00.000Z",
+      "durationMinutes": 75,
+      "cutoffMinutes": 30
+    },
+    "description": "Looking for players for volleyball. Come ready to play!",
+    "equipment": [
+      "volleyball"
+    ],
+    "skillLevel": "competitive",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0045_1755638594010_volleyball",
+    "title": "Volleyball Game",
+    "hostId": "user_0045",
+    "sport": "Volleyball",
+    "maxSlots": 12,
+    "attendeeCount": 9,
+    "waitlistCount": 0,
+    "visibility": "invite_auto",
+    "status": "confirmed",
+    "createdAt": "2025-09-08T11:00:00.000Z",
+    "location": "Community Center, Manhattan",
+    "time": {
+      "startAt": "2025-09-22T11:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-09-22T12:15:00.000Z",
+      "durationMinutes": 75,
+      "cutoffMinutes": 30
+    },
+    "description": "Weekly volleyball meetup. Bring your volleyball!",
+    "equipment": [
+      "volleyball"
+    ],
+    "skillLevel": "beginner",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0045_1755638594011_volleyball",
+    "title": "Volleyball Night",
+    "hostId": "user_0045",
+    "sport": "Volleyball",
+    "maxSlots": 10,
+    "attendeeCount": 3,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "confirmed",
+    "createdAt": "2025-08-24T23:00:00.000Z",
+    "location": "Community Center, Manhattan",
+    "time": {
+      "startAt": "2025-09-02T23:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-09-03T00:15:00.000Z",
+      "durationMinutes": 75,
+      "cutoffMinutes": 30
+    },
+    "description": "Looking for players for volleyball. Come ready to play!",
+    "equipment": [
+      "volleyball"
+    ],
+    "skillLevel": "beginner",
+    "isRecurring": true
+  },
+  {
+    "id": "evt_user_0045_1755638594012_volleyball",
+    "title": "Volleyball Session",
+    "hostId": "user_0045",
+    "sport": "Volleyball",
+    "maxSlots": 13,
+    "attendeeCount": 12,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "confirmed",
+    "createdAt": "2025-08-27T23:00:00.000Z",
+    "location": "Beach Court, Manhattan",
+    "time": {
+      "startAt": "2025-09-09T23:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-09-10T00:15:00.000Z",
+      "durationMinutes": 75,
+      "cutoffMinutes": 30
+    },
+    "description": "Join us for a fun volleyball session! All skill levels welcome.",
+    "equipment": [
+      "volleyball"
+    ],
+    "skillLevel": "casual",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0045_1755638594013_board_games",
+    "title": "Competitive Board Games",
+    "hostId": "user_0045",
+    "sport": "Board Games",
+    "maxSlots": 5,
+    "attendeeCount": 4,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "ended",
+    "createdAt": "2025-07-17T18:00:00.000Z",
+    "location": "Coffee Shop, Manhattan",
+    "time": {
+      "startAt": "2025-07-31T18:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-07-31T20:00:00.000Z",
+      "durationMinutes": 120,
+      "cutoffMinutes": 30
+    },
+    "description": "Casual board games game. Great way to meet new people and stay active.",
+    "equipment": [
+      "board games"
+    ],
+    "skillLevel": "competitive",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0045_1755638594014_volleyball",
+    "title": "Volleyball Meetup",
+    "hostId": "user_0045",
+    "sport": "Volleyball",
+    "maxSlots": 12,
+    "attendeeCount": 1,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "confirmed",
+    "createdAt": "2025-08-27T23:00:00.000Z",
+    "location": "Beach Court, Manhattan",
+    "time": {
+      "startAt": "2025-09-03T23:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-09-04T00:15:00.000Z",
+      "durationMinutes": 75,
+      "cutoffMinutes": 30
+    },
+    "description": "Volleyball practice session. Perfect for improving your skills!",
+    "equipment": [
+      "volleyball"
+    ],
+    "skillLevel": "beginner",
+    "isRecurring": true
+  },
+  {
+    "id": "evt_user_0045_1755638594015_board_games",
+    "title": "Board Games Meetup",
+    "hostId": "user_0045",
+    "sport": "Board Games",
+    "maxSlots": 6,
+    "attendeeCount": 6,
+    "waitlistCount": 0,
+    "visibility": "invite_auto",
+    "status": "confirmed",
+    "createdAt": "2025-09-06T00:00:00.000Z",
+    "location": "Library, Manhattan",
+    "time": {
+      "startAt": "2025-09-09T00:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-09-09T02:00:00.000Z",
+      "durationMinutes": 120,
+      "cutoffMinutes": 30
+    },
+    "description": "Join us for a fun board games session! All skill levels welcome.",
+    "equipment": [
+      "board games"
+    ],
+    "skillLevel": "casual",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0045_1755638594016_volleyball",
+    "title": "Beginner Volleyball",
+    "hostId": "user_0045",
+    "sport": "Volleyball",
+    "maxSlots": 13,
+    "attendeeCount": 9,
+    "waitlistCount": 0,
+    "visibility": "invite_auto",
+    "status": "confirmed",
+    "createdAt": "2025-09-18T13:00:00.000Z",
+    "location": "Beach Court, Manhattan",
+    "time": {
+      "startAt": "2025-09-22T13:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-09-22T14:15:00.000Z",
+      "durationMinutes": 75,
+      "cutoffMinutes": 30
+    },
+    "description": "Volleyball practice session. Perfect for improving your skills!",
+    "equipment": [
+      "volleyball"
+    ],
+    "skillLevel": "beginner",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0045_1755638594017_board_games",
+    "title": "Weekly Board Games",
+    "hostId": "user_0045",
+    "sport": "Board Games",
+    "maxSlots": 5,
+    "attendeeCount": 1,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "ended",
+    "createdAt": "2025-07-26T14:00:00.000Z",
+    "location": "Community Center, Manhattan",
+    "time": {
+      "startAt": "2025-07-28T14:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-07-28T16:00:00.000Z",
+      "durationMinutes": 120,
+      "cutoffMinutes": 30
+    },
+    "description": "Looking for players for board games. Come ready to play!",
+    "equipment": [
+      "board games"
+    ],
+    "skillLevel": "casual",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0045_1755638594018_volleyball",
+    "title": "Morning Volleyball",
+    "hostId": "user_0045",
+    "sport": "Volleyball",
+    "maxSlots": 10,
+    "attendeeCount": 9,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "confirmed",
+    "createdAt": "2025-08-14T22:00:00.000Z",
+    "location": "Community Center, Manhattan",
+    "time": {
+      "startAt": "2025-08-20T22:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-08-20T23:15:00.000Z",
+      "durationMinutes": 75,
+      "cutoffMinutes": 30
+    },
+    "description": "Volleyball practice session. Perfect for improving your skills!",
+    "equipment": [
+      "volleyball"
+    ],
+    "skillLevel": "beginner",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0045_1755638594019_board_games",
+    "title": "Weekly Board Games",
+    "hostId": "user_0045",
+    "sport": "Board Games",
+    "maxSlots": 6,
+    "attendeeCount": 2,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "confirmed",
+    "createdAt": "2025-09-03T22:00:00.000Z",
+    "location": "Library, Manhattan",
+    "time": {
+      "startAt": "2025-09-15T22:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-09-16T00:00:00.000Z",
+      "durationMinutes": 120,
+      "cutoffMinutes": 30
+    },
+    "description": "Board Games practice session. Perfect for improving your skills!",
+    "equipment": [
+      "board games"
+    ],
+    "skillLevel": "beginner",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0045_1755638594020_board_games",
+    "title": "Beginner Board Games",
+    "hostId": "user_0045",
+    "sport": "Board Games",
+    "maxSlots": 5,
+    "attendeeCount": 4,
+    "waitlistCount": 0,
+    "visibility": "invite_auto",
+    "status": "confirmed",
+    "createdAt": "2025-09-15T23:00:00.000Z",
+    "location": "Library, Manhattan",
+    "time": {
+      "startAt": "2025-09-29T23:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-09-30T01:00:00.000Z",
+      "durationMinutes": 120,
+      "cutoffMinutes": 30
+    },
+    "description": "Looking for players for board games. Come ready to play!",
+    "equipment": [
+      "board games"
+    ],
+    "skillLevel": "casual",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0049_1755638594021_basketball",
+    "title": "Basketball Practice",
+    "hostId": "user_0049",
+    "sport": "Basketball",
+    "maxSlots": 9,
+    "attendeeCount": 6,
+    "waitlistCount": 0,
+    "visibility": "invite_manual",
+    "status": "confirmed",
+    "createdAt": "2025-09-16T14:00:00.000Z",
+    "location": "Community Center, Brooklyn",
+    "time": {
+      "startAt": "2025-09-25T14:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-09-25T15:30:00.000Z",
+      "durationMinutes": 90,
+      "cutoffMinutes": 30
+    },
+    "description": "Basketball practice session. Perfect for improving your skills!",
+    "equipment": [
+      "basketball"
+    ],
+    "skillLevel": "casual",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0049_1755638594022_basketball",
+    "title": "Beginner Basketball",
+    "hostId": "user_0049",
+    "sport": "Basketball",
+    "maxSlots": 8,
+    "attendeeCount": 5,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "confirmed",
+    "createdAt": "2025-10-02T22:00:00.000Z",
+    "location": "School Gym, Brooklyn",
+    "time": {
+      "startAt": "2025-10-04T22:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-10-04T23:30:00.000Z",
+      "durationMinutes": 90,
+      "cutoffMinutes": 30
+    },
+    "description": "Basketball practice session. Perfect for improving your skills!",
+    "equipment": [
+      "basketball"
+    ],
+    "skillLevel": "beginner",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0049_1755638594023_running",
+    "title": "Running Game",
+    "hostId": "user_0049",
+    "sport": "Running",
+    "maxSlots": 17,
+    "attendeeCount": 14,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "ended",
+    "createdAt": "2025-08-06T14:00:00.000Z",
+    "location": "Central Park, Brooklyn",
+    "time": {
+      "startAt": "2025-08-15T14:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-08-15T15:00:00.000Z",
+      "durationMinutes": 60,
+      "cutoffMinutes": 30
+    },
+    "description": "Join us for a fun running session! All skill levels welcome.",
+    "equipment": [
+      "running shoes"
+    ],
+    "skillLevel": "beginner",
+    "isRecurring": true
+  },
+  {
+    "id": "evt_user_0049_1755638594024_basketball",
+    "title": "Basketball Practice",
+    "hostId": "user_0049",
+    "sport": "Basketball",
+    "maxSlots": 11,
+    "attendeeCount": 9,
+    "waitlistCount": 0,
+    "visibility": "invite_auto",
+    "status": "ended",
+    "createdAt": "2025-07-15T22:00:00.000Z",
+    "location": "Recreation Center, Brooklyn",
+    "time": {
+      "startAt": "2025-07-25T22:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-07-25T23:30:00.000Z",
+      "durationMinutes": 90,
+      "cutoffMinutes": 30
+    },
+    "description": "Weekly basketball meetup. Bring your basketball!",
+    "equipment": [
+      "basketball"
+    ],
+    "skillLevel": "casual",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0049_1755638594025_running",
+    "title": "Running Meetup",
+    "hostId": "user_0049",
+    "sport": "Running",
+    "maxSlots": 22,
+    "attendeeCount": 8,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "confirmed",
+    "createdAt": "2025-08-09T12:00:00.000Z",
+    "location": "Brooklyn Bridge, Brooklyn",
+    "time": {
+      "startAt": "2025-08-23T12:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-08-23T13:00:00.000Z",
+      "durationMinutes": 60,
+      "cutoffMinutes": 30
+    },
+    "description": "Weekly running meetup. Bring your running shoes!",
+    "equipment": [
+      "running shoes"
+    ],
+    "skillLevel": "beginner",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0049_1755638594026_basketball",
+    "title": "Open Basketball",
+    "hostId": "user_0049",
+    "sport": "Basketball",
+    "maxSlots": 9,
+    "attendeeCount": 6,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "confirmed",
+    "createdAt": "2025-10-01T16:00:00.000Z",
+    "location": "Community Center, Brooklyn",
+    "time": {
+      "startAt": "2025-10-07T16:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-10-07T17:30:00.000Z",
+      "durationMinutes": 90,
+      "cutoffMinutes": 30
+    },
+    "description": "Basketball practice session. Perfect for improving your skills!",
+    "equipment": [
+      "basketball"
+    ],
+    "skillLevel": "competitive",
+    "isRecurring": true
+  },
+  {
+    "id": "evt_user_0049_1755638594027_running",
+    "title": "Weekly Running",
+    "hostId": "user_0049",
+    "sport": "Running",
+    "maxSlots": 19,
+    "attendeeCount": 1,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "ended",
+    "createdAt": "2025-08-10T16:00:00.000Z",
+    "location": "High Line, Brooklyn",
+    "time": {
+      "startAt": "2025-08-18T16:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-08-18T17:00:00.000Z",
+      "durationMinutes": 60,
+      "cutoffMinutes": 30
+    },
+    "description": "Join us for a fun running session! All skill levels welcome.",
+    "equipment": [
+      "running shoes"
+    ],
+    "skillLevel": "beginner",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0049_1755638594028_running",
+    "title": "Running Session",
+    "hostId": "user_0049",
+    "sport": "Running",
+    "maxSlots": 21,
+    "attendeeCount": 3,
+    "waitlistCount": 0,
+    "visibility": "invite_auto",
+    "status": "confirmed",
+    "createdAt": "2025-10-05T14:00:00.000Z",
+    "location": "Central Park, Brooklyn",
+    "time": {
+      "startAt": "2025-10-06T14:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-10-06T15:00:00.000Z",
+      "durationMinutes": 60,
+      "cutoffMinutes": 30
+    },
+    "description": "Weekly running meetup. Bring your running shoes!",
+    "equipment": [
+      "running shoes"
+    ],
+    "skillLevel": "beginner",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0049_1755638594029_tennis",
+    "title": "Weekend Tennis",
+    "hostId": "user_0049",
+    "sport": "Tennis",
+    "maxSlots": 3,
+    "attendeeCount": 2,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "confirmed",
+    "createdAt": "2025-09-27T20:00:00.000Z",
+    "location": "Recreation Center, Brooklyn",
+    "time": {
+      "startAt": "2025-10-03T20:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-10-03T21:30:00.000Z",
+      "durationMinutes": 90,
+      "cutoffMinutes": 30
+    },
+    "description": "Weekly tennis meetup. Bring your tennis racket!",
+    "equipment": [
+      "tennis racket",
+      "tennis balls"
+    ],
+    "skillLevel": "beginner",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0049_1755638594030_running",
+    "title": "Running Game",
+    "hostId": "user_0049",
+    "sport": "Running",
+    "maxSlots": 22,
+    "attendeeCount": 3,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "confirmed",
+    "createdAt": "2025-08-12T22:00:00.000Z",
+    "location": "Brooklyn Bridge, Brooklyn",
+    "time": {
+      "startAt": "2025-08-25T22:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-08-25T23:00:00.000Z",
+      "durationMinutes": 60,
+      "cutoffMinutes": 30
+    },
+    "description": "Looking for players for running. Come ready to play!",
+    "equipment": [
+      "running shoes"
+    ],
+    "skillLevel": "beginner",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0049_1755638594031_running",
+    "title": "Running Practice",
+    "hostId": "user_0049",
+    "sport": "Running",
+    "maxSlots": 18,
+    "attendeeCount": 17,
+    "waitlistCount": 0,
+    "visibility": "invite_manual",
+    "status": "confirmed",
+    "createdAt": "2025-09-28T14:00:00.000Z",
+    "location": "High Line, Brooklyn",
+    "time": {
+      "startAt": "2025-10-12T14:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-10-12T15:00:00.000Z",
+      "durationMinutes": 60,
+      "cutoffMinutes": 30
+    },
+    "description": "Weekly running meetup. Bring your running shoes!",
+    "equipment": [
+      "running shoes"
+    ],
+    "skillLevel": "casual",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0049_1755638594032_basketball",
+    "title": "Open Basketball",
+    "hostId": "user_0049",
+    "sport": "Basketball",
+    "maxSlots": 10,
+    "attendeeCount": 3,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "ended",
+    "createdAt": "2025-07-24T22:00:00.000Z",
+    "location": "YMCA, Brooklyn",
+    "time": {
+      "startAt": "2025-07-28T22:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-07-28T23:30:00.000Z",
+      "durationMinutes": 90,
+      "cutoffMinutes": 30
+    },
+    "description": "Casual basketball game. Great way to meet new people and stay active.",
+    "equipment": [
+      "basketball"
+    ],
+    "skillLevel": "casual",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0049_1755638594033_running",
+    "title": "Casual Running",
+    "hostId": "user_0049",
+    "sport": "Running",
+    "maxSlots": 18,
+    "attendeeCount": 7,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "ended",
+    "createdAt": "2025-07-26T12:00:00.000Z",
+    "location": "High Line, Brooklyn",
+    "time": {
+      "startAt": "2025-08-05T12:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-08-05T13:00:00.000Z",
+      "durationMinutes": 60,
+      "cutoffMinutes": 30
+    },
+    "description": "Looking for players for running. Come ready to play!",
+    "equipment": [
+      "running shoes"
+    ],
+    "skillLevel": "beginner",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0028_1755638594034_basketball",
+    "title": "Basketball Club",
+    "hostId": "user_0028",
+    "sport": "Basketball",
+    "maxSlots": 11,
+    "attendeeCount": 11,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "confirmed",
+    "createdAt": "2025-08-13T14:00:00.000Z",
+    "location": "YMCA, Brooklyn",
+    "time": {
+      "startAt": "2025-08-21T14:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-08-21T15:30:00.000Z",
+      "durationMinutes": 90,
+      "cutoffMinutes": 30
+    },
+    "description": "Casual basketball game. Great way to meet new people and stay active.",
+    "equipment": [
+      "basketball"
+    ],
+    "skillLevel": "casual",
+    "isRecurring": true
+  },
+  {
+    "id": "evt_user_0028_1755638594035_basketball",
+    "title": "Basketball Game",
+    "hostId": "user_0028",
+    "sport": "Basketball",
+    "maxSlots": 9,
+    "attendeeCount": 9,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "ended",
+    "createdAt": "2025-07-26T18:00:00.000Z",
+    "location": "Community Center, Brooklyn",
+    "time": {
+      "startAt": "2025-08-09T18:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-08-09T19:30:00.000Z",
+      "durationMinutes": 90,
+      "cutoffMinutes": 30
+    },
+    "description": "Looking for players for basketball. Come ready to play!",
+    "equipment": [
+      "basketball"
+    ],
+    "skillLevel": "competitive",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0028_1755638594036_tennis",
+    "title": "Morning Tennis",
+    "hostId": "user_0028",
+    "sport": "Tennis",
+    "maxSlots": 3,
+    "attendeeCount": 3,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "confirmed",
+    "createdAt": "2025-09-27T14:00:00.000Z",
+    "location": "Tennis Court, Brooklyn",
+    "time": {
+      "startAt": "2025-09-29T14:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-09-29T15:30:00.000Z",
+      "durationMinutes": 90,
+      "cutoffMinutes": 30
+    },
+    "description": "Join us for a fun tennis session! All skill levels welcome.",
+    "equipment": [
+      "tennis racket",
+      "tennis balls"
+    ],
+    "skillLevel": "beginner",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0009_1755638594037_tennis",
+    "title": "Open Tennis",
+    "hostId": "user_0009",
+    "sport": "Tennis",
+    "maxSlots": 3,
+    "attendeeCount": 3,
+    "waitlistCount": 0,
+    "visibility": "invite_auto",
+    "status": "ended",
+    "createdAt": "2025-07-21T16:00:00.000Z",
+    "location": "Country Club, Brooklyn",
+    "time": {
+      "startAt": "2025-08-01T16:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-08-01T17:30:00.000Z",
+      "durationMinutes": 90,
+      "cutoffMinutes": 30
+    },
+    "description": "Join us for a fun tennis session! All skill levels welcome.",
+    "equipment": [
+      "tennis racket",
+      "tennis balls"
+    ],
+    "skillLevel": "beginner",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0009_1755638594038_tennis",
+    "title": "Tennis Practice",
+    "hostId": "user_0009",
+    "sport": "Tennis",
+    "maxSlots": 3,
+    "attendeeCount": 3,
+    "waitlistCount": 0,
+    "visibility": "invite_manual",
+    "status": "confirmed",
+    "createdAt": "2025-08-30T14:00:00.000Z",
+    "location": "Recreation Center, Brooklyn",
+    "time": {
+      "startAt": "2025-09-11T14:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-09-11T15:30:00.000Z",
+      "durationMinutes": 90,
+      "cutoffMinutes": 30
+    },
+    "description": "Join us for a fun tennis session! All skill levels welcome.",
+    "equipment": [
+      "tennis racket",
+      "tennis balls"
+    ],
+    "skillLevel": "beginner",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0043_1755638594039_basketball",
+    "title": "Basketball Club",
+    "hostId": "user_0043",
+    "sport": "Basketball",
+    "maxSlots": 10,
+    "attendeeCount": 4,
+    "waitlistCount": 0,
+    "visibility": "invite_manual",
+    "status": "confirmed",
+    "createdAt": "2025-08-10T23:00:00.000Z",
+    "location": "YMCA, Brooklyn",
+    "time": {
+      "startAt": "2025-08-21T23:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-08-22T00:30:00.000Z",
+      "durationMinutes": 90,
+      "cutoffMinutes": 30
+    },
+    "description": "Basketball practice session. Perfect for improving your skills!",
+    "equipment": [
+      "basketball"
+    ],
+    "skillLevel": "casual",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0043_1755638594040_basketball",
+    "title": "Weekend Basketball",
+    "hostId": "user_0043",
+    "sport": "Basketball",
+    "maxSlots": 10,
+    "attendeeCount": 1,
+    "waitlistCount": 0,
+    "visibility": "invite_manual",
+    "status": "confirmed",
+    "createdAt": "2025-09-21T16:00:00.000Z",
+    "location": "Recreation Center, Brooklyn",
+    "time": {
+      "startAt": "2025-09-30T16:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-09-30T17:30:00.000Z",
+      "durationMinutes": 90,
+      "cutoffMinutes": 30
+    },
+    "description": "Basketball practice session. Perfect for improving your skills!",
+    "equipment": [
+      "basketball"
+    ],
+    "skillLevel": "beginner",
+    "isRecurring": true
+  },
+  {
+    "id": "evt_user_0043_1755638594041_fitness",
+    "title": "Fitness Game",
+    "hostId": "user_0043",
+    "sport": "Fitness",
+    "maxSlots": 6,
+    "attendeeCount": 2,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "ended",
+    "createdAt": "2025-07-28T11:00:00.000Z",
+    "location": "Community Center, Brooklyn",
+    "time": {
+      "startAt": "2025-07-30T11:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-07-30T12:00:00.000Z",
+      "durationMinutes": 60,
+      "cutoffMinutes": 30
+    },
+    "description": "Fitness practice session. Perfect for improving your skills!",
+    "equipment": [
+      "workout clothes"
+    ],
+    "skillLevel": "casual",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0043_1755638594042_fitness",
+    "title": "Fitness Session",
+    "hostId": "user_0043",
+    "sport": "Fitness",
+    "maxSlots": 7,
+    "attendeeCount": 4,
+    "waitlistCount": 0,
+    "visibility": "invite_auto",
+    "status": "confirmed",
+    "createdAt": "2025-09-27T01:00:00.000Z",
+    "location": "Fitness Studio, Brooklyn",
+    "time": {
+      "startAt": "2025-10-04T01:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-10-04T02:00:00.000Z",
+      "durationMinutes": 60,
+      "cutoffMinutes": 30
+    },
+    "description": "Casual fitness game. Great way to meet new people and stay active.",
+    "equipment": [
+      "workout clothes"
+    ],
+    "skillLevel": "casual",
+    "isRecurring": true
+  },
+  {
+    "id": "evt_user_0035_1755638594043_volleyball",
+    "title": "Volleyball Session",
+    "hostId": "user_0035",
+    "sport": "Volleyball",
+    "maxSlots": 10,
+    "attendeeCount": 10,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "ended",
+    "createdAt": "2025-07-27T14:00:00.000Z",
+    "location": "Beach Court, Manhattan",
+    "time": {
+      "startAt": "2025-07-28T14:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-07-28T15:15:00.000Z",
+      "durationMinutes": 75,
+      "cutoffMinutes": 30
+    },
+    "description": "Weekly volleyball meetup. Bring your volleyball!",
+    "equipment": [
+      "volleyball"
+    ],
+    "skillLevel": "casual",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0035_1755638594044_soccer",
+    "title": "Weekly Soccer",
+    "hostId": "user_0035",
+    "sport": "Soccer",
+    "maxSlots": 14,
+    "attendeeCount": 11,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "ended",
+    "createdAt": "2025-07-26T00:00:00.000Z",
+    "location": "Soccer Field, Manhattan",
+    "time": {
+      "startAt": "2025-08-03T00:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-08-03T01:45:00.000Z",
+      "durationMinutes": 105,
+      "cutoffMinutes": 30
+    },
+    "description": "Casual soccer game. Great way to meet new people and stay active.",
+    "equipment": [
+      "soccer ball",
+      "cleats"
+    ],
+    "skillLevel": "competitive",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0035_1755638594045_soccer",
+    "title": "Casual Soccer",
+    "hostId": "user_0035",
+    "sport": "Soccer",
+    "maxSlots": 16,
+    "attendeeCount": 6,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "confirmed",
+    "createdAt": "2025-10-05T14:00:00.000Z",
+    "location": "Prospect Park, Manhattan",
+    "time": {
+      "startAt": "2025-10-07T14:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-10-07T15:45:00.000Z",
+      "durationMinutes": 105,
+      "cutoffMinutes": 30
+    },
+    "description": "Soccer practice session. Perfect for improving your skills!",
+    "equipment": [
+      "soccer ball",
+      "cleats"
+    ],
+    "skillLevel": "casual",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0035_1755638594046_volleyball",
+    "title": "Open Volleyball",
+    "hostId": "user_0035",
+    "sport": "Volleyball",
+    "maxSlots": 12,
+    "attendeeCount": 1,
+    "waitlistCount": 0,
+    "visibility": "invite_auto",
+    "status": "confirmed",
+    "createdAt": "2025-10-04T16:00:00.000Z",
+    "location": "Community Center, Manhattan",
+    "time": {
+      "startAt": "2025-10-09T16:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-10-09T17:15:00.000Z",
+      "durationMinutes": 75,
+      "cutoffMinutes": 30
+    },
+    "description": "Looking for players for volleyball. Come ready to play!",
+    "equipment": [
+      "volleyball"
+    ],
+    "skillLevel": "competitive",
+    "isRecurring": true
+  },
+  {
+    "id": "evt_user_0029_1755638594047_fitness",
+    "title": "Fitness Night",
+    "hostId": "user_0029",
+    "sport": "Fitness",
+    "maxSlots": 8,
+    "attendeeCount": 5,
+    "waitlistCount": 0,
+    "visibility": "invite_auto",
+    "status": "confirmed",
+    "createdAt": "2025-08-16T13:00:00.000Z",
+    "location": "Fitness Studio, Brooklyn",
+    "time": {
+      "startAt": "2025-08-30T13:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-08-30T14:00:00.000Z",
+      "durationMinutes": 60,
+      "cutoffMinutes": 30
+    },
+    "description": "Looking for players for fitness. Come ready to play!",
+    "equipment": [
+      "workout clothes"
+    ],
+    "skillLevel": "competitive",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0029_1755638594048_basketball",
+    "title": "Basketball Club",
+    "hostId": "user_0029",
+    "sport": "Basketball",
+    "maxSlots": 9,
+    "attendeeCount": 8,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "ended",
+    "createdAt": "2025-07-29T12:00:00.000Z",
+    "location": "Community Center, Brooklyn",
+    "time": {
+      "startAt": "2025-07-31T12:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-07-31T13:30:00.000Z",
+      "durationMinutes": 90,
+      "cutoffMinutes": 30
+    },
+    "description": "Casual basketball game. Great way to meet new people and stay active.",
+    "equipment": [
+      "basketball"
+    ],
+    "skillLevel": "competitive",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0033_1755638594049_basketball",
+    "title": "Evening Basketball",
+    "hostId": "user_0033",
+    "sport": "Basketball",
+    "maxSlots": 10,
+    "attendeeCount": 7,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "confirmed",
+    "createdAt": "2025-09-23T18:00:00.000Z",
+    "location": "Recreation Center, Brooklyn",
+    "time": {
+      "startAt": "2025-09-28T18:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-09-28T19:30:00.000Z",
+      "durationMinutes": 90,
+      "cutoffMinutes": 30
+    },
+    "description": "Casual basketball game. Great way to meet new people and stay active.",
+    "equipment": [
+      "basketball"
+    ],
+    "skillLevel": "competitive",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0033_1755638594050_basketball",
+    "title": "Competitive Basketball",
+    "hostId": "user_0033",
+    "sport": "Basketball",
+    "maxSlots": 11,
+    "attendeeCount": 2,
+    "waitlistCount": 0,
+    "visibility": "invite_manual",
+    "status": "ended",
+    "createdAt": "2025-07-17T22:00:00.000Z",
+    "location": "Recreation Center, Brooklyn",
+    "time": {
+      "startAt": "2025-07-22T22:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-07-22T23:30:00.000Z",
+      "durationMinutes": 90,
+      "cutoffMinutes": 30
+    },
+    "description": "Basketball practice session. Perfect for improving your skills!",
+    "equipment": [
+      "basketball"
+    ],
+    "skillLevel": "casual",
+    "isRecurring": true
+  },
+  {
+    "id": "evt_user_0033_1755638594051_basketball",
+    "title": "Basketball Session",
+    "hostId": "user_0033",
+    "sport": "Basketball",
+    "maxSlots": 10,
+    "attendeeCount": 4,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "confirmed",
+    "createdAt": "2025-08-15T23:00:00.000Z",
+    "location": "School Gym, Brooklyn",
+    "time": {
+      "startAt": "2025-08-24T23:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-08-25T00:30:00.000Z",
+      "durationMinutes": 90,
+      "cutoffMinutes": 30
+    },
+    "description": "Casual basketball game. Great way to meet new people and stay active.",
+    "equipment": [
+      "basketball"
+    ],
+    "skillLevel": "competitive",
+    "isRecurring": true
+  },
+  {
+    "id": "evt_user_0033_1755638594052_basketball",
+    "title": "Basketball Club",
+    "hostId": "user_0033",
+    "sport": "Basketball",
+    "maxSlots": 11,
+    "attendeeCount": 8,
+    "waitlistCount": 0,
+    "visibility": "invite_auto",
+    "status": "confirmed",
+    "createdAt": "2025-09-08T00:00:00.000Z",
+    "location": "School Gym, Brooklyn",
+    "time": {
+      "startAt": "2025-09-22T00:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-09-22T01:30:00.000Z",
+      "durationMinutes": 90,
+      "cutoffMinutes": 30
+    },
+    "description": "Basketball practice session. Perfect for improving your skills!",
+    "equipment": [
+      "basketball"
+    ],
+    "skillLevel": "beginner",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0044_1755638594053_board_games",
+    "title": "Competitive Board Games",
+    "hostId": "user_0044",
+    "sport": "Board Games",
+    "maxSlots": 6,
+    "attendeeCount": 4,
+    "waitlistCount": 0,
+    "visibility": "invite_manual",
+    "status": "confirmed",
+    "createdAt": "2025-09-21T14:00:00.000Z",
+    "location": "Community Center, Manhattan",
+    "time": {
+      "startAt": "2025-09-30T14:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-09-30T16:00:00.000Z",
+      "durationMinutes": 120,
+      "cutoffMinutes": 30
+    },
+    "description": "Casual board games game. Great way to meet new people and stay active.",
+    "equipment": [
+      "board games"
+    ],
+    "skillLevel": "casual",
+    "isRecurring": true
+  },
+  {
+    "id": "evt_user_0044_1755638594054_basketball",
+    "title": "Basketball Session",
+    "hostId": "user_0044",
+    "sport": "Basketball",
+    "maxSlots": 9,
+    "attendeeCount": 1,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "confirmed",
+    "createdAt": "2025-10-01T23:00:00.000Z",
+    "location": "School Gym, Manhattan",
+    "time": {
+      "startAt": "2025-10-12T23:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-10-13T00:30:00.000Z",
+      "durationMinutes": 90,
+      "cutoffMinutes": 30
+    },
+    "description": "Join us for a fun basketball session! All skill levels welcome.",
+    "equipment": [
+      "basketball"
+    ],
+    "skillLevel": "competitive",
+    "isRecurring": true
+  },
+  {
+    "id": "evt_user_0044_1755638594055_basketball",
+    "title": "Open Basketball",
+    "hostId": "user_0044",
+    "sport": "Basketball",
+    "maxSlots": 10,
+    "attendeeCount": 2,
+    "waitlistCount": 0,
+    "visibility": "invite_manual",
+    "status": "ended",
+    "createdAt": "2025-07-26T23:00:00.000Z",
+    "location": "School Gym, Manhattan",
+    "time": {
+      "startAt": "2025-08-03T23:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-08-04T00:30:00.000Z",
+      "durationMinutes": 90,
+      "cutoffMinutes": 30
+    },
+    "description": "Join us for a fun basketball session! All skill levels welcome.",
+    "equipment": [
+      "basketball"
+    ],
+    "skillLevel": "competitive",
+    "isRecurring": true
+  },
+  {
+    "id": "evt_user_0018_1755638594056_tennis",
+    "title": "Tennis Night",
+    "hostId": "user_0018",
+    "sport": "Tennis",
+    "maxSlots": 4,
+    "attendeeCount": 3,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "confirmed",
+    "createdAt": "2025-10-06T23:00:00.000Z",
+    "location": "Recreation Center, Manhattan",
+    "time": {
+      "startAt": "2025-10-14T23:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-10-15T00:30:00.000Z",
+      "durationMinutes": 90,
+      "cutoffMinutes": 30
+    },
+    "description": "Weekly tennis meetup. Bring your tennis racket!",
+    "equipment": [
+      "tennis racket",
+      "tennis balls"
+    ],
+    "skillLevel": "beginner",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0018_1755638594057_volleyball",
+    "title": "Morning Volleyball",
+    "hostId": "user_0018",
+    "sport": "Volleyball",
+    "maxSlots": 11,
+    "attendeeCount": 11,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "confirmed",
+    "createdAt": "2025-08-10T01:00:00.000Z",
+    "location": "Gym, Manhattan",
+    "time": {
+      "startAt": "2025-08-23T01:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-08-23T02:15:00.000Z",
+      "durationMinutes": 75,
+      "cutoffMinutes": 30
+    },
+    "description": "Casual volleyball game. Great way to meet new people and stay active.",
+    "equipment": [
+      "volleyball"
+    ],
+    "skillLevel": "beginner",
+    "isRecurring": true
+  },
+  {
+    "id": "evt_user_0018_1755638594058_volleyball",
+    "title": "Volleyball Practice",
+    "hostId": "user_0018",
+    "sport": "Volleyball",
+    "maxSlots": 11,
+    "attendeeCount": 10,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "ended",
+    "createdAt": "2025-08-05T23:00:00.000Z",
+    "location": "Recreation Center, Manhattan",
+    "time": {
+      "startAt": "2025-08-18T23:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-08-19T00:15:00.000Z",
+      "durationMinutes": 75,
+      "cutoffMinutes": 30
+    },
+    "description": "Casual volleyball game. Great way to meet new people and stay active.",
+    "equipment": [
+      "volleyball"
+    ],
+    "skillLevel": "casual",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0011_1755638594059_running",
+    "title": "Running Club",
+    "hostId": "user_0011",
+    "sport": "Running",
+    "maxSlots": 19,
+    "attendeeCount": 13,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "confirmed",
+    "createdAt": "2025-08-20T18:00:00.000Z",
+    "location": "High Line, Brooklyn",
+    "time": {
+      "startAt": "2025-08-23T18:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-08-23T19:00:00.000Z",
+      "durationMinutes": 60,
+      "cutoffMinutes": 30
+    },
+    "description": "Weekly running meetup. Bring your running shoes!",
+    "equipment": [
+      "running shoes"
+    ],
+    "skillLevel": "casual",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0011_1755638594060_running",
+    "title": "Running Practice",
+    "hostId": "user_0011",
+    "sport": "Running",
+    "maxSlots": 19,
+    "attendeeCount": 19,
+    "waitlistCount": 0,
+    "visibility": "invite_manual",
+    "status": "confirmed",
+    "createdAt": "2025-09-01T16:00:00.000Z",
+    "location": "Central Park, Brooklyn",
+    "time": {
+      "startAt": "2025-09-13T16:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-09-13T17:00:00.000Z",
+      "durationMinutes": 60,
+      "cutoffMinutes": 30
+    },
+    "description": "Running practice session. Perfect for improving your skills!",
+    "equipment": [
+      "running shoes"
+    ],
+    "skillLevel": "casual",
+    "isRecurring": true
+  },
+  {
+    "id": "evt_user_0011_1755638594061_running",
+    "title": "Running Club",
+    "hostId": "user_0011",
+    "sport": "Running",
+    "maxSlots": 22,
+    "attendeeCount": 15,
+    "waitlistCount": 0,
+    "visibility": "invite_auto",
+    "status": "ended",
+    "createdAt": "2025-08-07T00:00:00.000Z",
+    "location": "Riverside Park, Brooklyn",
+    "time": {
+      "startAt": "2025-08-10T00:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-08-10T01:00:00.000Z",
+      "durationMinutes": 60,
+      "cutoffMinutes": 30
+    },
+    "description": "Weekly running meetup. Bring your running shoes!",
+    "equipment": [
+      "running shoes"
+    ],
+    "skillLevel": "competitive",
+    "isRecurring": false
+  },
+  {
+    "id": "evt_user_0011_1755638594062_basketball",
+    "title": "Basketball Session",
+    "hostId": "user_0011",
+    "sport": "Basketball",
+    "maxSlots": 9,
+    "attendeeCount": 1,
+    "waitlistCount": 0,
+    "visibility": "public",
+    "status": "ended",
+    "createdAt": "2025-07-14T23:00:00.000Z",
+    "location": "School Gym, Brooklyn",
+    "time": {
+      "startAt": "2025-07-27T23:00:00.000Z",
+      "tz": "America/New_York",
+      "endAt": "2025-07-28T00:30:00.000Z",
+      "durationMinutes": 90,
+      "cutoffMinutes": 30
+    },
+    "description": "Looking for players for basketball. Come ready to play!",
+    "equipment": [
+      "basketball"
+    ],
+    "skillLevel": "competitive",
+    "isRecurring": true
+  }
+]

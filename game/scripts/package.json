@@ -1,0 +1,27 @@
+{
+  "name": "gameon-seeder",
+  "version": "1.0.0",
+  "description": "GameOn seed data generator",
+  "type": "module",
+  "main": "generateSeed.mjs",
+  "scripts": {
+    "generate": "node generateSeed.mjs",
+    "generate:small": "node generateSeed.mjs --users=50 --events=100",
+    "generate:medium": "node generateSeed.mjs --users=150 --events=200",
+    "generate:large": "node generateSeed.mjs --users=500 --events=1000",
+    "generate:nyc": "node generateSeed.mjs --city=NYC",
+    "generate:atl": "node generateSeed.mjs --city=ATL",
+    "generate:la": "node generateSeed.mjs --city=LA",
+    "generate:chi": "node generateSeed.mjs --city=CHI",
+    "generate:miami": "node generateSeed.mjs --city=MIA",
+    "integrate": "node integrateSeedData.js",
+    "full-pipeline": "npm run generate:medium && npm run integrate"
+  },
+  "dependencies": {
+    "@faker-js/faker": "^8.4.1",
+    "dayjs": "^1.11.10"
+  },
+  "keywords": ["gameon", "seeder", "mock-data", "events", "social"],
+  "author": "GameOn Team",
+  "license": "MIT"
+}

@@ -1,0 +1,1466 @@
+[
+  {
+    "userAId": "user_0001",
+    "userBId": "user_0038",
+    "strength": 0.6258423353909465,
+    "createdAt": "2024-08-09T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0001",
+    "userBId": "user_0010",
+    "strength": 0.7198302469135802,
+    "createdAt": "2025-07-23T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0010",
+    "userBId": "user_0038",
+    "strength": 0.7744170096021947,
+    "createdAt": "2025-10-07T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0002",
+    "userBId": "user_0039",
+    "strength": 0.9453189300411522,
+    "createdAt": "2025-07-09T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0002",
+    "userBId": "user_0026",
+    "strength": 0.5122513717421124,
+    "createdAt": "2024-09-16T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0003",
+    "userBId": "user_0025",
+    "strength": 0.9300668724279835,
+    "createdAt": "2024-10-14T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0003",
+    "userBId": "user_0026",
+    "strength": 0.9537894375857339,
+    "createdAt": "2024-12-05T22:23:13.959Z"
+  },
+  {
+    "userAId": "user_0003",
+    "userBId": "user_0039",
+    "strength": 0.971002657750343,
+    "createdAt": "2025-11-24T22:23:13.959Z"
+  },
+  {
+    "userAId": "user_0020",
+    "userBId": "user_0046",
+    "strength": 0.5074074074074074,
+    "createdAt": "2023-10-26T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0020",
+    "userBId": "user_0026",
+    "strength": 0.947460133744856,
+    "createdAt": "2024-12-25T22:23:13.959Z"
+  },
+  {
+    "userAId": "user_0020",
+    "userBId": "user_0039",
+    "strength": 0.8724665637860083,
+    "createdAt": "2025-11-30T22:23:13.959Z"
+  },
+  {
+    "userAId": "user_0020",
+    "userBId": "user_0025",
+    "strength": 0.9907600308641975,
+    "createdAt": "2023-12-11T22:23:13.959Z"
+  },
+  {
+    "userAId": "user_0020",
+    "userBId": "user_0003",
+    "strength": 0.5106738683127572,
+    "createdAt": "2025-01-03T22:23:13.959Z"
+  },
+  {
+    "userAId": "user_0020",
+    "userBId": "user_0002",
+    "strength": 0.6405414094650206,
+    "createdAt": "2024-12-06T22:23:13.959Z"
+  },
+  {
+    "userAId": "user_0025",
+    "userBId": "user_0026",
+    "strength": 0.6609996570644718,
+    "createdAt": "2024-08-14T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0025",
+    "userBId": "user_0046",
+    "strength": 0.7731995884773663,
+    "createdAt": "2023-12-13T22:23:13.959Z"
+  },
+  {
+    "userAId": "user_0025",
+    "userBId": "user_0039",
+    "strength": 0.9262152777777778,
+    "createdAt": "2025-10-31T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0025",
+    "userBId": "user_0002",
+    "strength": 0.7308513374485597,
+    "createdAt": "2024-11-26T22:23:13.959Z"
+  },
+  {
+    "userAId": "user_0026",
+    "userBId": "user_0039",
+    "strength": 0.6283179012345679,
+    "createdAt": "2025-08-04T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0046",
+    "userBId": "user_0003",
+    "strength": 0.8813571673525378,
+    "createdAt": "2024-09-27T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0046",
+    "userBId": "user_0039",
+    "strength": 0.5722115054869684,
+    "createdAt": "2025-09-29T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0046",
+    "userBId": "user_0026",
+    "strength": 0.8567858367626886,
+    "createdAt": "2024-08-17T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0004",
+    "userBId": "user_0018",
+    "strength": 0.6721257716049382,
+    "createdAt": "2024-09-24T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0004",
+    "userBId": "user_0041",
+    "strength": 0.5462062757201646,
+    "createdAt": "2025-08-19T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0004",
+    "userBId": "user_0045",
+    "strength": 0.7802404835390946,
+    "createdAt": "2025-06-17T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0004",
+    "userBId": "user_0027",
+    "strength": 0.5825617283950617,
+    "createdAt": "2024-09-11T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0004",
+    "userBId": "user_0014",
+    "strength": 0.7482596021947874,
+    "createdAt": "2025-02-18T22:23:13.959Z"
+  },
+  {
+    "userAId": "user_0004",
+    "userBId": "user_0024",
+    "strength": 0.5386209705075445,
+    "createdAt": "2024-12-30T22:23:13.959Z"
+  },
+  {
+    "userAId": "user_0004",
+    "userBId": "user_0006",
+    "strength": 0.6359032064471879,
+    "createdAt": "2024-10-27T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0004",
+    "userBId": "user_0044",
+    "strength": 0.8263417352537723,
+    "createdAt": "2025-05-15T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0006",
+    "userBId": "user_0027",
+    "strength": 0.9971836419753086,
+    "createdAt": "2024-11-06T22:23:13.959Z"
+  },
+  {
+    "userAId": "user_0006",
+    "userBId": "user_0035",
+    "strength": 0.6108474794238683,
+    "createdAt": "2025-06-26T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0006",
+    "userBId": "user_0024",
+    "strength": 0.9594650205761317,
+    "createdAt": "2024-04-27T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0006",
+    "userBId": "user_0041",
+    "strength": 0.5942986968449931,
+    "createdAt": "2025-06-11T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0006",
+    "userBId": "user_0014",
+    "strength": 0.8198452503429355,
+    "createdAt": "2025-06-13T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0006",
+    "userBId": "user_0018",
+    "strength": 0.8701388888888889,
+    "createdAt": "2024-08-25T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0014",
+    "userBId": "user_0044",
+    "strength": 0.9062071330589849,
+    "createdAt": "2025-03-15T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0014",
+    "userBId": "user_0024",
+    "strength": 0.5993462791495199,
+    "createdAt": "2025-02-03T22:23:13.959Z"
+  },
+  {
+    "userAId": "user_0014",
+    "userBId": "user_0041",
+    "strength": 0.6781099965706447,
+    "createdAt": "2025-06-21T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0014",
+    "userBId": "user_0045",
+    "strength": 0.5449395576131687,
+    "createdAt": "2025-06-04T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0014",
+    "userBId": "user_0018",
+    "strength": 0.7014274691358025,
+    "createdAt": "2025-01-18T22:23:13.959Z"
+  },
+  {
+    "userAId": "user_0018",
+    "userBId": "user_0041",
+    "strength": 0.8025977366255144,
+    "createdAt": "2025-05-02T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0018",
+    "userBId": "user_0045",
+    "strength": 0.9744684499314129,
+    "createdAt": "2025-06-22T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0018",
+    "userBId": "user_0035",
+    "strength": 0.6027927812071331,
+    "createdAt": "2025-07-26T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0018",
+    "userBId": "user_0044",
+    "strength": 0.6605152606310014,
+    "createdAt": "2025-01-08T22:23:13.959Z"
+  },
+  {
+    "userAId": "user_0024",
+    "userBId": "user_0035",
+    "strength": 0.8974879972565157,
+    "createdAt": "2025-07-11T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0024",
+    "userBId": "user_0042",
+    "strength": 0.8077353395061728,
+    "createdAt": "2024-07-30T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0024",
+    "userBId": "user_0027",
+    "strength": 0.6054269547325103,
+    "createdAt": "2024-08-16T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0024",
+    "userBId": "user_0041",
+    "strength": 0.5130722736625515,
+    "createdAt": "2025-06-15T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0024",
+    "userBId": "user_0044",
+    "strength": 0.5877207647462277,
+    "createdAt": "2025-06-15T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0024",
+    "userBId": "user_0045",
+    "strength": 0.53068201303155,
+    "createdAt": "2025-10-23T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0027",
+    "userBId": "user_0041",
+    "strength": 0.9289201817558299,
+    "createdAt": "2025-10-02T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0027",
+    "userBId": "user_0035",
+    "strength": 0.709636488340192,
+    "createdAt": "2025-10-25T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0035",
+    "userBId": "user_0045",
+    "strength": 0.9703125,
+    "createdAt": "2025-11-11T22:23:13.959Z"
+  },
+  {
+    "userAId": "user_0035",
+    "userBId": "user_0004",
+    "strength": 0.661295438957476,
+    "createdAt": "2025-09-12T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0041",
+    "userBId": "user_0035",
+    "strength": 0.9888631687242798,
+    "createdAt": "2025-05-29T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0042",
+    "userBId": "user_0027",
+    "strength": 0.6409593621399177,
+    "createdAt": "2024-08-11T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0042",
+    "userBId": "user_0014",
+    "strength": 0.6527713477366255,
+    "createdAt": "2024-12-31T22:23:13.959Z"
+  },
+  {
+    "userAId": "user_0042",
+    "userBId": "user_0006",
+    "strength": 0.5329753943758573,
+    "createdAt": "2024-04-16T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0042",
+    "userBId": "user_0018",
+    "strength": 0.8800497256515776,
+    "createdAt": "2024-10-29T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0044",
+    "userBId": "user_0042",
+    "strength": 0.9662229938271605,
+    "createdAt": "2025-05-28T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0044",
+    "userBId": "user_0045",
+    "strength": 0.9028034979423869,
+    "createdAt": "2025-06-02T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0044",
+    "userBId": "user_0035",
+    "strength": 0.8141589506172839,
+    "createdAt": "2025-06-26T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0044",
+    "userBId": "user_0041",
+    "strength": 0.7056005658436214,
+    "createdAt": "2025-08-28T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0044",
+    "userBId": "user_0006",
+    "strength": 0.8319958847736626,
+    "createdAt": "2025-06-16T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0045",
+    "userBId": "user_0027",
+    "strength": 0.6229809670781893,
+    "createdAt": "2025-10-13T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0005",
+    "userBId": "user_0030",
+    "strength": 0.6910622427983539,
+    "createdAt": "2025-05-21T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0005",
+    "userBId": "user_0009",
+    "strength": 0.7954668209876543,
+    "createdAt": "2025-09-27T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0005",
+    "userBId": "user_0028",
+    "strength": 0.8014917695473252,
+    "createdAt": "2025-06-28T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0005",
+    "userBId": "user_0050",
+    "strength": 0.9174704218106996,
+    "createdAt": "2025-09-21T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0005",
+    "userBId": "user_0034",
+    "strength": 0.8517361111111111,
+    "createdAt": "2025-04-25T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0005",
+    "userBId": "user_0015",
+    "strength": 0.812622170781893,
+    "createdAt": "2025-07-06T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0005",
+    "userBId": "user_0049",
+    "strength": 0.8101101680384089,
+    "createdAt": "2025-08-24T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0005",
+    "userBId": "user_0011",
+    "strength": 0.8284807956104252,
+    "createdAt": "2025-07-06T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0009",
+    "userBId": "user_0028",
+    "strength": 0.7945901920438958,
+    "createdAt": "2025-08-03T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0009",
+    "userBId": "user_0030",
+    "strength": 0.6158157578875172,
+    "createdAt": "2025-10-20T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0009",
+    "userBId": "user_0015",
+    "strength": 0.6959447873799726,
+    "createdAt": "2025-08-02T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0009",
+    "userBId": "user_0016",
+    "strength": 0.9029728223593965,
+    "createdAt": "2025-08-27T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0009",
+    "userBId": "user_0017",
+    "strength": 0.813556670096022,
+    "createdAt": "2025-12-27T22:23:13.959Z"
+  },
+  {
+    "userAId": "user_0011",
+    "userBId": "user_0033",
+    "strength": 0.7226466049382716,
+    "createdAt": "2025-03-30T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0011",
+    "userBId": "user_0029",
+    "strength": 0.752977109053498,
+    "createdAt": "2024-07-15T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0011",
+    "userBId": "user_0043",
+    "strength": 0.5182613168724279,
+    "createdAt": "2024-12-09T22:23:13.959Z"
+  },
+  {
+    "userAId": "user_0011",
+    "userBId": "user_0019",
+    "strength": 0.726832561728395,
+    "createdAt": "2024-11-11T22:23:13.959Z"
+  },
+  {
+    "userAId": "user_0011",
+    "userBId": "user_0023",
+    "strength": 0.5175304355281207,
+    "createdAt": "2024-08-24T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0011",
+    "userBId": "user_0049",
+    "strength": 0.5891418038408779,
+    "createdAt": "2024-09-13T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0013",
+    "userBId": "user_0043",
+    "strength": 0.8114240397805212,
+    "createdAt": "2024-08-11T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0013",
+    "userBId": "user_0023",
+    "strength": 0.6581125685871057,
+    "createdAt": "2024-08-29T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0013",
+    "userBId": "user_0033",
+    "strength": 0.9313507373113854,
+    "createdAt": "2024-11-26T22:23:13.959Z"
+  },
+  {
+    "userAId": "user_0015",
+    "userBId": "user_0048",
+    "strength": 0.853735853909465,
+    "createdAt": "2024-09-21T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0015",
+    "userBId": "user_0036",
+    "strength": 0.9268904320987654,
+    "createdAt": "2025-07-12T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0015",
+    "userBId": "user_0023",
+    "strength": 0.6203660836762689,
+    "createdAt": "2024-08-26T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0015",
+    "userBId": "user_0017",
+    "strength": 0.6394097222222223,
+    "createdAt": "2025-02-21T22:23:13.959Z"
+  },
+  {
+    "userAId": "user_0016",
+    "userBId": "user_0028",
+    "strength": 0.8004779663923183,
+    "createdAt": "2025-08-16T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0016",
+    "userBId": "user_0033",
+    "strength": 0.6446737825788752,
+    "createdAt": "2025-06-28T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0016",
+    "userBId": "user_0048",
+    "strength": 0.970460390946502,
+    "createdAt": "2025-08-18T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0016",
+    "userBId": "user_0019",
+    "strength": 0.7831983024691358,
+    "createdAt": "2025-05-29T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0017",
+    "userBId": "user_0029",
+    "strength": 0.8052297668038408,
+    "createdAt": "2024-12-09T22:23:13.959Z"
+  },
+  {
+    "userAId": "user_0017",
+    "userBId": "user_0016",
+    "strength": 0.9997342249657064,
+    "createdAt": "2025-05-30T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0017",
+    "userBId": "user_0019",
+    "strength": 0.9505894204389576,
+    "createdAt": "2024-12-05T22:23:13.959Z"
+  },
+  {
+    "userAId": "user_0017",
+    "userBId": "user_0023",
+    "strength": 0.6086205418381344,
+    "createdAt": "2025-04-09T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0019",
+    "userBId": "user_0043",
+    "strength": 0.9091027949245543,
+    "createdAt": "2024-05-29T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0019",
+    "userBId": "user_0022",
+    "strength": 0.9791709533607682,
+    "createdAt": "2025-07-05T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0019",
+    "userBId": "user_0033",
+    "strength": 0.7980817043895747,
+    "createdAt": "2024-11-13T22:23:13.959Z"
+  },
+  {
+    "userAId": "user_0021",
+    "userBId": "user_0043",
+    "strength": 0.9457754629629629,
+    "createdAt": "2025-06-26T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0021",
+    "userBId": "user_0013",
+    "strength": 0.7295781893004115,
+    "createdAt": "2025-08-19T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0021",
+    "userBId": "user_0032",
+    "strength": 0.7409550754458162,
+    "createdAt": "2025-06-14T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0022",
+    "userBId": "user_0032",
+    "strength": 0.7695944787379972,
+    "createdAt": "2025-03-30T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0022",
+    "userBId": "user_0050",
+    "strength": 0.8863447359396434,
+    "createdAt": "2025-09-21T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0022",
+    "userBId": "user_0048",
+    "strength": 0.5330889917695474,
+    "createdAt": "2025-07-02T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0022",
+    "userBId": "user_0029",
+    "strength": 0.9615676440329218,
+    "createdAt": "2025-04-14T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0022",
+    "userBId": "user_0043",
+    "strength": 0.9583333333333333,
+    "createdAt": "2025-03-16T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0022",
+    "userBId": "user_0013",
+    "strength": 0.7317193930041153,
+    "createdAt": "2025-06-18T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0023",
+    "userBId": "user_0048",
+    "strength": 0.5579711076817558,
+    "createdAt": "2024-09-28T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0023",
+    "userBId": "user_0028",
+    "strength": 0.5100137174211248,
+    "createdAt": "2024-09-09T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0023",
+    "userBId": "user_0043",
+    "strength": 0.6290787894375858,
+    "createdAt": "2024-08-13T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0028",
+    "userBId": "user_0017",
+    "strength": 0.5905585562414266,
+    "createdAt": "2025-04-11T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0028",
+    "userBId": "user_0049",
+    "strength": 0.8771412037037036,
+    "createdAt": "2024-03-23T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0028",
+    "userBId": "user_0033",
+    "strength": 0.5151105967078189,
+    "createdAt": "2024-12-14T22:23:13.959Z"
+  },
+  {
+    "userAId": "user_0028",
+    "userBId": "user_0011",
+    "strength": 0.8320430384087791,
+    "createdAt": "2024-12-03T22:23:13.959Z"
+  },
+  {
+    "userAId": "user_0028",
+    "userBId": "user_0030",
+    "strength": 0.9802512002743484,
+    "createdAt": "2024-10-23T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0028",
+    "userBId": "user_0034",
+    "strength": 0.7713841735253772,
+    "createdAt": "2024-07-25T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0029",
+    "userBId": "user_0043",
+    "strength": 0.7709297839506173,
+    "createdAt": "2024-03-03T22:23:13.959Z"
+  },
+  {
+    "userAId": "user_0029",
+    "userBId": "user_0032",
+    "strength": 0.726266718106996,
+    "createdAt": "2025-03-28T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0029",
+    "userBId": "user_0033",
+    "strength": 0.5771990740740741,
+    "createdAt": "2024-12-09T22:23:13.959Z"
+  },
+  {
+    "userAId": "user_0030",
+    "userBId": "user_0017",
+    "strength": 0.6744620198902607,
+    "createdAt": "2025-03-01T22:23:13.959Z"
+  },
+  {
+    "userAId": "user_0030",
+    "userBId": "user_0011",
+    "strength": 0.6094993141289438,
+    "createdAt": "2024-07-20T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0030",
+    "userBId": "user_0050",
+    "strength": 0.9644975994513032,
+    "createdAt": "2025-08-16T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0032",
+    "userBId": "user_0043",
+    "strength": 0.5743334190672154,
+    "createdAt": "2025-08-08T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0032",
+    "userBId": "user_0015",
+    "strength": 0.842991255144033,
+    "createdAt": "2025-05-23T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0032",
+    "userBId": "user_0033",
+    "strength": 0.6423846879286694,
+    "createdAt": "2025-07-19T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0032",
+    "userBId": "user_0050",
+    "strength": 0.6661565500685871,
+    "createdAt": "2025-04-04T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0033",
+    "userBId": "user_0017",
+    "strength": 0.9481095679012346,
+    "createdAt": "2025-05-11T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0034",
+    "userBId": "user_0029",
+    "strength": 0.6563357338820301,
+    "createdAt": "2024-07-02T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0034",
+    "userBId": "user_0019",
+    "strength": 0.8261488340192045,
+    "createdAt": "2024-06-07T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0034",
+    "userBId": "user_0043",
+    "strength": 0.8001521776406035,
+    "createdAt": "2024-08-20T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0034",
+    "userBId": "user_0030",
+    "strength": 0.80278420781893,
+    "createdAt": "2024-09-10T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0034",
+    "userBId": "user_0032",
+    "strength": 0.769457304526749,
+    "createdAt": "2025-06-14T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0036",
+    "userBId": "user_0048",
+    "strength": 0.9909979423868313,
+    "createdAt": "2025-10-15T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0036",
+    "userBId": "user_0009",
+    "strength": 0.8171896433470507,
+    "createdAt": "2025-10-13T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0036",
+    "userBId": "user_0011",
+    "strength": 0.6445880486968449,
+    "createdAt": "2025-10-30T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0036",
+    "userBId": "user_0033",
+    "strength": 0.5680512688614541,
+    "createdAt": "2025-06-20T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0036",
+    "userBId": "user_0032",
+    "strength": 0.8890989368998627,
+    "createdAt": "2025-07-13T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0036",
+    "userBId": "user_0049",
+    "strength": 0.6431948731138546,
+    "createdAt": "2025-11-15T22:23:13.959Z"
+  },
+  {
+    "userAId": "user_0048",
+    "userBId": "user_0013",
+    "strength": 0.937980109739369,
+    "createdAt": "2024-09-16T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0048",
+    "userBId": "user_0009",
+    "strength": 0.8896862139917696,
+    "createdAt": "2025-07-29T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0048",
+    "userBId": "user_0017",
+    "strength": 0.9195816186556927,
+    "createdAt": "2025-01-09T22:23:13.959Z"
+  },
+  {
+    "userAId": "user_0048",
+    "userBId": "user_0033",
+    "strength": 0.6497578017832648,
+    "createdAt": "2024-10-23T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0048",
+    "userBId": "user_0011",
+    "strength": 0.9759987997256516,
+    "createdAt": "2024-11-09T22:23:13.959Z"
+  },
+  {
+    "userAId": "user_0049",
+    "userBId": "user_0016",
+    "strength": 0.9354016632373114,
+    "createdAt": "2025-07-20T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0049",
+    "userBId": "user_0033",
+    "strength": 0.5494513031550069,
+    "createdAt": "2024-11-09T22:23:13.959Z"
+  },
+  {
+    "userAId": "user_0050",
+    "userBId": "user_0009",
+    "strength": 0.7179891117969821,
+    "createdAt": "2025-08-15T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0050",
+    "userBId": "user_0016",
+    "strength": 0.7690050582990398,
+    "createdAt": "2025-05-25T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0050",
+    "userBId": "user_0034",
+    "strength": 0.5011102537722908,
+    "createdAt": "2025-08-28T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0007",
+    "userBId": "user_0012",
+    "strength": 0.5608410493827161,
+    "createdAt": "2024-12-05T22:23:13.959Z"
+  },
+  {
+    "userAId": "user_0007",
+    "userBId": "user_0037",
+    "strength": 0.7172796639231824,
+    "createdAt": "2025-02-26T22:23:13.959Z"
+  },
+  {
+    "userAId": "user_0007",
+    "userBId": "user_0031",
+    "strength": 0.7506965877914952,
+    "createdAt": "2025-06-08T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0007",
+    "userBId": "user_0040",
+    "strength": 0.5609417866941016,
+    "createdAt": "2025-01-19T22:23:13.959Z"
+  },
+  {
+    "userAId": "user_0008",
+    "userBId": "user_0037",
+    "strength": 0.7606695816186557,
+    "createdAt": "2025-03-27T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0008",
+    "userBId": "user_0012",
+    "strength": 0.5950124314128944,
+    "createdAt": "2025-06-15T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0008",
+    "userBId": "user_0047",
+    "strength": 0.7879736796982167,
+    "createdAt": "2025-03-11T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0008",
+    "userBId": "user_0007",
+    "strength": 0.7168381344307271,
+    "createdAt": "2025-07-22T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0012",
+    "userBId": "user_0031",
+    "strength": 0.6870627572016461,
+    "createdAt": "2025-07-29T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0012",
+    "userBId": "user_0040",
+    "strength": 0.5669302983539095,
+    "createdAt": "2024-10-02T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0012",
+    "userBId": "user_0047",
+    "strength": 0.6707218792866941,
+    "createdAt": "2025-07-07T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0012",
+    "userBId": "user_0037",
+    "strength": 0.510465963648834,
+    "createdAt": "2025-07-29T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0031",
+    "userBId": "user_0008",
+    "strength": 0.5198152434842249,
+    "createdAt": "2025-07-18T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0031",
+    "userBId": "user_0037",
+    "strength": 0.8218299897119341,
+    "createdAt": "2025-07-28T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0031",
+    "userBId": "user_0047",
+    "strength": 0.8047067901234568,
+    "createdAt": "2025-04-15T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0037",
+    "userBId": "user_0047",
+    "strength": 0.6912915809327846,
+    "createdAt": "2025-06-09T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0037",
+    "userBId": "user_0040",
+    "strength": 0.8045996227709191,
+    "createdAt": "2025-04-26T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0040",
+    "userBId": "user_0031",
+    "strength": 0.7267575445816187,
+    "createdAt": "2025-04-12T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0040",
+    "userBId": "user_0047",
+    "strength": 0.7545953360768176,
+    "createdAt": "2025-02-15T22:23:13.959Z"
+  },
+  {
+    "userAId": "user_0047",
+    "userBId": "user_0007",
+    "strength": 0.5985146604938272,
+    "createdAt": "2025-06-01T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0021",
+    "userBId": "user_0046",
+    "strength": 0.5311711248285322,
+    "createdAt": "2025-06-25T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0011",
+    "userBId": "user_0047",
+    "strength": 0.37031378600823045,
+    "createdAt": "2025-02-13T22:23:13.959Z"
+  },
+  {
+    "userAId": "user_0043",
+    "userBId": "user_0041",
+    "strength": 0.4053412208504801,
+    "createdAt": "2025-08-04T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0040",
+    "userBId": "user_0032",
+    "strength": 0.46714163237311385,
+    "createdAt": "2025-06-16T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0034",
+    "userBId": "user_0014",
+    "strength": 0.5869427297668038,
+    "createdAt": "2025-02-20T22:23:13.959Z"
+  },
+  {
+    "userAId": "user_0001",
+    "userBId": "user_0019",
+    "strength": 0.3297890946502057,
+    "createdAt": "2024-12-22T22:23:13.959Z"
+  },
+  {
+    "userAId": "user_0049",
+    "userBId": "user_0010",
+    "strength": 0.4462980109739369,
+    "createdAt": "2025-04-27T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0018",
+    "userBId": "user_0046",
+    "strength": 0.6500497256515776,
+    "createdAt": "2024-10-01T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0042",
+    "userBId": "user_0050",
+    "strength": 0.639809670781893,
+    "createdAt": "2025-07-18T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0039",
+    "userBId": "user_0007",
+    "strength": 0.5884173525377229,
+    "createdAt": "2025-10-25T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0045",
+    "userBId": "user_0025",
+    "strength": 0.6983419067215364,
+    "createdAt": "2025-08-30T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0020",
+    "userBId": "user_0014",
+    "strength": 0.6239043209876544,
+    "createdAt": "2025-05-12T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0044",
+    "userBId": "user_0037",
+    "strength": 0.36016632373113855,
+    "createdAt": "2025-03-31T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0048",
+    "userBId": "user_0044",
+    "strength": 0.5984859396433471,
+    "createdAt": "2025-05-04T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0018",
+    "userBId": "user_0040",
+    "strength": 0.5487397119341564,
+    "createdAt": "2024-08-24T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0048",
+    "userBId": "user_0046",
+    "strength": 0.4282115912208505,
+    "createdAt": "2024-08-06T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0010",
+    "userBId": "user_0032",
+    "strength": 0.6171484910836763,
+    "createdAt": "2025-08-31T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0020",
+    "userBId": "user_0019",
+    "strength": 0.6809825102880658,
+    "createdAt": "2024-03-30T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0032",
+    "userBId": "user_0014",
+    "strength": 0.6592198216735254,
+    "createdAt": "2025-08-09T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0014",
+    "userBId": "user_0023",
+    "strength": 0.6209962277091907,
+    "createdAt": "2025-01-20T22:23:13.959Z"
+  },
+  {
+    "userAId": "user_0009",
+    "userBId": "user_0027",
+    "strength": 0.4872993827160494,
+    "createdAt": "2025-09-10T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0032",
+    "userBId": "user_0027",
+    "strength": 0.5198576817558299,
+    "createdAt": "2025-05-08T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0044",
+    "userBId": "user_0003",
+    "strength": 0.47669581618655693,
+    "createdAt": "2025-05-17T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0042",
+    "userBId": "user_0043",
+    "strength": 0.5323233882030178,
+    "createdAt": "2024-04-19T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0048",
+    "userBId": "user_0027",
+    "strength": 0.568996913580247,
+    "createdAt": "2024-06-23T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0019",
+    "userBId": "user_0014",
+    "strength": 0.5497033607681756,
+    "createdAt": "2025-03-08T22:23:13.959Z"
+  },
+  {
+    "userAId": "user_0037",
+    "userBId": "user_0002",
+    "strength": 0.36580075445816185,
+    "createdAt": "2025-04-02T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0038",
+    "userBId": "user_0049",
+    "strength": 0.4271656378600823,
+    "createdAt": "2023-11-25T22:23:13.959Z"
+  },
+  {
+    "userAId": "user_0032",
+    "userBId": "user_0025",
+    "strength": 0.6173611111111111,
+    "createdAt": "2025-06-13T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0003",
+    "userBId": "user_0004",
+    "strength": 0.546215706447188,
+    "createdAt": "2024-11-07T22:23:13.959Z"
+  },
+  {
+    "userAId": "user_0025",
+    "userBId": "user_0048",
+    "strength": 0.6215723593964335,
+    "createdAt": "2024-08-28T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0002",
+    "userBId": "user_0043",
+    "strength": 0.5866409465020577,
+    "createdAt": "2024-10-25T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0045",
+    "userBId": "user_0016",
+    "strength": 0.3920387517146776,
+    "createdAt": "2025-07-04T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0042",
+    "userBId": "user_0009",
+    "strength": 0.5513460219478739,
+    "createdAt": "2025-10-24T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0008",
+    "userBId": "user_0038",
+    "strength": 0.4440106310013717,
+    "createdAt": "2025-07-19T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0013",
+    "userBId": "user_0035",
+    "strength": 0.31278292181069955,
+    "createdAt": "2025-08-10T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0021",
+    "userBId": "user_0008",
+    "strength": 0.5996622085048011,
+    "createdAt": "2025-04-12T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0040",
+    "userBId": "user_0028",
+    "strength": 0.35156207133058986,
+    "createdAt": "2024-09-16T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0018",
+    "userBId": "user_0047",
+    "strength": 0.6005812757201646,
+    "createdAt": "2025-04-07T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0020",
+    "userBId": "user_0017",
+    "strength": 0.40559156378600825,
+    "createdAt": "2025-02-16T22:23:13.959Z"
+  },
+  {
+    "userAId": "user_0044",
+    "userBId": "user_0001",
+    "strength": 0.3739523319615912,
+    "createdAt": "2025-05-09T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0033",
+    "userBId": "user_0045",
+    "strength": 0.5184447873799726,
+    "createdAt": "2025-08-19T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0005",
+    "userBId": "user_0027",
+    "strength": 0.40450102880658434,
+    "createdAt": "2025-04-09T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0012",
+    "userBId": "user_0003",
+    "strength": 0.4716272290809328,
+    "createdAt": "2025-02-10T22:23:13.959Z"
+  },
+  {
+    "userAId": "user_0021",
+    "userBId": "user_0024",
+    "strength": 0.3889591906721536,
+    "createdAt": "2025-08-03T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0027",
+    "userBId": "user_0020",
+    "strength": 0.47748456790123456,
+    "createdAt": "2024-07-12T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0044",
+    "userBId": "user_0049",
+    "strength": 0.598931755829904,
+    "createdAt": "2025-01-09T22:23:13.959Z"
+  },
+  {
+    "userAId": "user_0035",
+    "userBId": "user_0033",
+    "strength": 0.5113254458161866,
+    "createdAt": "2025-06-01T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0020",
+    "userBId": "user_0028",
+    "strength": 0.49120884773662554,
+    "createdAt": "2023-12-05T22:23:13.959Z"
+  },
+  {
+    "userAId": "user_0026",
+    "userBId": "user_0018",
+    "strength": 0.6225325788751714,
+    "createdAt": "2025-01-01T22:23:13.959Z"
+  },
+  {
+    "userAId": "user_0008",
+    "userBId": "user_0018",
+    "strength": 0.352210219478738,
+    "createdAt": "2025-04-04T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0017",
+    "userBId": "user_0035",
+    "strength": 0.3123405349794239,
+    "createdAt": "2025-06-19T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0014",
+    "userBId": "user_0050",
+    "strength": 0.48401748971193415,
+    "createdAt": "2025-04-09T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0035",
+    "userBId": "user_0047",
+    "strength": 0.6968227023319615,
+    "createdAt": "2025-07-20T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0039",
+    "userBId": "user_0022",
+    "strength": 0.4190929355281207,
+    "createdAt": "2025-09-16T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0041",
+    "userBId": "user_0001",
+    "strength": 0.41626028806584364,
+    "createdAt": "2025-07-16T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0045",
+    "userBId": "user_0039",
+    "strength": 0.3278309327846365,
+    "createdAt": "2025-09-04T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0018",
+    "userBId": "user_0038",
+    "strength": 0.6229406721536351,
+    "createdAt": "2024-07-30T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0005",
+    "userBId": "user_0038",
+    "strength": 0.42257716049382715,
+    "createdAt": "2025-06-05T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0012",
+    "userBId": "user_0018",
+    "strength": 0.48684670781893,
+    "createdAt": "2024-10-23T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0009",
+    "userBId": "user_0020",
+    "strength": 0.6342678326474622,
+    "createdAt": "2025-11-18T22:23:13.959Z"
+  },
+  {
+    "userAId": "user_0006",
+    "userBId": "user_0048",
+    "strength": 0.6042746913580247,
+    "createdAt": "2024-07-20T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0020",
+    "userBId": "user_0029",
+    "strength": 0.5183144718792867,
+    "createdAt": "2024-02-12T22:23:13.959Z"
+  },
+  {
+    "userAId": "user_0029",
+    "userBId": "user_0003",
+    "strength": 0.6677451989026064,
+    "createdAt": "2024-09-25T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0021",
+    "userBId": "user_0042",
+    "strength": 0.66244341563786,
+    "createdAt": "2025-09-06T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0040",
+    "userBId": "user_0004",
+    "strength": 0.31969307270233194,
+    "createdAt": "2024-09-29T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0007",
+    "userBId": "user_0011",
+    "strength": 0.41974108367626883,
+    "createdAt": "2024-09-25T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0040",
+    "userBId": "user_0036",
+    "strength": 0.5280195473251029,
+    "createdAt": "2025-07-14T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0041",
+    "userBId": "user_0038",
+    "strength": 0.6840346364883403,
+    "createdAt": "2025-09-30T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0028",
+    "userBId": "user_0018",
+    "strength": 0.5569221536351165,
+    "createdAt": "2024-07-12T21:23:13.959Z"
+  },
+  {
+    "userAId": "user_0046",
+    "userBId": "user_0012",
+    "strength": 0.4676697530864198,
+    "createdAt": "2024-05-12T21:23:13.959Z"
+  }
+]

@@ -1,0 +1,483 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Design Tokens - Single Source of Truth */
+:root {
+  --accent: 79 70 229;      /* indigo-600 */
+  --fg: 17 24 39;           /* gray-900 */
+  --fg-muted: 75 85 99;     /* gray-600 */
+  --bg: 255 255 255;
+  --bg-muted: 249 250 251;  /* gray-50 */
+  --surface: 255 255 255;
+  --border: 229 231 235;    /* gray-200 */
+  --divider: 243 244 246;   /* gray-100 */
+  --success: 5 150 105;     /* emerald-600 */
+  --warn: 217 119 6;        /* amber-600 */
+  --error: 225 29 72;       /* rose-600 */
+  
+  /* A/B Testing Flags */
+  --ab-bubble-tap-only: 0;
+  --ab-join-button-only: 0;
+  --ab-your-seat-ring: 1;
+  --ab-your-seat-check: 0;
+  --undo-toast-ms: 5000;
+  
+  /* Animation Durations */
+  --animation-duration-fast: 150ms;
+  --animation-duration-normal: 180ms;
+  --animation-duration-slow: 300ms;
+}
+
+/* Alternative accent themes (uncomment to use) */
+/* 
+:root[data-theme="teal"] {
+  --accent-600: #14b8a6;
+  --accent-700: #0d9488;
+}
+
+:root[data-theme="sky"] {
+  --accent-600: #0284c7;
+  --accent-700: #0369a1;
+}
+*/
+
+@layer base {
+  /* Base styles */
+  html {
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+
+  body {
+    @apply bg-bg text-fg antialiased;
+  }
+
+  /* Focus styles */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-accent-600 ring-offset-2;
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* Button Components */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-md font-medium focus-visible:ring-2 focus-visible:ring-accent-600 focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed;
+    transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+    min-height: 44px; /* Touch target */
+  }
+
+  .btn-primary {
+    @apply btn bg-accent-600 text-white hover:bg-accent-700 active:bg-accent-800 h-11 px-6;
+  }
+
+  .btn-secondary {
+    @apply btn border border-border bg-surface text-fg hover:opacity-90 active:opacity-80 h-11 px-6;
+  }
+
+  .btn-ghost {
+    @apply btn text-fg hover:opacity-90 active:opacity-80 h-11 px-6;
+  }
+
+  .btn-destructive {
+    @apply btn bg-error text-white hover:opacity-90 active:opacity-80 h-11 px-6;
+  }
+
+  .btn-sm {
+    @apply h-8 px-4 text-sm;
+  }
+
+  .btn-lg {
+    @apply h-12 px-8 text-lg;
+  }
+
+  /* Lane A — Event Status Chips */
+  .chip {
+    @apply inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium border;
+  }
+
+  .chip-status-confirmed {
+    @apply chip bg-success text-success border-success;
+  }
+
+  .chip-status-locked {
+    @apply chip bg-warn text-warn border-warn;
+  }
+
+  .chip-status-cancelled {
+    @apply chip bg-error text-error border-error;
+  }
+
+  .chip-status-ended {
+    @apply chip bg-fg-muted text-fg-muted border-border;
+  }
+
+  /* Visibility chips - only for invite-only */
+  .chip-visibility-invite-auto {
+    @apply chip bg-warn text-warn border-warn;
+  }
+
+  .chip-visibility-invite-manual {
+    @apply chip bg-fg-muted text-fg-muted border-border;
+  }
+
+  /* Card Components */
+  .card {
+    @apply bg-surface border border-border rounded-lg shadow-sm p-6;
+    transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .card-interactive {
+    @apply card cursor-pointer;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .card-interactive:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    }
+  }
+
+  /* Lane B — Availability BubbleBar (Monochrome) */
+  .bubble {
+    @apply relative flex items-center justify-center w-8 h-8 rounded-full border-2 transition-all duration-170 focus-visible:ring-2 focus-visible:ring-accent-600 focus-visible:ring-offset-1;
+  }
+
+  .bubble-empty {
+    @apply bubble border-border bg-surface text-fg-muted hover:border-fg-muted hover:bg-bg-muted;
+  }
+
+  .bubble-taken {
+    @apply bubble border-fg-muted bg-fg-muted text-white;
+  }
+
+  .bubble-yours {
+    @apply bubble border-fg-muted bg-fg-muted text-white ring-2 ring-accent-600 ring-offset-1;
+  }
+
+  .bubble-overflow {
+    @apply bubble border-border bg-bg-muted text-fg-muted;
+  }
+
+  .bubble-disabled {
+    @apply bubble opacity-50 cursor-not-allowed hover:border-border hover:bg-surface;
+  }
+
+  .bubble-loading {
+    @apply bubble animate-pulse;
+  }
+  
+  /* Status Chip pulse animation for event confirmation */
+  .status-pulse {
+    animation: statusPulse 0.6s ease-out;
+  }
+  
+  @keyframes statusPulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+  }
+  
+  /* Respect reduced motion preferences */
+  @media (prefers-reduced-motion: reduce) {
+    .bubble {
+      transition: none;
+    }
+    .status-pulse {
+      animation: none;
+    }
+  }
+
+  /* Form Components */
+  .input {
+    @apply w-full rounded-md border border-border bg-surface px-4 py-3 text-fg placeholder-fg-muted focus:border-accent-600 focus:ring-2 focus:ring-accent-600 focus:ring-offset-0 transition-colors duration-200;
+  }
+
+  .input-error {
+    @apply input border-error focus:border-error focus:ring-error;
+  }
+
+  .label {
+    @apply block text-sm font-medium text-fg mb-2;
+  }
+
+  /* Toast Components */
+  .toast {
+    @apply fixed bottom-4 left-1/2 transform -translate-x-1/2 z-toast bg-surface border border-border rounded-lg shadow-md px-4 py-3 text-sm font-medium text-fg max-w-sm;
+  }
+
+  .toast-success {
+    @apply toast border-success bg-success;
+  }
+
+  .toast-error {
+    @apply toast border-error bg-error;
+  }
+
+  .toast-warn {
+    @apply toast border-warn bg-warn;
+  }
+}
+
+@layer utilities {
+  /* Motion-safe animations */
+  .motion-safe\:animate-bubble-fill {
+    animation: bubbleFill 170ms ease-in-out;
+  }
+
+  .motion-safe\:animate-bubble-outline {
+    animation: bubbleOutline 170ms ease-in-out;
+  }
+
+  .motion-safe\:animate-pulse-success {
+    animation: pulseSuccess 120ms ease-in-out;
+  }
+
+  .motion-safe\:animate-pulse-warn {
+    animation: pulseWarn 120ms ease-in-out;
+  }
+
+  /* Layout utilities */
+  .container-card {
+    @apply max-w-card mx-auto;
+  }
+
+  .container-page {
+    @apply max-w-page mx-auto;
+  }
+
+  /* Text utilities */
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Keyframe Animations */
+@keyframes bubbleFill {
+  0% {
+    transform: scale(1);
+    border-color: theme('colors.border');
+    background-color: theme('colors.surface');
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    border-color: theme('colors.accent.600');
+    background-color: theme('colors.accent.600');
+  }
+}
+
+@keyframes bubbleOutline {
+  0% {
+    transform: scale(1);
+    border-color: theme('colors.accent.600');
+    background-color: theme('colors.accent.600');
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    border-color: theme('colors.border');
+    background-color: theme('colors.surface');
+  }
+}
+
+@keyframes pulseSuccess {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes pulseWarn {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Swipe animations */
+@keyframes slideInRight {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOutLeft {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+/* Loading skeleton */
+@keyframes shimmer {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
+}
+
+.skeleton {
+  @apply bg-bg-muted rounded-md;
+  background: linear-gradient(90deg, #f9fafb 25%, #e5e7eb 50%, #f9fafb 75%);
+  background-size: 200px 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+/* Filter-specific styles */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Range input styling */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-track {
+  background: var(--border);
+  height: 4px;
+  border-radius: 2px;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  background: var(--accent-600);
+  cursor: pointer;
+  border: 2px solid white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+input[type="range"]::-moz-range-track {
+  background: var(--border);
+  height: 4px;
+  border-radius: 2px;
+  border: none;
+}
+
+input[type="range"]::-moz-range-thumb {
+  height: 20px;
+  width: 20px;
+  border-radius: 50%;
+  background: var(--accent-600);
+  cursor: pointer;
+  border: 2px solid white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Lane C — Status Pills (Accent Color Only) */
+.pill {
+  @apply inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-sm font-medium;
+}
+
+.pill-status {
+  @apply pill bg-accent-600 text-white;
+}
+
+.pill-neutral {
+  @apply pill bg-bg-muted text-fg-muted border border-border;
+}
+
+/* Typography Polish */
+.text-h1, .text-h2 {
+  @apply tracking-tight; /* -0.01em for display sizes */
+}
+
+.seat-count, .numeric, [data-numeric] {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+/* Responsive Typography */
+@media (min-width: 768px) {
+  .text-h1 { font-size: 2.5rem; } /* 40px on desktop */
+  .text-h2 { font-size: 1.75rem; } /* 28px on desktop */
+  .text-h3 { font-size: 1.375rem; } /* 22px on desktop */
+}
+
+/* High-End Motion Refinements */
+@media (prefers-reduced-motion: no-preference) {
+  .motion-luxury {
+    transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .motion-luxury:hover {
+    transform: translateY(-1px);
+  }
+}
+
+/* Focus Ring Improvements */
+*:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px var(--accent-600);
+  border-radius: 4px;
+}
+
+/* A/B Testing flags */
+[data-ab-bubble-tap-only="true"] .btn-primary {
+  @apply hidden;
+}
+
+[data-ab-join-button-only="true"] .bubble {
+  @apply pointer-events-none;
+}
+
+[data-ab-ring-vs-check="ring"] .bubble-yours {
+  @apply ring-2 ring-accent-600 ring-offset-1;
+}
+
+[data-ab-ring-vs-check="check"] .bubble-yours::after {
+  content: "✓";
+  @apply absolute -top-1 -right-1 bg-white rounded-full w-4 h-4 flex items-center justify-center text-accent-600 text-xs font-bold;
+}
+
+[data-ab-pill-none-visible="hidden"] .pill-none {
+  @apply hidden;
+}
+
+[data-ab-pill-none-visible="visible"] .pill-none {
+  @apply pill-neutral;
+}
+

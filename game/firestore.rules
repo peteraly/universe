@@ -1,0 +1,77 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Users can read their own profile and public user profiles
+    match /users/{userId} {
+      allow read: if request.auth != null && (request.auth.uid == userId || resource.data.displayName != null);
+      allow write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Events - public events visible to all, invite-only require invite
+    match /events/{eventId} {
+      allow read: if resource.data.visibility == 'public' || 
+                   (request.auth != null && resource.data.createdBy == request.auth.uid) ||
+                   (request.auth != null && hasInvite(eventId, request.auth.uid));
+      allow create: if request.auth != null && request.auth.uid == resource.data.createdBy;
+      allow update, delete: if request.auth != null && resource.data.createdBy == request.auth.uid;
+    }
+    
+    // Event attendees - only via Cloud Functions
+    match /eventAttendees/{eventId} {
+      allow read: if request.auth != null && 
+                   (hasEventAccess(eventId) || isEventHost(eventId));
+      allow write: if false; // Only via Cloud Functions
+    }
+    
+    // Event waitlist - only via Cloud Functions
+    match /eventWaitlist/{eventId} {
+      allow read: if request.auth != null && 
+                   (hasEventAccess(eventId) || isEventHost(eventId));
+      allow write: if false; // Only via Cloud Functions
+    }
+    
+    // Invites - users can read their own invites
+    match /invites/{inviteId} {
+      allow read: if request.auth != null && 
+                   (resource.data.invitedUserId == request.auth.uid || 
+                    resource.data.eventId in getEventIdsByHost(request.auth.uid));
+      allow write: if request.auth != null && 
+                   resource.data.eventId in getEventIdsByHost(request.auth.uid);
+    }
+    
+    // Connections - users can read their own connections
+    match /connections/{connectionId} {
+      allow read: if request.auth != null && 
+                   (resource.data.userAId == request.auth.uid || 
+                    resource.data.userBId == request.auth.uid);
+      allow write: if request.auth != null && 
+                   (resource.data.userAId == request.auth.uid || 
+                    resource.data.userBId == request.auth.uid);
+    }
+    
+    // Helper functions
+    function hasInvite(eventId, userId) {
+      return exists(/databases/$(database)/documents/invites, 
+                   where eventId == eventId && 
+                   invitedUserId == userId && 
+                   status == 'accepted');
+    }
+    
+    function hasEventAccess(eventId) {
+      return exists(/databases/$(database)/documents/eventAttendees/$(eventId), 
+                   where request.auth.uid in resource.data) ||
+             exists(/databases/$(database)/documents/eventWaitlist/$(eventId), 
+                   where request.auth.uid in resource.data.entries);
+    }
+    
+    function isEventHost(eventId) {
+      return get(/databases/$(database)/documents/events/$(eventId)).data.createdBy == request.auth.uid;
+    }
+    
+    function getEventIdsByHost(userId) {
+      return get(/databases/$(database)/documents/events, 
+                where createdBy == userId).data.id;
+    }
+  }
+}
+
