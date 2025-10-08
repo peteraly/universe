@@ -4,6 +4,7 @@
 
 import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom';
 import { TimeIndexThumbPicker } from '../TimeIndexThumbPicker';
 
@@ -523,6 +524,335 @@ describe('Time Helper Functions', () => {
       inactiveCells.forEach(cell => {
         expect(cell).toHaveClass('time-index-cell-inactive');
       });
+    });
+  });
+
+  // ============================================================================
+  // INTERACTION TESTS
+  // ============================================================================
+
+  describe('Interaction Tests', () => {
+    let mockOnChange: jest.Mock;
+    let user: ReturnType<typeof userEvent.setup>;
+
+    beforeEach(() => {
+      mockOnChange = jest.fn();
+      user = userEvent.setup();
+      jest.useFakeTimers();
+    });
+
+    afterEach(() => {
+      jest.useRealTimers();
+      jest.clearAllMocks();
+    });
+
+    it('tap "A" → afternoon jump', async () => {
+      render(<TimeIndexThumbPicker onChange={mockOnChange} />);
+      
+      // Find the "A" (Afternoon) option
+      const afternoonOption = screen.getByRole('option', { name: /Afternoon \(A\)/i });
+      
+      // Click on the afternoon option
+      await user.click(afternoonOption);
+      
+      // Should call onChange with an afternoon time
+      expect(mockOnChange).toHaveBeenCalled();
+      const callArgs = mockOnChange.mock.calls[0][0];
+      expect(callArgs).toMatch(/1[2-7]:\d{2}/); // Afternoon hours (12-17)
+    });
+
+    it('drag selects hour and snaps to minute granularity', async () => {
+      render(<TimeIndexThumbPicker onChange={mockOnChange} granularityMinutes={15} />);
+      
+      const picker = screen.getByRole('application');
+      const rail = screen.getByRole('navigation');
+      
+      // Start drag
+      await user.pointer([
+        { keys: '[MouseLeft>]', target: rail },
+        { coords: { x: 100, y: 200 } },
+        { keys: '[/MouseLeft]' }
+      ]);
+      
+      // Should call onChange with snapped time
+      expect(mockOnChange).toHaveBeenCalled();
+      const callArgs = mockOnChange.mock.calls[0][0];
+      const [, minute] = callArgs.split(':');
+      const minuteValue = parseInt(minute);
+      
+      // Should snap to 15-minute granularity
+      expect(minuteValue % 15).toBe(0);
+    });
+
+    it('long-press opens minute wheel and selection updates', async () => {
+      render(<TimeIndexThumbPicker onChange={mockOnChange} />);
+      
+      const rail = screen.getByRole('navigation');
+      
+      // Long press (600ms)
+      await user.pointer([
+        { keys: '[MouseLeft>]', target: rail }
+      ]);
+      
+      // Fast-forward time to trigger long press
+      jest.advanceTimersByTime(600);
+      
+      // Should open minute sheet
+      await waitFor(() => {
+        expect(screen.getByText('Select Minutes')).toBeInTheDocument();
+      });
+      
+      // Select a minute option
+      const minute15 = screen.getByText('15');
+      await user.click(minute15);
+      
+      // Should call onChange with updated time
+      expect(mockOnChange).toHaveBeenCalled();
+    });
+
+    it('handedness="left" mirrors layout', () => {
+      render(<TimeIndexThumbPicker onChange={mockOnChange} handedness="left" />);
+      
+      const rail = screen.getByRole('navigation');
+      
+      // Should have left positioning classes
+      expect(rail).toHaveClass('left-0');
+      expect(rail).not.toHaveClass('right-0');
+    });
+
+    it('handedness="right" uses right layout', () => {
+      render(<TimeIndexThumbPicker onChange={mockOnChange} handedness="right" />);
+      
+      const rail = screen.getByRole('navigation');
+      
+      // Should have right positioning classes
+      expect(rail).toHaveClass('right-0');
+      expect(rail).not.toHaveClass('left-0');
+    });
+
+    it('12h formatting displays correctly', () => {
+      render(<TimeIndexThumbPicker onChange={mockOnChange} format="12h" value="14:30" />);
+      
+      // Should display 12h format
+      const bubble = screen.getByRole('status');
+      expect(bubble).toHaveTextContent('2:30 PM');
+    });
+
+    it('24h formatting displays correctly', () => {
+      render(<TimeIndexThumbPicker onChange={mockOnChange} format="24h" value="14:30" />);
+      
+      // Should display 24h format
+      const bubble = screen.getByRole('status');
+      expect(bubble).toHaveTextContent('14:30');
+    });
+
+    it('format toggle updates display', async () => {
+      const { rerender } = render(<TimeIndexThumbPicker onChange={mockOnChange} format="12h" value="14:30" />);
+      
+      // Initial 12h format
+      let bubble = screen.getByRole('status');
+      expect(bubble).toHaveTextContent('2:30 PM');
+      
+      // Switch to 24h format
+      rerender(<TimeIndexThumbPicker onChange={mockOnChange} format="24h" value="14:30" />);
+      
+      bubble = screen.getByRole('status');
+      expect(bubble).toHaveTextContent('14:30');
+    });
+
+    it('granularity affects minute snapping', async () => {
+      render(<TimeIndexThumbPicker onChange={mockOnChange} granularityMinutes={5} />);
+      
+      const picker = screen.getByRole('application');
+      
+      // Trigger time change
+      fireEvent.keyDown(picker, { key: 'ArrowRight' });
+      
+      expect(mockOnChange).toHaveBeenCalled();
+      const callArgs = mockOnChange.mock.calls[0][0];
+      const [, minute] = callArgs.split(':');
+      const minuteValue = parseInt(minute);
+      
+      // Should snap to 5-minute granularity
+      expect(minuteValue % 5).toBe(0);
+    });
+
+    it('keyboard navigation works with all keys', async () => {
+      render(<TimeIndexThumbPicker onChange={mockOnChange} />);
+      
+      const picker = screen.getByRole('application');
+      
+      // Test all navigation keys
+      const keys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'PageUp', 'PageDown', 'Home', 'End'];
+      
+      for (const key of keys) {
+        fireEvent.keyDown(picker, { key });
+        expect(mockOnChange).toHaveBeenCalled();
+        mockOnChange.mockClear();
+      }
+    });
+
+    it('Enter and Space confirm selection', async () => {
+      render(<TimeIndexThumbPicker onChange={mockOnChange} />);
+      
+      const picker = screen.getByRole('application');
+      
+      // Test Enter
+      fireEvent.keyDown(picker, { key: 'Enter' });
+      expect(mockOnChange).toHaveBeenCalled();
+      
+      mockOnChange.mockClear();
+      
+      // Test Space
+      fireEvent.keyDown(picker, { key: ' ' });
+      expect(mockOnChange).toHaveBeenCalled();
+    });
+
+    it('Escape cancels operations', async () => {
+      render(<TimeIndexThumbPicker onChange={mockOnChange} />);
+      
+      const picker = screen.getByRole('application');
+      const rail = screen.getByRole('navigation');
+      
+      // Start long press
+      await user.pointer([
+        { keys: '[MouseLeft>]', target: rail }
+      ]);
+      
+      // Fast-forward to open minute sheet
+      jest.advanceTimersByTime(600);
+      
+      await waitFor(() => {
+        expect(screen.getByText('Select Minutes')).toBeInTheDocument();
+      });
+      
+      // Press Escape
+      fireEvent.keyDown(picker, { key: 'Escape' });
+      
+      // Minute sheet should close
+      await waitFor(() => {
+        expect(screen.queryByText('Select Minutes')).not.toBeInTheDocument();
+      });
+    });
+
+    it('disabled state prevents interactions', async () => {
+      render(<TimeIndexThumbPicker onChange={mockOnChange} disabled={true} />);
+      
+      const picker = screen.getByRole('application');
+      const rail = screen.getByRole('navigation');
+      
+      // Should not be focusable
+      expect(picker).toHaveAttribute('tabIndex', '-1');
+      
+      // Should not respond to keyboard
+      fireEvent.keyDown(picker, { key: 'ArrowUp' });
+      expect(mockOnChange).not.toHaveBeenCalled();
+      
+      // Should not respond to clicks
+      await user.click(rail);
+      expect(mockOnChange).not.toHaveBeenCalled();
+    });
+
+    it('focus management works correctly', async () => {
+      render(<TimeIndexThumbPicker onChange={mockOnChange} />);
+      
+      const picker = screen.getByRole('application');
+      
+      // Should be focusable
+      expect(picker).toHaveAttribute('tabIndex', '0');
+      
+      // Should focus on tab
+      await user.tab();
+      expect(picker).toHaveFocus();
+    });
+
+    it('announces time changes to screen readers', async () => {
+      render(<TimeIndexThumbPicker onChange={mockOnChange} />);
+      
+      const picker = screen.getByRole('application');
+      
+      // Trigger time change
+      fireEvent.keyDown(picker, { key: 'ArrowUp' });
+      
+      // Should have live region for announcements
+      const liveRegion = screen.getByRole('status');
+      expect(liveRegion).toHaveAttribute('aria-live', 'polite');
+    });
+
+    it('coarse bucket selection updates correctly', async () => {
+      render(<TimeIndexThumbPicker onChange={mockOnChange} />);
+      
+      // Find all coarse bucket options
+      const options = screen.getAllByRole('option');
+      expect(options).toHaveLength(4); // M, A, E, N
+      
+      // Test each option
+      for (const option of options) {
+        await user.click(option);
+        expect(mockOnChange).toHaveBeenCalled();
+        mockOnChange.mockClear();
+      }
+    });
+
+    it('fine hours overlay shows on interaction', async () => {
+      render(<TimeIndexThumbPicker onChange={mockOnChange} />);
+      
+      const rail = screen.getByRole('navigation');
+      
+      // Start interaction
+      await user.pointer([
+        { keys: '[MouseLeft>]', target: rail }
+      ]);
+      
+      // Should show fine hours overlay
+      await waitFor(() => {
+        const fineHours = screen.getByRole('listbox', { name: /Hour selection/i });
+        expect(fineHours).toBeInTheDocument();
+      });
+    });
+
+    it('minute sheet has proper accessibility', async () => {
+      render(<TimeIndexThumbPicker onChange={mockOnChange} />);
+      
+      const rail = screen.getByRole('navigation');
+      
+      // Long press to open minute sheet
+      await user.pointer([
+        { keys: '[MouseLeft>]', target: rail }
+      ]);
+      
+      jest.advanceTimersByTime(600);
+      
+      await waitFor(() => {
+        expect(screen.getByText('Select Minutes')).toBeInTheDocument();
+      });
+      
+      // Should have proper accessibility attributes
+      const minuteButtons = screen.getAllByRole('button');
+      minuteButtons.forEach(button => {
+        expect(button).toHaveAttribute('aria-label');
+      });
+    });
+
+    it('performance: throttled updates during drag', async () => {
+      render(<TimeIndexThumbPicker onChange={mockOnChange} />);
+      
+      const rail = screen.getByRole('navigation');
+      
+      // Start drag
+      await user.pointer([
+        { keys: '[MouseLeft>]', target: rail },
+        { coords: { x: 100, y: 200 } },
+        { coords: { x: 100, y: 300 } },
+        { coords: { x: 100, y: 400 } },
+        { keys: '[/MouseLeft]' }
+      ]);
+      
+      // Should have called onChange (throttled)
+      expect(mockOnChange).toHaveBeenCalled();
+      
+      // Should not have excessive calls due to throttling
+      expect(mockOnChange.mock.calls.length).toBeLessThan(10);
     });
   });
 });
