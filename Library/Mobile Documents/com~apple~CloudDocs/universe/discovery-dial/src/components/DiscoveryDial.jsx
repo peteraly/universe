@@ -132,13 +132,13 @@ const DiscoveryDial = () => {
       min-h-screen w-full
       bg-gradient-to-br from-purple-500 via-blue-500 to-purple-700
       flex flex-col items-center justify-center
-      px-4 py-8
+      px-4 py-6
       relative overflow-hidden
     ">
       {/* Main title */}
       <h1 className="
         text-white text-2xl font-bold
-        mb-8 text-center
+        mb-6 text-center
         tracking-wide
       ">
         Discovery Dial
@@ -146,19 +146,20 @@ const DiscoveryDial = () => {
 
       {/* Central circular dial */}
       <div className="
-        relative w-80 h-80 sm:w-96 sm:h-96
+        relative w-72 h-72 sm:w-80 sm:h-80
         flex items-center justify-center
-        mb-8
+        mb-6
       ">
         <div 
           className="
             w-full h-full
-            border-2 border-white/30
+            border border-white/40
             rounded-full
             flex flex-col items-center justify-center
-            bg-white/5 backdrop-blur-sm
+            bg-white/10 backdrop-blur-sm
             transition-all duration-300
             cursor-pointer
+            shadow-lg
           "
           onMouseDown={handleLongPress}
           onMouseUp={handleLongPressEnd}
@@ -175,13 +176,13 @@ const DiscoveryDial = () => {
           >
             {currentEvent ? (
               <>
-                <h2 className="text-white text-xl font-bold mb-2 leading-tight">
+                <h2 className="text-white text-lg font-bold mb-2 leading-tight text-center">
                   {currentEvent.name}
                 </h2>
-                <p className="text-white/80 text-sm mb-1">
+                <p className="text-white/90 text-sm mb-1 text-center">
                   {currentEvent.category}
                 </p>
-                <p className="text-white/60 text-xs">
+                <p className="text-white/70 text-xs text-center">
                   {currentEvent.price}
                 </p>
               </>
@@ -253,21 +254,20 @@ const DiscoveryDial = () => {
       )}
 
       {/* Four directional buttons */}
-      <div className="grid grid-cols-2 gap-4 w-80">
+      <div className="grid grid-cols-2 gap-3 w-72">
         <button
           onClick={() => handleDirection('north')}
           className={`
             flex flex-col items-center justify-center
-            p-4 rounded-xl
+            p-3 rounded-lg
             border-2 transition-all duration-200
             ${activeDirection === 'north' 
-              ? 'border-blue-400 bg-blue-500/20' 
-              : 'border-white/20 bg-white/10'
+              ? 'border-blue-400 bg-blue-500/30 shadow-lg' 
+              : 'border-white/30 bg-white/15 hover:bg-white/25'
             }
-            hover:bg-white/20
             focus:outline-none focus:ring-2 focus:ring-white/50
             touch-manipulation
-            min-h-[80px]
+            min-h-[70px]
           `}
           aria-label="Deep Dive - north"
         >
@@ -279,16 +279,15 @@ const DiscoveryDial = () => {
           onClick={() => handleDirection('south')}
           className={`
             flex flex-col items-center justify-center
-            p-4 rounded-xl
+            p-3 rounded-lg
             border-2 transition-all duration-200
             ${activeDirection === 'south' 
-              ? 'border-green-400 bg-green-500/20' 
-              : 'border-white/20 bg-white/10'
+              ? 'border-green-400 bg-green-500/30 shadow-lg' 
+              : 'border-white/30 bg-white/15 hover:bg-white/25'
             }
-            hover:bg-white/20
             focus:outline-none focus:ring-2 focus:ring-white/50
             touch-manipulation
-            min-h-[80px]
+            min-h-[70px]
           `}
           aria-label="Vibe Shift - south"
         >
@@ -300,16 +299,15 @@ const DiscoveryDial = () => {
           onClick={() => handleDirection('west')}
           className={`
             flex flex-col items-center justify-center
-            p-4 rounded-xl
+            p-3 rounded-lg
             border-2 transition-all duration-200
             ${activeDirection === 'west' 
-              ? 'border-purple-400 bg-purple-500/20' 
-              : 'border-white/20 bg-white/10'
+              ? 'border-red-400 bg-red-500/30 shadow-lg' 
+              : 'border-white/30 bg-white/15 hover:bg-white/25'
             }
-            hover:bg-white/20
             focus:outline-none focus:ring-2 focus:ring-white/50
             touch-manipulation
-            min-h-[80px]
+            min-h-[70px]
           `}
           aria-label="Social - west"
         >
@@ -321,16 +319,15 @@ const DiscoveryDial = () => {
           onClick={() => handleDirection('east')}
           className={`
             flex flex-col items-center justify-center
-            p-4 rounded-xl
+            p-3 rounded-lg
             border-2 transition-all duration-200
             ${activeDirection === 'east' 
-              ? 'border-orange-400 bg-orange-500/20' 
-              : 'border-white/20 bg-white/10'
+              ? 'border-orange-400 bg-orange-500/30 shadow-lg' 
+              : 'border-white/30 bg-white/15 hover:bg-white/25'
             }
-            hover:bg-white/20
             focus:outline-none focus:ring-2 focus:ring-white/50
             touch-manipulation
-            min-h-[80px]
+            min-h-[70px]
           `}
           aria-label="Action - east"
         >
