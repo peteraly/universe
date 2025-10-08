@@ -131,25 +131,27 @@ const DiscoveryDial = () => {
     <div className="
       min-h-screen w-full
       bg-gradient-to-br from-purple-500 via-blue-500 to-purple-700
-      flex flex-col items-center justify-center
+      flex items-center justify-center
       px-4 py-6
       relative overflow-hidden
     ">
-      {/* Main title */}
-      <h1 className="
-        text-white text-2xl font-bold
-        mb-6 text-center
-        tracking-wide
-      ">
-        Discovery Dial
-      </h1>
+      {/* Main content area */}
+      <div className="flex-1 flex flex-col items-center justify-center max-w-4xl mx-auto">
+        {/* Main title */}
+        <h1 className="
+          text-white text-2xl font-bold
+          mb-6 text-center
+          tracking-wide
+        ">
+          Discovery Dial
+        </h1>
 
-      {/* Central circular dial */}
-      <div className="
-        relative w-72 h-72 sm:w-80 sm:h-80
-        flex items-center justify-center
-        mb-6
-      ">
+        {/* Central circular dial */}
+        <div className="
+          relative w-72 h-72 sm:w-80 sm:h-80
+          flex items-center justify-center
+          mb-6
+        ">
         <div 
           className="
             w-full h-full
@@ -194,64 +196,13 @@ const DiscoveryDial = () => {
             )}
           </motion.div>
         </div>
-      </div>
 
-      {/* Instructions */}
-      <div className="text-white/80 text-sm text-center mb-6 space-y-1">
-        <p>Swipe the dial to discover events</p>
-        <p>Hold down the dial for time filter options</p>
-      </div>
+        {/* Instructions */}
+        <div className="text-white/80 text-sm text-center mb-6 space-y-1">
+          <p>Swipe the dial to discover events</p>
+          <p>Hold down the dial for time filter options</p>
+        </div>
 
-      {/* Inline time selector */}
-      {showTimeSelector && (
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: 20 }}
-          className="w-full max-w-sm mx-auto mb-6"
-        >
-          <div className="
-            backdrop-blur-sm bg-white/20 rounded-2xl
-            transition-all duration-200
-            p-2
-          ">
-            <div className="
-              flex overflow-x-auto scrollbar-hide
-              space-x-2 px-2
-              snap-x snap-mandatory
-            ">
-              {timeOptions.map((option) => (
-                <button
-                  key={option}
-                  onClick={() => {
-                    handleTimeRangeSelect(option)
-                    setShowTimeSelector(false)
-                    // Haptic feedback
-                    if (navigator.vibrate) {
-                      navigator.vibrate(50)
-                    }
-                  }}
-                  className={`
-                    flex-shrink-0 px-3 py-2 rounded-xl
-                    transition-all duration-200
-                    text-sm font-medium
-                    snap-center
-                    ${selectedTimeRange === option 
-                      ? 'bg-white/40 text-white shadow-md' 
-                      : 'bg-white/20 text-white/80 hover:bg-white/30'
-                    }
-                    focus:outline-none focus:ring-2 focus:ring-white/50
-                    touch-manipulation
-                    min-w-[70px] text-center
-                  `}
-                >
-                  {option}
-                </button>
-              ))}
-            </div>
-          </div>
-        </motion.div>
-      )}
 
       {/* Four directional buttons */}
       <div className="grid grid-cols-2 gap-3 w-72">
@@ -336,12 +287,53 @@ const DiscoveryDial = () => {
         </button>
       </div>
 
-      {/* Last gesture indicator */}
-      {lastGesture && (
-        <div className="text-green-400 text-sm mt-4">
-          Last gesture: {lastGesture}
+        {/* Last gesture indicator */}
+        {lastGesture && (
+          <div className="text-green-400 text-sm mt-4">
+            Last gesture: {lastGesture}
+          </div>
+        )}
+      </div>
+
+      {/* Vertical Time Selector - Right Side */}
+      <div className="fixed right-4 top-1/2 -translate-y-1/2 z-10">
+        <div className="
+          backdrop-blur-sm bg-white/20 rounded-2xl
+          p-3
+          shadow-lg
+        ">
+          <div className="flex flex-col space-y-2">
+            {timeOptions.map((option) => (
+              <button
+                key={option}
+                onClick={() => {
+                  handleTimeRangeSelect(option)
+                  // Haptic feedback
+                  if (navigator.vibrate) {
+                    navigator.vibrate(50)
+                  }
+                }}
+                className={`
+                  px-4 py-3 rounded-xl
+                  transition-all duration-200
+                  text-sm font-medium
+                  text-center
+                  min-w-[100px]
+                  ${selectedTimeRange === option 
+                    ? 'bg-white/40 text-white shadow-md' 
+                    : 'bg-white/20 text-white/80 hover:bg-white/30'
+                  }
+                  focus:outline-none focus:ring-2 focus:ring-white/50
+                  touch-manipulation
+                `}
+              >
+                {option}
+              </button>
+            ))}
+          </div>
         </div>
-      )}
+    </div>
+      </div>
     </div>
   )
 }
