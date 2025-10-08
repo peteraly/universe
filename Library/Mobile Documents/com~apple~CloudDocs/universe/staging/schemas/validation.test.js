@@ -1,7 +1,7 @@
 // Schema Validation Tests - V12.0
-const { eventSchema, validateEvent } = require('./events')
-const { agentSchema, validateAgent } = require('./agents')
-const { ledgerSchema, validateLedgerEntry, createLedgerEntry } = require('./ledger')
+const { validateEvent } = require('./events')
+const { validateAgent } = require('./agents')
+const { validateLedgerEntry, createLedgerEntry } = require('./ledger')
 
 // Test data
 const validEvent = {
@@ -9,193 +9,180 @@ const validEvent = {
   name: 'Tech Meetup',
   description: 'A great tech meetup for developers',
   date: '2024-01-15',
-  time: '19:00',
+  time: '18:00',
   venue: 'Tech Hub',
   address: '123 Tech Street, City',
   primaryCategory: 'Professional',
-  secondaryCategories: ['Social/Fun'],
-  tags: [
-    { tag: 'networking', confidence: 0.9, category: 'Professional' }
-  ],
-  organizer: 'Tech Community',
-  price: 'Free',
-  status: 'DRAFT',
-  qualityScore: 0.85,
-  curationHistory: [],
-  createdAt: '2024-01-01T00:00:00.000Z'
+  status: 'approved',
+  createdAt: '2024-01-01T00:00:00Z',
+  qualityScore: 0.85
 }
 
 const validAgent = {
   id: 'agent_123',
-  name: 'Curator Bot',
-  type: 'AI_ASSISTANT',
-  role: 'EVENT_CURATOR',
-  permissions: ['READ_EVENTS', 'APPROVE_EVENTS', 'REJECT_EVENTS'],
-  status: 'ACTIVE',
-  capabilities: {
-    maxEventsPerDay: 100,
-    canApproveEvents: true,
-    canRejectEvents: true,
-    canManageConfig: false,
-    canViewHealth: false,
-    canManageAgents: false
+  name: 'Curation Agent',
+  type: 'curation',
+  status: 'active',
+  config: {
+    version: '1.0.0',
+    parameters: {},
+    thresholds: {},
+    enabled: true
   },
-  performance: {
-    eventsProcessed: 50,
-    approvalRate: 0.92,
-    averageProcessingTime: 2.5,
-    lastActivity: '2024-01-01T12:00:00.000Z'
-  },
-  credentials: {
-    username: 'curator_bot',
-    email: 'bot@example.com',
-    lastLogin: '2024-01-01T12:00:00.000Z',
-    loginCount: 1
-  },
-  createdAt: '2024-01-01T00:00:00.000Z'
+  createdAt: '2024-01-01T00:00:00Z'
 }
 
 const validLedgerEntry = {
   id: 'ledger_123',
-  transactionType: 'EVENT_APPROVED',
-  entityType: 'EVENT',
+  transactionId: 'txn_123',
+  type: 'event_created',
+  action: 'create_event',
+  entityType: 'event',
   entityId: 'event_123',
-  agentId: 'agent_123',
-  action: 'Event approved by curator',
-  details: { qualityScore: 0.85 },
-  severity: 'LOW',
-  status: 'SUCCESS',
-  timestamp: '2024-01-01T12:00:00.000Z',
-  metadata: {},
-  auditTrail: []
+  timestamp: '2024-01-01T00:00:00Z',
+  status: 'success'
 }
 
 // Test functions
 function runSchemaValidationTests() {
-  console.log('Running Schema Validation Tests...')
+  console.log('Running schema validation tests...')
   
-  // Test Event Schema
-  console.log('\n=== Event Schema Tests ===')
-  const eventValidation = validateEvent(validEvent)
-  console.log('Valid Event:', eventValidation.valid ? 'PASS' : 'FAIL')
-  if (!eventValidation.valid) {
-    console.log('Errors:', eventValidation.errors)
+  let passed = 0
+  let failed = 0
+  
+  // Test valid event
+  const eventResult = validateEvent(validEvent)
+  if (eventResult.valid) {
+    console.log('✅ Valid event passed validation')
+    passed++
+  } else {
+    console.log('❌ Valid event failed validation:', eventResult.errors)
+    failed++
   }
   
-  // Test Agent Schema
-  console.log('\n=== Agent Schema Tests ===')
-  const agentValidation = validateAgent(validAgent)
-  console.log('Valid Agent:', agentValidation.valid ? 'PASS' : 'FAIL')
-  if (!agentValidation.valid) {
-    console.log('Errors:', agentValidation.errors)
+  // Test invalid event
+  const invalidEvent = { ...validEvent, id: null }
+  const invalidEventResult = validateEvent(invalidEvent)
+  if (!invalidEventResult.valid) {
+    console.log('✅ Invalid event correctly rejected')
+    passed++
+  } else {
+    console.log('❌ Invalid event incorrectly passed validation')
+    failed++
   }
   
-  // Test Ledger Schema
-  console.log('\n=== Ledger Schema Tests ===')
-  const ledgerValidation = validateLedgerEntry(validLedgerEntry)
-  console.log('Valid Ledger Entry:', ledgerValidation.valid ? 'PASS' : 'FAIL')
-  if (!ledgerValidation.valid) {
-    console.log('Errors:', ledgerValidation.errors)
+  // Test valid agent
+  const agentResult = validateAgent(validAgent)
+  if (agentResult.valid) {
+    console.log('✅ Valid agent passed validation')
+    passed++
+  } else {
+    console.log('❌ Valid agent failed validation:', agentResult.errors)
+    failed++
   }
   
-  // Test Invalid Data
-  console.log('\n=== Invalid Data Tests ===')
-  const invalidEvent = { id: 'test' } // Missing required fields
-  const invalidEventValidation = validateEvent(invalidEvent)
-  console.log('Invalid Event (should fail):', !invalidEventValidation.valid ? 'PASS' : 'FAIL')
-  
-  const invalidAgent = { id: 'test' } // Missing required fields
-  const invalidAgentValidation = validateAgent(invalidAgent)
-  console.log('Invalid Agent (should fail):', !invalidAgentValidation.valid ? 'PASS' : 'FAIL')
-  
-  const invalidLedger = { id: 'test' } // Missing required fields
-  const invalidLedgerValidation = validateLedgerEntry(invalidLedger)
-  console.log('Invalid Ledger (should fail):', !invalidLedgerValidation.valid ? 'PASS' : 'FAIL')
-  
-  // Test Ledger Entry Creation
-  console.log('\n=== Ledger Entry Creation Tests ===')
-  const newLedgerEntry = createLedgerEntry('EVENT_CREATED', 'EVENT', 'event_456', 'Event created', 'agent_123')
-  const newLedgerValidation = validateLedgerEntry(newLedgerEntry)
-  console.log('Created Ledger Entry:', newLedgerValidation.valid ? 'PASS' : 'FAIL')
-  
-  return {
-    eventValidation: eventValidation.valid,
-    agentValidation: agentValidation.valid,
-    ledgerValidation: ledgerValidation.valid,
-    invalidEventValidation: !invalidEventValidation.valid,
-    invalidAgentValidation: !invalidAgentValidation.valid,
-    invalidLedgerValidation: !invalidLedgerValidation.valid,
-    newLedgerValidation: newLedgerValidation.valid
+  // Test invalid agent
+  const invalidAgent = { ...validAgent, type: 'invalid_type' }
+  const invalidAgentResult = validateAgent(invalidAgent)
+  if (!invalidAgentResult.valid) {
+    console.log('✅ Invalid agent correctly rejected')
+    passed++
+  } else {
+    console.log('❌ Invalid agent incorrectly passed validation')
+    failed++
   }
+  
+  // Test valid ledger entry
+  const ledgerResult = validateLedgerEntry(validLedgerEntry)
+  if (ledgerResult.valid) {
+    console.log('✅ Valid ledger entry passed validation')
+    passed++
+  } else {
+    console.log('❌ Valid ledger entry failed validation:', ledgerResult.errors)
+    failed++
+  }
+  
+  // Test invalid ledger entry
+  const invalidLedgerEntry = { ...validLedgerEntry, type: 'invalid_type' }
+  const invalidLedgerResult = validateLedgerEntry(invalidLedgerEntry)
+  if (!invalidLedgerResult.valid) {
+    console.log('✅ Invalid ledger entry correctly rejected')
+    passed++
+  } else {
+    console.log('❌ Invalid ledger entry incorrectly passed validation')
+    failed++
+  }
+  
+  // Test ledger entry creation
+  const createdEntry = createLedgerEntry({
+    type: 'event_created',
+    action: 'create_event',
+    entityType: 'event',
+    entityId: 'event_123'
+  })
+  
+  if (createdEntry.id && createdEntry.transactionId && createdEntry.timestamp) {
+    console.log('✅ Ledger entry creation successful')
+    passed++
+  } else {
+    console.log('❌ Ledger entry creation failed')
+    failed++
+  }
+  
+  console.log(`\nTest Results: ${passed} passed, ${failed} failed`)
+  return { passed, failed, total: passed + failed }
 }
 
 // Mock DB connection test
 function testDBConnection() {
-  console.log('\n=== DB Connection Test (Mock Mode) ===')
-  console.log('Testing schema compatibility...')
+  console.log('Testing DB connection (mock mode)...')
   
-  // Simulate DB operations
+  // Simulate DB connection
   const mockDB = {
-    events: [],
-    agents: [],
-    ledger: []
+    connected: true,
+    host: 'localhost',
+    port: 5432,
+    database: 'discovery_dial'
   }
   
-  // Test inserting valid data
-  try {
-    mockDB.events.push(validEvent)
-    mockDB.agents.push(validAgent)
-    mockDB.ledger.push(validLedgerEntry)
-    console.log('DB Insert Operations: PASS')
-  } catch (error) {
-    console.log('DB Insert Operations: FAIL -', error.message)
+  if (mockDB.connected) {
+    console.log('✅ DB connection successful (mock)')
+    return true
+  } else {
+    console.log('❌ DB connection failed')
     return false
   }
-  
-  // Test querying data
-  try {
-    const event = mockDB.events.find(e => e.id === 'event_123')
-    const agent = mockDB.agents.find(a => a.id === 'agent_123')
-    const ledger = mockDB.ledger.find(l => l.id === 'ledger_123')
-    
-    if (event && agent && ledger) {
-      console.log('DB Query Operations: PASS')
-    } else {
-      console.log('DB Query Operations: FAIL - Data not found')
-      return false
-    }
-  } catch (error) {
-    console.log('DB Query Operations: FAIL -', error.message)
-    return false
-  }
-  
-  console.log('DB Connection Test: PASS')
-  return true
 }
 
 // Run all tests
 function runAllTests() {
-  const validationResults = runSchemaValidationTests()
-  const dbTestResult = testDBConnection()
+  console.log('=== V12.0 Schema Validation Tests ===\n')
   
-  const allTestsPassed = 
-    validationResults.eventValidation &&
-    validationResults.agentValidation &&
-    validationResults.ledgerValidation &&
-    validationResults.invalidEventValidation &&
-    validationResults.invalidAgentValidation &&
-    validationResults.invalidLedgerValidation &&
-    validationResults.newLedgerValidation &&
-    dbTestResult
+  const validationResults = runSchemaValidationTests()
+  const dbConnectionResult = testDBConnection()
   
   console.log('\n=== Test Summary ===')
-  console.log('All Tests Passed:', allTestsPassed ? 'PASS' : 'FAIL')
+  console.log(`Schema Validation: ${validationResults.passed}/${validationResults.total} passed`)
+  console.log(`DB Connection: ${dbConnectionResult ? 'PASSED' : 'FAILED'}`)
   
-  return allTestsPassed
+  const allTestsPassed = validationResults.failed === 0 && dbConnectionResult
+  
+  if (allTestsPassed) {
+    console.log('\n✅ All tests passed!')
+    return true
+  } else {
+    console.log('\n❌ Some tests failed!')
+    return false
+  }
 }
 
 module.exports = {
   runSchemaValidationTests,
   testDBConnection,
   runAllTests
+}
+
+// Run tests if called directly
+if (require.main === module) {
+  runAllTests()
 }

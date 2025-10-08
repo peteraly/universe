@@ -1,5 +1,6 @@
-// Event Schema - V12.0 Data Model
-const eventSchema = {
+// Events Schema - V12.0 Data Model
+const eventsSchema = {
+  // Core event fields
   id: {
     type: 'string',
     required: true,
@@ -37,15 +38,17 @@ const eventSchema = {
     required: true,
     minLength: 1,
     maxLength: 200,
-    description: 'Event venue'
+    description: 'Event venue name'
   },
   address: {
     type: 'string',
     required: true,
-    minLength: 1,
+    minLength: 10,
     maxLength: 500,
     description: 'Event address'
   },
+  
+  // Classification fields
   primaryCategory: {
     type: 'string',
     required: true,
@@ -58,7 +61,6 @@ const eventSchema = {
       type: 'string',
       enum: ['Professional', 'Arts/Culture', 'Social/Fun', 'Education']
     },
-    maxItems: 3,
     description: 'Secondary event categories'
   },
   tags: {
@@ -69,49 +71,39 @@ const eventSchema = {
         tag: { type: 'string' },
         confidence: { type: 'number', minimum: 0, maximum: 1 },
         category: { type: 'string' }
-      },
-      required: ['tag', 'confidence']
+      }
     },
-    maxItems: 10,
     description: 'Event tags with confidence scores'
   },
-  organizer: {
-    type: 'string',
-    maxLength: 200,
-    description: 'Event organizer'
-  },
-  price: {
-    type: 'string',
-    default: 'Free',
-    description: 'Event price'
-  },
-  status: {
-    type: 'string',
-    required: true,
-    enum: ['DRAFT', 'PENDING_CURATION', 'APPROVED', 'REJECTED', 'LIVE', 'ARCHIVED'],
-    default: 'DRAFT',
-    description: 'Event status'
-  },
+  
+  // Quality and curation fields
   qualityScore: {
     type: 'number',
     minimum: 0,
     maximum: 1,
-    description: 'Event quality score'
+    description: 'Overall quality score (0-1)'
+  },
+  status: {
+    type: 'string',
+    required: true,
+    enum: ['pending_curation', 'approved', 'rejected', 'draft', 'archived'],
+    description: 'Event curation status'
   },
   curationHistory: {
     type: 'array',
     items: {
       type: 'object',
       properties: {
-        action: { type: 'string', enum: ['approved', 'rejected', 'modified'] },
+        action: { type: 'string', enum: ['approved', 'rejected', 'edited'] },
         curatorId: { type: 'string' },
-        timestamp: { type: 'string', format: 'date-time' },
-        reason: { type: 'string' }
-      },
-      required: ['action', 'curatorId', 'timestamp']
+        reason: { type: 'string' },
+        timestamp: { type: 'string', format: 'date-time' }
+      }
     },
-    description: 'Event curation history'
+    description: 'Curation action history'
   },
+  
+  // Metadata fields
   createdAt: {
     type: 'string',
     required: true,
@@ -121,15 +113,43 @@ const eventSchema = {
   updatedAt: {
     type: 'string',
     format: 'date-time',
-    description: 'Event last update timestamp'
+    description: 'Last update timestamp'
+  },
+  createdBy: {
+    type: 'string',
+    description: 'User who created the event'
+  },
+  
+  // Optional fields
+  price: {
+    type: 'string',
+    description: 'Event price information'
+  },
+  organizer: {
+    type: 'string',
+    description: 'Event organizer name'
+  },
+  contact: {
+    type: 'string',
+    description: 'Contact information'
+  },
+  capacity: {
+    type: 'number',
+    minimum: 1,
+    description: 'Event capacity'
+  },
+  registrationUrl: {
+    type: 'string',
+    format: 'uri',
+    description: 'Registration URL'
   }
 }
 
-// Event validation function
+// Validation function
 function validateEvent(event) {
   const errors = []
   
-  // Required fields check
+  // Required field validation
   const requiredFields = ['id', 'name', 'description', 'date', 'time', 'venue', 'address', 'primaryCategory', 'status', 'createdAt']
   requiredFields.forEach(field => {
     if (!event[field]) {
@@ -138,32 +158,30 @@ function validateEvent(event) {
   })
   
   // Type validation
-  if (event.name && typeof event.name !== 'string') {
-    errors.push('name must be a string')
+  if (event.qualityScore && (typeof event.qualityScore !== 'number' || event.qualityScore < 0 || event.qualityScore > 1)) {
+    errors.push('qualityScore must be a number between 0 and 1')
   }
   
-  if (event.description && typeof event.description !== 'string') {
-    errors.push('description must be a string')
-  }
-  
+  // Date format validation
   if (event.date && !/^\d{4}-\d{2}-\d{2}$/.test(event.date)) {
     errors.push('date must be in YYYY-MM-DD format')
   }
   
+  // Time format validation
   if (event.time && !/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/.test(event.time)) {
     errors.push('time must be in HH:MM format')
   }
   
-  if (event.primaryCategory && !['Professional', 'Arts/Culture', 'Social/Fun', 'Education'].includes(event.primaryCategory)) {
-    errors.push('primaryCategory must be one of: Professional, Arts/Culture, Social/Fun, Education')
+  // Category validation
+  const validCategories = ['Professional', 'Arts/Culture', 'Social/Fun', 'Education']
+  if (event.primaryCategory && !validCategories.includes(event.primaryCategory)) {
+    errors.push(`primaryCategory must be one of: ${validCategories.join(', ')}`)
   }
   
-  if (event.status && !['DRAFT', 'PENDING_CURATION', 'APPROVED', 'REJECTED', 'LIVE', 'ARCHIVED'].includes(event.status)) {
-    errors.push('status must be one of: DRAFT, PENDING_CURATION, APPROVED, REJECTED, LIVE, ARCHIVED')
-  }
-  
-  if (event.qualityScore && (typeof event.qualityScore !== 'number' || event.qualityScore < 0 || event.qualityScore > 1)) {
-    errors.push('qualityScore must be a number between 0 and 1')
+  // Status validation
+  const validStatuses = ['pending_curation', 'approved', 'rejected', 'draft', 'archived']
+  if (event.status && !validStatuses.includes(event.status)) {
+    errors.push(`status must be one of: ${validStatuses.join(', ')}`)
   }
   
   return {
@@ -173,6 +191,6 @@ function validateEvent(event) {
 }
 
 module.exports = {
-  eventSchema,
+  eventsSchema,
   validateEvent
 }

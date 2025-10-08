@@ -1,5 +1,6 @@
-// Agent Schema - V12.0 Data Model
-const agentSchema = {
+// Agents Schema - V12.0 Data Model
+const agentsSchema = {
+  // Core agent fields
   id: {
     type: 'string',
     required: true,
@@ -16,62 +17,66 @@ const agentSchema = {
   type: {
     type: 'string',
     required: true,
-    enum: ['CURATOR', 'ADMIN', 'SYSTEM', 'AI_ASSISTANT'],
+    enum: ['curation', 'classification', 'quality_assurance', 'health_monitoring', 'intelligence'],
     description: 'Agent type'
-  },
-  role: {
-    type: 'string',
-    required: true,
-    enum: ['EVENT_CURATOR', 'SYSTEM_ADMIN', 'HEALTH_MONITOR', 'CONFIG_MANAGER', 'AI_DECISION_MAKER'],
-    description: 'Agent role'
-  },
-  permissions: {
-    type: 'array',
-    items: {
-      type: 'string',
-      enum: ['READ_EVENTS', 'WRITE_EVENTS', 'APPROVE_EVENTS', 'REJECT_EVENTS', 'MANAGE_CONFIG', 'VIEW_HEALTH', 'MANAGE_AGENTS']
-    },
-    description: 'Agent permissions'
   },
   status: {
     type: 'string',
     required: true,
-    enum: ['ACTIVE', 'INACTIVE', 'SUSPENDED', 'PENDING_APPROVAL'],
-    default: 'PENDING_APPROVAL',
-    description: 'Agent status'
+    enum: ['active', 'inactive', 'maintenance', 'error'],
+    description: 'Agent operational status'
   },
-  capabilities: {
+  
+  // Configuration fields
+  config: {
     type: 'object',
+    required: true,
     properties: {
-      maxEventsPerDay: { type: 'number', minimum: 1, maximum: 1000 },
-      canApproveEvents: { type: 'boolean' },
-      canRejectEvents: { type: 'boolean' },
-      canManageConfig: { type: 'boolean' },
-      canViewHealth: { type: 'boolean' },
-      canManageAgents: { type: 'boolean' }
+      version: { type: 'string' },
+      parameters: { type: 'object' },
+      thresholds: { type: 'object' },
+      enabled: { type: 'boolean' }
     },
-    description: 'Agent capabilities'
+    description: 'Agent configuration'
   },
-  performance: {
+  
+  // Performance metrics
+  metrics: {
     type: 'object',
     properties: {
-      eventsProcessed: { type: 'number', minimum: 0 },
-      approvalRate: { type: 'number', minimum: 0, maximum: 1 },
+      totalTasks: { type: 'number', minimum: 0 },
+      successfulTasks: { type: 'number', minimum: 0 },
+      failedTasks: { type: 'number', minimum: 0 },
       averageProcessingTime: { type: 'number', minimum: 0 },
-      lastActivity: { type: 'string', format: 'date-time' }
+      lastActivity: { type: 'string', format: 'date-time' },
+      uptime: { type: 'number', minimum: 0 }
     },
     description: 'Agent performance metrics'
   },
-  credentials: {
+  
+  // Health monitoring
+  health: {
     type: 'object',
     properties: {
-      username: { type: 'string', minLength: 3, maxLength: 50 },
-      email: { type: 'string', format: 'email' },
-      lastLogin: { type: 'string', format: 'date-time' },
-      loginCount: { type: 'number', minimum: 0 }
+      status: { type: 'string', enum: ['healthy', 'warning', 'critical', 'unknown'] },
+      lastCheck: { type: 'string', format: 'date-time' },
+      checks: {
+        type: 'array',
+        items: {
+          type: 'object',
+          properties: {
+            name: { type: 'string' },
+            status: { type: 'string', enum: ['pass', 'fail', 'warning'] },
+            message: { type: 'string' },
+            timestamp: { type: 'string', format: 'date-time' }
+          }
+        }
+      }
     },
-    description: 'Agent credentials and login info'
+    description: 'Agent health status'
   },
+  
+  // Metadata
   createdAt: {
     type: 'string',
     required: true,
@@ -81,16 +86,37 @@ const agentSchema = {
   updatedAt: {
     type: 'string',
     format: 'date-time',
-    description: 'Agent last update timestamp'
+    description: 'Last update timestamp'
+  },
+  createdBy: {
+    type: 'string',
+    description: 'User who created the agent'
+  },
+  
+  // Optional fields
+  description: {
+    type: 'string',
+    maxLength: 500,
+    description: 'Agent description'
+  },
+  tags: {
+    type: 'array',
+    items: { type: 'string' },
+    description: 'Agent tags'
+  },
+  dependencies: {
+    type: 'array',
+    items: { type: 'string' },
+    description: 'Agent dependencies'
   }
 }
 
-// Agent validation function
+// Validation function
 function validateAgent(agent) {
   const errors = []
   
-  // Required fields check
-  const requiredFields = ['id', 'name', 'type', 'role', 'status', 'createdAt']
+  // Required field validation
+  const requiredFields = ['id', 'name', 'type', 'status', 'config', 'createdAt']
   requiredFields.forEach(field => {
     if (!agent[field]) {
       errors.push(`Missing required field: ${field}`)
@@ -98,33 +124,38 @@ function validateAgent(agent) {
   })
   
   // Type validation
-  if (agent.name && typeof agent.name !== 'string') {
-    errors.push('name must be a string')
+  const validTypes = ['curation', 'classification', 'quality_assurance', 'health_monitoring', 'intelligence']
+  if (agent.type && !validTypes.includes(agent.type)) {
+    errors.push(`type must be one of: ${validTypes.join(', ')}`)
   }
   
-  if (agent.type && !['CURATOR', 'ADMIN', 'SYSTEM', 'AI_ASSISTANT'].includes(agent.type)) {
-    errors.push('type must be one of: CURATOR, ADMIN, SYSTEM, AI_ASSISTANT')
+  // Status validation
+  const validStatuses = ['active', 'inactive', 'maintenance', 'error']
+  if (agent.status && !validStatuses.includes(agent.status)) {
+    errors.push(`status must be one of: ${validStatuses.join(', ')}`)
   }
   
-  if (agent.role && !['EVENT_CURATOR', 'SYSTEM_ADMIN', 'HEALTH_MONITOR', 'CONFIG_MANAGER', 'AI_DECISION_MAKER'].includes(agent.role)) {
-    errors.push('role must be one of: EVENT_CURATOR, SYSTEM_ADMIN, HEALTH_MONITOR, CONFIG_MANAGER, AI_DECISION_MAKER')
+  // Config validation
+  if (agent.config && typeof agent.config !== 'object') {
+    errors.push('config must be an object')
   }
   
-  if (agent.status && !['ACTIVE', 'INACTIVE', 'SUSPENDED', 'PENDING_APPROVAL'].includes(agent.status)) {
-    errors.push('status must be one of: ACTIVE, INACTIVE, SUSPENDED, PENDING_APPROVAL')
-  }
-  
-  if (agent.permissions && Array.isArray(agent.permissions)) {
-    const validPermissions = ['READ_EVENTS', 'WRITE_EVENTS', 'APPROVE_EVENTS', 'REJECT_EVENTS', 'MANAGE_CONFIG', 'VIEW_HEALTH', 'MANAGE_AGENTS']
-    agent.permissions.forEach(permission => {
-      if (!validPermissions.includes(permission)) {
-        errors.push(`Invalid permission: ${permission}`)
+  // Metrics validation
+  if (agent.metrics) {
+    const metricFields = ['totalTasks', 'successfulTasks', 'failedTasks', 'averageProcessingTime', 'uptime']
+    metricFields.forEach(field => {
+      if (agent.metrics[field] !== undefined && (typeof agent.metrics[field] !== 'number' || agent.metrics[field] < 0)) {
+        errors.push(`metrics.${field} must be a non-negative number`)
       }
     })
   }
   
-  if (agent.performance && agent.performance.approvalRate && (agent.performance.approvalRate < 0 || agent.performance.approvalRate > 1)) {
-    errors.push('approvalRate must be between 0 and 1')
+  // Health validation
+  if (agent.health) {
+    const validHealthStatuses = ['healthy', 'warning', 'critical', 'unknown']
+    if (agent.health.status && !validHealthStatuses.includes(agent.health.status)) {
+      errors.push(`health.status must be one of: ${validHealthStatuses.join(', ')}`)
+    }
   }
   
   return {
@@ -134,6 +165,6 @@ function validateAgent(agent) {
 }
 
 module.exports = {
-  agentSchema,
+  agentsSchema,
   validateAgent
 }

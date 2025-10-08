@@ -1,93 +1,128 @@
 // Ledger Schema - V12.0 Data Model
 const ledgerSchema = {
+  // Core ledger fields
   id: {
     type: 'string',
     required: true,
     format: 'uuid',
     description: 'Unique ledger entry identifier'
   },
-  transactionType: {
+  transactionId: {
     type: 'string',
     required: true,
-    enum: ['EVENT_CREATED', 'EVENT_APPROVED', 'EVENT_REJECTED', 'EVENT_MODIFIED', 'AGENT_ACTION', 'SYSTEM_EVENT', 'CONFIG_CHANGE', 'HEALTH_ALERT'],
-    description: 'Type of transaction'
+    description: 'Transaction identifier'
   },
+  type: {
+    type: 'string',
+    required: true,
+    enum: ['event_created', 'event_approved', 'event_rejected', 'event_updated', 'event_deleted', 'agent_action', 'system_change', 'user_action'],
+    description: 'Ledger entry type'
+  },
+  action: {
+    type: 'string',
+    required: true,
+    minLength: 1,
+    maxLength: 100,
+    description: 'Action performed'
+  },
+  
+  // Entity references
   entityType: {
     type: 'string',
     required: true,
-    enum: ['EVENT', 'AGENT', 'SYSTEM', 'CONFIG', 'HEALTH'],
+    enum: ['event', 'agent', 'user', 'system', 'configuration'],
     description: 'Type of entity affected'
   },
   entityId: {
     type: 'string',
     required: true,
-    description: 'ID of the affected entity'
+    description: 'ID of affected entity'
   },
-  agentId: {
-    type: 'string',
-    description: 'ID of the agent who performed the action'
-  },
-  action: {
-    type: 'string',
-    required: true,
-    description: 'Description of the action performed'
-  },
-  details: {
+  
+  // Change tracking
+  changes: {
     type: 'object',
-    description: 'Additional transaction details'
+    properties: {
+      before: { type: 'object' },
+      after: { type: 'object' },
+      fields: { type: 'array', items: { type: 'string' } }
+    },
+    description: 'Changes made to the entity'
   },
-  severity: {
-    type: 'string',
-    required: true,
-    enum: ['LOW', 'MEDIUM', 'HIGH', 'CRITICAL'],
-    default: 'LOW',
-    description: 'Transaction severity level'
-  },
-  status: {
-    type: 'string',
-    required: true,
-    enum: ['SUCCESS', 'FAILED', 'PENDING', 'ROLLED_BACK'],
-    default: 'SUCCESS',
-    description: 'Transaction status'
-  },
+  
+  // Metadata
   timestamp: {
     type: 'string',
     required: true,
     format: 'date-time',
     description: 'Transaction timestamp'
   },
-  metadata: {
+  userId: {
+    type: 'string',
+    description: 'User who performed the action'
+  },
+  agentId: {
+    type: 'string',
+    description: 'Agent that performed the action'
+  },
+  sessionId: {
+    type: 'string',
+    description: 'Session identifier'
+  },
+  
+  // Audit fields
+  ipAddress: {
+    type: 'string',
+    pattern: '^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$|^[0-9a-fA-F:]+$',
+    description: 'IP address of the requester'
+  },
+  userAgent: {
+    type: 'string',
+    description: 'User agent string'
+  },
+  
+  // Status and result
+  status: {
+    type: 'string',
+    required: true,
+    enum: ['success', 'failure', 'pending', 'cancelled'],
+    description: 'Transaction status'
+  },
+  result: {
     type: 'object',
     properties: {
-      ipAddress: { type: 'string' },
-      userAgent: { type: 'string' },
-      sessionId: { type: 'string' },
-      requestId: { type: 'string' }
+      success: { type: 'boolean' },
+      message: { type: 'string' },
+      data: { type: 'object' },
+      error: { type: 'string' }
     },
-    description: 'Additional metadata'
+    description: 'Transaction result'
   },
-  auditTrail: {
+  
+  // Optional fields
+  reason: {
+    type: 'string',
+    maxLength: 500,
+    description: 'Reason for the action'
+  },
+  tags: {
     type: 'array',
-    items: {
-      type: 'object',
-      properties: {
-        action: { type: 'string' },
-        timestamp: { type: 'string', format: 'date-time' },
-        agentId: { type: 'string' },
-        details: { type: 'object' }
-      },
-      required: ['action', 'timestamp']
-    },
-    description: 'Audit trail for the transaction'
+    items: { type: 'string' },
+    description: 'Transaction tags'
+  },
+  priority: {
+    type: 'string',
+    enum: ['low', 'medium', 'high', 'critical'],
+    description: 'Transaction priority'
   }
 }
 
-// Ledger validation function
+// Validation function
 function validateLedgerEntry(entry) {
   const errors = []
   
-  // Required fields check
-  const requiredFields = ['id', 'transactionType', 'entityType', 'entityId', 'action', 'severity', 'status', 'timestamp']
+  // Required field validation
+  const requiredFields = ['id', 'transactionId', 'type', 'action', 'entityType', 'entityId', 'timestamp', 'status']
   requiredFields.forEach(field => {
     if (!entry[field]) {
       errors.push(`Missing required field: ${field}`)
@@ -95,24 +130,38 @@ function validateLedgerEntry(entry) {
   })
   
   // Type validation
-  if (entry.transactionType && !['EVENT_CREATED', 'EVENT_APPROVED', 'EVENT_REJECTED', 'EVENT_MODIFIED', 'AGENT_ACTION', 'SYSTEM_EVENT', 'CONFIG_CHANGE', 'HEALTH_ALERT'].includes(entry.transactionType)) {
-    errors.push('transactionType must be one of: EVENT_CREATED, EVENT_APPROVED, EVENT_REJECTED, EVENT_MODIFIED, AGENT_ACTION, SYSTEM_EVENT, CONFIG_CHANGE, HEALTH_ALERT')
+  const validTypes = ['event_created', 'event_approved', 'event_rejected', 'event_updated', 'event_deleted', 'agent_action', 'system_change', 'user_action']
+  if (entry.type && !validTypes.includes(entry.type)) {
+    errors.push(`type must be one of: ${validTypes.join(', ')}`)
   }
   
-  if (entry.entityType && !['EVENT', 'AGENT', 'SYSTEM', 'CONFIG', 'HEALTH'].includes(entry.entityType)) {
-    errors.push('entityType must be one of: EVENT, AGENT, SYSTEM, CONFIG, HEALTH')
+  // Entity type validation
+  const validEntityTypes = ['event', 'agent', 'user', 'system', 'configuration']
+  if (entry.entityType && !validEntityTypes.includes(entry.entityType)) {
+    errors.push(`entityType must be one of: ${validEntityTypes.join(', ')}`)
   }
   
-  if (entry.severity && !['LOW', 'MEDIUM', 'HIGH', 'CRITICAL'].includes(entry.severity)) {
-    errors.push('severity must be one of: LOW, MEDIUM, HIGH, CRITICAL')
+  // Status validation
+  const validStatuses = ['success', 'failure', 'pending', 'cancelled']
+  if (entry.status && !validStatuses.includes(entry.status)) {
+    errors.push(`status must be one of: ${validStatuses.join(', ')}`)
   }
   
-  if (entry.status && !['SUCCESS', 'FAILED', 'PENDING', 'ROLLED_BACK'].includes(entry.status)) {
-    errors.push('status must be one of: SUCCESS, FAILED, PENDING, ROLLED_BACK')
+  // Priority validation
+  if (entry.priority) {
+    const validPriorities = ['low', 'medium', 'high', 'critical']
+    if (!validPriorities.includes(entry.priority)) {
+      errors.push(`priority must be one of: ${validPriorities.join(', ')}`)
+    }
   }
   
-  if (entry.timestamp && !/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(entry.timestamp)) {
-    errors.push('timestamp must be in ISO 8601 format')
+  // IP address validation
+  if (entry.ipAddress) {
+    const ipv4Regex = /^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/
+    const ipv6Regex = /^[0-9a-fA-F:]+$/
+    if (!ipv4Regex.test(entry.ipAddress) && !ipv6Regex.test(entry.ipAddress)) {
+      errors.push('ipAddress must be a valid IPv4 or IPv6 address')
+    }
   }
   
   return {
@@ -121,42 +170,32 @@ function validateLedgerEntry(entry) {
   }
 }
 
-// Ledger query functions
-function createLedgerEntry(transactionType, entityType, entityId, action, agentId = null, details = {}) {
+// Query functions
+function createLedgerEntry(data) {
   return {
-    id: `ledger_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-    transactionType,
-    entityType,
-    entityId,
-    agentId,
-    action,
-    details,
-    severity: 'LOW',
-    status: 'SUCCESS',
-    timestamp: new Date().toISOString(),
-    metadata: {},
-    auditTrail: []
+    id: data.id || `ledger_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+    transactionId: data.transactionId || `txn_${Date.now()}`,
+    type: data.type,
+    action: data.action,
+    entityType: data.entityType,
+    entityId: data.entityId,
+    changes: data.changes || {},
+    timestamp: data.timestamp || new Date().toISOString(),
+    userId: data.userId,
+    agentId: data.agentId,
+    sessionId: data.sessionId,
+    ipAddress: data.ipAddress,
+    userAgent: data.userAgent,
+    status: data.status || 'success',
+    result: data.result || { success: true },
+    reason: data.reason,
+    tags: data.tags || [],
+    priority: data.priority || 'medium'
   }
-}
-
-function addAuditTrail(entry, action, agentId = null, details = {}) {
-  if (!entry.auditTrail) {
-    entry.auditTrail = []
-  }
-  
-  entry.auditTrail.push({
-    action,
-    timestamp: new Date().toISOString(),
-    agentId,
-    details
-  })
-  
-  return entry
 }
 
 module.exports = {
   ledgerSchema,
   validateLedgerEntry,
-  createLedgerEntry,
-  addAuditTrail
+  createLedgerEntry
 }
