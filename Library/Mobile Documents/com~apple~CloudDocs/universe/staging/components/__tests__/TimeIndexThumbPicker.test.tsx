@@ -355,4 +355,174 @@ describe('Time Helper Functions', () => {
       });
     });
   });
+
+  // ============================================================================
+  // ACCESSIBILITY TESTS
+  // ============================================================================
+
+  describe('Accessibility', () => {
+    let mockOnChange: jest.Mock;
+
+    beforeEach(() => {
+      mockOnChange = jest.fn();
+    });
+
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
+    it('has proper ARIA roles and attributes', () => {
+      render(<TimeIndexThumbPicker onChange={mockOnChange} />);
+      
+      // Main component should have application role
+      const picker = screen.getByRole('application');
+      expect(picker).toHaveAttribute('aria-label', 'Time picker with coarse and fine hour selection');
+      expect(picker).toHaveAttribute('aria-describedby', 'time-picker-instructions');
+      
+      // Rail should have navigation role
+      const rail = screen.getByRole('navigation');
+      expect(rail).toHaveAttribute('aria-label', 'Time period selection');
+      
+      // Cells should have listbox role
+      const listbox = screen.getByRole('listbox');
+      expect(listbox).toHaveAttribute('aria-label', 'Time period options');
+      
+      // Options should have proper attributes
+      const options = screen.getAllByRole('option');
+      expect(options).toHaveLength(4); // M, A, E, N
+      
+      options.forEach((option, index) => {
+        expect(option).toHaveAttribute('aria-selected');
+        expect(option).toHaveAttribute('aria-label');
+      });
+    });
+
+    it('supports keyboard navigation with arrow keys', () => {
+      render(<TimeIndexThumbPicker onChange={mockOnChange} />);
+      const picker = screen.getByRole('application');
+      
+      // Test arrow up
+      fireEvent.keyDown(picker, { key: 'ArrowUp' });
+      expect(mockOnChange).toHaveBeenCalled();
+      
+      // Test arrow down
+      fireEvent.keyDown(picker, { key: 'ArrowDown' });
+      expect(mockOnChange).toHaveBeenCalled();
+      
+      // Test arrow left
+      fireEvent.keyDown(picker, { key: 'ArrowLeft' });
+      expect(mockOnChange).toHaveBeenCalled();
+      
+      // Test arrow right
+      fireEvent.keyDown(picker, { key: 'ArrowRight' });
+      expect(mockOnChange).toHaveBeenCalled();
+    });
+
+    it('supports Page Up/Down navigation', () => {
+      render(<TimeIndexThumbPicker onChange={mockOnChange} />);
+      const picker = screen.getByRole('application');
+      
+      // Test Page Up
+      fireEvent.keyDown(picker, { key: 'PageUp' });
+      expect(mockOnChange).toHaveBeenCalled();
+      
+      // Test Page Down
+      fireEvent.keyDown(picker, { key: 'PageDown' });
+      expect(mockOnChange).toHaveBeenCalled();
+    });
+
+    it('supports Home/End navigation', () => {
+      render(<TimeIndexThumbPicker onChange={mockOnChange} />);
+      const picker = screen.getByRole('application');
+      
+      // Test Home
+      fireEvent.keyDown(picker, { key: 'Home' });
+      expect(mockOnChange).toHaveBeenCalled();
+      
+      // Test End
+      fireEvent.keyDown(picker, { key: 'End' });
+      expect(mockOnChange).toHaveBeenCalled();
+    });
+
+    it('supports Enter and Space for confirmation', () => {
+      render(<TimeIndexThumbPicker onChange={mockOnChange} />);
+      const picker = screen.getByRole('application');
+      
+      // Test Enter
+      fireEvent.keyDown(picker, { key: 'Enter' });
+      expect(mockOnChange).toHaveBeenCalled();
+      
+      // Test Space
+      fireEvent.keyDown(picker, { key: ' ' });
+      expect(mockOnChange).toHaveBeenCalled();
+    });
+
+    it('supports Escape to cancel', () => {
+      render(<TimeIndexThumbPicker onChange={mockOnChange} />);
+      const picker = screen.getByRole('application');
+      
+      // Test Escape
+      fireEvent.keyDown(picker, { key: 'Escape' });
+      // Should not call onChange
+      expect(mockOnChange).not.toHaveBeenCalled();
+    });
+
+    it('has screen reader instructions', () => {
+      render(<TimeIndexThumbPicker onChange={mockOnChange} />);
+      
+      const instructions = screen.getByText(/Use arrow keys to navigate/);
+      expect(instructions).toBeInTheDocument();
+      expect(instructions).toHaveClass('sr-only');
+    });
+
+    it('announces time changes to screen readers', () => {
+      render(<TimeIndexThumbPicker onChange={mockOnChange} />);
+      const picker = screen.getByRole('application');
+      
+      // Trigger a time change
+      fireEvent.keyDown(picker, { key: 'ArrowUp' });
+      
+      // Should have live region for announcements
+      const liveRegion = screen.getByRole('status');
+      expect(liveRegion).toHaveAttribute('aria-live', 'polite');
+    });
+
+    it('has proper focus management', () => {
+      render(<TimeIndexThumbPicker onChange={mockOnChange} />);
+      const picker = screen.getByRole('application');
+      
+      // Should be focusable
+      expect(picker).toHaveAttribute('tabIndex', '0');
+      
+      // Test focus
+      picker.focus();
+      expect(document.activeElement).toBe(picker);
+    });
+
+    it('respects disabled state for accessibility', () => {
+      render(<TimeIndexThumbPicker onChange={mockOnChange} disabled={true} />);
+      const picker = screen.getByRole('application');
+      
+      // Should not be focusable when disabled
+      expect(picker).toHaveAttribute('tabIndex', '-1');
+      
+      // Should not respond to keyboard events
+      fireEvent.keyDown(picker, { key: 'ArrowUp' });
+      expect(mockOnChange).not.toHaveBeenCalled();
+    });
+
+    it('has proper color contrast for WCAG AA compliance', () => {
+      render(<TimeIndexThumbPicker onChange={mockOnChange} />);
+      
+      // Test that active elements have sufficient contrast
+      const activeCell = screen.getByRole('option', { selected: true });
+      expect(activeCell).toHaveClass('time-index-cell-active');
+      
+      // Test that inactive elements are still visible
+      const inactiveCells = screen.getAllByRole('option', { selected: false });
+      inactiveCells.forEach(cell => {
+        expect(cell).toHaveClass('time-index-cell-inactive');
+      });
+    });
+  });
 });

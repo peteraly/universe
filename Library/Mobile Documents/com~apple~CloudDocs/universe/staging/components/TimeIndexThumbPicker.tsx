@@ -49,6 +49,8 @@ export const TimeIndexThumbPicker: React.FC<TimeIndexThumbPickerProps> = ({
   const [longPressTimer, setLongPressTimer] = useState<NodeJS.Timeout | null>(null);
   const [dragHour, setDragHour] = useState<number>(12);
   const [dragMinute, setDragMinute] = useState<number>(0);
+  const [focusedIndex, setFocusedIndex] = useState<number>(0);
+  const [announcement, setAnnouncement] = useState<string>('');
   
   // Refs
   const containerRef = useRef<HTMLDivElement>(null);
@@ -101,6 +103,26 @@ export const TimeIndexThumbPicker: React.FC<TimeIndexThumbPickerProps> = ({
       navigator.vibrate(50); // Short vibration
     }
   }, []);
+
+  // Accessibility helpers
+  const announceTime = useCallback((time: string) => {
+    const { hour, minute } = normalizeValue(time);
+    const fullTime = toFullLabel(hour, minute, format);
+    setAnnouncement(`Selected time: ${fullTime}`);
+  }, [format]);
+
+  const getCurrentHour = useCallback(() => {
+    return normalizeValue(currentValue).hour;
+  }, [currentValue]);
+
+  const getAvailableHours = useCallback(() => {
+    return Array.from({ length: endHour - startHour + 1 }, (_, i) => startHour + i);
+  }, [startHour, endHour]);
+
+  const getCurrentHourIndex = useCallback(() => {
+    const currentHour = getCurrentHour();
+    return getAvailableHours().indexOf(currentHour);
+  }, [getCurrentHour, getAvailableHours]);
 
   // Long press detection
   const startLongPress = useCallback(() => {
@@ -233,49 +255,87 @@ export const TimeIndexThumbPicker: React.FC<TimeIndexThumbPickerProps> = ({
     triggerHapticFeedback();
   }, [disabled, currentValue, onChange, triggerHapticFeedback, granularityMinutes, cancelLongPress]);
 
-  // Keyboard navigation
+  // Enhanced keyboard navigation with accessibility
   const handleKeyDown = useCallback((event: React.KeyboardEvent) => {
     if (disabled) return;
     
     const { hour, minute } = normalizeValue(currentValue);
     let newHour = hour;
     let newMinute = minute;
+    let shouldAnnounce = false;
     
     switch (event.key) {
       case 'ArrowUp':
         event.preventDefault();
         newHour = Math.min(endHour, hour + 1);
+        shouldAnnounce = true;
         break;
       case 'ArrowDown':
         event.preventDefault();
         newHour = Math.max(startHour, hour - 1);
+        shouldAnnounce = true;
+        break;
+      case 'ArrowLeft':
+        event.preventDefault();
+        newMinute = Math.max(0, minute - granularityMinutes);
+        shouldAnnounce = true;
+        break;
+      case 'ArrowRight':
+        event.preventDefault();
+        newMinute = Math.min(59, minute + granularityMinutes);
+        shouldAnnounce = true;
         break;
       case 'PageUp':
         event.preventDefault();
         newHour = Math.min(endHour, hour + 4);
+        shouldAnnounce = true;
         break;
       case 'PageDown':
         event.preventDefault();
         newHour = Math.max(startHour, hour - 4);
+        shouldAnnounce = true;
         break;
       case 'Home':
         event.preventDefault();
         newHour = startHour;
+        newMinute = 0;
+        shouldAnnounce = true;
         break;
       case 'End':
         event.preventDefault();
         newHour = endHour;
+        newMinute = 59;
+        shouldAnnounce = true;
         break;
+      case 'Enter':
+      case ' ':
+        event.preventDefault();
+        onChange?.(currentValue);
+        announceTime(currentValue);
+        return;
+      case 'Escape':
+        event.preventDefault();
+        if (showMinuteSheet) {
+          closeMinuteSheet();
+        } else if (showFineHours) {
+          setShowFineHours(false);
+        }
+        return;
       default:
         return;
     }
     
-    const newTime = toOutputString(newHour, newMinute, false);
-    setCurrentValue(newTime);
-    setCoarseBucket(getCurrentCoarseBucket(newTime));
-    onChange?.(newTime);
-    triggerHapticFeedback();
-  }, [disabled, currentValue, startHour, endHour, onChange, getCurrentCoarseBucket, triggerHapticFeedback]);
+    if (newHour !== hour || newMinute !== minute) {
+      const newTime = toOutputString(newHour, newMinute, false);
+      setCurrentValue(newTime);
+      setCoarseBucket(getCurrentCoarseBucket(newTime));
+      if (shouldAnnounce) {
+        announceTime(newTime);
+      }
+      onChange?.(newTime);
+      triggerHapticFeedback();
+    }
+  }, [disabled, currentValue, startHour, endHour, granularityMinutes, onChange, getCurrentCoarseBucket, triggerHapticFeedback, announceTime, showMinuteSheet, showFineHours, closeMinuteSheet]);
 
   // Event listeners
   useEffect(() => {
@@ -300,17 +360,15 @@ export const TimeIndexThumbPicker: React.FC<TimeIndexThumbPickerProps> = ({
   }, [currentValue, getCurrentCoarseBucket]);
 
   return (
-    <div
-      ref={containerRef}
-      className={`time-index-picker ${className} ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
-      role="slider"
-      aria-label="Time picker"
-      aria-valuenow={currentValue}
-      aria-valuemin={`${startHour}:00`}
-      aria-valuemax={`${endHour}:59`}
-      tabIndex={disabled ? -1 : 0}
-      onKeyDown={handleKeyDown}
-    >
+        <div
+          ref={containerRef}
+          className={`time-index-picker ${className} ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+          role="application"
+          aria-label="Time picker with coarse and fine hour selection"
+          aria-describedby="time-picker-instructions"
+          tabIndex={disabled ? -1 : 0}
+          onKeyDown={handleKeyDown}
+        >
       {/* Ergonomic rail */}
       <div
         ref={railRef}
@@ -321,12 +379,14 @@ export const TimeIndexThumbPicker: React.FC<TimeIndexThumbPickerProps> = ({
         } ${
           COARSE_BUCKETS[coarseBucket].color
         }`}
+        role="navigation"
+        aria-label="Time period selection"
         onMouseDown={handleMouseDown}
         onTouchStart={handleTouchStart}
       >
         {/* Coarse bucket labels */}
-        <div className="time-index-cells">
-          {Object.entries(COARSE_BUCKETS).map(([key, bucket]) => (
+        <div className="time-index-cells" role="listbox" aria-label="Time period options">
+          {Object.entries(COARSE_BUCKETS).map(([key, bucket], index) => (
             <div
               key={key}
               className={`time-index-cell ${
@@ -334,6 +394,10 @@ export const TimeIndexThumbPicker: React.FC<TimeIndexThumbPickerProps> = ({
                   ? 'time-index-cell-active'
                   : 'time-index-cell-inactive'
               }`}
+              role="option"
+              aria-selected={key === coarseBucket}
+              aria-label={`${bucket.label} (${key})`}
+              tabIndex={key === coarseBucket ? 0 : -1}
             >
               {key}
             </div>
@@ -342,7 +406,7 @@ export const TimeIndexThumbPicker: React.FC<TimeIndexThumbPickerProps> = ({
 
         {/* Fine hours overlay (shown on press/drag) */}
         {showFineHours && (
-          <div className="time-index-fine-hours">
+          <div className="time-index-fine-hours" role="listbox" aria-label="Hour selection">
             <div className="time-index-fine-hours-content">
               {Array.from({ length: endHour - startHour + 1 }, (_, i) => {
                 const hour = startHour + i;
@@ -355,6 +419,10 @@ export const TimeIndexThumbPicker: React.FC<TimeIndexThumbPickerProps> = ({
                         ? 'time-index-fine-hour-active'
                         : 'time-index-fine-hour-inactive'
                     }`}
+                    role="option"
+                    aria-selected={isActive}
+                    aria-label={`${toDisplayLabel(hour, format, compact)} ${format === '12h' ? (hour >= 12 ? 'PM' : 'AM') : 'hours'}`}
+                    tabIndex={isActive ? 0 : -1}
                   >
                     {toDisplayLabel(hour, format, compact)}
                   </div>
@@ -381,21 +449,22 @@ export const TimeIndexThumbPicker: React.FC<TimeIndexThumbPickerProps> = ({
         />
       </div>
 
-      {/* Floating bubble */}
-      <div
-        ref={bubbleRef}
-        className={`time-index-bubble ${
-          handedness === 'right' ? 'right-16' : 'left-16'
-        } ${
-          isDragging || isPressed ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
-        }`}
-        style={{
-          top: `${calculatePositionFromTime(currentValue) * 100}%`,
-          transform: 'translateY(-50%)'
-        }}
-        aria-live="polite"
-        aria-label={`Selected time: ${toFullLabel(normalizeValue(currentValue).hour, normalizeValue(currentValue).minute, format)}`}
-      >
+        {/* Floating bubble */}
+        <div
+          ref={bubbleRef}
+          className={`time-index-bubble ${
+            handedness === 'right' ? 'right-16' : 'left-16'
+          } ${
+            isDragging || isPressed ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
+          }`}
+          style={{
+            top: `${calculatePositionFromTime(currentValue) * 100}%`,
+            transform: 'translateY(-50%)'
+          }}
+          role="status"
+          aria-live="polite"
+          aria-label={`Selected time: ${toFullLabel(normalizeValue(currentValue).hour, normalizeValue(currentValue).minute, format)}`}
+        >
         <div className="time-index-bubble-content">
           {toFullLabel(normalizeValue(currentValue).hour, normalizeValue(currentValue).minute, format)}
         </div>
@@ -421,22 +490,42 @@ export const TimeIndexThumbPicker: React.FC<TimeIndexThumbPickerProps> = ({
         </div>
       </div>
 
-      {/* Sticky confirm bar */}
-      {(isDragging || isPressed) && (
-        <div className="time-index-confirm-bar">
-          <button
-            className="time-index-confirm-button"
-            onClick={() => {
-              setIsDragging(false);
-              setIsPressed(false);
-              setShowFineHours(false);
-              onChange?.(currentValue);
-            }}
-          >
-            {confirmLabel}
-          </button>
-        </div>
-      )}
+          {/* Sticky confirm bar */}
+          {(isDragging || isPressed) && (
+            <div className="time-index-confirm-bar" role="toolbar" aria-label="Time selection actions">
+              <button
+                className="time-index-confirm-button"
+                onClick={() => {
+                  setIsDragging(false);
+                  setIsPressed(false);
+                  setShowFineHours(false);
+                  onChange?.(currentValue);
+                  announceTime(currentValue);
+                }}
+                aria-label={`Confirm time selection: ${toFullLabel(normalizeValue(currentValue).hour, normalizeValue(currentValue).minute, format)}`}
+              >
+                {confirmLabel}
+              </button>
+            </div>
+          )}
+
+          {/* Screen reader instructions */}
+          <div id="time-picker-instructions" className="sr-only">
+            Use arrow keys to navigate hours and minutes. Use Page Up/Down for faster navigation. 
+            Press Home/End to go to start/end of time range. Press Enter or Space to confirm selection. 
+            Press Escape to cancel. Use mouse or touch to drag the thumb for fine control.
+          </div>
+
+          {/* Live announcement region */}
+          {announcement && (
+            <div 
+              className="sr-only" 
+              aria-live="polite" 
+              aria-atomic="true"
+            >
+              {announcement}
+            </div>
+          )}
 
       {/* Minute Sheet (bottom-right) */}
       {showMinuteSheet && (

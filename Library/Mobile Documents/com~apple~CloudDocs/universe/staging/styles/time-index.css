@@ -188,14 +188,87 @@
 
 /* Accessibility enhancements */
 .time-index-picker:focus {
-  outline: 2px solid #3b82f6;
+  outline: 3px solid #2563eb;
   outline-offset: 2px;
+  box-shadow: 0 0 0 1px #ffffff;
 }
 
 .time-index-cell:focus,
 .time-index-fine-hour:focus {
-  outline: 2px solid #3b82f6;
+  outline: 3px solid #2563eb;
   outline-offset: 1px;
+  box-shadow: 0 0 0 1px #ffffff;
+}
+
+.time-index-confirm-button:focus {
+  outline: 3px solid #2563eb;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 1px #ffffff;
+}
+
+/* Screen reader only content */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Enhanced focus management */
+.time-index-picker:focus-visible {
+  outline: 3px solid #2563eb;
+  outline-offset: 2px;
+}
+
+.time-index-cell:focus-visible,
+.time-index-fine-hour:focus-visible {
+  outline: 3px solid #2563eb;
+  outline-offset: 1px;
+  background-color: #dbeafe;
+}
+
+/* Improved color contrast for WCAG AA compliance */
+.time-index-cell-active {
+  background: #ffffff;
+  color: #1f2937;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  border: 2px solid #2563eb;
+}
+
+.time-index-cell-inactive {
+  background: transparent;
+  color: #374151;
+  border: 2px solid transparent;
+}
+
+.time-index-fine-hour-active {
+  background: #2563eb;
+  color: #ffffff;
+  border: 2px solid #1d4ed8;
+}
+
+.time-index-fine-hour-inactive {
+  background: transparent;
+  color: #6b7280;
+  border: 2px solid transparent;
+}
+
+/* Enhanced bubble contrast */
+.time-index-bubble-content {
+  background: #1f2937;
+  color: #ffffff;
+  padding: 8px 12px;
+  border-radius: 1rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+  font-size: 0.875rem;
+  font-weight: 500;
+  white-space: nowrap;
+  border: 2px solid #374151;
 }
 
 /* High contrast mode */
