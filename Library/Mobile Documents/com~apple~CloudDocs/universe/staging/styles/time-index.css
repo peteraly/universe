@@ -1,18 +1,246 @@
-#Context: Time Index Picker Styles Skeleton
-/* CSS styles for TimeIndexThumbPicker component */
+#Context: Time Index Picker Ergonomic Styles
+/* CSS styles for TimeIndexThumbPicker component with ergonomic design */
 /* Part of V12.0 L1 Event Curation Hub implementation */
 
-/* TODO: Implement main picker container styles */
+/* Main picker container */
 .time-index-picker {
-  /* TODO: Container layout and positioning */
   position: relative;
   width: 100%;
-  height: 60px;
-  background: #f5f5f5;
-  border-radius: 8px;
+  height: 100vh;
   cursor: pointer;
   user-select: none;
   touch-action: none;
+}
+
+/* Ergonomic rail positioning */
+.time-index-rail {
+  position: fixed;
+  width: 40px;
+  height: 70vh;
+  top: 15vh;
+  border: 2px solid #e5e7eb;
+  border-radius: 1rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+}
+
+/* Coarse bucket cells */
+.time-index-cells {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 12px 8px;
+  gap: 12px;
+}
+
+.time-index-cell {
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.time-index-cell-active {
+  background: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transform: scale(1.05);
+}
+
+.time-index-cell-inactive {
+  background: transparent;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+/* Fine hours overlay */
+.time-index-fine-hours {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  border-radius: 1rem;
+  border: 1px solid #e5e7eb;
+  z-index: 20;
+}
+
+.time-index-fine-hours-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  padding: 12px 8px;
+  gap: 8px;
+}
+
+.time-index-fine-hour {
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+
+.time-index-fine-hour-active {
+  background: #3b82f6;
+  color: white;
+  transform: scale(1.05);
+}
+
+.time-index-fine-hour-inactive {
+  background: transparent;
+  color: #6b7280;
+}
+
+/* Floating bubble */
+.time-index-bubble {
+  position: fixed;
+  z-index: 30;
+  transition: all 0.2s ease;
+  pointer-events: none;
+}
+
+.time-index-bubble-content {
+  background: #1f2937;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 1rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  font-size: 0.875rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.time-index-bubble-arrow {
+  position: absolute;
+  top: 50%;
+  width: 0;
+  height: 0;
+  border: 6px solid transparent;
+  transform: translateY(-50%);
+}
+
+.time-index-bubble-arrow-right {
+  right: 0;
+  border-left-color: #1f2937;
+  transform: translateY(-50%) translateX(100%);
+}
+
+.time-index-bubble-arrow-left {
+  left: 0;
+  border-right-color: #1f2937;
+  transform: translateY(-50%) translateX(-100%);
+}
+
+/* Sticky confirm bar */
+.time-index-confirm-bar {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  padding: 16px;
+  padding-bottom: env(safe-area-inset-bottom, 16px);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid #e5e7eb;
+  z-index: 40;
+  display: flex;
+  justify-content: center;
+}
+
+.time-index-confirm-button {
+  background: #3b82f6;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+  min-height: 44px;
+  min-width: 120px;
+}
+
+.time-index-confirm-button:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 8px -1px rgba(0, 0, 0, 0.15);
+}
+
+.time-index-confirm-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Accessibility enhancements */
+.time-index-picker:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+.time-index-cell:focus,
+.time-index-fine-hour:focus {
+  outline: 2px solid #3b82f6;
+  outline-offset: 1px;
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .time-index-rail {
+    border-color: #000;
+  }
+  
+  .time-index-cell-active {
+    background: #000;
+    color: #fff;
+  }
+  
+  .time-index-bubble-content {
+    background: #000;
+    color: #fff;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .time-index-rail,
+  .time-index-cell,
+  .time-index-fine-hour,
+  .time-index-bubble,
+  .time-index-confirm-button {
+    transition: none;
+  }
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .time-index-rail {
+    width: 44px;
+  }
+  
+  .time-index-cell {
+    min-height: 56px;
+    font-size: 0.875rem;
+  }
+  
+  .time-index-bubble-content {
+    font-size: 1rem;
+    padding: 12px 16px;
+  }
 }
 
 /* TODO: Implement track/rail styles */

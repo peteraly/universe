@@ -10,6 +10,7 @@ import {
   toOutputString, 
   snapMinute 
 } from '../lib/time/format';
+import '../styles/time-index.css';
 
 interface TimeIndexThumbPickerProps {
   value?: string;
@@ -301,7 +302,7 @@ export const TimeIndexThumbPicker: React.FC<TimeIndexThumbPickerProps> = ({
   return (
     <div
       ref={containerRef}
-      className={`relative w-full h-16 ${className} ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+      className={`time-index-picker ${className} ${disabled ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
       role="slider"
       aria-label="Time picker"
       aria-valuenow={currentValue}
@@ -310,10 +311,10 @@ export const TimeIndexThumbPicker: React.FC<TimeIndexThumbPickerProps> = ({
       tabIndex={disabled ? -1 : 0}
       onKeyDown={handleKeyDown}
     >
-      {/* Right-docked rail */}
+      {/* Ergonomic rail */}
       <div
         ref={railRef}
-        className={`absolute top-0 w-12 h-full border-2 rounded-lg transition-all duration-200 ${
+        className={`time-index-rail ${
           handedness === 'right' ? 'right-0' : 'left-0'
         } ${
           isPressed ? 'scale-105 shadow-lg' : 'shadow-md'
@@ -324,14 +325,14 @@ export const TimeIndexThumbPicker: React.FC<TimeIndexThumbPickerProps> = ({
         onTouchStart={handleTouchStart}
       >
         {/* Coarse bucket labels */}
-        <div className="absolute inset-0 flex flex-col justify-between p-1">
+        <div className="time-index-cells">
           {Object.entries(COARSE_BUCKETS).map(([key, bucket]) => (
             <div
               key={key}
-              className={`flex items-center justify-center w-8 h-8 rounded-full text-xs font-bold transition-all duration-200 ${
+              className={`time-index-cell ${
                 key === coarseBucket
-                  ? 'bg-white shadow-md scale-110'
-                  : 'bg-transparent'
+                  ? 'time-index-cell-active'
+                  : 'time-index-cell-inactive'
               }`}
             >
               {key}
@@ -341,18 +342,18 @@ export const TimeIndexThumbPicker: React.FC<TimeIndexThumbPickerProps> = ({
 
         {/* Fine hours overlay (shown on press/drag) */}
         {showFineHours && (
-          <div className="absolute inset-0 bg-white/90 backdrop-blur-sm rounded-lg border border-gray-200">
-            <div className="flex flex-col justify-between h-full p-1">
+          <div className="time-index-fine-hours">
+            <div className="time-index-fine-hours-content">
               {Array.from({ length: endHour - startHour + 1 }, (_, i) => {
                 const hour = startHour + i;
                 const isActive = normalizeValue(currentValue).hour === hour;
                 return (
                   <div
                     key={hour}
-                    className={`flex items-center justify-center w-8 h-6 text-xs font-medium rounded transition-all duration-150 ${
+                    className={`time-index-fine-hour ${
                       isActive
-                        ? 'bg-blue-500 text-white scale-110'
-                        : 'bg-transparent text-gray-600'
+                        ? 'time-index-fine-hour-active'
+                        : 'time-index-fine-hour-inactive'
                     }`}
                   >
                     {toDisplayLabel(hour, format, compact)}
@@ -383,7 +384,7 @@ export const TimeIndexThumbPicker: React.FC<TimeIndexThumbPickerProps> = ({
       {/* Floating bubble */}
       <div
         ref={bubbleRef}
-        className={`absolute top-0 transition-all duration-200 ${
+        className={`time-index-bubble ${
           handedness === 'right' ? 'right-16' : 'left-16'
         } ${
           isDragging || isPressed ? 'opacity-100 scale-100' : 'opacity-0 scale-95'
@@ -392,15 +393,17 @@ export const TimeIndexThumbPicker: React.FC<TimeIndexThumbPickerProps> = ({
           top: `${calculatePositionFromTime(currentValue) * 100}%`,
           transform: 'translateY(-50%)'
         }}
+        aria-live="polite"
+        aria-label={`Selected time: ${toFullLabel(normalizeValue(currentValue).hour, normalizeValue(currentValue).minute, format)}`}
       >
-        <div className="bg-gray-900 text-white px-3 py-2 rounded-lg shadow-lg text-sm font-medium whitespace-nowrap">
+        <div className="time-index-bubble-content">
           {toFullLabel(normalizeValue(currentValue).hour, normalizeValue(currentValue).minute, format)}
         </div>
         {/* Bubble arrow */}
-        <div className={`absolute top-1/2 w-0 h-0 border-4 border-transparent ${
+        <div className={`time-index-bubble-arrow ${
           handedness === 'right' 
-            ? 'right-0 border-l-gray-900 transform translate-x-full' 
-            : 'left-0 border-r-gray-900 transform -translate-x-full'
+            ? 'time-index-bubble-arrow-right' 
+            : 'time-index-bubble-arrow-left'
         }`} />
       </div>
 
@@ -418,11 +421,11 @@ export const TimeIndexThumbPicker: React.FC<TimeIndexThumbPickerProps> = ({
         </div>
       </div>
 
-      {/* Confirm button (shown when dragging) */}
+      {/* Sticky confirm bar */}
       {(isDragging || isPressed) && (
-        <div className="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-full mt-2">
+        <div className="time-index-confirm-bar">
           <button
-            className="bg-blue-500 text-white px-4 py-2 rounded-lg text-sm font-medium shadow-lg hover:bg-blue-600 transition-colors duration-200"
+            className="time-index-confirm-button"
             onClick={() => {
               setIsDragging(false);
               setIsPressed(false);
