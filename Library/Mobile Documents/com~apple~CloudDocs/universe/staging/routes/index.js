@@ -6,12 +6,13 @@ const routes = {
   '/health': 'HealthMonitor',
   '/curator': 'CuratorWorkbench',
   '/governance': 'GovernanceUI',
+  '/agents': 'AgentConsole',
   
   // API routes
   '/api/events': 'EventAPI',
   '/api/health': 'HealthAPI',
   '/api/config': 'ConfigAPI',
-  '/api/agent': 'AgentAPI',
+  '/api/agents': 'AgentAPI',
   '/api/ledger': 'LedgerAPI'
 }
 
