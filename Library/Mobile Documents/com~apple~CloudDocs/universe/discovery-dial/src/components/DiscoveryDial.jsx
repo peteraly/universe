@@ -117,7 +117,7 @@ const DiscoveryDial = () => {
   }
 
   // L3_Config – UI/UX settings
-  const timeOptions = ['Today', 'This Week', 'Next Week', 'This Month']
+  const timeOptions = ['Now', 'Today', 'Tonight', 'This Week', 'This Month', 'Later']
 
   if (isLoading) {
     return (
@@ -130,13 +130,14 @@ const DiscoveryDial = () => {
   return (
     <div className="
       min-h-screen w-full
-      bg-gradient-to-br from-purple-500 via-blue-500 to-purple-700
-      flex items-center justify-center
+      bg-gradient-to-b from-purple-500 via-blue-500 to-purple-700
+      flex flex-col items-center justify-center
       px-4 py-6
       relative overflow-hidden
+      safe-area-inset
     ">
       {/* Main content area */}
-      <div className="flex-1 flex flex-col items-center justify-center max-w-4xl mx-auto">
+      <div className="flex flex-col items-center justify-center w-full max-w-md mx-auto">
         {/* Main title */}
         <h1 className="
           text-white text-2xl font-bold
@@ -148,7 +149,7 @@ const DiscoveryDial = () => {
 
         {/* Central circular dial */}
         <div className="
-          relative w-72 h-72 sm:w-80 sm:h-80
+          relative w-[60vw] h-[60vw] sm:w-[50vw] sm:h-[50vw] max-w-80 max-h-80
           flex items-center justify-center
           mb-6
         ">
@@ -198,27 +199,28 @@ const DiscoveryDial = () => {
         </div>
 
         {/* Instructions */}
-        <div className="text-white/80 text-sm text-center mb-6 space-y-1">
+        <div className="text-white/70 text-sm text-center mb-6 space-y-1">
           <p>Swipe the dial to discover events</p>
           <p>Hold down the dial for time filter options</p>
         </div>
 
 
       {/* Four directional buttons */}
-      <div className="grid grid-cols-2 gap-3 w-72">
+      <div className="grid grid-cols-2 gap-3 w-full max-w-72">
         <button
           onClick={() => handleDirection('north')}
           className={`
             flex flex-col items-center justify-center
-            p-3 rounded-lg
-            border-2 transition-all duration-200
+            p-4 rounded-xl
+            border-2 transition-all duration-300
             ${activeDirection === 'north' 
-              ? 'border-blue-400 bg-blue-500/30 shadow-lg' 
-              : 'border-white/30 bg-white/15 hover:bg-white/25'
+              ? 'border-blue-400 bg-gradient-to-br from-blue-400/30 to-blue-500/20 shadow-lg shadow-blue-400/25' 
+              : 'border-white/30 bg-gradient-to-br from-white/15 to-white/10 hover:from-white/25 hover:to-white/15'
             }
-            focus:outline-none focus:ring-2 focus:ring-white/50
+            focus:outline-none focus:ring-2 focus:ring-blue-400/50
             touch-manipulation
-            min-h-[70px]
+            min-h-[44px]
+            shadow-md
           `}
           aria-label="Deep Dive - north"
         >
@@ -230,15 +232,16 @@ const DiscoveryDial = () => {
           onClick={() => handleDirection('south')}
           className={`
             flex flex-col items-center justify-center
-            p-3 rounded-lg
-            border-2 transition-all duration-200
+            p-4 rounded-xl
+            border-2 transition-all duration-300
             ${activeDirection === 'south' 
-              ? 'border-green-400 bg-green-500/30 shadow-lg' 
-              : 'border-white/30 bg-white/15 hover:bg-white/25'
+              ? 'border-green-400 bg-gradient-to-br from-green-400/30 to-green-500/20 shadow-lg shadow-green-400/25' 
+              : 'border-white/30 bg-gradient-to-br from-white/15 to-white/10 hover:from-white/25 hover:to-white/15'
             }
-            focus:outline-none focus:ring-2 focus:ring-white/50
+            focus:outline-none focus:ring-2 focus:ring-green-400/50
             touch-manipulation
-            min-h-[70px]
+            min-h-[44px]
+            shadow-md
           `}
           aria-label="Vibe Shift - south"
         >
@@ -250,15 +253,16 @@ const DiscoveryDial = () => {
           onClick={() => handleDirection('west')}
           className={`
             flex flex-col items-center justify-center
-            p-3 rounded-lg
-            border-2 transition-all duration-200
+            p-4 rounded-xl
+            border-2 transition-all duration-300
             ${activeDirection === 'west' 
-              ? 'border-red-400 bg-red-500/30 shadow-lg' 
-              : 'border-white/30 bg-white/15 hover:bg-white/25'
+              ? 'border-red-400 bg-gradient-to-br from-red-400/30 to-red-500/20 shadow-lg shadow-red-400/25' 
+              : 'border-white/30 bg-gradient-to-br from-white/15 to-white/10 hover:from-white/25 hover:to-white/15'
             }
-            focus:outline-none focus:ring-2 focus:ring-white/50
+            focus:outline-none focus:ring-2 focus:ring-red-400/50
             touch-manipulation
-            min-h-[70px]
+            min-h-[44px]
+            shadow-md
           `}
           aria-label="Social - west"
         >
@@ -270,15 +274,16 @@ const DiscoveryDial = () => {
           onClick={() => handleDirection('east')}
           className={`
             flex flex-col items-center justify-center
-            p-3 rounded-lg
-            border-2 transition-all duration-200
+            p-4 rounded-xl
+            border-2 transition-all duration-300
             ${activeDirection === 'east' 
-              ? 'border-orange-400 bg-orange-500/30 shadow-lg' 
-              : 'border-white/30 bg-white/15 hover:bg-white/25'
+              ? 'border-orange-400 bg-gradient-to-br from-orange-400/30 to-orange-500/20 shadow-lg shadow-orange-400/25' 
+              : 'border-white/30 bg-gradient-to-br from-white/15 to-white/10 hover:from-white/25 hover:to-white/15'
             }
-            focus:outline-none focus:ring-2 focus:ring-white/50
+            focus:outline-none focus:ring-2 focus:ring-orange-400/50
             touch-manipulation
-            min-h-[70px]
+            min-h-[44px]
+            shadow-md
           `}
           aria-label="Action - east"
         >
@@ -289,7 +294,7 @@ const DiscoveryDial = () => {
 
         {/* Last gesture indicator */}
         {lastGesture && (
-          <div className="text-green-400 text-sm mt-4">
+          <div className="text-green-400 text-xs mt-4 font-medium">
             Last gesture: {lastGesture}
           </div>
         )}
@@ -298,13 +303,15 @@ const DiscoveryDial = () => {
       {/* Vertical Time Selector - Right Side */}
       <div className="fixed right-4 top-1/2 -translate-y-1/2 z-10">
         <div className="
-          backdrop-blur-sm bg-white/20 rounded-2xl
-          p-3
+          backdrop-blur-sm bg-white/10 rounded-2xl
+          p-2
           shadow-lg
+          opacity-60 hover:opacity-100
+          transition-opacity duration-300
         ">
-          <div className="flex flex-col space-y-2">
+          <div className="flex flex-col space-y-1">
             {timeOptions.map((option) => (
-              <button
+              <motion.button
                 key={option}
                 onClick={() => {
                   handleTimeRangeSelect(option)
@@ -313,26 +320,28 @@ const DiscoveryDial = () => {
                     navigator.vibrate(50)
                   }
                 }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 className={`
-                  px-4 py-3 rounded-xl
-                  transition-all duration-200
-                  text-sm font-medium
+                  px-3 py-2 rounded-lg
+                  transition-all duration-300
+                  text-xs font-medium
                   text-center
-                  min-w-[100px]
+                  min-w-[80px]
                   ${selectedTimeRange === option 
-                    ? 'bg-white/40 text-white shadow-md' 
-                    : 'bg-white/20 text-white/80 hover:bg-white/30'
+                    ? 'bg-white/40 text-white shadow-md shadow-white/25' 
+                    : 'bg-white/20 text-white/60 hover:bg-white/30 hover:text-white/80'
                   }
                   focus:outline-none focus:ring-2 focus:ring-white/50
                   touch-manipulation
                 `}
               >
                 {option}
-              </button>
+              </motion.button>
             ))}
           </div>
         </div>
-    </div>
+      </div>
       </div>
     </div>
   )
