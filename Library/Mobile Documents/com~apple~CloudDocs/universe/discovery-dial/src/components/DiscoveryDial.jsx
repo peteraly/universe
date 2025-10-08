@@ -1,27 +1,34 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { TimeIndexThumbPicker } from './TimeIndexThumbPicker'
+import { motion } from 'framer-motion'
 
 const DiscoveryDial = () => {
+  // L1_Curation – Event data loading
   const [currentEvent, setCurrentEvent] = useState(null)
   const [events, setEvents] = useState([])
-  const [filteredEvents, setFilteredEvents] = useState([])
   const [isLoading, setIsLoading] = useState(true)
-  const [toast, setToast] = useState(null)
-  const [gestureState, setGestureState] = useState('idle')
-  const [swipeDirection, setSwipeDirection] = useState(null)
-  const [filterTime, setFilterTime] = useState('00:00')
-  const [isFilterActive, setIsFilterActive] = useState(false)
-  const [showTimeFilter, setShowTimeFilter] = useState(false)
-  const dialRef = useRef(null)
-  const touchStartRef = useRef(null)
-  const touchEndRef = useRef(null)
+  const [activeDirection, setActiveDirection] = useState(null)
+  const [lastGesture, setLastGesture] = useState('')
+  const [selectedTimeRange, setSelectedTimeRange] = useState('Today')
+  const [longPressTimer, setLongPressTimer] = useState(null)
+  const [showTimeSelector, setShowTimeSelector] = useState(false)
+
+  // L2_Health – Validation and fallback
+  const governanceRead = async (endpoint, fallback = null) => {
+    try {
+      const response = await fetch(endpoint)
+      if (!response.ok) throw new Error(`HTTP ${response.status}`)
+      return await response.json()
+    } catch (error) {
+      console.warn(`Governance read failed for ${endpoint}:`, error)
+      return fallback
+    }
+  }
 
   // Load events on component mount
   useEffect(() => {
     loadEvents()
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [])
 
-  // Load events from API
   const loadEvents = async () => {
     try {
       setIsLoading(true)
@@ -32,589 +39,312 @@ const DiscoveryDial = () => {
       const mockEvents = [
         {
           id: 'evt-001',
-          name: 'Tech Innovation Summit 2024',
-          description: 'A comprehensive summit featuring the latest in AI, blockchain, and emerging technologies.',
+          name: 'Beach Volleyball Tournament',
+          category: 'Social/Fun',
+          price: 'Free',
           date: '2024-03-15',
-          time: '09:00',
-          venue: 'San Francisco Convention Center',
-          category: 'Tech',
-          tags: ['AI', 'blockchain', 'networking']
+          time: '14:00'
         },
         {
           id: 'evt-002',
-          name: 'Art Gallery Opening: Digital Futures',
-          description: 'Experience the intersection of art and technology in this groundbreaking exhibition.',
+          name: 'Tech Meetup: AI & Machine Learning',
+          category: 'Professional',
+          price: 'Free',
           date: '2024-03-22',
-          time: '18:00',
-          venue: 'Modern Art Museum',
-          category: 'Art',
-          tags: ['digital art', 'technology', 'exhibition']
+          time: '18:00'
+        },
+        {
+          id: 'evt-003',
+          name: 'Art Gallery Opening',
+          category: 'Arts/Culture',
+          price: 'Free',
+          date: '2024-03-28',
+          time: '19:00'
+        },
+        {
+          id: 'evt-004',
+          name: 'Food Truck Festival',
+          category: 'Social/Fun',
+          price: 'Free',
+          date: '2024-04-05',
+          time: '12:00'
         }
       ]
       
       setEvents(mockEvents)
-      setFilteredEvents(mockEvents)
       if (mockEvents.length > 0) {
         setCurrentEvent(mockEvents[0])
       }
     } catch (error) {
-      showToast('Failed to load events', 'error')
+      console.error('Error loading events:', error)
     } finally {
       setIsLoading(false)
     }
   }
 
-  // Filter events by start time
-  const filterEventsByTime = (time) => {
-    if (!time || time === '00:00') {
-      setFilteredEvents(events)
-      setIsFilterActive(false)
-      return
-    }
-
-    const [filterHour, filterMinute] = time.split(':').map(Number)
-    const filterMinutes = filterHour * 60 + filterMinute
-
-    const filtered = events.filter(event => {
-      const [eventHour, eventMinute] = event.time.split(':').map(Number)
-      const eventMinutes = eventHour * 60 + filterMinute
-      return eventMinutes >= filterMinutes
-    })
-
-    setFilteredEvents(filtered)
-    setIsFilterActive(true)
+  // L4_Intelligence – Relationship logic
+  const handleDirection = (direction) => {
+    setActiveDirection(direction)
+    setLastGesture(direction)
     
-    // Update current event to first filtered event
-    if (filtered.length > 0) {
-      setCurrentEvent(filtered[0])
-    } else {
-      setCurrentEvent(null)
-    }
-  }
-
-  // Handle time filter change
-  const handleTimeFilterChange = (time) => {
-    setFilterTime(time)
-    filterEventsByTime(time)
-  }
-
-  // Toggle time filter visibility
-  const toggleTimeFilter = () => {
-    setShowTimeFilter(!showTimeFilter)
-  }
-
-  // Clear time filter
-  const clearTimeFilter = () => {
-    setFilterTime('00:00')
-    setFilteredEvents(events)
-    setIsFilterActive(false)
-    setCurrentEvent(events[0])
-    setShowTimeFilter(false)
-  }
-
-  // Show toast notification
-  const showToast = (message, type = 'info') => {
-    setToast({ message, type, id: Date.now() })
-    setTimeout(() => setToast(null), 3000)
-  }
-
-  // Handle touch start
-  const handleTouchStart = (e) => {
-    touchStartRef.current = {
-      x: e.touches[0].clientX,
-      y: e.touches[0].clientY,
-      time: Date.now()
-    }
-    setGestureState('touching')
-  }
-
-  // Handle touch end
-  const handleTouchEnd = (e) => {
-    if (!touchStartRef.current) return
-
-    touchEndRef.current = {
-      x: e.changedTouches[0].clientX,
-      y: e.changedTouches[0].clientY,
-      time: Date.now()
-    }
-
-    const deltaX = touchEndRef.current.x - touchStartRef.current.x
-    const deltaY = touchEndRef.current.y - touchStartRef.current.y
-    const deltaTime = touchEndRef.current.time - touchStartRef.current.time
-
-    // Minimum swipe distance and maximum time
-    const minSwipeDistance = 50
-    const maxSwipeTime = 300
-
-    if (Math.abs(deltaX) > Math.abs(deltaY) && Math.abs(deltaX) > minSwipeDistance && deltaTime < maxSwipeTime) {
-      if (deltaX > 0) {
-        handleSwipe('right')
-      } else {
-        handleSwipe('left')
-      }
-    }
-
-    setGestureState('idle')
-    setSwipeDirection(null)
-  }
-
-  // Handle swipe gestures
-  const handleSwipe = (direction) => {
-    setSwipeDirection(direction)
+    // Analytics
+    console.log(`Direction selected: ${direction}`)
     
-    if (events.length === 0) return
-
-    const currentIndex = events.findIndex(event => event.id === currentEvent?.id)
-    let newIndex
-
-    if (direction === 'left') {
-      newIndex = currentIndex < events.length - 1 ? currentIndex + 1 : 0
-    } else {
-      newIndex = currentIndex > 0 ? currentIndex - 1 : events.length - 1
-    }
-
-    setCurrentEvent(events[newIndex])
-    showToast(`Swiped ${direction}`, 'info')
+    // Navigate to related event (simple rotation for demo)
+    const currentIndex = events.findIndex(e => e.id === currentEvent?.id)
+    const nextIndex = (currentIndex + 1) % events.length
+    setCurrentEvent(events[nextIndex])
   }
 
-  // Handle keyboard navigation
-  const handleKeyDown = (e) => {
-    if (events.length === 0) return
-
-    const currentIndex = events.findIndex(event => event.id === currentEvent?.id)
-    let newIndex
-
-    switch (e.key) {
-      case 'ArrowLeft':
-        e.preventDefault()
-        newIndex = currentIndex < events.length - 1 ? currentIndex + 1 : 0
-        setCurrentEvent(events[newIndex])
-        showToast('Next event', 'info')
-        break
-      case 'ArrowRight':
-        e.preventDefault()
-        newIndex = currentIndex > 0 ? currentIndex - 1 : events.length - 1
-        setCurrentEvent(events[newIndex])
-        showToast('Previous event', 'info')
-        break
-      case 'Enter':
-      case ' ':
-        e.preventDefault()
-        if (currentEvent) {
-          showToast(`Selected: ${currentEvent.name}`, 'success')
-        }
-        break
-    }
-  }
-
-  // Handle long press for calendar
+  // Long press handling for time selector
   const handleLongPress = () => {
-    showToast('Calendar feature coming soon', 'info')
+    setLongPressTimer(setTimeout(() => {
+      setShowTimeSelector(true)
+      console.log('Long press activated - time selector shown')
+    }, 500))
   }
 
-  // Handle double tap to save
-  const handleDoubleTap = () => {
-    if (currentEvent) {
-      showToast(`Saved: ${currentEvent.name}`, 'success')
+  const handleLongPressEnd = () => {
+    if (longPressTimer) {
+      clearTimeout(longPressTimer)
+      setLongPressTimer(null)
     }
+  }
+
+  const handleTimeRangeSelect = (range) => {
+    setSelectedTimeRange(range)
+    console.log(`Time range selected: ${range}`)
+  }
+
+  // L3_Config – UI/UX settings
+  const timeOptions = ['Today', 'This Week', 'Next Week', 'This Month']
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen w-full bg-gradient-to-br from-purple-500 via-blue-500 to-purple-700 flex items-center justify-center">
+        <div className="text-white text-xl">Loading events...</div>
+      </div>
+    )
   }
 
   return (
-    <div 
-      style={{
-        minHeight: '100vh',
-        background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        padding: '20px',
-        fontFamily: 'system-ui, -apple-system, sans-serif',
-        position: 'relative'
-      }}
-      onKeyDown={handleKeyDown}
-      tabIndex={0}
-      role="main"
-      aria-label="Discovery Dial - Event exploration interface"
-    >
-      {/* Time Filter Toggle Button */}
-      <button
-        onClick={toggleTimeFilter}
-        style={{
-          position: 'fixed',
-          top: '20px',
-          right: '20px',
-          background: isFilterActive ? '#4CAF50' : 'rgba(255, 255, 255, 0.2)',
-          color: 'white',
-          borderRadius: '50px',
-          padding: '12px 20px',
-          fontSize: '14px',
-          fontWeight: 'bold',
-          cursor: 'pointer',
-          zIndex: 1000,
-          backdropFilter: 'blur(10px)',
-          border: '1px solid rgba(255, 255, 255, 0.3)',
-          transition: 'all 0.3s ease'
-        }}
-        aria-label={isFilterActive ? 'Time filter active' : 'Toggle time filter'}
-      >
-        {isFilterActive ? `Filter: ${filterTime}` : '⏰ Filter'}
-      </button>
+    <div className="
+      min-h-screen w-full
+      bg-gradient-to-br from-purple-500 via-blue-500 to-purple-700
+      flex flex-col items-center justify-center
+      px-4 py-8
+      relative overflow-hidden
+    ">
+      {/* Main title */}
+      <h1 className="
+        text-white text-2xl font-bold
+        mb-8 text-center
+        tracking-wide
+      ">
+        Discovery Dial
+      </h1>
 
-      {/* Time Filter Panel */}
-      {showTimeFilter && (
-        <div
-          style={{
-            position: 'fixed',
-            top: '0',
-            right: '0',
-            width: '300px',
-            height: '100vh',
-            background: 'rgba(0, 0, 0, 0.9)',
-            backdropFilter: 'blur(20px)',
-            zIndex: 1001,
-            padding: '20px',
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            justifyContent: 'center',
-            borderLeft: '1px solid rgba(255, 255, 255, 0.1)'
-          }}
+      {/* Central circular dial */}
+      <div className="
+        relative w-80 h-80 sm:w-96 sm:h-96
+        flex items-center justify-center
+        mb-8
+      ">
+        <div 
+          className="
+            w-full h-full
+            border-2 border-white/30
+            rounded-full
+            flex flex-col items-center justify-center
+            bg-white/5 backdrop-blur-sm
+            transition-all duration-300
+            cursor-pointer
+          "
+          onMouseDown={handleLongPress}
+          onMouseUp={handleLongPressEnd}
+          onTouchStart={handleLongPress}
+          onTouchEnd={handleLongPressEnd}
         >
-          <h3 style={{ color: 'white', marginBottom: '20px', textAlign: 'center' }}>
-            Filter Events by Time
-          </h3>
-          
-          <div style={{ marginBottom: '20px', textAlign: 'center' }}>
-            <p style={{ color: '#ccc', fontSize: '14px', marginBottom: '10px' }}>
-              Show events starting after:
-            </p>
-            <div style={{ color: 'white', fontSize: '18px', fontWeight: 'bold' }}>
-              {filterTime === '00:00' ? 'All times' : filterTime}
-            </div>
-          </div>
-
-          <TimeIndexThumbPicker
-            value={filterTime}
-            onChange={handleTimeFilterChange}
-            granularityMinutes={15}
-            format="12h"
-            handedness="right"
-            confirmLabel="Apply Filter"
-            className="w-full"
-          />
-
-          <div style={{ marginTop: '20px', display: 'flex', gap: '10px' }}>
-            <button
-              onClick={clearTimeFilter}
-              style={{
-                background: 'rgba(255, 255, 255, 0.2)',
-                color: 'white',
-                border: '1px solid rgba(255, 255, 255, 0.3)',
-                borderRadius: '8px',
-                padding: '8px 16px',
-                cursor: 'pointer',
-                fontSize: '14px'
-              }}
-            >
-              Clear
-            </button>
-            <button
-              onClick={toggleTimeFilter}
-              style={{
-                background: '#4CAF50',
-                color: 'white',
-                border: 'none',
-                borderRadius: '8px',
-                padding: '8px 16px',
-                cursor: 'pointer',
-                fontSize: '14px'
-              }}
-            >
-              Done
-            </button>
-          </div>
-        </div>
-      )}
-      <div 
-        ref={dialRef}
-        style={{
-          background: 'rgba(255, 255, 255, 0.1)',
-          backdropFilter: 'blur(10px)',
-          borderRadius: '20px',
-          padding: '40px',
-          border: '1px solid rgba(255, 255, 255, 0.2)',
-          maxWidth: '600px',
-          width: '100%',
-          color: 'white',
-          textAlign: 'center',
-          transform: swipeDirection ? `translateX(${swipeDirection === 'left' ? '-10px' : '10px'})` : 'translateX(0)',
-          transition: 'transform 0.2s ease-out',
-          cursor: gestureState === 'touching' ? 'grabbing' : 'grab'
-        }}
-        onTouchStart={handleTouchStart}
-        onTouchEnd={handleTouchEnd}
-        onMouseDown={handleTouchStart}
-        onMouseUp={handleTouchEnd}
-        onContextMenu={(e) => e.preventDefault()}
-        role="region"
-        aria-label="Event discovery dial"
-      >
-        <h1 style={{ 
-          fontSize: '3rem', 
-          marginBottom: '20px',
-          fontWeight: '700'
-        }}>
-          Discovery Dial
-        </h1>
-        
-        <p style={{ 
-          fontSize: '1.2rem', 
-          marginBottom: '30px',
-          opacity: 0.9
-        }}>
-          Discover events through intuitive gesture navigation
-        </p>
-        
-        {/* Loading State */}
-        {isLoading ? (
-          <div style={{
-            padding: '40px',
-            background: 'rgba(255, 255, 255, 0.1)',
-            borderRadius: '12px',
-            marginBottom: '20px'
-          }}>
-            <div style={{
-              width: '40px',
-              height: '40px',
-              border: '3px solid rgba(255, 255, 255, 0.3)',
-              borderTop: '3px solid white',
-              borderRadius: '50%',
-              animation: 'spin 1s linear infinite',
-              margin: '0 auto 20px'
-            }} />
-            <h3 style={{ fontSize: '1.5rem', marginBottom: '15px' }}>
-              Loading Events...
-            </h3>
-            <p style={{ opacity: 0.8 }}>
-              Discovering amazing events for you
-            </p>
-          </div>
-        ) : filteredEvents.length === 0 ? (
-          <div style={{
-            padding: '30px',
-            background: 'rgba(255, 255, 255, 0.1)',
-            borderRadius: '12px',
-            marginBottom: '20px'
-          }}>
-            <h3 style={{ fontSize: '1.5rem', marginBottom: '15px' }}>
-              {isFilterActive ? 'No events match your filter' : 'No events available'}
-            </h3>
-            <p style={{ opacity: 0.8, marginBottom: '20px' }}>
-              {isFilterActive 
-                ? `No events found starting after ${filterTime}. Try adjusting your time filter.`
-                : 'Events will appear here once they\'re added to the system.'
-              }
-            </p>
-            {isFilterActive && (
-              <button
-                onClick={clearTimeFilter}
-                style={{
-                  padding: '12px 24px',
-                  background: 'rgba(255, 255, 255, 0.2)',
-                  border: '1px solid rgba(255, 255, 255, 0.3)',
-                  borderRadius: '8px',
-                  color: 'white',
-                  fontSize: '1rem',
-                  cursor: 'pointer',
-                  marginRight: '10px',
-                  transition: 'all 0.3s ease'
-                }}
-              >
-                Clear Filter
-              </button>
-            )}
-            <button
-              onClick={() => window.location.href = '/admin'}
-              style={{
-                padding: '12px 24px',
-                background: 'rgba(255, 255, 255, 0.2)',
-                border: '1px solid rgba(255, 255, 255, 0.3)',
-                borderRadius: '8px',
-                color: 'white',
-                fontSize: '1rem',
-                cursor: 'pointer',
-                transition: 'all 0.3s ease'
-              }}
-              onMouseEnter={(e) => {
-                e.target.style.background = 'rgba(255, 255, 255, 0.3)'
-              }}
-              onMouseLeave={(e) => {
-                e.target.style.background = 'rgba(255, 255, 255, 0.2)'
-              }}
-            >
-              Admin Panel
-            </button>
-          </div>
-        ) : (
-          <div>
-            <div style={{ marginBottom: '20px' }}>
-              <h3 style={{ fontSize: '1.5rem', marginBottom: '10px' }}>
-                Current Event
-              </h3>
-              {isFilterActive && (
-                <div style={{
-                  background: 'rgba(76, 175, 80, 0.2)',
-                  border: '1px solid rgba(76, 175, 80, 0.5)',
-                  borderRadius: '8px',
-                  padding: '8px 12px',
-                  fontSize: '14px',
-                  color: '#4CAF50',
-                  display: 'inline-block',
-                  marginBottom: '10px'
-                }}>
-                  🔍 Filtered: Events after {filterTime} ({filteredEvents.length} found)
-                </div>
-              )}
-            </div>
-            {currentEvent && (
-              <div 
-                style={{
-                  padding: '20px',
-                  background: 'rgba(255, 255, 255, 0.1)',
-                  borderRadius: '12px',
-                  marginBottom: '20px',
-                  transform: swipeDirection ? `scale(${swipeDirection === 'left' ? '0.95' : '1.05'})` : 'scale(1)',
-                  transition: 'transform 0.2s ease-out'
-                }}
-                role="article"
-                aria-label={`Event: ${currentEvent.name}`}
-              >
-                <h4 style={{ fontSize: '1.2rem', marginBottom: '10px' }}>
+          {/* Event display */}
+          <motion.div
+            key={currentEvent?.id}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.3 }}
+            className="text-center px-6"
+          >
+            {currentEvent ? (
+              <>
+                <h2 className="text-white text-xl font-bold mb-2 leading-tight">
                   {currentEvent.name}
-                </h4>
-                <p style={{ opacity: 0.8, marginBottom: '15px' }}>
-                  {currentEvent.description}
+                </h2>
+                <p className="text-white/80 text-sm mb-1">
+                  {currentEvent.category}
                 </p>
-                <div style={{ 
-                  display: 'flex', 
-                  justifyContent: 'space-between', 
-                  alignItems: 'center',
-                  fontSize: '0.9rem',
-                  opacity: 0.7
-                }}>
-                  <span>📅 {currentEvent.date}</span>
-                  <span>🕐 {currentEvent.time}</span>
-                  <span>📍 {currentEvent.venue}</span>
-                </div>
-                <div style={{ 
-                  marginTop: '10px',
-                  display: 'flex',
-                  flexWrap: 'wrap',
-                  gap: '5px',
-                  justifyContent: 'center'
-                }}>
-                  {currentEvent.tags.map((tag, index) => (
-                    <span 
-                      key={index}
-                      style={{
-                        background: 'rgba(255, 255, 255, 0.2)',
-                        padding: '4px 8px',
-                        borderRadius: '12px',
-                        fontSize: '0.8rem'
-                      }}
-                    >
-                      #{tag}
-                    </span>
-                  ))}
-                </div>
+                <p className="text-white/60 text-xs">
+                  {currentEvent.price}
+                </p>
+              </>
+            ) : (
+              <div className="text-white/60 text-center">
+                <p className="text-lg">No events available</p>
+                <p className="text-sm">Check back later</p>
               </div>
             )}
-            
-            {/* Navigation Instructions */}
-            <div style={{
-              fontSize: '0.9rem',
-              opacity: 0.7,
-              marginTop: '20px',
-              padding: '15px',
-              background: 'rgba(255, 255, 255, 0.05)',
-              borderRadius: '8px'
-            }}>
-              <p style={{ marginBottom: '10px' }}>
-                <strong>Navigation:</strong>
-              </p>
-              <p>👆 Swipe left/right or use arrow keys to navigate</p>
-              <p>⌨️ Press Enter or Space to select</p>
-              <p>👆 Double-tap to save event</p>
-              <p>👆 Long-press for calendar (coming soon)</p>
-            </div>
-          </div>
-        )}
-        
-        <div style={{
-          fontSize: '0.9rem',
-          opacity: 0.7,
-          marginTop: '20px'
-        }}>
-          V12.0 - Mission Control System
+          </motion.div>
         </div>
       </div>
-      
-      {/* Toast Notifications */}
-      {toast && (
-        <div 
-          style={{
-            position: 'fixed',
-            top: '20px',
-            right: '20px',
-            background: toast.type === 'error' ? '#ef4444' : toast.type === 'success' ? '#10b981' : '#3b82f6',
-            color: 'white',
-            padding: '12px 20px',
-            borderRadius: '8px',
-            boxShadow: '0 4px 12px rgba(0, 0, 0, 0.3)',
-            zIndex: 1000,
-            animation: 'slideIn 0.3s ease-out',
-            maxWidth: '300px',
-            fontSize: '0.9rem'
-          }}
-          role="alert"
-          aria-live="polite"
+
+      {/* Instructions */}
+      <div className="text-white/80 text-sm text-center mb-6 space-y-1">
+        <p>Swipe the dial to discover events</p>
+        <p>Hold down the dial for time filter options</p>
+      </div>
+
+      {/* Inline time selector */}
+      {showTimeSelector && (
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 20 }}
+          className="w-full max-w-sm mx-auto mb-6"
         >
-          {toast.message}
+          <div className="
+            backdrop-blur-sm bg-white/20 rounded-2xl
+            transition-all duration-200
+            p-2
+          ">
+            <div className="
+              flex overflow-x-auto scrollbar-hide
+              space-x-2 px-2
+              snap-x snap-mandatory
+            ">
+              {timeOptions.map((option) => (
+                <button
+                  key={option}
+                  onClick={() => {
+                    handleTimeRangeSelect(option)
+                    setShowTimeSelector(false)
+                    // Haptic feedback
+                    if (navigator.vibrate) {
+                      navigator.vibrate(50)
+                    }
+                  }}
+                  className={`
+                    flex-shrink-0 px-3 py-2 rounded-xl
+                    transition-all duration-200
+                    text-sm font-medium
+                    snap-center
+                    ${selectedTimeRange === option 
+                      ? 'bg-white/40 text-white shadow-md' 
+                      : 'bg-white/20 text-white/80 hover:bg-white/30'
+                    }
+                    focus:outline-none focus:ring-2 focus:ring-white/50
+                    touch-manipulation
+                    min-w-[70px] text-center
+                  `}
+                >
+                  {option}
+                </button>
+              ))}
+            </div>
+          </div>
+        </motion.div>
+      )}
+
+      {/* Four directional buttons */}
+      <div className="grid grid-cols-2 gap-4 w-80">
+        <button
+          onClick={() => handleDirection('north')}
+          className={`
+            flex flex-col items-center justify-center
+            p-4 rounded-xl
+            border-2 transition-all duration-200
+            ${activeDirection === 'north' 
+              ? 'border-blue-400 bg-blue-500/20' 
+              : 'border-white/20 bg-white/10'
+            }
+            hover:bg-white/20
+            focus:outline-none focus:ring-2 focus:ring-white/50
+            touch-manipulation
+            min-h-[80px]
+          `}
+          aria-label="Deep Dive - north"
+        >
+          <span className="text-2xl mb-1">↑</span>
+          <span className="text-white text-sm font-medium">Deep Dive</span>
+        </button>
+
+        <button
+          onClick={() => handleDirection('south')}
+          className={`
+            flex flex-col items-center justify-center
+            p-4 rounded-xl
+            border-2 transition-all duration-200
+            ${activeDirection === 'south' 
+              ? 'border-green-400 bg-green-500/20' 
+              : 'border-white/20 bg-white/10'
+            }
+            hover:bg-white/20
+            focus:outline-none focus:ring-2 focus:ring-white/50
+            touch-manipulation
+            min-h-[80px]
+          `}
+          aria-label="Vibe Shift - south"
+        >
+          <span className="text-2xl mb-1">↓</span>
+          <span className="text-white text-sm font-medium">Vibe Shift</span>
+        </button>
+
+        <button
+          onClick={() => handleDirection('west')}
+          className={`
+            flex flex-col items-center justify-center
+            p-4 rounded-xl
+            border-2 transition-all duration-200
+            ${activeDirection === 'west' 
+              ? 'border-purple-400 bg-purple-500/20' 
+              : 'border-white/20 bg-white/10'
+            }
+            hover:bg-white/20
+            focus:outline-none focus:ring-2 focus:ring-white/50
+            touch-manipulation
+            min-h-[80px]
+          `}
+          aria-label="Social - west"
+        >
+          <span className="text-2xl mb-1">←</span>
+          <span className="text-white text-sm font-medium">Social</span>
+        </button>
+
+        <button
+          onClick={() => handleDirection('east')}
+          className={`
+            flex flex-col items-center justify-center
+            p-4 rounded-xl
+            border-2 transition-all duration-200
+            ${activeDirection === 'east' 
+              ? 'border-orange-400 bg-orange-500/20' 
+              : 'border-white/20 bg-white/10'
+            }
+            hover:bg-white/20
+            focus:outline-none focus:ring-2 focus:ring-white/50
+            touch-manipulation
+            min-h-[80px]
+          `}
+          aria-label="Action - east"
+        >
+          <span className="text-2xl mb-1">→</span>
+          <span className="text-white text-sm font-medium">Action</span>
+        </button>
+      </div>
+
+      {/* Last gesture indicator */}
+      {lastGesture && (
+        <div className="text-green-400 text-sm mt-4">
+          Last gesture: {lastGesture}
         </div>
       )}
-      
-      {/* CSS Animations */}
-      <style>{`
-        @keyframes spin {
-          0% { transform: rotate(0deg); }
-          100% { transform: rotate(360deg); }
-        }
-        
-        @keyframes slideIn {
-          from {
-            transform: translateX(100%);
-            opacity: 0;
-          }
-          to {
-            transform: translateX(0);
-            opacity: 1;
-          }
-        }
-        
-        @keyframes fadeIn {
-          from { opacity: 0; }
-          to { opacity: 1; }
-        }
-        
-        @keyframes pulse {
-          0%, 100% { transform: scale(1); }
-          50% { transform: scale(1.05); }
-        }
-        
-        .gesture-feedback {
-          animation: pulse 0.3s ease-out;
-        }
-      `}</style>
     </div>
   )
 }
