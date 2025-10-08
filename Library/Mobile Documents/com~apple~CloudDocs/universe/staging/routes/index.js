@@ -16,6 +16,7 @@ const routes = {
   '/api/agents': 'AgentAPI',
   '/api/governance': 'GovernanceAPI',
   '/api/public': 'GovernanceAPI',
+  '/api/recovery': 'RecoveryAPI',
   '/api/ledger': 'LedgerAPI'
 }
 

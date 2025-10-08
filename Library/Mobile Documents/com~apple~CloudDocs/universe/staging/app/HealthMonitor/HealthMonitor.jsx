@@ -5,9 +5,12 @@ const HealthMonitor = () => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
   const [lastUpdate, setLastUpdate] = useState(null)
+  const [recoveryData, setRecoveryData] = useState(null)
+  const [recoveryLoading, setRecoveryLoading] = useState(false)
 
   useEffect(() => {
     loadHealthData()
+    loadRecoveryData()
     const interval = setInterval(loadHealthData, 30000) // Update every 30 seconds
     return () => clearInterval(interval)
   }, [])
@@ -35,6 +38,52 @@ const HealthMonitor = () => {
       setError('Network error: ' + err.message)
     } finally {
       setLoading(false)
+    }
+  }
+
+  const loadRecoveryData = async () => {
+    try {
+      const response = await fetch('/api/recovery/status', {
+        headers: {
+          'X-Session-ID': 'session_123' // Mock session
+        }
+      })
+      
+      const data = await response.json()
+      
+      if (data.success) {
+        setRecoveryData(data.data)
+      }
+    } catch (err) {
+      console.error('Failed to load recovery data:', err)
+    }
+  }
+
+  const handleRecoveryAction = async (action, params = {}) => {
+    setRecoveryLoading(true)
+    try {
+      const response = await fetch(`/api/recovery/${action}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Session-ID': 'session_123' // Mock session
+        },
+        body: JSON.stringify(params)
+      })
+      
+      const data = await response.json()
+      
+      if (data.success) {
+        // Reload recovery data
+        await loadRecoveryData()
+        alert(`Recovery action ${action} completed successfully`)
+      } else {
+        alert(`Recovery action ${action} failed: ${data.message}`)
+      }
+    } catch (err) {
+      alert(`Recovery action ${action} failed: ${err.message}`)
+    } finally {
+      setRecoveryLoading(false)
     }
   }
 
@@ -327,6 +376,141 @@ const HealthMonitor = () => {
           </div>
         </div>
       )}
+
+      {/* Recovery Controls */}
+      <div style={{
+        background: 'white',
+        border: '1px solid #e5e7eb',
+        borderRadius: '12px',
+        padding: '20px',
+        marginBottom: '30px',
+        boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)'
+      }}>
+        <h2 style={{ fontSize: '1.5rem', marginBottom: '20px', color: '#1f2937' }}>
+          Recovery Controls
+        </h2>
+        
+        {/* System State */}
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: '15px',
+          marginBottom: '20px',
+          padding: '15px',
+          background: '#f9fafb',
+          borderRadius: '8px'
+        }}>
+          <span style={{ fontSize: '1.2rem' }}>
+            {recoveryData?.systemState?.freezeMode ? '🧊' : '🔥'}
+          </span>
+          <div>
+            <div style={{ fontWeight: '600', color: '#1f2937' }}>
+              System State: {recoveryData?.systemState?.current?.toUpperCase() || 'UNKNOWN'}
+            </div>
+            <div style={{ fontSize: '0.9rem', color: '#6b7280' }}>
+              {recoveryData?.systemState?.freezeMode ? 'System is frozen' : 'System is operational'}
+              {recoveryData?.systemState?.rollbackInProgress && ' • Rollback in progress'}
+            </div>
+          </div>
+        </div>
+
+        {/* Recovery Actions */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+          gap: '15px',
+          marginBottom: '20px'
+        }}>
+          <button
+            onClick={() => handleRecoveryAction('freeze')}
+            disabled={recoveryLoading || recoveryData?.systemState?.freezeMode}
+            style={{
+              padding: '12px 16px',
+              background: recoveryData?.systemState?.freezeMode ? '#9ca3af' : '#ef4444',
+              color: 'white',
+              border: 'none',
+              borderRadius: '8px',
+              cursor: recoveryData?.systemState?.freezeMode ? 'not-allowed' : 'pointer',
+              fontWeight: '600'
+            }}
+          >
+            🧊 Freeze System
+          </button>
+          
+          <button
+            onClick={() => handleRecoveryAction('unfreeze')}
+            disabled={recoveryLoading || !recoveryData?.systemState?.freezeMode}
+            style={{
+              padding: '12px 16px',
+              background: !recoveryData?.systemState?.freezeMode ? '#9ca3af' : '#10b981',
+              color: 'white',
+              border: 'none',
+              borderRadius: '8px',
+              cursor: !recoveryData?.systemState?.freezeMode ? 'not-allowed' : 'pointer',
+              fontWeight: '600'
+            }}
+          >
+            🔥 Unfreeze System
+          </button>
+          
+          <button
+            onClick={() => handleRecoveryAction('emergency-rollback')}
+            disabled={recoveryLoading || recoveryData?.systemState?.rollbackInProgress}
+            style={{
+              padding: '12px 16px',
+              background: recoveryData?.systemState?.rollbackInProgress ? '#9ca3af' : '#dc2626',
+              color: 'white',
+              border: 'none',
+              borderRadius: '8px',
+              cursor: recoveryData?.systemState?.rollbackInProgress ? 'not-allowed' : 'pointer',
+              fontWeight: '600'
+            }}
+          >
+            ⚡ Emergency Rollback
+          </button>
+          
+          <button
+            onClick={() => {
+              const version = prompt('Enter version to rollback to:', recoveryData?.lastStableBuild || 'v1.2.2')
+              if (version) {
+                handleRecoveryAction('rollback', { version })
+              }
+            }}
+            disabled={recoveryLoading || recoveryData?.systemState?.rollbackInProgress}
+            style={{
+              padding: '12px 16px',
+              background: recoveryData?.systemState?.rollbackInProgress ? '#9ca3af' : '#f59e0b',
+              color: 'white',
+              border: 'none',
+              borderRadius: '8px',
+              cursor: recoveryData?.systemState?.rollbackInProgress ? 'not-allowed' : 'pointer',
+              fontWeight: '600'
+            }}
+          >
+            🔄 Manual Rollback
+          </button>
+        </div>
+
+        {/* System Information */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
+          gap: '15px'
+        }}>
+          <div>
+            <strong>Last Stable Build:</strong> {recoveryData?.lastStableBuild || 'N/A'}
+          </div>
+          <div>
+            <strong>Active Incidents:</strong> {recoveryData?.activeIncidents || 0}
+          </div>
+          <div>
+            <strong>Freeze Mode:</strong> {recoveryData?.systemState?.freezeMode ? 'Yes' : 'No'}
+          </div>
+          <div>
+            <strong>Rollback Progress:</strong> {recoveryData?.systemState?.rollbackInProgress ? 'In Progress' : 'Idle'}
+          </div>
+        </div>
+      </div>
 
       {/* System Information */}
       <div style={{
