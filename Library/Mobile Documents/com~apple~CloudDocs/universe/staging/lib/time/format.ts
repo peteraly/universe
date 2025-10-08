@@ -157,3 +157,98 @@ export const TIME_PRESETS = {
   AFTERNOON: { start: '12:00', end: '18:00' },
   EVENING: { start: '18:00', end: '23:59' }
 } as const;
+
+// ============================================================================
+// TIME HELPER FUNCTIONS
+// ============================================================================
+
+/**
+ * Converts hour to display label with format and compact options
+ * @param hour - Hour value (0-23)
+ * @param format - Display format ('12h' | '24h')
+ * @param compact - Whether to use compact format (e.g., "9" vs "09")
+ * @returns Formatted hour display string
+ */
+export const toDisplayLabel = (hour: number, format: '12h' | '24h' = '24h', compact: boolean = false): string => {
+  if (format === '12h') {
+    const hour12 = hour === 0 ? 12 : hour > 12 ? hour - 12 : hour;
+    return compact ? hour12.toString() : hour12.toString().padStart(2, '0');
+  }
+  return compact ? hour.toString() : hour.toString().padStart(2, '0');
+};
+
+/**
+ * Creates full time label with hour and minute
+ * @param hour - Hour value (0-23)
+ * @param minute - Minute value (0-59)
+ * @param format - Display format ('12h' | '24h')
+ * @returns Full time label string
+ */
+export const toFullLabel = (hour: number, minute: number, format: '12h' | '24h' = '24h'): string => {
+  if (format === '12h') {
+    const hour12 = hour === 0 ? 12 : hour > 12 ? hour - 12 : hour;
+    const ampm = hour >= 12 ? 'PM' : 'AM';
+    return `${hour12}:${minute.toString().padStart(2, '0')} ${ampm}`;
+  }
+  return `${hour.toString().padStart(2, '0')}:${minute.toString().padStart(2, '0')}`;
+};
+
+/**
+ * Normalizes time value to hour and minute object
+ * @param value - Time value (string "HH:MM" or number of minutes)
+ * @returns Object with hour and minute properties
+ */
+export const normalizeValue = (value: string | number): { hour: number; minute: number } => {
+  if (typeof value === 'string') {
+    const [hours, minutes] = value.split(':').map(Number);
+    return {
+      hour: hours || 0,
+      minute: minutes || 0
+    };
+  }
+  
+  // Handle number of minutes
+  const totalMinutes = Math.max(0, Math.min(1439, value)); // Clamp to 0-1439 minutes
+  return {
+    hour: Math.floor(totalMinutes / 60),
+    minute: totalMinutes % 60
+  };
+};
+
+/**
+ * Converts hour and minute to output string with locale preference
+ * @param hour - Hour value (0-23)
+ * @param minute - Minute value (0-59)
+ * @param preferLocal - Whether to prefer local timezone formatting
+ * @returns Formatted time string
+ */
+export const toOutputString = (hour: number, minute: number, preferLocal: boolean = true): string => {
+  const normalizedHour = Math.max(0, Math.min(23, hour));
+  const normalizedMinute = Math.max(0, Math.min(59, minute));
+  
+  if (preferLocal) {
+    // Use local timezone formatting
+    const date = new Date();
+    date.setHours(normalizedHour, normalizedMinute, 0, 0);
+    return date.toLocaleTimeString('en-US', {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false
+    });
+  }
+  
+  // Standard HH:MM format
+  return `${normalizedHour.toString().padStart(2, '0')}:${normalizedMinute.toString().padStart(2, '0')}`;
+};
+
+/**
+ * Snaps minute value to specified granularity
+ * @param minute - Minute value (0-59)
+ * @param granularity - Granularity in minutes (default: 15)
+ * @returns Snapped minute value
+ */
+export const snapMinute = (minute: number, granularity: number = 15): number => {
+  const normalizedMinute = Math.max(0, Math.min(59, minute));
+  const snapped = Math.round(normalizedMinute / granularity) * granularity;
+  return Math.max(0, Math.min(59, snapped));
+};

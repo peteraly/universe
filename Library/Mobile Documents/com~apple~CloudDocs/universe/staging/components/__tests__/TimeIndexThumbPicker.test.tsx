@@ -132,3 +132,92 @@ describe('TimeIndexThumbPicker', () => {
     // TODO: Simulate rapid drag operations
   });
 });
+
+// ============================================================================
+// TIME HELPER FUNCTIONS TESTS
+// ============================================================================
+
+import { 
+  toDisplayLabel, 
+  toFullLabel, 
+  normalizeValue, 
+  toOutputString, 
+  snapMinute 
+} from '../../lib/time/format';
+
+describe('Time Helper Functions', () => {
+  describe('toDisplayLabel', () => {
+    it('formats 24h hour correctly', () => {
+      expect(toDisplayLabel(9, '24h')).toBe('09');
+      expect(toDisplayLabel(9, '24h', true)).toBe('9');
+      expect(toDisplayLabel(15, '24h')).toBe('15');
+    });
+
+    it('formats 12h hour correctly', () => {
+      expect(toDisplayLabel(9, '12h')).toBe('09');
+      expect(toDisplayLabel(9, '12h', true)).toBe('9');
+      expect(toDisplayLabel(15, '12h')).toBe('03');
+      expect(toDisplayLabel(0, '12h')).toBe('12');
+    });
+  });
+
+  describe('toFullLabel', () => {
+    it('formats 24h time correctly', () => {
+      expect(toFullLabel(9, 30, '24h')).toBe('09:30');
+      expect(toFullLabel(15, 45, '24h')).toBe('15:45');
+    });
+
+    it('formats 12h time correctly', () => {
+      expect(toFullLabel(9, 30, '12h')).toBe('09:30 AM');
+      expect(toFullLabel(15, 45, '12h')).toBe('03:45 PM');
+      expect(toFullLabel(0, 0, '12h')).toBe('12:00 AM');
+    });
+  });
+
+  describe('normalizeValue', () => {
+    it('normalizes string time correctly', () => {
+      expect(normalizeValue('09:30')).toEqual({ hour: 9, minute: 30 });
+      expect(normalizeValue('15:45')).toEqual({ hour: 15, minute: 45 });
+    });
+
+    it('normalizes minute number correctly', () => {
+      expect(normalizeValue(570)).toEqual({ hour: 9, minute: 30 }); // 9:30
+      expect(normalizeValue(945)).toEqual({ hour: 15, minute: 45 }); // 15:45
+    });
+  });
+
+  describe('toOutputString', () => {
+    it('formats time with local preference', () => {
+      const result = toOutputString(9, 30, true);
+      expect(result).toMatch(/^\d{2}:\d{2}$/);
+    });
+
+    it('formats time without local preference', () => {
+      expect(toOutputString(9, 30, false)).toBe('09:30');
+      expect(toOutputString(15, 45, false)).toBe('15:45');
+    });
+  });
+
+  describe('snapMinute', () => {
+    it('snaps to 15-minute granularity', () => {
+      expect(snapMinute(7, 15)).toBe(0);
+      expect(snapMinute(8, 15)).toBe(15);
+      expect(snapMinute(22, 15)).toBe(15);
+      expect(snapMinute(23, 15)).toBe(30);
+    });
+
+    it('snaps to 30-minute granularity', () => {
+      expect(snapMinute(14, 30)).toBe(0);
+      expect(snapMinute(16, 30)).toBe(30);
+      expect(snapMinute(44, 30)).toBe(30);
+      expect(snapMinute(46, 30)).toBe(60);
+    });
+
+    it('handles edge cases', () => {
+      expect(snapMinute(0, 15)).toBe(0);
+      expect(snapMinute(59, 15)).toBe(60);
+      expect(snapMinute(-5, 15)).toBe(0);
+      expect(snapMinute(70, 15)).toBe(60);
+    });
+  });
+});
