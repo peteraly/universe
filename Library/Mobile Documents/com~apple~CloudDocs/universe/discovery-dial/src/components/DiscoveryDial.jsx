@@ -214,8 +214,8 @@ const DiscoveryDial = () => {
             p-4 rounded-xl
             border-2 transition-all duration-300
             ${activeDirection === 'north' 
-              ? 'border-blue-400 bg-gradient-to-br from-blue-400/30 to-blue-500/20 shadow-lg shadow-blue-400/25' 
-              : 'border-white/30 bg-gradient-to-br from-white/15 to-white/10 hover:from-white/25 hover:to-white/15'
+              ? 'border-blue-500 bg-blue-500 text-white shadow-lg' 
+              : 'border-purple-500 bg-purple-500 text-white hover:bg-purple-600'
             }
             focus:outline-none focus:ring-2 focus:ring-blue-400/50
             touch-manipulation
@@ -235,8 +235,8 @@ const DiscoveryDial = () => {
             p-4 rounded-xl
             border-2 transition-all duration-300
             ${activeDirection === 'south' 
-              ? 'border-green-400 bg-gradient-to-br from-green-400/30 to-green-500/20 shadow-lg shadow-green-400/25' 
-              : 'border-white/30 bg-gradient-to-br from-white/15 to-white/10 hover:from-white/25 hover:to-white/15'
+              ? 'border-green-500 bg-green-500 text-white shadow-lg' 
+              : 'border-purple-500 bg-purple-500 text-white hover:bg-purple-600'
             }
             focus:outline-none focus:ring-2 focus:ring-green-400/50
             touch-manipulation
@@ -256,8 +256,8 @@ const DiscoveryDial = () => {
             p-4 rounded-xl
             border-2 transition-all duration-300
             ${activeDirection === 'west' 
-              ? 'border-red-400 bg-gradient-to-br from-red-400/30 to-red-500/20 shadow-lg shadow-red-400/25' 
-              : 'border-white/30 bg-gradient-to-br from-white/15 to-white/10 hover:from-white/25 hover:to-white/15'
+              ? 'border-red-500 bg-red-500 text-white shadow-lg' 
+              : 'border-purple-500 bg-purple-500 text-white hover:bg-purple-600'
             }
             focus:outline-none focus:ring-2 focus:ring-red-400/50
             touch-manipulation
@@ -277,8 +277,8 @@ const DiscoveryDial = () => {
             p-4 rounded-xl
             border-2 transition-all duration-300
             ${activeDirection === 'east' 
-              ? 'border-orange-400 bg-gradient-to-br from-orange-400/30 to-orange-500/20 shadow-lg shadow-orange-400/25' 
-              : 'border-white/30 bg-gradient-to-br from-white/15 to-white/10 hover:from-white/25 hover:to-white/15'
+              ? 'border-orange-500 bg-orange-500 text-white shadow-lg' 
+              : 'border-purple-500 bg-purple-500 text-white hover:bg-purple-600'
             }
             focus:outline-none focus:ring-2 focus:ring-orange-400/50
             touch-manipulation
@@ -294,7 +294,7 @@ const DiscoveryDial = () => {
 
         {/* Last gesture indicator */}
         {lastGesture && (
-          <div className="text-green-400 text-xs mt-4 font-medium">
+          <div className="text-green-400 text-sm mt-4">
             Last gesture: {lastGesture}
           </div>
         )}
