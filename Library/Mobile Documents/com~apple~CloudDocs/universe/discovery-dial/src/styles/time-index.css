@@ -1,0 +1,575 @@
+/* Time Index Picker Ergonomic Styles */
+/* CSS styles for TimeIndexThumbPicker component with ergonomic design */
+/* Part of V12.0 L1 Event Curation Hub implementation */
+
+/* Main picker container */
+.time-index-picker {
+  position: relative;
+  width: 100%;
+  height: 100vh;
+  cursor: pointer;
+  user-select: none;
+  touch-action: none;
+}
+
+/* Ergonomic rail positioning */
+.time-index-rail {
+  position: fixed;
+  width: 40px;
+  height: 70vh;
+  top: 15vh;
+  border: 2px solid #e5e7eb;
+  border-radius: 1rem;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+}
+
+/* Coarse bucket cells */
+.time-index-cells {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 12px 8px;
+  gap: 12px;
+}
+
+.time-index-cell {
+  min-height: 52px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.time-index-cell-active {
+  background: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transform: scale(1.05);
+}
+
+.time-index-cell-inactive {
+  background: transparent;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+/* Fine hours overlay */
+.time-index-fine-hours {
+  position: absolute;
+  inset: 0;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  border-radius: 1rem;
+  border: 1px solid #e5e7eb;
+  z-index: 20;
+}
+
+.time-index-fine-hours-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  padding: 12px 8px;
+  gap: 8px;
+}
+
+.time-index-fine-hour {
+  min-height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  transition: all 0.15s ease;
+  cursor: pointer;
+}
+
+.time-index-fine-hour-active {
+  background: #3b82f6;
+  color: white;
+  transform: scale(1.05);
+}
+
+.time-index-fine-hour-inactive {
+  background: transparent;
+  color: #6b7280;
+}
+
+/* Floating bubble */
+.time-index-bubble {
+  position: fixed;
+  z-index: 30;
+  transition: all 0.2s ease;
+  pointer-events: none;
+}
+
+.time-index-bubble-content {
+  background: #1f2937;
+  color: white;
+  padding: 8px 12px;
+  border-radius: 1rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  font-size: 0.875rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.time-index-bubble-arrow {
+  position: absolute;
+  top: 50%;
+  width: 0;
+  height: 0;
+  border: 6px solid transparent;
+  transform: translateY(-50%);
+}
+
+.time-index-bubble-arrow-right {
+  right: 0;
+  border-left-color: #1f2937;
+  transform: translateY(-50%) translateX(100%);
+}
+
+.time-index-bubble-arrow-left {
+  left: 0;
+  border-right-color: #1f2937;
+  transform: translateY(-50%) translateX(-100%);
+}
+
+/* Sticky confirm bar */
+.time-index-confirm-bar {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  left: 0;
+  padding: 16px;
+  padding-bottom: env(safe-area-inset-bottom, 16px);
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  border-top: 1px solid #e5e7eb;
+  z-index: 40;
+  display: flex;
+  justify-content: center;
+}
+
+.time-index-confirm-button {
+  background: #3b82f6;
+  color: white;
+  padding: 12px 24px;
+  border-radius: 0.75rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+  border: none;
+  cursor: pointer;
+  min-height: 44px;
+  min-width: 120px;
+}
+
+.time-index-confirm-button:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 8px -1px rgba(0, 0, 0, 0.15);
+}
+
+.time-index-confirm-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Accessibility enhancements */
+.time-index-picker:focus {
+  outline: 3px solid #2563eb;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 1px #ffffff;
+}
+
+.time-index-cell:focus,
+.time-index-fine-hour:focus {
+  outline: 3px solid #2563eb;
+  outline-offset: 1px;
+  box-shadow: 0 0 0 1px #ffffff;
+}
+
+.time-index-confirm-button:focus {
+  outline: 3px solid #2563eb;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 1px #ffffff;
+}
+
+/* Screen reader only content */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Enhanced focus management */
+.time-index-picker:focus-visible {
+  outline: 3px solid #2563eb;
+  outline-offset: 2px;
+}
+
+.time-index-cell:focus-visible,
+.time-index-fine-hour:focus-visible {
+  outline: 3px solid #2563eb;
+  outline-offset: 1px;
+  background-color: #dbeafe;
+}
+
+/* Improved color contrast for WCAG AA compliance */
+.time-index-cell-active {
+  background: #ffffff;
+  color: #1f2937;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  border: 2px solid #2563eb;
+}
+
+.time-index-cell-inactive {
+  background: transparent;
+  color: #374151;
+  border: 2px solid transparent;
+}
+
+.time-index-fine-hour-active {
+  background: #2563eb;
+  color: #ffffff;
+  border: 2px solid #1d4ed8;
+}
+
+.time-index-fine-hour-inactive {
+  background: transparent;
+  color: #6b7280;
+  border: 2px solid transparent;
+}
+
+/* Enhanced bubble contrast */
+.time-index-bubble-content {
+  background: #1f2937;
+  color: #ffffff;
+  padding: 8px 12px;
+  border-radius: 1rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.2);
+  font-size: 0.875rem;
+  font-weight: 500;
+  white-space: nowrap;
+  border: 2px solid #374151;
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .time-index-rail {
+    border-color: #000;
+  }
+  
+  .time-index-cell-active {
+    background: #000;
+    color: #fff;
+  }
+  
+  .time-index-bubble-content {
+    background: #000;
+    color: #fff;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .time-index-rail,
+  .time-index-cell,
+  .time-index-fine-hour,
+  .time-index-bubble,
+  .time-index-confirm-button {
+    transition: none;
+  }
+}
+
+/* Mobile optimizations */
+@media (max-width: 768px) {
+  .time-index-rail {
+    width: 44px;
+  }
+  
+  .time-index-cell {
+    min-height: 56px;
+    font-size: 0.875rem;
+  }
+  
+  .time-index-bubble-content {
+    font-size: 1rem;
+    padding: 12px 16px;
+  }
+}
+
+/* TODO: Implement track/rail styles */
+.time-index-track {
+  /* TODO: Track background and positioning */
+  position: absolute;
+  top: 50%;
+  left: 20px;
+  right: 20px;
+  height: 4px;
+  background: #ddd;
+  border-radius: 2px;
+  transform: translateY(-50%);
+}
+
+/* TODO: Implement time markers styles */
+.time-markers {
+  /* TODO: Time marker positioning and styling */
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  pointer-events: none;
+}
+
+.time-marker {
+  /* TODO: Individual time marker styles */
+  position: absolute;
+  top: 50%;
+  width: 1px;
+  height: 8px;
+  background: #999;
+  transform: translateY(-50%);
+}
+
+.time-marker.major {
+  /* TODO: Major time marker styles (hour marks) */
+  height: 12px;
+  background: #666;
+}
+
+.time-marker-label {
+  /* TODO: Time marker label styles */
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px;
+  color: #666;
+  white-space: nowrap;
+}
+
+/* TODO: Implement thumb/handle styles */
+.time-index-thumb {
+  /* TODO: Thumb positioning and styling */
+  position: absolute;
+  top: 50%;
+  width: 20px;
+  height: 20px;
+  background: #007bff;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  cursor: grab;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.time-index-thumb:hover {
+  /* TODO: Thumb hover effects */
+  transform: translate(-50%, -50%) scale(1.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.time-index-thumb:active {
+  /* TODO: Thumb active/dragging styles */
+  cursor: grabbing;
+  transform: translate(-50%, -50%) scale(1.05);
+}
+
+.time-index-thumb.dragging {
+  /* TODO: Thumb dragging state styles */
+  cursor: grabbing;
+  transform: translate(-50%, -50%) scale(1.1);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* TODO: Implement thumb value display */
+.thumb-value {
+  /* TODO: Thumb value text styles */
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #333;
+  color: #fff;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.thumb-value::after {
+  /* TODO: Thumb value arrow styles */
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 4px solid #333;
+}
+
+/* TODO: Implement time display styles */
+.time-display {
+  /* TODO: Time display container styles */
+  position: absolute;
+  bottom: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+}
+
+.current-time {
+  /* TODO: Current time text styles */
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  background: #f0f0f0;
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+}
+
+/* TODO: Implement disabled state styles */
+.time-index-picker.disabled {
+  /* TODO: Disabled picker styles */
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.time-index-picker.disabled .time-index-thumb {
+  /* TODO: Disabled thumb styles */
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+/* TODO: Implement focus styles */
+.time-index-picker:focus {
+  /* TODO: Focus outline styles */
+  outline: 2px solid #007bff;
+  outline-offset: 2px;
+}
+
+.time-index-picker:focus .time-index-thumb {
+  /* TODO: Focus thumb styles */
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
+}
+
+/* TODO: Implement responsive styles */
+@media (max-width: 768px) {
+  .time-index-picker {
+    /* TODO: Mobile picker styles */
+    height: 50px;
+  }
+  
+  .time-index-thumb {
+    /* TODO: Mobile thumb styles */
+    width: 24px;
+    height: 24px;
+  }
+  
+  .thumb-value {
+    /* TODO: Mobile thumb value styles */
+    font-size: 11px;
+    top: -25px;
+  }
+  
+  .current-time {
+    /* TODO: Mobile time display styles */
+    font-size: 14px;
+    padding: 6px 12px;
+  }
+}
+
+/* TODO: Implement dark theme styles */
+@media (prefers-color-scheme: dark) {
+  .time-index-picker {
+    /* TODO: Dark theme picker styles */
+    background: #2d2d2d;
+  }
+  
+  .time-index-track {
+    /* TODO: Dark theme track styles */
+    background: #444;
+  }
+  
+  .time-marker {
+    /* TODO: Dark theme marker styles */
+    background: #666;
+  }
+  
+  .time-index-thumb {
+    /* TODO: Dark theme thumb styles */
+    background: #007bff;
+    border-color: #2d2d2d;
+  }
+  
+  .thumb-value {
+    /* TODO: Dark theme thumb value styles */
+    background: #444;
+    color: #fff;
+  }
+  
+  .current-time {
+    /* TODO: Dark theme time display styles */
+    background: #444;
+    color: #fff;
+    border-color: #666;
+  }
+}
+
+/* TODO: Implement high contrast styles */
+@media (prefers-contrast: high) {
+  .time-index-picker {
+    /* TODO: High contrast picker styles */
+    border: 2px solid #000;
+  }
+  
+  .time-index-track {
+    /* TODO: High contrast track styles */
+    background: #000;
+  }
+  
+  .time-index-thumb {
+    /* TODO: High contrast thumb styles */
+    background: #000;
+    border-color: #fff;
+  }
+}
+
+/* TODO: Implement reduced motion styles */
+@media (prefers-reduced-motion: reduce) {
+  .time-index-thumb {
+    /* TODO: Reduced motion thumb styles */
+    transition: none;
+  }
+  
+  .time-index-thumb:hover {
+    /* TODO: Reduced motion hover styles */
+    transform: translate(-50%, -50%);
+  }
+}

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { TimeIndexThumbPicker } from '../../../staging/components/TimeIndexThumbPicker'
+import { TimeIndexThumbPicker } from './TimeIndexThumbPicker'
 
 const DiscoveryDial = () => {
   const [currentEvent, setCurrentEvent] = useState(null)
