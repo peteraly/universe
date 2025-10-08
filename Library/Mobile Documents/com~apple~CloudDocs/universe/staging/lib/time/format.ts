@@ -1,4 +1,4 @@
-#Context: Time Format Utility Skeleton
+// Time Format Utility Skeleton
 // Time formatting and calculation utilities for TimeIndexThumbPicker
 // Part of V12.0 L1 Event Curation Hub implementation
 

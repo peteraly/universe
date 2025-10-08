@@ -1,4 +1,4 @@
-#Context: RAF Throttle Utility
+// RAF Throttle Utility
 // Lightweight requestAnimationFrame throttling for smooth performance
 // Part of V12.0 L1 Event Curation Hub implementation
 

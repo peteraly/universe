@@ -1,4 +1,4 @@
-#Context: TimeIndexThumbPicker Core Component
+// TimeIndexThumbPicker Core Component
 // Right-docked rail with coarse buckets and fine hour selection
 // Part of V12.0 L1 Event Curation Hub implementation
 

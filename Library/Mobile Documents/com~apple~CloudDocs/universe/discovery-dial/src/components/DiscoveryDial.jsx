@@ -1,12 +1,17 @@
 import React, { useState, useEffect, useRef } from 'react'
+import { TimeIndexThumbPicker } from '../../../staging/components/TimeIndexThumbPicker'
 
 const DiscoveryDial = () => {
   const [currentEvent, setCurrentEvent] = useState(null)
   const [events, setEvents] = useState([])
+  const [filteredEvents, setFilteredEvents] = useState([])
   const [isLoading, setIsLoading] = useState(true)
   const [toast, setToast] = useState(null)
   const [gestureState, setGestureState] = useState('idle')
   const [swipeDirection, setSwipeDirection] = useState(null)
+  const [filterTime, setFilterTime] = useState('00:00')
+  const [isFilterActive, setIsFilterActive] = useState(false)
+  const [showTimeFilter, setShowTimeFilter] = useState(false)
   const dialRef = useRef(null)
   const touchStartRef = useRef(null)
   const touchEndRef = useRef(null)
@@ -48,6 +53,7 @@ const DiscoveryDial = () => {
       ]
       
       setEvents(mockEvents)
+      setFilteredEvents(mockEvents)
       if (mockEvents.length > 0) {
         setCurrentEvent(mockEvents[0])
       }
@@ -56,6 +62,54 @@ const DiscoveryDial = () => {
     } finally {
       setIsLoading(false)
     }
+  }
+
+  // Filter events by start time
+  const filterEventsByTime = (time) => {
+    if (!time || time === '00:00') {
+      setFilteredEvents(events)
+      setIsFilterActive(false)
+      return
+    }
+
+    const [filterHour, filterMinute] = time.split(':').map(Number)
+    const filterMinutes = filterHour * 60 + filterMinute
+
+    const filtered = events.filter(event => {
+      const [eventHour, eventMinute] = event.time.split(':').map(Number)
+      const eventMinutes = eventHour * 60 + filterMinute
+      return eventMinutes >= filterMinutes
+    })
+
+    setFilteredEvents(filtered)
+    setIsFilterActive(true)
+    
+    // Update current event to first filtered event
+    if (filtered.length > 0) {
+      setCurrentEvent(filtered[0])
+    } else {
+      setCurrentEvent(null)
+    }
+  }
+
+  // Handle time filter change
+  const handleTimeFilterChange = (time) => {
+    setFilterTime(time)
+    filterEventsByTime(time)
+  }
+
+  // Toggle time filter visibility
+  const toggleTimeFilter = () => {
+    setShowTimeFilter(!showTimeFilter)
+  }
+
+  // Clear time filter
+  const clearTimeFilter = () => {
+    setFilterTime('00:00')
+    setFilteredEvents(events)
+    setIsFilterActive(false)
+    setCurrentEvent(events[0])
+    setShowTimeFilter(false)
   }
 
   // Show toast notification
@@ -174,13 +228,113 @@ const DiscoveryDial = () => {
         alignItems: 'center',
         justifyContent: 'center',
         padding: '20px',
-        fontFamily: 'system-ui, -apple-system, sans-serif'
+        fontFamily: 'system-ui, -apple-system, sans-serif',
+        position: 'relative'
       }}
       onKeyDown={handleKeyDown}
       tabIndex={0}
       role="main"
       aria-label="Discovery Dial - Event exploration interface"
     >
+      {/* Time Filter Toggle Button */}
+      <button
+        onClick={toggleTimeFilter}
+        style={{
+          position: 'fixed',
+          top: '20px',
+          right: '20px',
+          background: isFilterActive ? '#4CAF50' : 'rgba(255, 255, 255, 0.2)',
+          color: 'white',
+          borderRadius: '50px',
+          padding: '12px 20px',
+          fontSize: '14px',
+          fontWeight: 'bold',
+          cursor: 'pointer',
+          zIndex: 1000,
+          backdropFilter: 'blur(10px)',
+          border: '1px solid rgba(255, 255, 255, 0.3)',
+          transition: 'all 0.3s ease'
+        }}
+        aria-label={isFilterActive ? 'Time filter active' : 'Toggle time filter'}
+      >
+        {isFilterActive ? `Filter: ${filterTime}` : '⏰ Filter'}
+      </button>
+
+      {/* Time Filter Panel */}
+      {showTimeFilter && (
+        <div
+          style={{
+            position: 'fixed',
+            top: '0',
+            right: '0',
+            width: '300px',
+            height: '100vh',
+            background: 'rgba(0, 0, 0, 0.9)',
+            backdropFilter: 'blur(20px)',
+            zIndex: 1001,
+            padding: '20px',
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            borderLeft: '1px solid rgba(255, 255, 255, 0.1)'
+          }}
+        >
+          <h3 style={{ color: 'white', marginBottom: '20px', textAlign: 'center' }}>
+            Filter Events by Time
+          </h3>
+          
+          <div style={{ marginBottom: '20px', textAlign: 'center' }}>
+            <p style={{ color: '#ccc', fontSize: '14px', marginBottom: '10px' }}>
+              Show events starting after:
+            </p>
+            <div style={{ color: 'white', fontSize: '18px', fontWeight: 'bold' }}>
+              {filterTime === '00:00' ? 'All times' : filterTime}
+            </div>
+          </div>
+
+          <TimeIndexThumbPicker
+            value={filterTime}
+            onChange={handleTimeFilterChange}
+            granularityMinutes={15}
+            format="12h"
+            handedness="right"
+            confirmLabel="Apply Filter"
+            className="w-full"
+          />
+
+          <div style={{ marginTop: '20px', display: 'flex', gap: '10px' }}>
+            <button
+              onClick={clearTimeFilter}
+              style={{
+                background: 'rgba(255, 255, 255, 0.2)',
+                color: 'white',
+                border: '1px solid rgba(255, 255, 255, 0.3)',
+                borderRadius: '8px',
+                padding: '8px 16px',
+                cursor: 'pointer',
+                fontSize: '14px'
+              }}
+            >
+              Clear
+            </button>
+            <button
+              onClick={toggleTimeFilter}
+              style={{
+                background: '#4CAF50',
+                color: 'white',
+                border: 'none',
+                borderRadius: '8px',
+                padding: '8px 16px',
+                cursor: 'pointer',
+                fontSize: '14px'
+              }}
+            >
+              Done
+            </button>
+          </div>
+        </div>
+      )}
       <div 
         ref={dialRef}
         style={{
@@ -245,7 +399,7 @@ const DiscoveryDial = () => {
               Discovering amazing events for you
             </p>
           </div>
-        ) : events.length === 0 ? (
+        ) : filteredEvents.length === 0 ? (
           <div style={{
             padding: '30px',
             background: 'rgba(255, 255, 255, 0.1)',
@@ -253,11 +407,32 @@ const DiscoveryDial = () => {
             marginBottom: '20px'
           }}>
             <h3 style={{ fontSize: '1.5rem', marginBottom: '15px' }}>
-              No events available
+              {isFilterActive ? 'No events match your filter' : 'No events available'}
             </h3>
             <p style={{ opacity: 0.8, marginBottom: '20px' }}>
-              Events will appear here once they're added to the system.
+              {isFilterActive 
+                ? `No events found starting after ${filterTime}. Try adjusting your time filter.`
+                : 'Events will appear here once they\'re added to the system.'
+              }
             </p>
+            {isFilterActive && (
+              <button
+                onClick={clearTimeFilter}
+                style={{
+                  padding: '12px 24px',
+                  background: 'rgba(255, 255, 255, 0.2)',
+                  border: '1px solid rgba(255, 255, 255, 0.3)',
+                  borderRadius: '8px',
+                  color: 'white',
+                  fontSize: '1rem',
+                  cursor: 'pointer',
+                  marginRight: '10px',
+                  transition: 'all 0.3s ease'
+                }}
+              >
+                Clear Filter
+              </button>
+            )}
             <button
               onClick={() => window.location.href = '/admin'}
               style={{
@@ -282,9 +457,25 @@ const DiscoveryDial = () => {
           </div>
         ) : (
           <div>
-            <h3 style={{ fontSize: '1.5rem', marginBottom: '20px' }}>
-              Current Event
-            </h3>
+            <div style={{ marginBottom: '20px' }}>
+              <h3 style={{ fontSize: '1.5rem', marginBottom: '10px' }}>
+                Current Event
+              </h3>
+              {isFilterActive && (
+                <div style={{
+                  background: 'rgba(76, 175, 80, 0.2)',
+                  border: '1px solid rgba(76, 175, 80, 0.5)',
+                  borderRadius: '8px',
+                  padding: '8px 12px',
+                  fontSize: '14px',
+                  color: '#4CAF50',
+                  display: 'inline-block',
+                  marginBottom: '10px'
+                }}>
+                  🔍 Filtered: Events after {filterTime} ({filteredEvents.length} found)
+                </div>
+              )}
+            </div>
             {currentEvent && (
               <div 
                 style={{
