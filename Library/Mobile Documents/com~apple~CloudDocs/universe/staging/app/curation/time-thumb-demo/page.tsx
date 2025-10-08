@@ -4,6 +4,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { TimeIndexThumbPicker } from '../../../components/TimeIndexThumbPicker';
+import { StartTimeField, useStartTimeField, EventDraftForm } from '../_components';
 import { normalizeValue, toOutputString, toFullLabel } from '../../../lib/time/format';
 
 // Lightweight Toast Component
@@ -253,7 +254,7 @@ export default function TimeThumbDemoPage() {
       </section>
 
       {/* Instructions */}
-      <section className="bg-white rounded-lg shadow-md p-6">
+      <section className="bg-white rounded-lg shadow-md p-6 mb-6">
         <h2 className="text-xl font-semibold mb-4">How to Use</h2>
         <ol className="list-decimal list-inside space-y-2 text-gray-700">
           <li>Drag the blue thumb to select a time</li>
@@ -265,6 +266,69 @@ export default function TimeThumbDemoPage() {
           <li>Test the disabled state</li>
           <li>Watch for toast notifications on confirm</li>
         </ol>
+      </section>
+
+      {/* L1_Curation Integration Example */}
+      <section className="bg-white rounded-lg shadow-md p-6 mb-6">
+        <h2 className="text-xl font-semibold mb-4">L1_Curation Integration</h2>
+        <p className="text-gray-600 mb-6">
+          The TimeIndexThumbPicker is now integrated with the L1_Curation workflow. 
+          Here's how to use it in your event creation forms:
+        </p>
+        
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* StartTimeField Example */}
+          <div>
+            <h3 className="text-lg font-medium mb-4">StartTimeField Component</h3>
+            <StartTimeField
+              value="14:30"
+              onTimeSelected={(time, formatted) => {
+                console.log('Time selected:', time, formatted);
+              }}
+              label="Event Start Time"
+              required
+              format="12h"
+              granularityMinutes={15}
+            />
+          </div>
+
+          {/* Event Draft Form Example */}
+          <div>
+            <h3 className="text-lg font-medium mb-4">Event Draft Form</h3>
+            <div className="bg-gray-50 p-4 rounded-lg">
+              <EventDraftForm
+                onSubmit={(draft) => {
+                  console.log('Event draft submitted:', draft);
+                }}
+                onCancel={() => {
+                  console.log('Event draft cancelled');
+                }}
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Code Example */}
+        <div className="mt-6">
+          <h3 className="text-lg font-medium mb-4">Usage Example</h3>
+          <div className="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto">
+            <pre className="text-sm">
+{`import { StartTimeField, useStartTimeField } from './_components';
+
+// In your component:
+const { value, handleTimeSelected } = useStartTimeField('12:00');
+
+<StartTimeField
+  value={value}
+  onTimeSelected={handleTimeSelected}
+  label="Event Start Time"
+  required
+  format="12h"
+  granularityMinutes={15}
+/>`}
+            </pre>
+          </div>
+        </div>
       </section>
 
       {/* CSS animations for toast */}
