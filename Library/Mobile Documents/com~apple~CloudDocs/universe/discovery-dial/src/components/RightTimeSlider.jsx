@@ -122,6 +122,12 @@ export const RightTimeSlider = ({ onTimeChange, currentTime }) => {
     }
   }, [])
 
+  // Debug logging
+  useEffect(() => {
+    console.log('RightTimeSlider mounted')
+    console.log('Time slider should be visible on right edge')
+  }, [])
+
   // Toggle expanded state
   const toggleExpanded = () => {
     setIsExpanded(!isExpanded)
@@ -134,13 +140,15 @@ export const RightTimeSlider = ({ onTimeChange, currentTime }) => {
   return (
     <motion.div
       className={`
-        fixed right-1 top-24 bottom-24
+        fixed right-2 top-24 bottom-24
         rounded-full
-        bg-white/30 hover:bg-white/50
+        bg-white/40 hover:bg-white/60
         transition-all duration-300
         cursor-pointer
-        z-10
-        ${isExpanded ? 'w-12 p-2 rounded-xl bg-white/25 backdrop-blur-md shadow-lg opacity-100' : 'w-2 opacity-60'}
+        z-50
+        border border-white/50
+        shadow-lg
+        ${isExpanded ? 'w-16 p-3 rounded-xl bg-white/30 backdrop-blur-md shadow-xl opacity-100' : 'w-3 opacity-80'}
       `}
       onClick={toggleExpanded}
       whileHover={{ scale: 1.05 }}

@@ -82,6 +82,13 @@ const DiscoveryDial = () => {
   // Swipe gesture detection
   const swipeHandlers = useSwipe(navigateEvent)
 
+  // Debug logging
+  useEffect(() => {
+    console.log('DiscoveryDial mounted')
+    console.log('Cycle button should be visible')
+    console.log('RightTimeSlider should be visible')
+  }, [])
+
   // Keyboard support
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -170,12 +177,14 @@ const DiscoveryDial = () => {
       <motion.button
         onClick={cycleTimeFilter}
         className="
-          px-4 py-2 rounded-xl
-          bg-white/12 hover:bg-white/16
+          px-6 py-3 rounded-xl
+          bg-white/20 hover:bg-white/30
           focus-visible:ring-2 focus-visible:ring-white/60
           transition-all duration-200
           text-white text-sm font-medium
           mb-6
+          border border-white/30
+          shadow-lg
         "
         whileHover={{ scale: 1.05 }}
         whileTap={{ scale: 0.95 }}
