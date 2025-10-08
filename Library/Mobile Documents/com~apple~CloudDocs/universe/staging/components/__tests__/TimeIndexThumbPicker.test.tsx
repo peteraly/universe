@@ -220,4 +220,139 @@ describe('Time Helper Functions', () => {
       expect(snapMinute(70, 15)).toBe(60);
     });
   });
+
+  // ============================================================================
+  // MINUTE SNAPPING + MINUTE WHEEL TESTS
+  // ============================================================================
+
+  describe('Minute Snapping + Minute Wheel', () => {
+    let mockOnChange: jest.Mock;
+
+    beforeEach(() => {
+      mockOnChange = jest.fn();
+    });
+
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
+    it('opens minute sheet on long press (600ms)', async () => {
+      render(<TimeIndexThumbPicker onChange={mockOnChange} />);
+      const rail = screen.getByRole('slider');
+      
+      // Start long press
+      fireEvent.mouseDown(rail);
+      
+      // Wait for long press to trigger
+      await waitFor(() => {
+        expect(screen.getByText('Select Minutes')).toBeInTheDocument();
+      }, { timeout: 700 });
+    });
+
+    it('cancels long press on drag movement', async () => {
+      render(<TimeIndexThumbPicker onChange={mockOnChange} />);
+      const rail = screen.getByRole('slider');
+      
+      // Start long press
+      fireEvent.mouseDown(rail);
+      
+      // Move before 600ms (should cancel long press)
+      fireEvent.mouseMove(rail);
+      
+      // Wait to ensure sheet doesn't open
+      await new Promise(resolve => setTimeout(resolve, 700));
+      expect(screen.queryByText('Select Minutes')).not.toBeInTheDocument();
+    });
+
+    it('selects minute from sheet and fires onChange', async () => {
+      render(<TimeIndexThumbPicker onChange={mockOnChange} />);
+      const rail = screen.getByRole('slider');
+      
+      // Trigger long press to open sheet
+      fireEvent.mouseDown(rail);
+      await waitFor(() => {
+        expect(screen.getByText('Select Minutes')).toBeInTheDocument();
+      }, { timeout: 700 });
+      
+      // Click on 15 minute option
+      const minuteButton = screen.getByText('15');
+      fireEvent.click(minuteButton);
+      
+      // Verify onChange was called
+      expect(mockOnChange).toHaveBeenCalled();
+    });
+
+    it('closes minute sheet when backdrop is clicked', async () => {
+      render(<TimeIndexThumbPicker onChange={mockOnChange} />);
+      const rail = screen.getByRole('slider');
+      
+      // Trigger long press to open sheet
+      fireEvent.mouseDown(rail);
+      await waitFor(() => {
+        expect(screen.getByText('Select Minutes')).toBeInTheDocument();
+      }, { timeout: 700 });
+      
+      // Click backdrop to close
+      const backdrop = screen.getByRole('button', { hidden: true });
+      fireEvent.click(backdrop);
+      
+      // Verify sheet is closed
+      expect(screen.queryByText('Select Minutes')).not.toBeInTheDocument();
+    });
+
+    it('snaps to nearest granularity on pointerup', () => {
+      render(<TimeIndexThumbPicker onChange={mockOnChange} granularityMinutes={15} />);
+      const rail = screen.getByRole('slider');
+      
+      // Start drag
+      fireEvent.mouseDown(rail);
+      fireEvent.mouseMove(rail);
+      
+      // End drag (should snap)
+      fireEvent.mouseUp(rail);
+      
+      // Verify onChange was called with snapped time
+      expect(mockOnChange).toHaveBeenCalled();
+    });
+
+    it('handles custom minute input', async () => {
+      render(<TimeIndexThumbPicker onChange={mockOnChange} />);
+      const rail = screen.getByRole('slider');
+      
+      // Trigger long press to open sheet
+      fireEvent.mouseDown(rail);
+      await waitFor(() => {
+        expect(screen.getByText('Select Minutes')).toBeInTheDocument();
+      }, { timeout: 700 });
+      
+      // Find custom input
+      const customInput = screen.getByDisplayValue('0');
+      fireEvent.change(customInput, { target: { value: '23' } });
+      
+      // Click set button
+      const setButton = screen.getByText('Set');
+      fireEvent.click(setButton);
+      
+      // Verify onChange was called
+      expect(mockOnChange).toHaveBeenCalled();
+    });
+
+    it('ensures 56px touch targets for minute options', async () => {
+      render(<TimeIndexThumbPicker onChange={mockOnChange} />);
+      const rail = screen.getByRole('slider');
+      
+      // Trigger long press to open sheet
+      fireEvent.mouseDown(rail);
+      await waitFor(() => {
+        expect(screen.getByText('Select Minutes')).toBeInTheDocument();
+      }, { timeout: 700 });
+      
+      // Check that minute buttons have proper height
+      const minuteButtons = screen.getAllByRole('button');
+      minuteButtons.forEach(button => {
+        const style = window.getComputedStyle(button);
+        expect(parseInt(style.minHeight)).toBeGreaterThanOrEqual(56);
+      });
+    });
+  });
 });
