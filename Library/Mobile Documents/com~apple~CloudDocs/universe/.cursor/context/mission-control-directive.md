@@ -68,6 +68,7 @@ Step 4: Wait for human approval before applying edits.
 
 #Context: Implement next section from V12.0 → L1 Event Curation Hub
 
+
 Cursor will then understand exactly which part of the hierarchy to build.
 
 #End of directive
