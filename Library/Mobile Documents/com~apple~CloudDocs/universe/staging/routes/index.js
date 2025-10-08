@@ -5,14 +5,17 @@ const routes = {
   '/admin': 'AdminDashboard',
   '/health': 'HealthMonitor',
   '/curator': 'CuratorWorkbench',
-  '/governance': 'GovernanceUI',
+  '/governance': 'GovernanceBoard',
   '/agents': 'AgentConsole',
+  '/public': 'PublicPortal',
   
   // API routes
   '/api/events': 'EventAPI',
   '/api/health': 'HealthAPI',
   '/api/config': 'ConfigAPI',
   '/api/agents': 'AgentAPI',
+  '/api/governance': 'GovernanceAPI',
+  '/api/public': 'GovernanceAPI',
   '/api/ledger': 'LedgerAPI'
 }
 
