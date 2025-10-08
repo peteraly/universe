@@ -7,7 +7,15 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint . --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "node ../staging/scripts/test-runner.js",
+    "test:regression": "node ../staging/scripts/regression-suite.js",
+    "test:all": "npm run test && npm run test:regression",
+    "pipeline": "node ../staging/scripts/ci-cd-pipeline.js",
+    "freeze": "node ../staging/scripts/freeze-manager.js freeze",
+    "unfreeze": "node ../staging/scripts/freeze-manager.js unfreeze",
+    "freeze:status": "node ../staging/scripts/freeze-manager.js status",
+    "freeze:log": "node ../staging/scripts/freeze-manager.js log"
   },
   "dependencies": {
     "react": "^18.2.0",
