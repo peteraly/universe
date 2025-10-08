@@ -1,80 +1,274 @@
 #Context: Time Index Picker Styles Skeleton
-// CSS styles for TimeIndexThumbPicker component
-// Implements L1 Event Curation Hub - Time Selection Styling
+/* CSS styles for TimeIndexThumbPicker component */
+/* Part of V12.0 L1 Event Curation Hub implementation */
 
-/* TODO: Implement time picker container styles */
-.time-index-thumb-picker {
-  /* TODO: Container layout */
-  /* - Flexbox positioning */
-  /* - Width and height */
-  /* - Background and borders */
+/* TODO: Implement main picker container styles */
+.time-index-picker {
+  /* TODO: Container layout and positioning */
+  position: relative;
+  width: 100%;
+  height: 60px;
+  background: #f5f5f5;
+  border-radius: 8px;
+  cursor: pointer;
+  user-select: none;
+  touch-action: none;
 }
 
-/* TODO: Implement thumb track/rail styles */
+/* TODO: Implement track/rail styles */
 .time-index-track {
-  /* TODO: Track appearance */
-  /* - Background color */
-  /* - Height and width */
-  /* - Border radius */
-  /* - Position relative */
+  /* TODO: Track background and positioning */
+  position: absolute;
+  top: 50%;
+  left: 20px;
+  right: 20px;
+  height: 4px;
+  background: #ddd;
+  border-radius: 2px;
+  transform: translateY(-50%);
 }
 
-/* TODO: Implement draggable thumb styles */
+/* TODO: Implement time markers styles */
+.time-markers {
+  /* TODO: Time marker positioning and styling */
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  pointer-events: none;
+}
+
+.time-marker {
+  /* TODO: Individual time marker styles */
+  position: absolute;
+  top: 50%;
+  width: 1px;
+  height: 8px;
+  background: #999;
+  transform: translateY(-50%);
+}
+
+.time-marker.major {
+  /* TODO: Major time marker styles (hour marks) */
+  height: 12px;
+  background: #666;
+}
+
+.time-marker-label {
+  /* TODO: Time marker label styles */
+  position: absolute;
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 10px;
+  color: #666;
+  white-space: nowrap;
+}
+
+/* TODO: Implement thumb/handle styles */
 .time-index-thumb {
-  /* TODO: Thumb appearance */
-  /* - Size and shape */
-  /* - Background color */
-  /* - Border and shadow */
-  /* - Cursor pointer */
-  /* - Transition effects */
+  /* TODO: Thumb positioning and styling */
+  position: absolute;
+  top: 50%;
+  width: 20px;
+  height: 20px;
+  background: #007bff;
+  border: 2px solid #fff;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  cursor: grab;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
-/* TODO: Implement thumb hover states */
 .time-index-thumb:hover {
-  /* TODO: Hover effects */
-  /* - Scale transformation */
-  /* - Shadow enhancement */
-  /* - Color changes */
+  /* TODO: Thumb hover effects */
+  transform: translate(-50%, -50%) scale(1.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
-/* TODO: Implement thumb active states */
 .time-index-thumb:active {
-  /* TODO: Active state styles */
-  /* - Pressed appearance */
-  /* - Scale down effect */
-  /* - Color feedback */
+  /* TODO: Thumb active/dragging styles */
+  cursor: grabbing;
+  transform: translate(-50%, -50%) scale(1.05);
+}
+
+.time-index-thumb.dragging {
+  /* TODO: Thumb dragging state styles */
+  cursor: grabbing;
+  transform: translate(-50%, -50%) scale(1.1);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* TODO: Implement thumb value display */
+.thumb-value {
+  /* TODO: Thumb value text styles */
+  position: absolute;
+  top: -30px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #333;
+  color: #fff;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.thumb-value::after {
+  /* TODO: Thumb value arrow styles */
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 0;
+  border-left: 4px solid transparent;
+  border-right: 4px solid transparent;
+  border-top: 4px solid #333;
 }
 
 /* TODO: Implement time display styles */
-.time-index-display {
-  /* TODO: Time text styling */
-  /* - Font size and weight */
-  /* - Color and alignment */
-  /* - Position absolute */
+.time-display {
+  /* TODO: Time display container styles */
+  position: absolute;
+  bottom: -40px;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+}
+
+.current-time {
+  /* TODO: Current time text styles */
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  background: #f0f0f0;
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
 }
 
 /* TODO: Implement disabled state styles */
-.time-index-thumb-picker.disabled {
-  /* TODO: Disabled appearance */
-  /* - Opacity reduction */
-  /* - Cursor not-allowed */
-  /* - Disabled interactions */
+.time-index-picker.disabled {
+  /* TODO: Disabled picker styles */
+  opacity: 0.6;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+.time-index-picker.disabled .time-index-thumb {
+  /* TODO: Disabled thumb styles */
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+/* TODO: Implement focus styles */
+.time-index-picker:focus {
+  /* TODO: Focus outline styles */
+  outline: 2px solid #007bff;
+  outline-offset: 2px;
+}
+
+.time-index-picker:focus .time-index-thumb {
+  /* TODO: Focus thumb styles */
+  box-shadow: 0 0 0 3px rgba(0, 123, 255, 0.25);
 }
 
 /* TODO: Implement responsive styles */
 @media (max-width: 768px) {
-  .time-index-thumb-picker {
-    /* TODO: Mobile adaptations */
-    /* - Smaller thumb size */
-    /* - Touch-friendly spacing */
-    /* - Mobile gesture support */
+  .time-index-picker {
+    /* TODO: Mobile picker styles */
+    height: 50px;
+  }
+  
+  .time-index-thumb {
+    /* TODO: Mobile thumb styles */
+    width: 24px;
+    height: 24px;
+  }
+  
+  .thumb-value {
+    /* TODO: Mobile thumb value styles */
+    font-size: 11px;
+    top: -25px;
+  }
+  
+  .current-time {
+    /* TODO: Mobile time display styles */
+    font-size: 14px;
+    padding: 6px 12px;
   }
 }
 
-/* TODO: Implement accessibility styles */
-.time-index-thumb-picker:focus-within {
-  /* TODO: Focus indicators */
-  /* - Outline styles */
-  /* - High contrast mode */
-  /* - Screen reader support */
+/* TODO: Implement dark theme styles */
+@media (prefers-color-scheme: dark) {
+  .time-index-picker {
+    /* TODO: Dark theme picker styles */
+    background: #2d2d2d;
+  }
+  
+  .time-index-track {
+    /* TODO: Dark theme track styles */
+    background: #444;
+  }
+  
+  .time-marker {
+    /* TODO: Dark theme marker styles */
+    background: #666;
+  }
+  
+  .time-index-thumb {
+    /* TODO: Dark theme thumb styles */
+    background: #007bff;
+    border-color: #2d2d2d;
+  }
+  
+  .thumb-value {
+    /* TODO: Dark theme thumb value styles */
+    background: #444;
+    color: #fff;
+  }
+  
+  .current-time {
+    /* TODO: Dark theme time display styles */
+    background: #444;
+    color: #fff;
+    border-color: #666;
+  }
+}
+
+/* TODO: Implement high contrast styles */
+@media (prefers-contrast: high) {
+  .time-index-picker {
+    /* TODO: High contrast picker styles */
+    border: 2px solid #000;
+  }
+  
+  .time-index-track {
+    /* TODO: High contrast track styles */
+    background: #000;
+  }
+  
+  .time-index-thumb {
+    /* TODO: High contrast thumb styles */
+    background: #000;
+    border-color: #fff;
+  }
+}
+
+/* TODO: Implement reduced motion styles */
+@media (prefers-reduced-motion: reduce) {
+  .time-index-thumb {
+    /* TODO: Reduced motion thumb styles */
+    transition: none;
+  }
+  
+  .time-index-thumb:hover {
+    /* TODO: Reduced motion hover styles */
+    transform: translate(-50%, -50%);
+  }
 }
