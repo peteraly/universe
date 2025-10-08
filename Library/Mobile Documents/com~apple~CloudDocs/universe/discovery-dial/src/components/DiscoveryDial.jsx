@@ -8,7 +8,7 @@ const DiscoveryDial = () => {
   const [currentEventIndex, setCurrentEventIndex] = useState(0)
   const [lastGesture, setLastGesture] = useState('')
   const [timeFilterCycle, setTimeFilterCycle] = useState('today')
-  const [startTime, setStartTime] = useState(0) // minutes since midnight
+  const [startTime, setStartTime] = useState(0)
 
   // Event dataset
   const events = [
@@ -18,7 +18,7 @@ const DiscoveryDial = () => {
     { name: "Art Gallery Opening", category: "Arts/Culture", price: "Free" }
   ]
 
-  // Time filter cycle options
+  // Time filter options
   const timeFilterOptions = ['today', 'tomorrow', 'thisWeek', 'thisMonth']
   const timeFilterLabels = {
     today: 'Today',
@@ -204,7 +204,7 @@ const DiscoveryDial = () => {
       </motion.button>
 
       {/* Four Directional Buttons */}
-      <div className="grid grid-cols-2 gap-3 w-full max-w-72 mb-6">
+      <div className="grid grid-cols-2 gap-4 w-full max-w-80 mb-6">
         {[
           { direction: 'up', label: 'Deep Dive', icon: '↑', color: 'blue' },
           { direction: 'down', label: 'Vibe Shift', icon: '↓', color: 'green' },
@@ -222,6 +222,8 @@ const DiscoveryDial = () => {
               transition-all duration-200
               text-white
               min-h-[44px]
+              border border-white/20
+              shadow-md
             `}
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
@@ -235,7 +237,7 @@ const DiscoveryDial = () => {
 
       {/* Last Gesture Indicator */}
       {lastGesture && (
-        <div className="text-green-400 text-xs font-medium">
+        <div className="text-green-400 text-xs font-medium mb-4">
           Last gesture: {lastGesture}
         </div>
       )}
