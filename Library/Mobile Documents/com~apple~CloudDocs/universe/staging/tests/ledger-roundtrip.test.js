@@ -80,7 +80,8 @@ class LedgerRoundtripTest {
             this.testResults.push({ test: 'ledger_entry_creation', result: 'FAILED', error: data.error })
             return false
           }
-        }
+        },
+        status: (code) => ({ json: (data) => data })
       }
 
       await this.governanceAPI.addLedgerEntry(mockReq, mockRes)
@@ -279,6 +280,8 @@ class LedgerRoundtripTest {
         }
       }
 
+      // Wait a bit for the ledger to be updated
+      await new Promise(resolve => setTimeout(resolve, 100))
       await this.governanceAPI.getLedger(readReq, readRes)
       
       if (!readSuccess || !ledgerEntry) {
@@ -323,7 +326,9 @@ class LedgerRoundtripTest {
           oldValue: 'old',
           newValue: 'new'
         },
-        userId: 'test_user'
+        userId: 'test_user',
+        ip: '127.0.0.1',
+        headers: { 'user-agent': 'test-agent' }
       }
       
       let entryId = null
@@ -332,7 +337,8 @@ class LedgerRoundtripTest {
           if (data.success && data.entry) {
             entryId = data.entry.id
           }
-        }
+        },
+        status: (code) => ({ json: (data) => data })
       }
 
       await this.governanceAPI.addLedgerEntry(addReq, addRes)
