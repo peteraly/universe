@@ -10,6 +10,15 @@ import {
   toOutputString, 
   snapMinute 
 } from '../lib/time/format';
+import { 
+  createRAFThrottle, 
+  createDebounce, 
+  PASSIVE_OPTIONS, 
+  ACTIVE_OPTIONS,
+  preventTextSelection,
+  restoreTextSelection,
+  batchDOMUpdates
+} from '../lib/utils/raf-throttle';
 import '../styles/time-index.css';
 
 interface TimeIndexThumbPickerProps {
@@ -57,6 +66,12 @@ export const TimeIndexThumbPicker: React.FC<TimeIndexThumbPickerProps> = ({
   const railRef = useRef<HTMLDivElement>(null);
   const thumbRef = useRef<HTMLDivElement>(null);
   const bubbleRef = useRef<HTMLDivElement>(null);
+  
+  // Performance refs
+  const isDraggingRef = useRef<boolean>(false);
+  const lastUpdateTimeRef = useRef<number>(0);
+  const rafIdRef = useRef<number | null>(null);
+  const cleanupFunctionsRef = useRef<(() => void)[]>([]);
   
   // Coarse bucket definitions
   const COARSE_BUCKETS = {
@@ -124,6 +139,57 @@ export const TimeIndexThumbPicker: React.FC<TimeIndexThumbPickerProps> = ({
     return getAvailableHours().indexOf(currentHour);
   }, [getCurrentHour, getAvailableHours]);
 
+  // Performance-optimized update function
+  const updateTimeValue = useCallback((newTime: string, shouldAnnounce = false) => {
+    const now = performance.now();
+    const timeSinceLastUpdate = now - lastUpdateTimeRef.current;
+    
+    // Throttle updates to 16ms (60fps) for smooth performance
+    if (timeSinceLastUpdate < 16) {
+      return;
+    }
+    
+    lastUpdateTimeRef.current = now;
+    
+    batchDOMUpdates([
+      () => setCurrentValue(newTime),
+      () => setCoarseBucket(getCurrentCoarseBucket(newTime)),
+      () => {
+        if (shouldAnnounce) {
+          announceTime(newTime);
+        }
+      }
+    ]);
+    
+    onChange?.(newTime);
+  }, [onChange, getCurrentCoarseBucket, announceTime]);
+
+  // RAF-throttled drag handler
+  const throttledDragUpdate = useCallback(
+    createRAFThrottle((clientY: number, rect: DOMRect) => {
+      if (!isDraggingRef.current) return;
+      
+      const relativeY = (clientY - rect.top) / rect.height;
+      const clampedY = Math.max(0, Math.min(1, relativeY));
+      const hour = Math.round(startHour + clampedY * (endHour - startHour));
+      const clampedHour = Math.max(startHour, Math.min(endHour, hour));
+      
+      const { minute } = normalizeValue(currentValue);
+      const newTime = toOutputString(clampedHour, minute, false);
+      
+      updateTimeValue(newTime, true);
+    }),
+    [startHour, endHour, currentValue, updateTimeValue]
+  );
+
+  // Debounced announcement
+  const debouncedAnnouncement = useCallback(
+    createDebounce((time: string) => {
+      announceTime(time);
+    }, 100),
+    [announceTime]
+  );
+
   // Long press detection
   const startLongPress = useCallback(() => {
     const timer = setTimeout(() => {
@@ -154,68 +220,71 @@ export const TimeIndexThumbPicker: React.FC<TimeIndexThumbPickerProps> = ({
     setShowMinuteSheet(false);
   }, []);
 
-  // Drag handlers
+  // Performance-optimized drag handlers
   const handleMouseDown = useCallback((event: React.MouseEvent) => {
     if (disabled) return;
     event.preventDefault();
+    
+    isDraggingRef.current = true;
     setIsPressed(true);
     setShowFineHours(true);
+    
+    // Prevent text selection during drag
+    preventTextSelection();
     startLongPress();
     triggerHapticFeedback();
   }, [disabled, triggerHapticFeedback, startLongPress]);
 
   const handleMouseMove = useCallback((event: MouseEvent) => {
-    if (!isPressed || disabled) return;
+    if (!isPressed || disabled || !isDraggingRef.current) return;
     setIsDragging(true);
     cancelLongPress(); // Cancel long press on drag
     
     const rect = railRef.current?.getBoundingClientRect();
     if (!rect) return;
     
-    const position = handedness === 'right' 
-      ? (rect.right - event.clientX) / rect.width
-      : (event.clientX - rect.left) / rect.width;
-    
-    const clampedPosition = Math.max(0, Math.min(1, position));
-    const { hour, minute } = calculateTimeWithMinutes(clampedPosition, dragMinute);
-    setDragHour(hour);
-    setDragMinute(minute);
-    
-    const newTime = toOutputString(hour, minute, false);
-    setCurrentValue(newTime);
-    setCoarseBucket(getCurrentCoarseBucket(newTime));
-  }, [isPressed, disabled, handedness, calculateTimeWithMinutes, dragMinute, getCurrentCoarseBucket, cancelLongPress]);
+    // Use RAF-throttled update for smooth performance
+    throttledDragUpdate(event.clientY, rect);
+  }, [isPressed, disabled, throttledDragUpdate, cancelLongPress]);
 
   const handleMouseUp = useCallback(() => {
     if (disabled) return;
+    
+    isDraggingRef.current = false;
     cancelLongPress();
     setIsPressed(false);
     setIsDragging(false);
     setShowFineHours(false);
     
+    // Restore text selection
+    restoreTextSelection();
+    
     // Snap to nearest granularity on pointerup
     const { hour, minute } = normalizeValue(currentValue);
     const snappedMinute = snapMinute(minute, granularityMinutes);
     const snappedTime = toOutputString(hour, snappedMinute, false);
-    setCurrentValue(snappedTime);
-    setDragMinute(snappedMinute);
     
-    onChange?.(snappedTime);
+    updateTimeValue(snappedTime, true);
     triggerHapticFeedback();
-  }, [disabled, currentValue, onChange, triggerHapticFeedback, granularityMinutes, cancelLongPress]);
+  }, [disabled, currentValue, granularityMinutes, updateTimeValue, triggerHapticFeedback, cancelLongPress]);
 
-  // Touch handlers
+  // Performance-optimized touch handlers
   const handleTouchStart = useCallback((event: React.TouchEvent) => {
     if (disabled) return;
     event.preventDefault();
+    
+    isDraggingRef.current = true;
     setIsPressed(true);
     setShowFineHours(true);
+    
+    // Prevent text selection during drag
+    preventTextSelection();
     startLongPress();
     triggerHapticFeedback();
   }, [disabled, triggerHapticFeedback, startLongPress]);
 
   const handleTouchMove = useCallback((event: TouchEvent) => {
-    if (!isPressed || disabled) return;
+    if (!isPressed || disabled || !isDraggingRef.current) return;
     setIsDragging(true);
     cancelLongPress(); // Cancel long press on drag
     
@@ -223,37 +292,30 @@ export const TimeIndexThumbPicker: React.FC<TimeIndexThumbPickerProps> = ({
     if (!rect) return;
     
     const touch = event.touches[0];
-    const position = handedness === 'right'
-      ? (rect.right - touch.clientX) / rect.width
-      : (touch.clientX - rect.left) / rect.width;
-    
-    const clampedPosition = Math.max(0, Math.min(1, position));
-    const { hour, minute } = calculateTimeWithMinutes(clampedPosition, dragMinute);
-    setDragHour(hour);
-    setDragMinute(minute);
-    
-    const newTime = toOutputString(hour, minute, false);
-    setCurrentValue(newTime);
-    setCoarseBucket(getCurrentCoarseBucket(newTime));
-  }, [isPressed, disabled, handedness, calculateTimeWithMinutes, dragMinute, getCurrentCoarseBucket, cancelLongPress]);
+    // Use RAF-throttled update for smooth performance
+    throttledDragUpdate(touch.clientY, rect);
+  }, [isPressed, disabled, throttledDragUpdate, cancelLongPress]);
 
   const handleTouchEnd = useCallback(() => {
     if (disabled) return;
+    
+    isDraggingRef.current = false;
     cancelLongPress();
     setIsPressed(false);
     setIsDragging(false);
     setShowFineHours(false);
     
+    // Restore text selection
+    restoreTextSelection();
+    
     // Snap to nearest granularity on pointerup
     const { hour, minute } = normalizeValue(currentValue);
     const snappedMinute = snapMinute(minute, granularityMinutes);
     const snappedTime = toOutputString(hour, snappedMinute, false);
-    setCurrentValue(snappedTime);
-    setDragMinute(snappedMinute);
     
-    onChange?.(snappedTime);
+    updateTimeValue(snappedTime, true);
     triggerHapticFeedback();
-  }, [disabled, currentValue, onChange, triggerHapticFeedback, granularityMinutes, cancelLongPress]);
+  }, [disabled, currentValue, granularityMinutes, updateTimeValue, triggerHapticFeedback, cancelLongPress]);
 
   // Enhanced keyboard navigation with accessibility
   const handleKeyDown = useCallback((event: React.KeyboardEvent) => {
@@ -337,20 +399,43 @@ export const TimeIndexThumbPicker: React.FC<TimeIndexThumbPickerProps> = ({
     }
   }, [disabled, currentValue, startHour, endHour, granularityMinutes, onChange, getCurrentCoarseBucket, triggerHapticFeedback, announceTime, showMinuteSheet, showFineHours, closeMinuteSheet]);
 
-  // Event listeners
+  // Performance-optimized event listeners with passive options
   useEffect(() => {
     if (isPressed) {
-      document.addEventListener('mousemove', handleMouseMove);
-      document.addEventListener('mouseup', handleMouseUp);
-      document.addEventListener('touchmove', handleTouchMove);
-      document.addEventListener('touchend', handleTouchEnd);
+      // Use passive listeners for better scroll performance
+      document.addEventListener('mousemove', handleMouseMove, PASSIVE_OPTIONS);
+      document.addEventListener('mouseup', handleMouseUp, PASSIVE_OPTIONS);
+      document.addEventListener('touchmove', handleTouchMove, ACTIVE_OPTIONS);
+      document.addEventListener('touchend', handleTouchEnd, PASSIVE_OPTIONS);
+      
+      // Store cleanup functions
+      const cleanup = () => {
+        document.removeEventListener('mousemove', handleMouseMove);
+        document.removeEventListener('mouseup', handleMouseUp);
+        document.removeEventListener('touchmove', handleTouchMove);
+        document.removeEventListener('touchend', handleTouchEnd);
+      };
+      
+      cleanupFunctionsRef.current.push(cleanup);
+    } else {
+      // Clean up existing listeners
+      cleanupFunctionsRef.current.forEach(cleanup => cleanup());
+      cleanupFunctionsRef.current = [];
     }
     
     return () => {
-      document.removeEventListener('mousemove', handleMouseMove);
-      document.removeEventListener('mouseup', handleMouseUp);
-      document.removeEventListener('touchmove', handleTouchMove);
-      document.removeEventListener('touchend', handleTouchEnd);
+      // Cleanup on unmount
+      cleanupFunctionsRef.current.forEach(cleanup => cleanup());
+      cleanupFunctionsRef.current = [];
+      
+      // Cancel any pending RAF
+      if (rafIdRef.current) {
+        cancelAnimationFrame(rafIdRef.current);
+        rafIdRef.current = null;
+      }
+      
+      // Restore text selection
+      restoreTextSelection();
     };
   }, [isPressed, handleMouseMove, handleMouseUp, handleTouchMove, handleTouchEnd]);
 
