@@ -1,351 +1,241 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { motion } from 'framer-motion'
+import { motion, AnimatePresence } from 'framer-motion'
+import { RightTimeSlider } from './RightTimeSlider'
+import { useSwipe } from '../hooks/useSwipe'
 
 const DiscoveryDial = () => {
-  // L1_Curation – Event data loading
-  const [currentEvent, setCurrentEvent] = useState(null)
-  const [events, setEvents] = useState([])
-  const [isLoading, setIsLoading] = useState(true)
-  const [activeDirection, setActiveDirection] = useState(null)
+  // State management
+  const [currentEventIndex, setCurrentEventIndex] = useState(0)
   const [lastGesture, setLastGesture] = useState('')
-  const [selectedTimeRange, setSelectedTimeRange] = useState('Today')
-  const [longPressTimer, setLongPressTimer] = useState(null)
-  const [showTimeSelector, setShowTimeSelector] = useState(false)
+  const [timeFilterCycle, setTimeFilterCycle] = useState('today')
+  const [startTime, setStartTime] = useState(0) // minutes since midnight
 
-  // L2_Health – Validation and fallback
-  const governanceRead = async (endpoint, fallback = null) => {
-    try {
-      const response = await fetch(endpoint)
-      if (!response.ok) throw new Error(`HTTP ${response.status}`)
-      return await response.json()
-    } catch (error) {
-      console.warn(`Governance read failed for ${endpoint}:`, error)
-      return fallback
-    }
+  // Event dataset
+  const events = [
+    { name: "Beach Volleyball Tournament", category: "Social/Fun", price: "Free" },
+    { name: "Food Truck Festival", category: "Social/Fun", price: "Free" },
+    { name: "Tech Meetup: AI & Machine Learning", category: "Professional", price: "Free" },
+    { name: "Art Gallery Opening", category: "Arts/Culture", price: "Free" }
+  ]
+
+  // Time filter cycle options
+  const timeFilterOptions = ['today', 'tomorrow', 'thisWeek', 'thisMonth']
+  const timeFilterLabels = {
+    today: 'Today',
+    tomorrow: 'Tomorrow', 
+    thisWeek: 'This Week',
+    thisMonth: 'This Month'
   }
 
-  // Load events on component mount
+  // Navigation function
+  const navigateEvent = (direction) => {
+    const directionMap = {
+      'up': 'north',
+      'down': 'south', 
+      'left': 'west',
+      'right': 'east'
+    }
+    
+    const gesture = directionMap[direction] || direction
+    setLastGesture(gesture)
+    
+    // Rotate through events
+    setCurrentEventIndex((prev) => (prev + 1) % events.length)
+    
+    // Console logging
+    console.log({ 
+      action: 'navigate', 
+      direction: gesture, 
+      timeFilterCycle, 
+      startTime 
+    })
+  }
+
+  // Time filter cycling
+  const cycleTimeFilter = () => {
+    const currentIndex = timeFilterOptions.indexOf(timeFilterCycle)
+    const nextIndex = (currentIndex + 1) % timeFilterOptions.length
+    const nextFilter = timeFilterOptions[nextIndex]
+    
+    setTimeFilterCycle(nextFilter)
+    
+    // Console logging
+    console.log({ 
+      action: 'timeFilterChange', 
+      timeFilterCycle: nextFilter, 
+      startTime 
+    })
+  }
+
+  // Handle time slider change
+  const handleTimeSliderChange = (time) => {
+    setStartTime(time)
+    
+    // Console logging
+    console.log({ 
+      action: 'startTimeChange', 
+      timeFilterCycle, 
+      startTime: time 
+    })
+  }
+
+  // Swipe gesture detection
+  const swipeHandlers = useSwipe(navigateEvent)
+
+  // Keyboard support
   useEffect(() => {
-    loadEvents()
-  }, [])
-
-  const loadEvents = async () => {
-    try {
-      setIsLoading(true)
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1000))
-      
-      // Mock events for demo
-      const mockEvents = [
-        {
-          id: 'evt-001',
-          name: 'Beach Volleyball Tournament',
-          category: 'Social/Fun',
-          price: 'Free',
-          date: '2024-03-15',
-          time: '14:00'
-        },
-        {
-          id: 'evt-002',
-          name: 'Tech Meetup: AI & Machine Learning',
-          category: 'Professional',
-          price: 'Free',
-          date: '2024-03-22',
-          time: '18:00'
-        },
-        {
-          id: 'evt-003',
-          name: 'Art Gallery Opening',
-          category: 'Arts/Culture',
-          price: 'Free',
-          date: '2024-03-28',
-          time: '19:00'
-        },
-        {
-          id: 'evt-004',
-          name: 'Food Truck Festival',
-          category: 'Social/Fun',
-          price: 'Free',
-          date: '2024-04-05',
-          time: '12:00'
-        }
-      ]
-      
-      setEvents(mockEvents)
-      if (mockEvents.length > 0) {
-        setCurrentEvent(mockEvents[0])
+    const handleKeyDown = (e) => {
+      const keyMap = {
+        'ArrowUp': 'up',
+        'ArrowDown': 'down',
+        'ArrowLeft': 'left', 
+        'ArrowRight': 'right'
       }
-    } catch (error) {
-      console.error('Error loading events:', error)
-    } finally {
-      setIsLoading(false)
+      
+      const direction = keyMap[e.key]
+      if (direction) {
+        e.preventDefault()
+        navigateEvent(direction)
+      }
     }
-  }
 
-  // L4_Intelligence – Relationship logic
-  const handleDirection = (direction) => {
-    setActiveDirection(direction)
-    setLastGesture(direction)
-    
-    // Analytics
-    console.log(`Direction selected: ${direction}`)
-    
-    // Navigate to related event (simple rotation for demo)
-    const currentIndex = events.findIndex(e => e.id === currentEvent?.id)
-    const nextIndex = (currentIndex + 1) % events.length
-    setCurrentEvent(events[nextIndex])
-  }
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [timeFilterCycle, startTime])
 
-  // Long press handling for time selector
-  const handleLongPress = () => {
-    setLongPressTimer(setTimeout(() => {
-      setShowTimeSelector(true)
-      console.log('Long press activated - time selector shown')
-    }, 500))
-  }
-
-  const handleLongPressEnd = () => {
-    if (longPressTimer) {
-      clearTimeout(longPressTimer)
-      setLongPressTimer(null)
-    }
-  }
-
-  const handleTimeRangeSelect = (range) => {
-    setSelectedTimeRange(range)
-    console.log(`Time range selected: ${range}`)
-  }
-
-  // L3_Config – UI/UX settings
-  const timeOptions = ['Now', 'Today', 'Tonight', 'This Week', 'This Month', 'Later']
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen w-full bg-gradient-to-br from-purple-500 via-blue-500 to-purple-700 flex items-center justify-center">
-        <div className="text-white text-xl">Loading events...</div>
-      </div>
-    )
-  }
+  const currentEvent = events[currentEventIndex]
 
   return (
     <div className="
       min-h-screen w-full
-      bg-gradient-to-b from-purple-500 via-blue-500 to-purple-700
+      bg-gradient-to-b from-indigo-500 via-purple-500 to-violet-600
       flex flex-col items-center justify-center
       px-4 py-6
       relative overflow-hidden
-      safe-area-inset
+      pt-safe pb-safe
     ">
-      {/* Main content area */}
-      <div className="flex flex-col items-center justify-center w-full max-w-md mx-auto">
-        {/* Main title */}
-        <h1 className="
-          text-white text-2xl font-bold
-          mb-6 text-center
-          tracking-wide
-        ">
-          Discovery Dial
-        </h1>
-
-        {/* Central circular dial */}
-        <div className="
-          relative w-[60vw] h-[60vw] sm:w-[50vw] sm:h-[50vw] max-w-80 max-h-80
-          flex items-center justify-center
-          mb-6
-        ">
-        <div 
+      {/* Central Circular Event Card */}
+      <div className="
+        relative w-[60vw] h-[60vw] sm:w-[50vw] sm:h-[50vw] max-w-80 max-h-80
+        flex items-center justify-center
+        mb-6
+      ">
+        <motion.div 
           className="
             w-full h-full
-            border border-white/40
-            rounded-full
+            rounded-full border border-white/40
+            shadow-[0_0_60px_rgba(255,255,255,0.08)]
+            backdrop-blur-sm
             flex flex-col items-center justify-center
-            bg-white/10 backdrop-blur-sm
-            transition-all duration-300
             cursor-pointer
-            shadow-lg
+            transition-all duration-300
           "
-          onMouseDown={handleLongPress}
-          onMouseUp={handleLongPressEnd}
-          onTouchStart={handleLongPress}
-          onTouchEnd={handleLongPressEnd}
+          {...swipeHandlers}
+          whileHover={{ scale: 1.02 }}
+          whileTap={{ scale: 0.98 }}
+          role="button"
+          aria-label="Event navigation dial"
+          tabIndex={0}
         >
-          {/* Event display */}
-          <motion.div
-            key={currentEvent?.id}
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.3 }}
-            className="text-center px-6"
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={currentEventIndex}
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              transition={{ duration: 0.3 }}
+              className="text-center px-6"
+              aria-live="polite"
+            >
+              <h2 className="text-white font-semibold text-xl sm:text-2xl mb-2">
+                {currentEvent.name}
+              </h2>
+              <p className="text-white/80 text-sm mb-1">
+                {currentEvent.category}
+              </p>
+              <p className="text-white/60 text-xs">
+                {currentEvent.price}
+              </p>
+            </motion.div>
+          </AnimatePresence>
+        </motion.div>
+      </div>
+
+      {/* Helper Text */}
+      <div className="text-white/70 text-sm text-center mb-6">
+        Swipe the dial to discover events
+      </div>
+
+      {/* Cycle Button */}
+      <motion.button
+        onClick={cycleTimeFilter}
+        className="
+          px-4 py-2 rounded-xl
+          bg-white/12 hover:bg-white/16
+          focus-visible:ring-2 focus-visible:ring-white/60
+          transition-all duration-200
+          text-white text-sm font-medium
+          mb-6
+        "
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+        aria-label={`Current filter: ${timeFilterLabels[timeFilterCycle]}`}
+      >
+        <AnimatePresence mode="wait">
+          <motion.span
+            key={timeFilterCycle}
+            initial={{ opacity: 0, x: 20 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -20 }}
+            transition={{ duration: 0.2 }}
           >
-            {currentEvent ? (
-              <>
-                <h2 className="text-white text-lg font-bold mb-2 leading-tight text-center">
-                  {currentEvent.name}
-                </h2>
-                <p className="text-white/90 text-sm mb-1 text-center">
-                  {currentEvent.category}
-                </p>
-                <p className="text-white/70 text-xs text-center">
-                  {currentEvent.price}
-                </p>
-              </>
-            ) : (
-              <div className="text-white/60 text-center">
-                <p className="text-lg">No events available</p>
-                <p className="text-sm">Check back later</p>
-              </div>
-            )}
-          </motion.div>
-        </div>
+            {timeFilterLabels[timeFilterCycle]}
+          </motion.span>
+        </AnimatePresence>
+      </motion.button>
 
-        {/* Instructions */}
-        <div className="text-white/70 text-sm text-center mb-6 space-y-1">
-          <p>Swipe the dial to discover events</p>
-          <p>Hold down the dial for time filter options</p>
-        </div>
-
-
-      {/* Four directional buttons */}
-      <div className="grid grid-cols-2 gap-3 w-full max-w-72">
-        <button
-          onClick={() => handleDirection('north')}
-          className={`
-            flex flex-col items-center justify-center
-            p-4 rounded-xl
-            border-2 transition-all duration-300
-            ${activeDirection === 'north' 
-              ? 'border-blue-500 bg-blue-500 text-white shadow-lg' 
-              : 'border-purple-500 bg-purple-500 text-white hover:bg-purple-600'
-            }
-            focus:outline-none focus:ring-2 focus:ring-blue-400/50
-            touch-manipulation
-            min-h-[44px]
-            shadow-md
-          `}
-          aria-label="Deep Dive - north"
-        >
-          <span className="text-2xl mb-1">↑</span>
-          <span className="text-white text-sm font-medium">Deep Dive</span>
-        </button>
-
-        <button
-          onClick={() => handleDirection('south')}
-          className={`
-            flex flex-col items-center justify-center
-            p-4 rounded-xl
-            border-2 transition-all duration-300
-            ${activeDirection === 'south' 
-              ? 'border-green-500 bg-green-500 text-white shadow-lg' 
-              : 'border-purple-500 bg-purple-500 text-white hover:bg-purple-600'
-            }
-            focus:outline-none focus:ring-2 focus:ring-green-400/50
-            touch-manipulation
-            min-h-[44px]
-            shadow-md
-          `}
-          aria-label="Vibe Shift - south"
-        >
-          <span className="text-2xl mb-1">↓</span>
-          <span className="text-white text-sm font-medium">Vibe Shift</span>
-        </button>
-
-        <button
-          onClick={() => handleDirection('west')}
-          className={`
-            flex flex-col items-center justify-center
-            p-4 rounded-xl
-            border-2 transition-all duration-300
-            ${activeDirection === 'west' 
-              ? 'border-red-500 bg-red-500 text-white shadow-lg' 
-              : 'border-purple-500 bg-purple-500 text-white hover:bg-purple-600'
-            }
-            focus:outline-none focus:ring-2 focus:ring-red-400/50
-            touch-manipulation
-            min-h-[44px]
-            shadow-md
-          `}
-          aria-label="Social - west"
-        >
-          <span className="text-2xl mb-1">←</span>
-          <span className="text-white text-sm font-medium">Social</span>
-        </button>
-
-        <button
-          onClick={() => handleDirection('east')}
-          className={`
-            flex flex-col items-center justify-center
-            p-4 rounded-xl
-            border-2 transition-all duration-300
-            ${activeDirection === 'east' 
-              ? 'border-orange-500 bg-orange-500 text-white shadow-lg' 
-              : 'border-purple-500 bg-purple-500 text-white hover:bg-purple-600'
-            }
-            focus:outline-none focus:ring-2 focus:ring-orange-400/50
-            touch-manipulation
-            min-h-[44px]
-            shadow-md
-          `}
-          aria-label="Action - east"
-        >
-          <span className="text-2xl mb-1">→</span>
-          <span className="text-white text-sm font-medium">Action</span>
-        </button>
+      {/* Four Directional Buttons */}
+      <div className="grid grid-cols-2 gap-3 w-full max-w-72 mb-6">
+        {[
+          { direction: 'up', label: 'Deep Dive', icon: '↑', color: 'blue' },
+          { direction: 'down', label: 'Vibe Shift', icon: '↓', color: 'green' },
+          { direction: 'left', label: 'Social', icon: '←', color: 'rose' },
+          { direction: 'right', label: 'Action', icon: '→', color: 'amber' }
+        ].map(({ direction, label, icon, color }) => (
+          <motion.button
+            key={direction}
+            onClick={() => navigateEvent(direction)}
+            className={`
+              flex flex-col items-center justify-center
+              p-4 rounded-xl
+              bg-white/12 hover:bg-white/16
+              focus-visible:ring-2 focus-visible:ring-white/60
+              transition-all duration-200
+              text-white
+              min-h-[44px]
+            `}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+            aria-label={`${label} - ${direction}`}
+          >
+            <span className="text-2xl mb-1">{icon}</span>
+            <span className="text-sm font-medium">{label}</span>
+          </motion.button>
+        ))}
       </div>
 
-        {/* Last gesture indicator */}
-        {lastGesture && (
-          <div className="text-green-400 text-sm mt-4">
-            Last gesture: {lastGesture}
-          </div>
-        )}
-      </div>
-
-      {/* Vertical Time Selector - Right Side */}
-      <div className="fixed right-4 top-1/2 -translate-y-1/2 z-10">
-        <div className="
-          backdrop-blur-sm bg-white/10 rounded-2xl
-          p-2
-          shadow-lg
-          opacity-60 hover:opacity-100
-          transition-opacity duration-300
-        ">
-          <div className="flex flex-col space-y-1">
-            {timeOptions.map((option) => (
-              <motion.button
-                key={option}
-                onClick={() => {
-                  handleTimeRangeSelect(option)
-                  // Haptic feedback
-                  if (navigator.vibrate) {
-                    navigator.vibrate(50)
-                  }
-                }}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className={`
-                  px-3 py-2 rounded-lg
-                  transition-all duration-300
-                  text-xs font-medium
-                  text-center
-                  min-w-[80px]
-                  ${selectedTimeRange === option 
-                    ? 'bg-white/40 text-white shadow-md shadow-white/25' 
-                    : 'bg-white/20 text-white/60 hover:bg-white/30 hover:text-white/80'
-                  }
-                  focus:outline-none focus:ring-2 focus:ring-white/50
-                  touch-manipulation
-                `}
-              >
-                {option}
-              </motion.button>
-            ))}
-          </div>
+      {/* Last Gesture Indicator */}
+      {lastGesture && (
+        <div className="text-green-400 text-xs font-medium">
+          Last gesture: {lastGesture}
         </div>
-      </div>
-    </div>
-  )
-}
+      )}
 
+      {/* Right-Side Time Slider */}
+      <RightTimeSlider 
+        onTimeChange={handleTimeSliderChange}
+        currentTime={startTime}
+      />
     </div>
   )
 }
