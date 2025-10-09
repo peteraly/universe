@@ -5,6 +5,7 @@ import SystemHealthObservability from './layers/SystemHealthObservability.jsx';
 import GlobalConfigurationControl from './layers/GlobalConfigurationControl.jsx';
 import IntelligenceBugResolution from './layers/IntelligenceBugResolution.jsx';
 import VenueManager from './VenueManager.jsx';
+import BulkVenueManager from './BulkVenueManager.jsx';
 import AdminMonitoringDashboard from './monitoring/AdminMonitoringDashboard.jsx';
 import LoginForm from './auth/LoginForm.jsx';
 
@@ -84,6 +85,13 @@ const CTOMissionControl = () => {
       name: 'Venue Parser',
       icon: '🏢',
       component: VenueManager,
+      permission: 'view_events'
+    },
+    {
+      id: 'bulk-venues',
+      name: 'Bulk Venue Processing',
+      icon: '🚀',
+      component: BulkVenueManager,
       permission: 'view_events'
     },
     {
