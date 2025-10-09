@@ -1,6 +1,6 @@
 import React from 'react'
 import DiscoveryDialExact from './components/DiscoveryDialExact.jsx'
-import AdminDashboard from './components/AdminDashboard.jsx'
+import CTOMissionControl from './components/CTOMissionControl.jsx'
 import AccessibilityEnhancements from './components/AccessibilityEnhancements.jsx'
 import './App.css'
 
@@ -11,7 +11,7 @@ function App() {
   return (
     <AccessibilityEnhancements>
       <div className="App">
-        {currentPath === '/admin' ? <AdminDashboard /> : <DiscoveryDialExact />}
+        {currentPath === '/admin' ? <CTOMissionControl /> : <DiscoveryDialExact />}
       </div>
     </AccessibilityEnhancements>
   )
