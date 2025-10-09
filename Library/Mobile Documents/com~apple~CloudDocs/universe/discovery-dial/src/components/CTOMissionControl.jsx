@@ -1,158 +1,86 @@
-import React, { useState, useEffect } from 'react';
-import { authManager, can, getCurrentUser, isAuthenticated } from '../lib/auth/rbac.js';
-import EventCurationHub from './layers/EventCurationHub.jsx';
-import SystemHealthObservability from './layers/SystemHealthObservability.jsx';
-import GlobalConfigurationControl from './layers/GlobalConfigurationControl.jsx';
-import IntelligenceBugResolution from './layers/IntelligenceBugResolution.jsx';
-import VenueManager from './VenueManager.jsx';
-import BulkVenueManager from './BulkVenueManager.jsx';
-import AdminMonitoringDashboard from './monitoring/AdminMonitoringDashboard.jsx';
-import LoginForm from './auth/LoginForm.jsx';
+import React, { useState, useEffect } from 'react'
+import EventCurationHub from './CTOMissionControl/tabs/EventCurationHub'
+import SystemHealth from './CTOMissionControl/tabs/SystemHealth'
+import GlobalConfig from './CTOMissionControl/tabs/GlobalConfig'
+import IntelligenceCenter from './CTOMissionControl/tabs/IntelligenceCenter'
 
 const CTOMissionControl = () => {
-  const [activeTab, setActiveTab] = useState('curation');
-  const [user, setUser] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [activeTab, setActiveTab] = useState('curation')
+  const [userRole, setUserRole] = useState('cto') // cto, admin, curator, agent, viewer
+  const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    // Check authentication on mount
-    const currentUser = getCurrentUser();
-    if (currentUser) {
-      setUser(currentUser);
-    }
-    setIsLoading(false);
-  }, []);
+    // Simulate loading user role and permissions
+    setTimeout(() => {
+      setIsLoading(false)
+    }, 500)
+  }, [])
 
-  const handleLogin = (email, password) => {
-    const result = authManager.login(email, password);
-    if (result.success) {
-      setUser(result.user);
-    }
-    return result;
-  };
+  const tabs = [
+    { id: 'curation', label: 'Event Curation Hub', icon: '📊', layer: 'L1' },
+    { id: 'health', label: 'System Health', icon: '🏥', layer: 'L2' },
+    { id: 'config', label: 'Global Configuration', icon: '⚙️', layer: 'L3' },
+    { id: 'intelligence', label: 'Intelligence Center', icon: '🧠', layer: 'L4' }
+  ]
 
-  const handleLogout = () => {
-    authManager.logout();
-    setUser(null);
-  };
+  const renderTabContent = () => {
+    switch (activeTab) {
+      case 'curation':
+        return <EventCurationHub userRole={userRole} />
+      case 'health':
+        return <SystemHealth userRole={userRole} />
+      case 'config':
+        return <GlobalConfig userRole={userRole} />
+      case 'intelligence':
+        return <IntelligenceCenter userRole={userRole} />
+      default:
+        return <EventCurationHub userRole={userRole} />
+    }
+  }
 
   if (isLoading) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto mb-4"></div>
-          <p className="text-gray-600">Loading CTO Mission Control...</p>
+          <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-blue-600 mx-auto mb-4"></div>
+          <h2 className="text-xl font-semibold text-gray-900 mb-2">CTO Mission Control</h2>
+          <p className="text-gray-600">Loading enterprise admin portal...</p>
         </div>
       </div>
-    );
+    )
   }
-
-  if (!user) {
-    return <LoginForm onLogin={handleLogin} />;
-  }
-
-  const tabs = [
-    {
-      id: 'curation',
-      name: 'Event Curation Hub',
-      icon: '📊',
-      component: EventCurationHub,
-      permission: 'view_events'
-    },
-    {
-      id: 'health',
-      name: 'System Health & Observability',
-      icon: '🏥',
-      component: SystemHealthObservability,
-      permission: 'view_system_health'
-    },
-    {
-      id: 'config',
-      name: 'Global Configuration & Control',
-      icon: '⚙️',
-      component: GlobalConfigurationControl,
-      permission: 'manage_config'
-    },
-    {
-      id: 'intelligence',
-      name: 'Intelligence & Bug Resolution',
-      icon: '🧠',
-      component: IntelligenceBugResolution,
-      permission: 'view_analytics'
-    },
-    {
-      id: 'venues',
-      name: 'Venue Parser',
-      icon: '🏢',
-      component: VenueManager,
-      permission: 'view_events'
-    },
-    {
-      id: 'bulk-venues',
-      name: 'Bulk Venue Processing',
-      icon: '🚀',
-      component: BulkVenueManager,
-      permission: 'view_events'
-    },
-    {
-      id: 'monitoring',
-      name: 'Live Monitoring',
-      icon: '🔍',
-      component: AdminMonitoringDashboard,
-      permission: 'view_analytics'
-    }
-  ];
-
-  const availableTabs = tabs.filter(tab => can(tab.permission));
-  const ActiveComponent = availableTabs.find(tab => tab.id === activeTab)?.component;
 
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Header */}
-      <header className="bg-white shadow-sm border-b border-gray-200">
+      <div className="bg-white shadow-sm border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center py-4">
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2">
-                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
-                  <span className="text-white font-bold text-sm">CTO</span>
-                </div>
-                <div>
-                  <h1 className="text-xl font-bold text-gray-900">Mission Control</h1>
-                  <p className="text-sm text-gray-500">Discovery Dial Enterprise Portal</p>
-                </div>
-              </div>
+          <div className="flex justify-between items-center py-6">
+            <div>
+              <h1 className="text-3xl font-bold text-gray-900">CTO Mission Control</h1>
+              <p className="text-gray-600 mt-1">Enterprise Admin Portal • Role: {userRole.toUpperCase()}</p>
             </div>
-            
             <div className="flex items-center space-x-4">
-              <div className="text-right">
-                <p className="text-sm font-medium text-gray-900">{user.name}</p>
-                <p className="text-xs text-gray-500 capitalize">{user.role}</p>
+              <div className="text-sm text-gray-500">
+                <span className="font-medium">Status:</span> 
+                <span className="ml-1 text-green-600">● Operational</span>
               </div>
-              <div className="flex space-x-2">
-                <button
-                  onClick={() => window.location.href = '/'}
-                  className="px-3 py-1 text-sm text-gray-600 hover:text-gray-900 border border-gray-300 rounded hover:bg-gray-50"
-                >
-                  Back to App
-                </button>
-                <button
-                  onClick={handleLogout}
-                  className="px-3 py-1 text-sm text-red-600 hover:text-red-800 border border-red-300 rounded hover:bg-red-50"
-                >
-                  Logout
-                </button>
-              </div>
+              <a 
+                href="/" 
+                className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors"
+              >
+                Back to Discovery Dial
+              </a>
             </div>
           </div>
         </div>
-      </header>
+      </div>
 
-      {/* Navigation Tabs */}
-      <nav className="bg-white border-b border-gray-200">
+      {/* Tab Navigation */}
+      <div className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex space-x-8">
-            {availableTabs.map((tab) => (
+          <nav className="flex space-x-8">
+            {tabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
@@ -163,33 +91,22 @@ const CTOMissionControl = () => {
                 }`}
               >
                 <span className="mr-2">{tab.icon}</span>
-                {tab.name}
+                {tab.label}
+                <span className="ml-2 text-xs bg-gray-100 text-gray-600 px-2 py-1 rounded">
+                  {tab.layer}
+                </span>
               </button>
             ))}
-          </div>
+          </nav>
         </div>
-      </nav>
+      </div>
 
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {ActiveComponent && <ActiveComponent user={user} />}
-      </main>
-
-      {/* Footer */}
-      <footer className="bg-white border-t border-gray-200 mt-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <div className="flex justify-between items-center text-sm text-gray-500">
-            <div>
-              <span className="font-medium">Discovery Dial</span> CTO Mission Control v1.0
-            </div>
-            <div>
-              Last updated: {new Date().toLocaleString()}
-            </div>
-          </div>
-        </div>
-      </footer>
+      {/* Tab Content */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {renderTabContent()}
+      </div>
     </div>
-  );
-};
+  )
+}
 
-export default CTOMissionControl;
+export default CTOMissionControl
