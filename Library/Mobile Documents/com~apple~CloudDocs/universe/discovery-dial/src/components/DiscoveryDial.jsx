@@ -251,4 +251,4 @@ const DiscoveryDial = () => {
   )
 }
 
-export default DiscoveryDial
+export default DiscoveryDial;

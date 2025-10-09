@@ -4,6 +4,8 @@ import EventCurationHub from './layers/EventCurationHub.jsx';
 import SystemHealthObservability from './layers/SystemHealthObservability.jsx';
 import GlobalConfigurationControl from './layers/GlobalConfigurationControl.jsx';
 import IntelligenceBugResolution from './layers/IntelligenceBugResolution.jsx';
+import VenueManager from './VenueManager.jsx';
+import AdminMonitoringDashboard from './monitoring/AdminMonitoringDashboard.jsx';
 import LoginForm from './auth/LoginForm.jsx';
 
 const CTOMissionControl = () => {
@@ -75,6 +77,20 @@ const CTOMissionControl = () => {
       name: 'Intelligence & Bug Resolution',
       icon: '🧠',
       component: IntelligenceBugResolution,
+      permission: 'view_analytics'
+    },
+    {
+      id: 'venues',
+      name: 'Venue Parser',
+      icon: '🏢',
+      component: VenueManager,
+      permission: 'view_events'
+    },
+    {
+      id: 'monitoring',
+      name: 'Live Monitoring',
+      icon: '🔍',
+      component: AdminMonitoringDashboard,
       permission: 'view_analytics'
     }
   ];
