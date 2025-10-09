@@ -8,6 +8,7 @@ const routes = {
   '/governance': 'GovernanceBoard',
   '/agents': 'AgentConsole',
   '/public': 'PublicPortal',
+  '/pipeline': 'PipelineDashboard',
   
   // API routes
   '/api/events': 'EventAPI',
@@ -17,7 +18,8 @@ const routes = {
   '/api/governance': 'GovernanceAPI',
   '/api/public': 'GovernanceAPI',
   '/api/recovery': 'RecoveryAPI',
-  '/api/ledger': 'LedgerAPI'
+  '/api/ledger': 'LedgerAPI',
+  '/api/pipeline': 'PipelineAPI'
 }
 
 module.exports = routes
