@@ -1,13 +1,17 @@
 import BaseParser from './BaseParser.js';
+import CORSProxyService from '../../lib/parsing/CORSProxyService.js';
 
 class ApiParser extends BaseParser {
   constructor() {
     super();
     this.name = 'api';
     this.confidence = 0.95;
+    this.corsProxy = new CORSProxyService();
   }
 
   async parse(url) {
+    console.log(`[ApiParser] Attempting to parse API from ${url}`);
+    
     const apiEndpoints = [
       `${url}/api/events`,
       `${url}/api/calendar`,
@@ -18,24 +22,30 @@ class ApiParser extends BaseParser {
 
     for (const apiUrl of apiEndpoints) {
       try {
-        const response = await fetch(apiUrl);
-        if (response.ok) {
-          const data = await response.json();
-          const events = this.extractEventsFromApi(data);
-          if (events.length > 0) {
-            return {
-              events: events.map(event => this.normalizeEvent(event)),
-              confidence: this.confidence,
-              method: this.name,
-              endpoint: apiUrl
-            };
-          }
+        console.log(`[ApiParser] Trying API endpoint: ${apiUrl}`);
+        
+        // Use CORS proxy to fetch API endpoint
+        const data = await this.corsProxy.fetchJSON(apiUrl);
+        const events = this.extractEventsFromApi(data);
+        
+        if (events.length > 0) {
+          console.log(`[ApiParser] Found ${events.length} events in API`);
+          return {
+            events: events.map(event => this.normalizeEvent(event)),
+            confidence: this.confidence,
+            method: this.name,
+            endpoint: apiUrl,
+            source: url,
+            totalEvents: events.length
+          };
         }
       } catch (error) {
+        console.warn(`[ApiParser] Failed to parse ${apiUrl}:`, error.message);
         continue;
       }
     }
 
+    console.log(`[ApiParser] No API endpoints found for ${url}`);
     return { events: [], confidence: 0, method: this.name };
   }
 

@@ -180,11 +180,17 @@ class AdminInteractionTracker {
     const recommendations = {
       'Failed to fetch': 'Check network connection and venue URL accessibility',
       'Invalid URL': 'Ensure URL format is correct (include http:// or https://)',
-      'CORS error': 'Venue may block cross-origin requests, try different parsing method',
+      'CORS error': 'CORS policy blocking requests - CORS proxy system should handle this automatically',
+      'CORS policy': 'CORS policy blocking requests - CORS proxy system should handle this automatically',
+      'Access-Control-Allow-Origin': 'CORS policy blocking requests - CORS proxy system should handle this automatically',
+      'cross-origin': 'CORS policy blocking requests - CORS proxy system should handle this automatically',
+      'blocked by CORS': 'CORS policy blocking requests - CORS proxy system should handle this automatically',
       'Timeout': 'Venue may be slow to respond, consider increasing timeout',
       'Parse error': 'Venue structure may have changed, try reparsing or different method',
       'Network error': 'Check internet connection and try again',
-      'Syntax error': 'Check for JavaScript syntax issues in the code'
+      'Syntax error': 'Check for JavaScript syntax issues in the code',
+      'All CORS proxies failed': 'All CORS proxy endpoints are down - try again later or use server-side parsing',
+      'No valid parsing methods': 'All parsing methods failed - venue may not have structured event data'
     };
     
     // Find best matching recommendation

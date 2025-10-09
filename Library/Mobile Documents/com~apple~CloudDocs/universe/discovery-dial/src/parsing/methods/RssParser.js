@@ -1,13 +1,17 @@
 import BaseParser from './BaseParser.js';
+import CORSProxyService from '../../lib/parsing/CORSProxyService.js';
 
 class RssParser extends BaseParser {
   constructor() {
     super();
     this.name = 'rss';
     this.confidence = 0.9;
+    this.corsProxy = new CORSProxyService();
   }
 
   async parse(url) {
+    console.log(`[RssParser] Attempting to parse RSS from ${url}`);
+    
     const rssUrls = [
       `${url}/feed`,
       `${url}/rss`,
@@ -18,24 +22,30 @@ class RssParser extends BaseParser {
 
     for (const rssUrl of rssUrls) {
       try {
-        const response = await fetch(rssUrl);
-        if (response.ok) {
-          const xml = await response.text();
-          const events = this.parseRssXml(xml);
-          if (events.length > 0) {
-            return {
-              events: events.map(event => this.normalizeEvent(event)),
-              confidence: this.confidence,
-              method: this.name,
-              feedUrl: rssUrl
-            };
-          }
+        console.log(`[RssParser] Trying RSS URL: ${rssUrl}`);
+        
+        // Use CORS proxy to fetch RSS feed
+        const xml = await this.corsProxy.fetchText(rssUrl);
+        const events = this.parseRssXml(xml);
+        
+        if (events.length > 0) {
+          console.log(`[RssParser] Found ${events.length} events in RSS feed`);
+          return {
+            events: events.map(event => this.normalizeEvent(event)),
+            confidence: this.confidence,
+            method: this.name,
+            feedUrl: rssUrl,
+            source: url,
+            totalEvents: events.length
+          };
         }
       } catch (error) {
+        console.warn(`[RssParser] Failed to parse ${rssUrl}:`, error.message);
         continue;
       }
     }
 
+    console.log(`[RssParser] No RSS feeds found for ${url}`);
     return { events: [], confidence: 0, method: this.name };
   }
 
