@@ -1,5 +1,6 @@
 import React from 'react'
 import DiscoveryDialCompass from './components/DiscoveryDialCompass.jsx'
+import DialTestComponent from './components/DialTestComponent.jsx'
 import EmergencyFixDashboard from './components/admin/EmergencyFixDashboard.jsx'
 import AccessibilityEnhancements from './components/AccessibilityEnhancements.jsx'
 import './App.css'
@@ -12,7 +13,7 @@ function App() {
   return (
     <AccessibilityEnhancements>
       <div className="App">
-        {currentPath === '/admin' ? <EmergencyFixDashboard /> : <DiscoveryDialCompass />}
+        {currentPath === '/admin' ? <EmergencyFixDashboard /> : <DialTestComponent />}
       </div>
     </AccessibilityEnhancements>
   )
