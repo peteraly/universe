@@ -1,9 +1,16 @@
 import { motion } from 'framer-motion';
+import useHapticFeedback from '../hooks/useHapticFeedback';
 
 const DialInnerRing = ({ items, activeIndex, onChange, isVisible = true }) => {
   const count = items.length;
+  const { triggerHaptic } = useHapticFeedback();
   
   if (!isVisible) return null;
+  
+  const handleSubcategoryChange = (index) => {
+    triggerHaptic('light');
+    onChange(index);
+  };
   
   return (
     <motion.div 
@@ -19,14 +26,17 @@ const DialInnerRing = ({ items, activeIndex, onChange, isVisible = true }) => {
         return (
           <motion.button
             key={item}
-            onClick={() => onChange(i)}
+            onClick={() => handleSubcategoryChange(i)}
             className={`absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2
                         text-xs font-medium transition-colors duration-200
                         ${isActive ? 'text-white' : 'text-white/70 hover:text-white/90'}`}
             style={{
               transform: `rotate(${angle}deg) translate(0, -135px) rotate(${-angle}deg)`
             }}
-            whileHover={{ scale: 1.1 }}
+            whileHover={{ 
+              scale: 1.2,
+              textShadow: '0 0 8px rgba(255,255,255,0.3)'
+            }}
             whileTap={{ scale: 0.95 }}
             transition={{ type: 'spring', stiffness: 400, damping: 17 }}
             role="option"

@@ -1,14 +1,18 @@
 import { motion } from 'framer-motion';
 import { clampHour, hourLabel } from '../utils/formatters';
+import useHapticFeedback from '../hooks/useHapticFeedback';
 
 const TimeSlider = ({ value, onChange, min = 5, max = 24 }) => {
   const hours = Array.from({ length: max - min + 1 }, (_, i) => i + min);
   const percentage = ((value - min) / (max - min)) * 100;
+  const { triggerHaptic } = useHapticFeedback();
 
   const handleHapticFeedback = () => {
-    if (navigator.vibrate) {
-      navigator.vibrate(10); // Light haptic feedback
-    }
+    triggerHaptic('light');
+  };
+
+  const handleThumbPress = () => {
+    triggerHaptic('light');
   };
 
   return (
@@ -33,8 +37,15 @@ const TimeSlider = ({ value, onChange, min = 5, max = 24 }) => {
             top: `${percentage}%`,
             transform: 'translateY(-50%)'
           }}
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
+          whileHover={{ 
+            scale: 1.1,
+            boxShadow: '0 0 12px rgba(255,255,255,0.3)'
+          }}
+          whileTap={{ 
+            scale: 1.3,
+            boxShadow: '0 0 16px rgba(255,255,255,0.5)'
+          }}
+          onTapStart={handleThumbPress}
           transition={{ type: 'spring', stiffness: 400, damping: 17 }}
         />
 

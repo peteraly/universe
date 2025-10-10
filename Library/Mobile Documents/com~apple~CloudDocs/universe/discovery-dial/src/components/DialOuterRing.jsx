@@ -1,6 +1,18 @@
 import { motion } from 'framer-motion';
+import useHapticFeedback from '../hooks/useHapticFeedback';
 
 const DialOuterRing = ({ rotate, labels, onDragEnd }) => {
+  const { triggerHaptic } = useHapticFeedback();
+
+  const handleDragStart = () => {
+    triggerHaptic('light');
+  };
+
+  const handleDragEnd = (event, info) => {
+    triggerHaptic('selection');
+    onDragEnd(event, info);
+  };
+
   return (
     <div className="absolute inset-0">
       {/* Red pointer at top */}
@@ -14,9 +26,13 @@ const DialOuterRing = ({ rotate, labels, onDragEnd }) => {
         drag
         dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
         dragElastic={0.05}
-        onDragEnd={onDragEnd}
+        onDragStart={handleDragStart}
+        onDragEnd={handleDragEnd}
         transition={{ type: 'spring', stiffness: 180, damping: 18 }}
-        whileDrag={{ scale: 1.02 }}
+        whileDrag={{ 
+          scale: 1.05,
+          boxShadow: '0 0 20px rgba(255,255,255,0.1)'
+        }}
       >
         {/* Tick marks around the perimeter - minor every 2°, major every 30° */}
         {[...Array(180)].map((_, i) => (

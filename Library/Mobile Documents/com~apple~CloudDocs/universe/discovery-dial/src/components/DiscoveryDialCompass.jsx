@@ -4,7 +4,7 @@ import DialOuterRing from './DialOuterRing';
 import DialInnerRing from './DialInnerRing';
 import TimeSlider from './TimeSlider';
 import TimeframeToggle from './TimeframeToggle';
-import EventReadout from './EventReadout';
+import SwipeableEventReadout from './SwipeableEventReadout';
 import { CATEGORIES, CATEGORY_ORDER, CATEGORY_ICONS } from '../data/categories';
 import { TIMEFRAMES, formatTime, calculateTimeframeWindow, debounce } from '../utils/formatters';
 
@@ -16,7 +16,7 @@ const DiscoveryDialCompass = () => {
   const [subIndex, setSubIndex] = useState(0); // per category
   const [startHour, setStartHour] = useState(17); // 5AM..24
   const [timeframeIndex, setTimeframeIndex] = useState(0); // 0..3
-  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [eventResults, setEventResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [hasSelectedPrimary, setHasSelectedPrimary] = useState(false);
 
@@ -49,25 +49,43 @@ const DiscoveryDialCompass = () => {
       setIsLoading(true);
       try {
         // Mock API call - replace with actual implementation
-        const mockEvent = {
-          title: 'Jazz in the Garden',
-          time: formatTime(filters.startHour),
-          city: 'Washington, DC',
-          distance: '2.3 mi',
-          categoryLabel: activeCategory.label,
-          categoryIcon: CATEGORY_ICONS[activeKey]
-        };
-        setSelectedEvent(mockEvent);
+        const mockEvents = [
+          {
+            title: 'Jazz in the Garden',
+            time: formatTime(filters.startHour),
+            city: 'Washington, DC',
+            distance: '2.3 mi',
+            categoryLabel: activeCategory.label,
+            categoryIcon: CATEGORY_ICONS[activeKey]
+          },
+          {
+            title: 'Art Gallery Opening',
+            time: formatTime(filters.startHour + 1),
+            city: 'Washington, DC',
+            distance: '1.8 mi',
+            categoryLabel: activeCategory.label,
+            categoryIcon: CATEGORY_ICONS[activeKey]
+          },
+          {
+            title: 'Community Workshop',
+            time: formatTime(filters.startHour + 2),
+            city: 'Washington, DC',
+            distance: '3.2 mi',
+            categoryLabel: activeCategory.label,
+            categoryIcon: CATEGORY_ICONS[activeKey]
+          }
+        ];
+        setEventResults(mockEvents);
       } catch (error) {
         console.error('Failed to fetch events:', error);
-        setSelectedEvent({
+        setEventResults([{
           title: "Can't load right now",
           time: formatTime(filters.startHour),
           city: 'Washington, DC',
           distance: null,
           categoryLabel: activeCategory.label,
           categoryIcon: CATEGORY_ICONS[activeKey]
-        });
+        }]);
       } finally {
         setIsLoading(false);
       }
@@ -152,23 +170,14 @@ const DiscoveryDialCompass = () => {
     console.log('Double tap on event:', event.title);
   }, []);
 
+  const handleEventChange = useCallback((event, index) => {
+    console.log('Event changed to:', event.title, 'at index:', index);
+  }, []);
+
   // Get faded state for labels
   const getLabelClassName = useCallback((index) => {
     return index === catIndex ? 'text-white' : 'text-white/60';
   }, [catIndex]);
-
-  // Default event data
-  const defaultEvent = useMemo(() => ({
-    title: 'Jazz in the Garden',
-    time: formatTime(startHour),
-    city: 'Washington, DC',
-    distance: '2.3 mi',
-    categoryLabel: activeCategory.label,
-    categoryIcon: CATEGORY_ICONS[activeKey]
-  }), [startHour, activeCategory, activeKey]);
-
-  // Use selected event or default
-  const currentEvent = selectedEvent || defaultEvent;
 
   // Prepare labels for outer ring
   const outerRingLabels = useMemo(() => [
@@ -220,12 +229,13 @@ const DiscoveryDialCompass = () => {
         />
       </div>
 
-      {/* Bottom event readout */}
+      {/* Bottom event readout with swipe navigation */}
       <div className="absolute inset-x-0 bottom-12">
-        <EventReadout 
-          event={currentEvent} 
+        <SwipeableEventReadout 
+          events={eventResults}
           onSingleTap={handleEventSingleTap}
           onDoubleTap={handleEventDoubleTap}
+          onEventChange={handleEventChange}
         />
       </div>
 
