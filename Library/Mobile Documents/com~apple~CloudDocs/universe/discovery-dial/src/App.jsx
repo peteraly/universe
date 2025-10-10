@@ -1,6 +1,6 @@
 import React from 'react'
 import DiscoveryDialExact from './components/DiscoveryDialExact.jsx'
-import ProfessionalAdminDashboard from './components/admin/ProfessionalAdminDashboard.jsx'
+import EmergencyFixDashboard from './components/admin/EmergencyFixDashboard.jsx'
 import AccessibilityEnhancements from './components/AccessibilityEnhancements.jsx'
 import './App.css'
 
@@ -11,7 +11,7 @@ function App() {
   return (
     <AccessibilityEnhancements>
       <div className="App">
-        {currentPath === '/admin' ? <ProfessionalAdminDashboard /> : <DiscoveryDialExact />}
+        {currentPath === '/admin' ? <EmergencyFixDashboard /> : <DiscoveryDialExact />}
       </div>
     </AccessibilityEnhancements>
   )
