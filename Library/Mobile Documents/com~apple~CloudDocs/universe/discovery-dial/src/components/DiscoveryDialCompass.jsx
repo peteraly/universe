@@ -1,10 +1,10 @@
 import { useState, useMemo, useCallback, useEffect, memo } from 'react';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
-import DialOuterRing from './DialOuterRing';
-import DialInnerRing from './DialInnerRing';
+import EnhancedDial from './EnhancedDial';
 import TimeSlider from './TimeSlider';
 import TimeframeToggle from './TimeframeToggle';
 import SwipeableEventReadout from './SwipeableEventReadout';
+import VisualFeedbackSystem, { HapticFeedback, AudioFeedback, ScreenReaderAnnouncements } from './VisualFeedbackSystem';
 import { CATEGORIES, CATEGORY_ORDER, CATEGORY_ICONS } from '../data/categories';
 import { TIMEFRAMES, formatTime, calculateTimeframeWindow, debounce } from '../utils/formatters';
 
@@ -19,6 +19,16 @@ const DiscoveryDialCompass = () => {
   const [eventResults, setEventResults] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [hasSelectedPrimary, setHasSelectedPrimary] = useState(false);
+  
+  // Gesture feedback state
+  const [gestureFeedback, setGestureFeedback] = useState({
+    type: null,
+    isActive: false,
+    direction: null,
+    categoryLabel: null,
+    subcategoryLabel: null,
+    eventTitle: null
+  });
 
   // Motion values for dial rotation
   const rotate = useMotionValue(0);
@@ -101,30 +111,36 @@ const DiscoveryDialCompass = () => {
     [] // FIXED: Empty dependency array to prevent infinite recreation
   );
 
-  // Handle dial rotation - FIXED: Remove dependencies to prevent infinite loop
-  const onDragEnd = useCallback((_, info) => {
-    const deltaDeg = radiansToDeg(info.delta.rotate ?? 0) || (info.velocity.x / 10);
-    const current = ((rotate.get() + deltaDeg) % 360 + 360) % 360;
-    const snap = Math.round(current / 90) % 4;
-    const newCatIndex = (4 - snap) % 4; // clockwise → index
-    
-    setCatIndex(newCatIndex);
+  // Enhanced gesture handlers for the new system
+  const handlePrimaryCategoryChange = useCallback((newIndex) => {
+    setCatIndex(newIndex);
     setHasSelectedPrimary(true);
-    rotate.set(snap * 90);
     setSubIndex(0); // Reset subcategory when changing main category
     
-    // Haptic feedback
-    triggerHaptic('light');
+    // Set gesture feedback
+    const newCategory = CATEGORIES.find(c => c.key === CATEGORY_ORDER[newIndex]);
+    setGestureFeedback({
+      type: 'DIAL_VERTICAL_SWIPE',
+      isActive: true,
+      direction: newIndex > catIndex ? 'up' : 'down',
+      categoryLabel: newCategory?.label,
+      subcategoryLabel: null,
+      eventTitle: null
+    });
     
-    // Fetch events for new category - use current state values
-    const newCategory = CATEGORIES.find(c => c.key === CATEGORY_ORDER[newCatIndex]);
+    // Fetch events for new category
     debouncedFetchEvents({
-      primary: CATEGORY_ORDER[newCatIndex],
+      primary: CATEGORY_ORDER[newIndex],
       subcategory: newCategory?.sub[0] || 'General',
       startHour,
       timeframe: TIMEFRAMES[timeframeIndex]
     });
-  }, [rotate, triggerHaptic, debouncedFetchEvents]); // FIXED: Minimal dependencies
+    
+    // Clear feedback after animation
+    setTimeout(() => {
+      setGestureFeedback(prev => ({ ...prev, isActive: false }));
+    }, 300);
+  }, [catIndex, startHour, timeframeIndex, debouncedFetchEvents]);
 
   // Handle timeframe toggle - FIXED: Remove dependencies to prevent infinite loop
   const handleTimeframeToggle = useCallback(() => {
@@ -144,20 +160,34 @@ const DiscoveryDialCompass = () => {
     });
   }, [catIndex, subIndex, startHour, debouncedFetchEvents]); // FIXED: Minimal dependencies
 
-  // Handle subcategory change - FIXED: Remove dependencies to prevent infinite loop
+  // Handle subcategory change with gesture feedback
   const handleSubcategoryChange = useCallback((newSubIndex) => {
     setSubIndex(newSubIndex);
-    triggerHaptic('light');
     
-    // Debounced fetch for subcategory change - use current state values
+    // Set gesture feedback
     const currentCategory = CATEGORIES.find(c => c.key === CATEGORY_ORDER[catIndex]);
+    setGestureFeedback({
+      type: 'DIAL_CIRCULAR_DRAG',
+      isActive: true,
+      direction: newSubIndex > subIndex ? 'clockwise' : 'counterclockwise',
+      categoryLabel: currentCategory?.label,
+      subcategoryLabel: currentCategory?.sub[newSubIndex],
+      eventTitle: null
+    });
+    
+    // Debounced fetch for subcategory change
     debouncedFetchEvents({
       primary: CATEGORY_ORDER[catIndex],
       subcategory: currentCategory?.sub[newSubIndex] || 'General',
       startHour,
       timeframe: TIMEFRAMES[timeframeIndex]
     });
-  }, [catIndex, startHour, timeframeIndex, debouncedFetchEvents, triggerHaptic]); // FIXED: Minimal dependencies
+    
+    // Clear feedback after animation
+    setTimeout(() => {
+      setGestureFeedback(prev => ({ ...prev, isActive: false }));
+    }, 300);
+  }, [catIndex, subIndex, startHour, timeframeIndex, debouncedFetchEvents]);
 
   // Handle time slider change - FIXED: Remove dependencies to prevent infinite loop
   const handleTimeSliderChange = useCallback((newHour) => {
@@ -173,6 +203,26 @@ const DiscoveryDialCompass = () => {
       timeframe: TIMEFRAMES[timeframeIndex]
     });
   }, [catIndex, subIndex, timeframeIndex, debouncedFetchEvents, triggerHaptic]); // FIXED: Minimal dependencies
+
+  // Handle event navigation with gesture feedback
+  const handleEventNavigation = useCallback((direction) => {
+    // This will be handled by SwipeableEventReadout
+    // We just need to provide feedback
+    const currentEvent = eventResults[0]; // Get current event
+    setGestureFeedback({
+      type: 'EVENT_HORIZONTAL_SWIPE',
+      isActive: true,
+      direction,
+      categoryLabel: null,
+      subcategoryLabel: null,
+      eventTitle: currentEvent?.title
+    });
+    
+    // Clear feedback after animation
+    setTimeout(() => {
+      setGestureFeedback(prev => ({ ...prev, isActive: false }));
+    }, 300);
+  }, [eventResults]);
 
   // Handle event readout interactions
   const handleEventSingleTap = useCallback((event) => {
@@ -215,23 +265,15 @@ const DiscoveryDialCompass = () => {
         overflow: 'hidden'
       }}
     >
-      {/* Main dial cluster */}
-      <div className="relative mx-auto mt-16 h-[280px] w-[280px]">
-        {/* Outer ring with primary categories */}
-        <DialOuterRing
-          rotate={snapped}
-          labels={outerRingLabels}
-          onDragEnd={onDragEnd}
-        />
-        
-        {/* Inner subcategory ring - only visible after primary selection */}
-        <DialInnerRing
-          items={activeCategory.sub}
-          activeIndex={subIndex}
-          onChange={handleSubcategoryChange}
-          isVisible={hasSelectedPrimary}
-        />
-      </div>
+      {/* Enhanced dial with three-tier gesture system */}
+      <EnhancedDial
+        onPrimaryCategoryChange={handlePrimaryCategoryChange}
+        onSubcategoryChange={handleSubcategoryChange}
+        onEventChange={handleEventNavigation}
+        currentPrimaryIndex={catIndex}
+        currentSubIndex={subIndex}
+        hasSelectedPrimary={hasSelectedPrimary}
+      />
 
       {/* Category filters - top horizontal row */}
       <div className="category-filters">
@@ -301,6 +343,37 @@ const DiscoveryDialCompass = () => {
           transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
         />
       )}
+
+      {/* Visual feedback system */}
+      <VisualFeedbackSystem
+        gestureType={gestureFeedback.type}
+        isActive={gestureFeedback.isActive}
+        direction={gestureFeedback.direction}
+        categoryLabel={gestureFeedback.categoryLabel}
+        subcategoryLabel={gestureFeedback.subcategoryLabel}
+        eventTitle={gestureFeedback.eventTitle}
+      />
+
+      {/* Haptic feedback */}
+      <HapticFeedback
+        gestureType={gestureFeedback.type}
+        isActive={gestureFeedback.isActive}
+      />
+
+      {/* Audio feedback (optional) */}
+      <AudioFeedback
+        gestureType={gestureFeedback.type}
+        isActive={gestureFeedback.isActive}
+      />
+
+      {/* Screen reader announcements */}
+      <ScreenReaderAnnouncements
+        gestureType={gestureFeedback.type}
+        isActive={gestureFeedback.isActive}
+        categoryLabel={gestureFeedback.categoryLabel}
+        subcategoryLabel={gestureFeedback.subcategoryLabel}
+        eventTitle={gestureFeedback.eventTitle}
+      />
     </div>
   );
 };
