@@ -1,15 +1,22 @@
 /* URGENT: CSS OVERRIDE MANDATE - FORCE LIGHT THEME */
 
-/* Mandate 1: Enforce white background on highest element */
-body {
+/* Mandate 1: High-specificity selectors to force white background */
+html, body, #root, .App, #root > div, #root > div > div {
   background-color: #FFFFFF !important;
   background: #FFFFFF !important;
   background-image: none !important;
   background-gradient: none !important;
 }
 
-/* Override any purple/gradient backgrounds */
-html, body, #root, .App {
+/* Override any purple/gradient backgrounds with maximum specificity */
+body, html, #root, .App, .discovery-dial-container, .main-content, .content-area {
+  background-color: #FFFFFF !important;
+  background: #FFFFFF !important;
+  background-image: none !important;
+}
+
+/* Force white background on all possible containers */
+* {
   background-color: #FFFFFF !important;
   background: #FFFFFF !important;
   background-image: none !important;
@@ -35,15 +42,40 @@ html, body, #root, .App {
   writing-mode: initial !important;
 }
 
-/* Ensure proper mobile viewport */
+/* COMPASS AESTHETIC LIGHT MODE - High contrast minimalism */
 .discovery-dial-container {
-  background-color: #000000 !important;
-  color: #FFFFFF !important;
+  background-color: #FFFFFF !important;
+  color: #000000 !important;
   min-height: 100vh !important;
   max-height: 100vh !important;
   overflow: hidden !important;
   width: 100% !important;
   position: relative !important;
+}
+
+/* Compass dial with light theme */
+.compass-dial {
+  background: transparent !important;
+  border: 1px solid rgba(0,0,0,0.2) !important;
+  border-radius: 50% !important;
+  width: 280px !important;
+  height: 280px !important;
+  position: relative !important;
+  margin: 0 auto !important;
+}
+
+/* Red pointer for compass */
+.red-pointer {
+  position: absolute !important;
+  top: -10px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: 0 !important;
+  height: 0 !important;
+  border-left: 6px solid transparent !important;
+  border-right: 6px solid transparent !important;
+  border-bottom: 10px solid #E63946 !important;
+  z-index: 10 !important;
 }
 
 /* Force compass dial to be visible and properly sized */
@@ -71,43 +103,127 @@ html, body, #root, .App {
   z-index: 10 !important;
 }
 
-/* Fix time slider positioning */
+/* MIDDLE-RIGHT TIME PICKER - Gesture-optimized positioning */
 .time-slider {
-  position: absolute !important;
-  right: 16px !important;
+  position: fixed !important;
+  right: 20px !important;
   top: 50% !important;
   transform: translateY(-50%) !important;
-  width: 40px !important;
-  height: 60vh !important;
+  width: 60px !important;
+  height: 50vh !important;
   background: transparent !important;
+  z-index: 1000 !important;
 }
 
-/* Ensure event readout is visible */
+/* Time picker thumb - optimized for thumb interaction */
+.time-slider-thumb {
+  width: 44px !important;
+  height: 44px !important;
+  background: #E63946 !important;
+  border-radius: 50% !important;
+  border: 2px solid #FFFFFF !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.2) !important;
+  cursor: pointer !important;
+}
+
+/* Time picker rail */
+.time-slider-rail {
+  width: 2px !important;
+  height: 100% !important;
+  background: rgba(0,0,0,0.2) !important;
+  position: absolute !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+}
+
+/* CATEGORY FILTERS - Clean horizontal layout */
+.category-filters {
+  position: fixed !important;
+  top: 20px !important;
+  left: 20px !important;
+  right: 20px !important;
+  height: 40px !important;
+  background: rgba(255,255,255,0.9) !important;
+  backdrop-filter: blur(10px) !important;
+  border-radius: 20px !important;
+  display: flex !important;
+  align-items: center !important;
+  padding: 0 16px !important;
+  overflow-x: auto !important;
+  z-index: 1000 !important;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1) !important;
+}
+
+.category-filter-chip {
+  background: #E63946 !important;
+  color: #FFFFFF !important;
+  padding: 6px 12px !important;
+  border-radius: 16px !important;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  margin-right: 8px !important;
+  white-space: nowrap !important;
+  cursor: pointer !important;
+  transition: all 0.2s ease !important;
+}
+
+.category-filter-chip:hover {
+  background: #C62828 !important;
+  transform: scale(1.05) !important;
+}
+
+/* Event readout with light theme */
 .event-readout {
   position: absolute !important;
-  bottom: 12px !important;
-  left: 0 !important;
-  right: 0 !important;
+  bottom: 20px !important;
+  left: 20px !important;
+  right: 20px !important;
   padding: 16px !important;
-  background: transparent !important;
-  color: #FFFFFF !important;
+  background: rgba(255,255,255,0.95) !important;
+  backdrop-filter: blur(10px) !important;
+  border-radius: 12px !important;
+  color: #000000 !important;
   text-align: center !important;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
 }
 
-/* Mobile responsiveness fixes */
+/* MOBILE RESPONSIVENESS - Proportionality constraints */
 @media (max-width: 768px) {
   .compass-dial {
-    width: min(280px, 70vw) !important;
-    height: min(280px, 70vw) !important;
+    width: min(240px, 60vw) !important;
+    height: min(240px, 60vw) !important;
   }
   
   .time-slider {
-    height: 50vh !important;
+    width: 50px !important;
+    height: 45vh !important;
+    right: 16px !important;
+  }
+  
+  .category-filters {
+    top: 16px !important;
+    left: 16px !important;
+    right: 16px !important;
+    height: 36px !important;
+    padding: 0 12px !important;
   }
   
   .event-readout {
+    bottom: 16px !important;
+    left: 16px !important;
+    right: 16px !important;
     padding: 12px !important;
     font-size: 14px !important;
+  }
+  
+  /* Ensure max 25% screen width for time picker */
+  .time-slider {
+    max-width: 25vw !important;
+  }
+  
+  /* Ensure max 20% screen width for category filters */
+  .category-filters {
+    max-width: 80vw !important;
   }
 }
 

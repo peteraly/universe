@@ -19,9 +19,9 @@ const TimeframeToggle = ({ label, onNext }) => {
   return (
     <motion.button
       onClick={handleClick}
-      className="px-6 py-3 rounded-full bg-white/10 text-white backdrop-blur-sm
-                 shadow-[0_0_20px_rgba(230,57,70,0.25)] hover:bg-white/15
-                 border border-white/20 transition-all duration-200"
+      className="px-6 py-3 rounded-full bg-red-600 text-white backdrop-blur-sm
+                 shadow-[0_0_20px_rgba(230,57,70,0.25)] hover:bg-red-700
+                 border border-red-500 transition-all duration-200"
       aria-label={`Change timeframe. Current: ${label}`}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}

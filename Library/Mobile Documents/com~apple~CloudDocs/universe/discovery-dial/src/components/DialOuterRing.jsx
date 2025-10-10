@@ -21,11 +21,11 @@ const DialOuterRing = ({ rotate, labels, onDragEnd }) => {
       </div>
 
       <motion.div
-        className="absolute inset-0 rounded-full border border-white/25"
+        className="absolute inset-0 rounded-full border border-black/20"
         style={{ 
           rotate,
           backgroundColor: 'transparent',
-          border: '2px solid rgba(255,255,255,0.25)',
+          border: '1px solid rgba(0,0,0,0.2)',
           borderRadius: '50%'
         }}
         drag
@@ -48,7 +48,7 @@ const DialOuterRing = ({ rotate, labels, onDragEnd }) => {
               transform: `rotate(${i * 2}deg) translate(-1px, -168px)`,
               width: i % 15 === 0 ? 2 : 1,
               height: i % 15 === 0 ? 12 : 6,
-              backgroundColor: `rgba(255,255,255,${i % 15 === 0 ? 0.8 : 0.4})`
+              backgroundColor: `rgba(0,0,0,${i % 15 === 0 ? 0.6 : 0.3})`
             }}
           />
         ))}
@@ -57,7 +57,7 @@ const DialOuterRing = ({ rotate, labels, onDragEnd }) => {
         {['N', 'E', 'S', 'W'].map((pos, idx) => (
           <div
             key={pos}
-            className={`absolute text-center text-[11px] font-medium ${labels[idx]?.className ?? ''}`}
+            className={`absolute text-center text-[11px] font-medium text-black ${labels[idx]?.className ?? ''}`}
             style={{
               left: '50%',
               top: '50%',

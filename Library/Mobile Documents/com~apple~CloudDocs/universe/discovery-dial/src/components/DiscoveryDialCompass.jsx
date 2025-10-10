@@ -189,12 +189,12 @@ const DiscoveryDialCompass = () => {
 
   return (
     <div 
-      className="relative mx-auto h-screen w-full max-w-[390px] bg-black text-white overflow-hidden"
+      className="relative mx-auto h-screen w-full max-w-[390px] bg-white text-black overflow-hidden"
       role="application"
       aria-label="Event discovery compass"
       style={{
-        backgroundColor: '#000000',
-        color: '#FFFFFF',
+        backgroundColor: '#FFFFFF',
+        color: '#000000',
         minHeight: '100vh',
         maxHeight: '100vh',
         overflow: 'hidden'
@@ -218,8 +218,21 @@ const DiscoveryDialCompass = () => {
         />
       </div>
 
-      {/* Right vertical time slider */}
-      <div className="absolute right-4 top-32">
+      {/* Category filters - top horizontal row */}
+      <div className="category-filters">
+        {CATEGORIES.map((category, index) => (
+          <div
+            key={category.key}
+            className={`category-filter-chip ${catIndex === index ? 'active' : ''}`}
+            onClick={() => setCatIndex(index)}
+          >
+            {category.label.split(' ')[0]}
+          </div>
+        ))}
+      </div>
+
+      {/* Middle-right time slider - gesture optimized */}
+      <div className="time-slider">
         <TimeSlider
           value={startHour}
           onChange={handleTimeSliderChange}
@@ -237,7 +250,7 @@ const DiscoveryDialCompass = () => {
       </div>
 
       {/* Bottom event readout with swipe navigation */}
-      <div className="absolute inset-x-0 bottom-12">
+      <div className="event-readout">
         <SwipeableEventReadout 
           events={eventResults}
           onSingleTap={handleEventSingleTap}

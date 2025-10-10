@@ -26,7 +26,7 @@ const EventReadout = ({ event, onSingleTap, onDoubleTap }) => {
       aria-atomic="true"
     >
       <motion.h2
-        className="text-[24px] font-semibold text-white mb-1 leading-tight"
+        className="text-[24px] font-semibold text-black mb-1 leading-tight"
         initial={{ scale: 0.9 }}
         animate={{ scale: 1 }}
         transition={{ delay: 0.1, type: 'spring', stiffness: 300 }}
@@ -41,7 +41,7 @@ const EventReadout = ({ event, onSingleTap, onDoubleTap }) => {
       </motion.h2>
       
       <motion.div
-        className="text-[14px] text-white/70 mb-1"
+        className="text-[14px] text-black/70 mb-1"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.2 }}
@@ -50,7 +50,7 @@ const EventReadout = ({ event, onSingleTap, onDoubleTap }) => {
       </motion.div>
       
       <motion.div
-        className="text-[13px] text-white/60 flex items-center justify-center gap-1"
+        className="text-[13px] text-black/60 flex items-center justify-center gap-1"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.3 }}

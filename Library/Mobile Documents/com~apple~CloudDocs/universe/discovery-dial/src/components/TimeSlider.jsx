@@ -19,7 +19,7 @@ const TimeSlider = ({ value, onChange, min = 5, max = 24 }) => {
     <div className="flex flex-col items-center select-none">
       {/* Live time display */}
       <motion.div 
-        className="mb-2 text-[12px] text-white/70 font-medium"
+        className="mb-2 text-[12px] text-black/70 font-medium"
         key={value}
         initial={{ scale: 1.1 }}
         animate={{ scale: 1 }}
@@ -29,21 +29,21 @@ const TimeSlider = ({ value, onChange, min = 5, max = 24 }) => {
       </motion.div>
 
       {/* Slider rail */}
-      <div className="relative h-[60vh] w-[2px] bg-white/25">
+      <div className="relative h-[50vh] w-[2px] bg-black/20">
         {/* Thumb */}
         <motion.div
-          className="absolute -left-3 w-6 h-8 rounded-full bg-white/85 shadow-lg cursor-pointer"
+          className="absolute -left-3 w-6 h-8 rounded-full bg-red-600 shadow-lg cursor-pointer"
           style={{
             top: `${percentage}%`,
             transform: 'translateY(-50%)'
           }}
           whileHover={{ 
             scale: 1.1,
-            boxShadow: '0 0 12px rgba(255,255,255,0.3)'
+            boxShadow: '0 0 12px rgba(230,57,70,0.3)'
           }}
           whileTap={{ 
             scale: 1.3,
-            boxShadow: '0 0 16px rgba(255,255,255,0.5)'
+            boxShadow: '0 0 16px rgba(230,57,70,0.5)'
           }}
           onTapStart={handleThumbPress}
           transition={{ type: 'spring', stiffness: 400, damping: 17 }}
@@ -57,9 +57,9 @@ const TimeSlider = ({ value, onChange, min = 5, max = 24 }) => {
               className="flex items-center"
               style={{ height: `${100 / (hours.length - 1)}%` }}
             >
-              <div className="w-1 h-1 bg-white/50 rounded-full" />
+              <div className="w-1 h-1 bg-black/50 rounded-full" />
               {i % 2 === 0 && (
-                <span className="ml-2 text-[10px] text-white/50">
+                <span className="ml-2 text-[10px] text-black/50">
                   {hourLabel(hour).replace(':00 ', '')}
                 </span>
               )}
@@ -80,7 +80,7 @@ const TimeSlider = ({ value, onChange, min = 5, max = 24 }) => {
           onChange(newValue);
           handleHapticFeedback();
         }}
-        className="absolute h-[60vh] w-12 opacity-0 cursor-pointer"
+        className="absolute h-[50vh] w-12 opacity-0 cursor-pointer"
         orient="vertical"
         style={{ writingMode: 'bt-lr' }}
         aria-label="Select start time"
