@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { memo } from 'react';
 import useHapticFeedback from '../hooks/useHapticFeedback';
 
 const DialOuterRing = ({ rotate, labels, onDragEnd }) => {
@@ -42,7 +43,7 @@ const DialOuterRing = ({ rotate, labels, onDragEnd }) => {
         {/* Tick marks around the perimeter - minor every 2°, major every 30° */}
         {[...Array(180)].map((_, i) => (
           <div
-            key={i}
+            key={`tick-${i}`} // FIXED: Stable unique key
             className="absolute left-1/2 top-1/2 origin-[0_100%]"
             style={{
               transform: `rotate(${i * 2}deg) translate(-1px, -168px)`,
@@ -56,7 +57,7 @@ const DialOuterRing = ({ rotate, labels, onDragEnd }) => {
         {/* Primary labels at N/E/S/W */}
         {['N', 'E', 'S', 'W'].map((pos, idx) => (
           <div
-            key={pos}
+            key={`label-${pos}`} // FIXED: Stable unique key
             className={`absolute text-center text-[11px] font-medium text-black ${labels[idx]?.className ?? ''}`}
             style={{
               left: '50%',
@@ -79,4 +80,4 @@ const DialOuterRing = ({ rotate, labels, onDragEnd }) => {
   );
 };
 
-export default DialOuterRing;
+export default memo(DialOuterRing);

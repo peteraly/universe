@@ -12,23 +12,23 @@ const useSwipeNavigation = (events = [], onEventChange) => {
   const threshold = 24; // 24-32px horizontal movement
   const velocityThreshold = 200; // 200px/s minimum velocity
 
-  // Prefetch events around current index
-  const prefetchAroundIndex = useCallback((index) => {
+  // Prefetch events around current index - FIXED: Remove events dependency to prevent infinite loop
+  const prefetchAroundIndex = useCallback((index, eventsArray) => {
     const start = Math.max(0, index - 3);
-    const end = Math.min(events.length, index + 4);
-    setPrefetchedEvents(events.slice(start, end));
-  }, [events]);
+    const end = Math.min(eventsArray.length, index + 4);
+    setPrefetchedEvents(eventsArray.slice(start, end));
+  }, []); // FIXED: Empty dependency array
 
-  // Update current event and prefetch
+  // Update current event and prefetch - FIXED: Remove dependencies to prevent infinite loop
   const updateCurrentIndex = useCallback((newIndex) => {
     if (newIndex >= 0 && newIndex < events.length && newIndex !== currentIndex) {
       setCurrentIndex(newIndex);
-      prefetchAroundIndex(newIndex);
+      prefetchAroundIndex(newIndex, events);
       onEventChange?.(events[newIndex], newIndex);
       return true;
     }
     return false;
-  }, [currentIndex, events, prefetchAroundIndex, onEventChange]);
+  }, [currentIndex, events, prefetchAroundIndex, onEventChange]); // Keep minimal dependencies
 
   // Handle swipe navigation
   const handleSwipe = useCallback((direction) => {

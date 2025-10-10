@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { memo } from 'react';
 import { clampHour, hourLabel } from '../utils/formatters';
 import useHapticFeedback from '../hooks/useHapticFeedback';
 
@@ -53,7 +54,7 @@ const TimeSlider = ({ value, onChange, min = 5, max = 24 }) => {
         <div className="absolute -right-4 top-0 h-full flex flex-col justify-between">
           {hours.map((hour, i) => (
             <div
-              key={hour}
+              key={`hour-${hour}`} // FIXED: Stable unique key
               className="flex items-center"
               style={{ height: `${100 / (hours.length - 1)}%` }}
             >
@@ -93,4 +94,4 @@ const TimeSlider = ({ value, onChange, min = 5, max = 24 }) => {
   );
 };
 
-export default TimeSlider;
+export default memo(TimeSlider);

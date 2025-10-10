@@ -1,4 +1,4 @@
-import { useState, useMemo, useCallback, useEffect } from 'react';
+import { useState, useMemo, useCallback, useEffect, memo } from 'react';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
 import DialOuterRing from './DialOuterRing';
 import DialInnerRing from './DialInnerRing';
@@ -43,57 +43,65 @@ const DiscoveryDialCompass = () => {
     }
   }, []);
 
-  // Debounced event fetching
+  // Stable debounced event fetching - FIXED: Remove dependencies to prevent infinite loop
   const debouncedFetchEvents = useCallback(
     debounce(async (filters) => {
       setIsLoading(true);
       try {
+        // Get current category info from filters instead of state
+        const currentCategory = CATEGORIES.find(c => c.key === filters.primary);
+        const currentKey = filters.primary;
+        
         // Mock API call - replace with actual implementation
         const mockEvents = [
           {
+            id: 'event-1', // FIXED: Stable unique key
             title: 'Jazz in the Garden',
             time: formatTime(filters.startHour),
             city: 'Washington, DC',
             distance: '2.3 mi',
-            categoryLabel: activeCategory.label,
-            categoryIcon: CATEGORY_ICONS[activeKey]
+            categoryLabel: currentCategory?.label || 'Event',
+            categoryIcon: CATEGORY_ICONS[currentKey] || '🎯'
           },
           {
+            id: 'event-2', // FIXED: Stable unique key
             title: 'Art Gallery Opening',
             time: formatTime(filters.startHour + 1),
             city: 'Washington, DC',
             distance: '1.8 mi',
-            categoryLabel: activeCategory.label,
-            categoryIcon: CATEGORY_ICONS[activeKey]
+            categoryLabel: currentCategory?.label || 'Event',
+            categoryIcon: CATEGORY_ICONS[currentKey] || '🎯'
           },
           {
+            id: 'event-3', // FIXED: Stable unique key
             title: 'Community Workshop',
             time: formatTime(filters.startHour + 2),
             city: 'Washington, DC',
             distance: '3.2 mi',
-            categoryLabel: activeCategory.label,
-            categoryIcon: CATEGORY_ICONS[activeKey]
+            categoryLabel: currentCategory?.label || 'Event',
+            categoryIcon: CATEGORY_ICONS[currentKey] || '🎯'
           }
         ];
         setEventResults(mockEvents);
       } catch (error) {
         console.error('Failed to fetch events:', error);
         setEventResults([{
+          id: 'error-event', // FIXED: Stable unique key
           title: "Can't load right now",
           time: formatTime(filters.startHour),
           city: 'Washington, DC',
           distance: null,
-          categoryLabel: activeCategory.label,
-          categoryIcon: CATEGORY_ICONS[activeKey]
+          categoryLabel: 'Error',
+          categoryIcon: '⚠️'
         }]);
       } finally {
         setIsLoading(false);
       }
     }, 300),
-    [activeCategory, activeKey]
+    [] // FIXED: Empty dependency array to prevent infinite recreation
   );
 
-  // Handle dial rotation
+  // Handle dial rotation - FIXED: Remove dependencies to prevent infinite loop
   const onDragEnd = useCallback((_, info) => {
     const deltaDeg = radiansToDeg(info.delta.rotate ?? 0) || (info.velocity.x / 10);
     const current = ((rotate.get() + deltaDeg) % 360 + 360) % 360;
@@ -108,56 +116,63 @@ const DiscoveryDialCompass = () => {
     // Haptic feedback
     triggerHaptic('light');
     
-    // Fetch events for new category
+    // Fetch events for new category - use current state values
+    const newCategory = CATEGORIES.find(c => c.key === CATEGORY_ORDER[newCatIndex]);
     debouncedFetchEvents({
       primary: CATEGORY_ORDER[newCatIndex],
-      subcategory: activeCategory.sub[0],
+      subcategory: newCategory?.sub[0] || 'General',
       startHour,
       timeframe: TIMEFRAMES[timeframeIndex]
     });
-  }, [rotate, startHour, timeframeIndex, activeCategory, debouncedFetchEvents, triggerHaptic]);
+  }, [rotate, triggerHaptic, debouncedFetchEvents]); // FIXED: Minimal dependencies
 
-  // Handle timeframe toggle
+  // Handle timeframe toggle - FIXED: Remove dependencies to prevent infinite loop
   const handleTimeframeToggle = useCallback(() => {
-    const newIndex = (timeframeIndex + 1) % TIMEFRAMES.length;
-    setTimeframeIndex(newIndex);
-    
-    // Immediate fetch for timeframe change
-    debouncedFetchEvents({
-      primary: activeKey,
-      subcategory: activeCategory.sub[subIndex],
-      startHour,
-      timeframe: TIMEFRAMES[newIndex]
+    setTimeframeIndex(prev => {
+      const newIndex = (prev + 1) % TIMEFRAMES.length;
+      
+      // Fetch events with current state values
+      const currentCategory = CATEGORIES.find(c => c.key === CATEGORY_ORDER[catIndex]);
+      debouncedFetchEvents({
+        primary: CATEGORY_ORDER[catIndex],
+        subcategory: currentCategory?.sub[subIndex] || 'General',
+        startHour,
+        timeframe: TIMEFRAMES[newIndex]
+      });
+      
+      return newIndex;
     });
-  }, [timeframeIndex, activeKey, activeCategory, subIndex, startHour, debouncedFetchEvents]);
+  }, [catIndex, subIndex, startHour, debouncedFetchEvents]); // FIXED: Minimal dependencies
 
-  // Handle subcategory change
+  // Handle subcategory change - FIXED: Remove dependencies to prevent infinite loop
   const handleSubcategoryChange = useCallback((newSubIndex) => {
     setSubIndex(newSubIndex);
     triggerHaptic('light');
     
-    // Debounced fetch for subcategory change
+    // Debounced fetch for subcategory change - use current state values
+    const currentCategory = CATEGORIES.find(c => c.key === CATEGORY_ORDER[catIndex]);
     debouncedFetchEvents({
-      primary: activeKey,
-      subcategory: activeCategory.sub[newSubIndex],
+      primary: CATEGORY_ORDER[catIndex],
+      subcategory: currentCategory?.sub[newSubIndex] || 'General',
       startHour,
       timeframe: TIMEFRAMES[timeframeIndex]
     });
-  }, [activeKey, activeCategory, startHour, timeframeIndex, debouncedFetchEvents, triggerHaptic]);
+  }, [catIndex, startHour, timeframeIndex, debouncedFetchEvents, triggerHaptic]); // FIXED: Minimal dependencies
 
-  // Handle time slider change
+  // Handle time slider change - FIXED: Remove dependencies to prevent infinite loop
   const handleTimeSliderChange = useCallback((newHour) => {
     setStartHour(newHour);
     triggerHaptic('light');
     
-    // Debounced fetch for time change
+    // Debounced fetch for time change - use current state values
+    const currentCategory = CATEGORIES.find(c => c.key === CATEGORY_ORDER[catIndex]);
     debouncedFetchEvents({
-      primary: activeKey,
-      subcategory: activeCategory.sub[subIndex],
+      primary: CATEGORY_ORDER[catIndex],
+      subcategory: currentCategory?.sub[subIndex] || 'General',
       startHour: newHour,
       timeframe: TIMEFRAMES[timeframeIndex]
     });
-  }, [activeKey, activeCategory, subIndex, timeframeIndex, debouncedFetchEvents, triggerHaptic]);
+  }, [catIndex, subIndex, timeframeIndex, debouncedFetchEvents, triggerHaptic]); // FIXED: Minimal dependencies
 
   // Handle event readout interactions
   const handleEventSingleTap = useCallback((event) => {
@@ -222,7 +237,7 @@ const DiscoveryDialCompass = () => {
       <div className="category-filters">
         {CATEGORIES.map((category, index) => (
           <div
-            key={category.key}
+            key={`category-${category.key}`} // FIXED: Stable unique key
             className={`category-filter-chip ${catIndex === index ? 'active' : ''}`}
             onClick={() => setCatIndex(index)}
           >
@@ -290,4 +305,5 @@ const DiscoveryDialCompass = () => {
   );
 };
 
-export default DiscoveryDialCompass;
+// Memoize the component to prevent unnecessary re-renders
+export default memo(DiscoveryDialCompass);
