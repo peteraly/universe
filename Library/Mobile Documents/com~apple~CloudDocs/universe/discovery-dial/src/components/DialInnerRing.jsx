@@ -1,10 +1,17 @@
 import { motion } from 'framer-motion';
 
-const DialInnerRing = ({ items, activeIndex, onChange }) => {
+const DialInnerRing = ({ items, activeIndex, onChange, isVisible = true }) => {
   const count = items.length;
   
+  if (!isVisible) return null;
+  
   return (
-    <div className="absolute inset-10 rounded-full border border-white/16">
+    <motion.div 
+      className="absolute inset-10 rounded-full border border-white/16"
+      initial={{ opacity: 0, scale: 0.8 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.3, type: 'spring', stiffness: 300 }}
+    >
       {items.map((item, i) => {
         const angle = (i / count) * 360;
         const isActive = i === activeIndex;
@@ -22,12 +29,14 @@ const DialInnerRing = ({ items, activeIndex, onChange }) => {
             whileHover={{ scale: 1.1 }}
             whileTap={{ scale: 0.95 }}
             transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+            role="option"
+            aria-selected={isActive}
           >
             {item}
           </motion.button>
         );
       })}
-    </div>
+    </motion.div>
   );
 };
 

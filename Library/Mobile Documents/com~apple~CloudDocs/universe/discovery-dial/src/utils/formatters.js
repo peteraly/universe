@@ -31,3 +31,62 @@ export const formatEventTime = (date, time) => {
   if (diffDays <= 7) return 'This Week';
   return 'This Month';
 };
+
+export const calculateTimeframeWindow = (timeframe) => {
+  const now = new Date();
+  const start = new Date(now);
+  const end = new Date(now);
+  
+  switch (timeframe) {
+    case 'Today':
+      start.setHours(0, 0, 0, 0);
+      end.setHours(23, 59, 59, 999);
+      break;
+    case 'Tomorrow':
+      start.setDate(start.getDate() + 1);
+      start.setHours(0, 0, 0, 0);
+      end.setDate(end.getDate() + 1);
+      end.setHours(23, 59, 59, 999);
+      break;
+    case 'This Week':
+      start.setHours(0, 0, 0, 0);
+      end.setDate(end.getDate() + (7 - end.getDay()));
+      end.setHours(23, 59, 59, 999);
+      break;
+    case 'This Month':
+      start.setHours(0, 0, 0, 0);
+      end.setMonth(end.getMonth() + 1, 0);
+      end.setHours(23, 59, 59, 999);
+      break;
+  }
+  
+  return { start, end };
+};
+
+export const buildEventQuery = (filters) => {
+  return {
+    primary_category: filters.primary,
+    subcategory: filters.subcategory,
+    start_time_local: filters.startHour,
+    timeframe_window: calculateTimeframeWindow(filters.timeframe),
+    location: filters.userLocation,
+    radius_km: filters.radius || 10,
+    sort: [
+      'time_proximity',
+      'distance',
+      'popularity_score'
+    ]
+  };
+};
+
+export const debounce = (func, wait) => {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+};

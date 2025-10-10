@@ -18,16 +18,16 @@ const DialOuterRing = ({ rotate, labels, onDragEnd }) => {
         transition={{ type: 'spring', stiffness: 180, damping: 18 }}
         whileDrag={{ scale: 1.02 }}
       >
-        {/* Tick marks around the perimeter */}
+        {/* Tick marks around the perimeter - minor every 2°, major every 30° */}
         {[...Array(180)].map((_, i) => (
           <div
             key={i}
             className="absolute left-1/2 top-1/2 origin-[0_100%]"
             style={{
               transform: `rotate(${i * 2}deg) translate(-1px, -168px)`,
-              width: i % 10 === 0 ? 2 : 1,
-              height: i % 10 === 0 ? 12 : 6,
-              backgroundColor: `rgba(255,255,255,${i % 10 === 0 ? 0.8 : 0.4})`
+              width: i % 15 === 0 ? 2 : 1,
+              height: i % 15 === 0 ? 12 : 6,
+              backgroundColor: `rgba(255,255,255,${i % 15 === 0 ? 0.8 : 0.4})`
             }}
           />
         ))}
