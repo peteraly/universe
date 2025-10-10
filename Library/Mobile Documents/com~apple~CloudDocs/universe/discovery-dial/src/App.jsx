@@ -3,6 +3,7 @@ import DiscoveryDialCompass from './components/DiscoveryDialCompass.jsx'
 import EmergencyFixDashboard from './components/admin/EmergencyFixDashboard.jsx'
 import AccessibilityEnhancements from './components/AccessibilityEnhancements.jsx'
 import './App.css'
+import './styles/override.css'
 
 function App() {
   // Simple routing based on current pathname

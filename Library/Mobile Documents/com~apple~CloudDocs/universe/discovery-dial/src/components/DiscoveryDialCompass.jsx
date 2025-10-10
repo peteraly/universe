@@ -192,6 +192,13 @@ const DiscoveryDialCompass = () => {
       className="relative mx-auto h-screen w-full max-w-[390px] bg-black text-white overflow-hidden"
       role="application"
       aria-label="Event discovery compass"
+      style={{
+        backgroundColor: '#000000',
+        color: '#FFFFFF',
+        minHeight: '100vh',
+        maxHeight: '100vh',
+        overflow: 'hidden'
+      }}
     >
       {/* Main dial cluster */}
       <div className="relative mx-auto mt-16 h-[280px] w-[280px]">

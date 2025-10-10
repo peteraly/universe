@@ -22,7 +22,12 @@ const DialOuterRing = ({ rotate, labels, onDragEnd }) => {
 
       <motion.div
         className="absolute inset-0 rounded-full border border-white/25"
-        style={{ rotate }}
+        style={{ 
+          rotate,
+          backgroundColor: 'transparent',
+          border: '2px solid rgba(255,255,255,0.25)',
+          borderRadius: '50%'
+        }}
         drag
         dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
         dragElastic={0.05}

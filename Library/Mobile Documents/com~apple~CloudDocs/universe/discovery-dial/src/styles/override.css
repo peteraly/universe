@@ -1,0 +1,131 @@
+/* URGENT: CSS OVERRIDE MANDATE - FORCE LIGHT THEME */
+
+/* Mandate 1: Enforce white background on highest element */
+body {
+  background-color: #FFFFFF !important;
+  background: #FFFFFF !important;
+  background-image: none !important;
+  background-gradient: none !important;
+}
+
+/* Override any purple/gradient backgrounds */
+html, body, #root, .App {
+  background-color: #FFFFFF !important;
+  background: #FFFFFF !important;
+  background-image: none !important;
+}
+
+/* Remove any old distraction elements */
+.vertical-clock,
+.clock-ruler,
+.time-ruler,
+.distraction-element {
+  display: none !important;
+  visibility: hidden !important;
+}
+
+/* Fix rotation conflicts - remove any sideways transforms */
+.filter-menu,
+.category-menu,
+.sidebar,
+.navigation {
+  transform: none !important;
+  writing-mode: horizontal-tb !important;
+  text-orientation: mixed !important;
+  writing-mode: initial !important;
+}
+
+/* Ensure proper mobile viewport */
+.discovery-dial-container {
+  background-color: #000000 !important;
+  color: #FFFFFF !important;
+  min-height: 100vh !important;
+  max-height: 100vh !important;
+  overflow: hidden !important;
+  width: 100% !important;
+  position: relative !important;
+}
+
+/* Force compass dial to be visible and properly sized */
+.compass-dial {
+  background: transparent !important;
+  border: 2px solid rgba(255,255,255,0.25) !important;
+  border-radius: 50% !important;
+  width: 280px !important;
+  height: 280px !important;
+  position: relative !important;
+  margin: 0 auto !important;
+}
+
+/* Ensure red pointer is visible */
+.red-pointer {
+  position: absolute !important;
+  top: -10px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  width: 0 !important;
+  height: 0 !important;
+  border-left: 6px solid transparent !important;
+  border-right: 6px solid transparent !important;
+  border-bottom: 10px solid #E63946 !important;
+  z-index: 10 !important;
+}
+
+/* Fix time slider positioning */
+.time-slider {
+  position: absolute !important;
+  right: 16px !important;
+  top: 50% !important;
+  transform: translateY(-50%) !important;
+  width: 40px !important;
+  height: 60vh !important;
+  background: transparent !important;
+}
+
+/* Ensure event readout is visible */
+.event-readout {
+  position: absolute !important;
+  bottom: 12px !important;
+  left: 0 !important;
+  right: 0 !important;
+  padding: 16px !important;
+  background: transparent !important;
+  color: #FFFFFF !important;
+  text-align: center !important;
+}
+
+/* Mobile responsiveness fixes */
+@media (max-width: 768px) {
+  .compass-dial {
+    width: min(280px, 70vw) !important;
+    height: min(280px, 70vw) !important;
+  }
+  
+  .time-slider {
+    height: 50vh !important;
+  }
+  
+  .event-readout {
+    padding: 12px !important;
+    font-size: 14px !important;
+  }
+}
+
+/* Force remove any cached styles */
+* {
+  background-image: none !important;
+}
+
+/* Ensure proper text orientation */
+h1, h2, h3, h4, h5, h6, p, span, div {
+  writing-mode: horizontal-tb !important;
+  text-orientation: mixed !important;
+  transform: none !important;
+}
+
+/* Override any rotation transforms */
+.rotated, .sideways, .vertical-text {
+  transform: none !important;
+  writing-mode: horizontal-tb !important;
+  text-orientation: mixed !important;
+}
