@@ -106,6 +106,17 @@ export default function EventCompass({ categories = [], config = {} }) {
 
   // Early return after hooks if no categories
   if (!categories || categories.length === 0) {
+    // Debug: Log to console in production
+    if (typeof window !== 'undefined') {
+      console.error('🔴 DIAL ERROR: No categories provided to EventCompass');
+      console.log('Debug info:', {
+        categoriesReceived: categories,
+        categoriesLength: categories?.length,
+        categoriesType: typeof categories,
+        timestamp: new Date().toISOString()
+      });
+    }
+    
     return (
       <div style={{ 
         background: 'black', 
@@ -119,13 +130,22 @@ export default function EventCompass({ categories = [], config = {} }) {
         textAlign: 'center'
       }}>
         <div>
-          <div style={{ marginBottom: '20px' }}>⚠️ No Categories Available</div>
+          <div style={{ marginBottom: '20px', color: '#FF3B30' }}>⚠️ No Categories Available</div>
           <div style={{ fontSize: '14px', opacity: 0.7 }}>
             Check that categories.json is loaded correctly
+          </div>
+          <div style={{ fontSize: '12px', opacity: 0.5, marginTop: '20px', fontFamily: 'monospace' }}>
+            categories type: {typeof categories}<br/>
+            categories length: {categories?.length || 0}
           </div>
         </div>
       </div>
     );
+  }
+  
+  // Debug: Confirm render in production
+  if (typeof window !== 'undefined' && import.meta.env.PROD) {
+    console.log('✓ EventCompass rendering with', categories.length, 'categories');
   }
 
   return (

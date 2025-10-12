@@ -34,6 +34,15 @@ export default function DialRing({ hoverSubIndex, activeSubIndex, subcategories 
   const cx = 50; // Center X in viewBox
   const cy = 50; // Center Y in viewBox
   const rOuter = 48; // Outer radius
+  
+  // Debug logging in production
+  if (typeof window !== 'undefined' && import.meta.env.PROD) {
+    console.log('✓ DialRing rendering:', {
+      subcategories: count,
+      activeIndex: activeSubIndex,
+      hoverIndex: hoverSubIndex
+    });
+  }
 
   return (
     <svg
