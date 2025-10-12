@@ -1,3 +1,135 @@
+# 🎯 GESTURE FEEDBACK ENHANCEMENT - Clear Distinction Between Primary & Subcategory Navigation
+
+## **CURRENT PROBLEM:**
+Users may not clearly understand the difference between:
+1. **Directional swipes** (Up/Down/Left/Right) → Change primary category
+2. **Circular drag** (Rotate) → Change subcategory
+
+Both happen on the same dial area, need clear visual/audio/haptic differentiation.
+
+---
+
+## **SOLUTION: Multi-Sensory Feedback System**
+
+### **Design Principle:**
+Each gesture type should have UNIQUE feedback across 3 channels:
+1. **Visual** - What you see
+2. **Haptic** - What you feel  
+3. **Audio** (optional) - What you hear
+
+---
+
+## **GESTURE 1: PRIMARY CATEGORY SWITCH (Directional Swipe)**
+
+### **Visual Feedback:**
+
+#### **During Swipe (Real-time):**
+```javascript
+- Dim ALL primary labels to 20% opacity
+- Bright arrow/indicator appears in swipe direction
+- Crosshairs pulse/glow
+- Subtle color shift (white → blue tint)
+```
+
+#### **On Commit:**
+```javascript
+- Flash animation on new primary label
+- All subcategories fade out → new ones fade in
+- Brief radial burst from center
+- Primary label scales up momentarily (1.2x → 1.0x)
+```
+
+#### **Visual Indicators:**
+```javascript
+// Show directional arrows during swipe
+┌─────────────┐
+│      ↑      │  ← Arrow appears
+│   [DIAL]    │
+│             │
+└─────────────┘
+```
+
+---
+
+## **GESTURE 2: SUBCATEGORY ROTATION (Circular Drag)**
+
+### **Visual Feedback:**
+
+#### **During Rotation (Real-time):**
+```javascript
+- Subcategory labels rotate smoothly
+- Active tick mark elongates/brightens
+- Subtle circular trail effect
+- Circle border thickens slightly
+```
+
+#### **On Snap:**
+```javascript
+- New subcategory label pulses
+- Tick mark settles with spring animation
+- Subtle glow around active subcategory
+- Event readout updates with slide transition
+```
+
+#### **Visual Indicators:**
+```javascript
+// Show rotation progress
+┌─────────────┐
+│   WORKSHOPS │  ← Label rotating
+│   [DIAL] ↻  │  ← Rotation indicator
+│   TALKS     │
+└─────────────┘
+```
+
+---
+
+## **HAPTIC PATTERNS:**
+
+### **Primary Category (Directional):**
+```javascript
+// STRONG, DISTINCT pattern
+vibrate([0, 50, 100, 50])  // Double pulse, strong
+// Feel: DA-DUM (authoritative, categorical)
+```
+
+### **Subcategory (Rotation):**
+```javascript
+// SOFT, CONTINUOUS pattern
+vibrate([0, 15, 30, 15, 30, 15])  // Triple tick, soft
+// Feel: tick-tick-tick (gentle, continuous)
+```
+
+### **During Drag:**
+```javascript
+// Subcategory rotation: tick on each snap point
+// Primary swipe: single strong pulse on commit
+```
+
+---
+
+## **AUDIO FEEDBACK (Optional):**
+
+### **Primary Category:**
+```javascript
+// Low-pitched "whoosh" sound (150-200 Hz)
+// Duration: 200ms
+// Volume: Medium
+// Feel: Authoritative, page-turn
+```
+
+### **Subcategory:**
+```javascript
+// High-pitched "click" (800-1000 Hz)
+// Duration: 50ms
+// Volume: Soft
+// Feel: Mechanical, dial-click
+```
+
+---
+
+## **COMPLETE IMPLEMENTATION:**
+
+```javascript
 import { useMemo, useCallback, useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import useEventCompassState from '../hooks/useEventCompassState';
@@ -5,9 +137,9 @@ import useDialGestures from '../hooks/useDialGestures';
 import { hardTick, softTick } from '../utils/haptics';
 
 /**
- * FINAL PRODUCTION VERSION with Enhanced Gesture Feedback
- * - Primary swipe: Directional arrows, blue tint, strong double-pulse
- * - Subcategory rotation: Rotation symbol, circle glow, soft triple-tick
+ * Enhanced gesture feedback for clear distinction between:
+ * - Primary category switch (directional swipe)
+ * - Subcategory rotation (circular drag)
  */
 export default function EventCompassFinal({ categories = [], config = {} }) {
   const [dialSize, setDialSize] = useState(400);
@@ -17,7 +149,6 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
     isActive: false
   });
   
-  // Calculate responsive dial size
   useEffect(() => {
     const calculateSize = () => {
       const size = Math.min(
@@ -38,7 +169,7 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
   // Enhanced haptic patterns
   const primaryHaptic = useCallback(() => {
     if (navigator.vibrate) {
-      navigator.vibrate([0, 50, 100, 50]); // Strong double pulse (DA-DUM)
+      navigator.vibrate([0, 50, 100, 50]); // Strong double pulse
     }
   }, []);
   
@@ -48,14 +179,48 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
     }
   }, []);
   
-  // Wrapped actions with enhanced multi-sensory feedback
+  // Audio feedback (optional)
+  const primarySound = useCallback(() => {
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    oscillator.frequency.value = 180; // Low whoosh
+    gainNode.gain.setValueAtTime(0.1, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.2);
+    
+    oscillator.start();
+    oscillator.stop(audioContext.currentTime + 0.2);
+  }, []);
+  
+  const subcategorySound = useCallback(() => {
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const oscillator = audioContext.createOscillator();
+    const gainNode = audioContext.createGain();
+    
+    oscillator.connect(gainNode);
+    gainNode.connect(audioContext.destination);
+    
+    oscillator.frequency.value = 900; // High click
+    gainNode.gain.setValueAtTime(0.05, audioContext.currentTime);
+    gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.05);
+    
+    oscillator.start();
+    oscillator.stop(audioContext.currentTime + 0.05);
+  }, []);
+  
+  // Wrapped actions with enhanced feedback
   const actionsWithFeedback = useMemo(() => ({
     setPrimaryByDirection: (direction) => {
-      // Set gesture state for visual feedback
+      // Set gesture state
       setGestureState({ type: 'primary', direction, isActive: true });
       
       // Multi-sensory feedback
       primaryHaptic();
+      // primarySound(); // Uncomment if audio desired
       
       // Execute action
       actions.setPrimaryByDirection(direction);
@@ -66,11 +231,12 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
       }, 600);
     },
     rotateSub: (steps) => {
-      // Set gesture state for visual feedback
+      // Set gesture state
       setGestureState({ type: 'subcategory', direction: 'rotate', isActive: true });
       
       // Multi-sensory feedback
       subcategoryHaptic();
+      // subcategorySound(); // Uncomment if audio desired
       
       // Execute action
       actions.rotateSub(steps);
@@ -93,11 +259,9 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
   const { bindDialAreaProps, bindLowerAreaProps, hoverSubIndex } = 
     useDialGestures(actionsWithFeedback, config.gestures);
 
-  // Get subcategories for active primary
   const subcategories = state.activePrimary?.subcategories || [];
   const subCount = subcategories.length;
 
-  // Helper to calculate position on circle
   const polarToCartesian = (centerX, centerY, radius, angleDeg) => {
     const angleRad = (angleDeg - 90) * (Math.PI / 180);
     return {
@@ -106,11 +270,10 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
     };
   };
 
-  // Calculate primary category positions (INSIDE circle)
   const getPrimaryPosition = (direction) => {
     const centerX = dialSize / 2;
     const centerY = dialSize / 2;
-    const radius = dialSize * 0.28; // 28% from center (well inside circle)
+    const radius = dialSize * 0.28;
     
     const angles = {
       north: 0,
@@ -359,7 +522,7 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
         {/* SUBCATEGORY LABELS (with pulse on rotation) */}
         {subcategories.map((sub, i) => {
           const angle = (i * 360) / subCount;
-          const radius = dialSize * 0.58; // 58% from center (OUTSIDE the circle)
+          const radius = dialSize * 0.58;
           const centerX = dialSize / 2;
           const centerY = dialSize / 2;
           const pos = polarToCartesian(centerX, centerY, radius, angle);
@@ -431,43 +594,43 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
           }}
         >
           {state.activeEvent ? (
-          <>
-            <h2 style={{
-              fontSize: 'clamp(24px, 6vw, 32px)',
-              fontWeight: '700',
-              marginBottom: '12px',
-              lineHeight: '1.2',
-              letterSpacing: '-0.02em'
-            }}>
-              {state.activeEvent.name}
-            </h2>
+            <>
+              <h2 style={{
+                fontSize: 'clamp(24px, 6vw, 32px)',
+                fontWeight: '700',
+                marginBottom: '12px',
+                lineHeight: '1.2',
+                letterSpacing: '-0.02em'
+              }}>
+                {state.activeEvent.name}
+              </h2>
 
-            <p style={{
-              fontSize: 'clamp(14px, 3.5vw, 16px)',
-              opacity: 0.9,
-              marginBottom: '6px'
-            }}>
-              {state.activeEvent.tags?.join(' · ')}
-              {state.activeEvent.tags?.length > 0 && ' · '}
-              {state.activePrimary?.label}
-            </p>
+              <p style={{
+                fontSize: 'clamp(14px, 3.5vw, 16px)',
+                opacity: 0.9,
+                marginBottom: '6px'
+              }}>
+                {state.activeEvent.tags?.join(' · ')}
+                {state.activeEvent.tags?.length > 0 && ' · '}
+                {state.activeSub?.label} · {state.activePrimary?.label}
+              </p>
 
-            <p style={{
-              fontSize: 'clamp(14px, 3.5vw, 16px)',
-              opacity: 0.8,
-              marginBottom: '6px'
-            }}>
-              {state.activeEvent.address}
-            </p>
+              <p style={{
+                fontSize: 'clamp(14px, 3.5vw, 16px)',
+                opacity: 0.8,
+                marginBottom: '6px'
+              }}>
+                {state.activeEvent.address}
+              </p>
 
-            <p style={{
-              fontSize: 'clamp(14px, 3.5vw, 16px)',
-              opacity: 0.7
-            }}>
-              {state.activeEvent.time}
-              {state.activeEvent.distance && ` · ${state.activeEvent.distance}`}
-            </p>
-          </>
+              <p style={{
+                fontSize: 'clamp(14px, 3.5vw, 16px)',
+                opacity: 0.7
+              }}>
+                {state.activeEvent.time}
+                {state.activeEvent.distance && ` · ${state.activeEvent.distance}`}
+              </p>
+            </>
           ) : (
             <p style={{ opacity: 0.5 }}>No events found</p>
           )}
@@ -476,4 +639,121 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
     </div>
   );
 }
+```
+
+---
+
+## **FEEDBACK SUMMARY TABLE:**
+
+| Gesture Type | Visual | Haptic | Audio (Optional) | Duration |
+|--------------|--------|--------|------------------|----------|
+| **Primary Swipe** | Directional arrow, blue tint, dim others, crosshair pulse | Double strong pulse (DA-DUM) | Low whoosh (180Hz, 200ms) | 400-600ms |
+| **Subcategory Rotate** | Rotation symbol (↻), circle glow, label pulse | Triple soft tick (tick-tick-tick) | High click (900Hz, 50ms) | 200-300ms |
+| **Event Browse** | Slide transition | Single soft tick | None | 150ms |
+
+---
+
+## **USER EDUCATION (First-Time Instructions):**
+
+Add an optional tutorial overlay on first visit:
+
+```javascript
+const [showTutorial, setShowTutorial] = useState(true);
+
+// Tutorial overlay
+{showTutorial && (
+  <div style={{
+    position: 'fixed',
+    inset: 0,
+    background: 'rgba(0, 0, 0, 0.9)',
+    zIndex: 100,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: '20px'
+  }}>
+    <div style={{ maxWidth: '400px', textAlign: 'center' }}>
+      <h2 style={{ marginBottom: '20px' }}>How to Navigate</h2>
+      
+      <div style={{ marginBottom: '20px' }}>
+        <div style={{ fontSize: '32px', marginBottom: '10px' }}>↕️ ↔️</div>
+        <strong>Swipe Up/Down/Left/Right</strong>
+        <p style={{ opacity: 0.7, fontSize: '14px' }}>
+          Change primary category<br/>
+          (Strong pulse feedback)
+        </p>
+      </div>
+      
+      <div style={{ marginBottom: '20px' }}>
+        <div style={{ fontSize: '32px', marginBottom: '10px' }}>↻</div>
+        <strong>Drag in Circle</strong>
+        <p style={{ opacity: 0.7, fontSize: '14px' }}>
+          Rotate through subcategories<br/>
+          (Soft tick feedback)
+        </p>
+      </div>
+      
+      <button 
+        onClick={() => setShowTutorial(false)}
+        style={{
+          padding: '12px 24px',
+          background: '#FF3B30',
+          color: 'white',
+          border: 'none',
+          borderRadius: '8px',
+          fontSize: '16px',
+          cursor: 'pointer'
+        }}
+      >
+        Got it!
+      </button>
+    </div>
+  </div>
+)}
+```
+
+---
+
+## **ACCESSIBILITY CONSIDERATIONS:**
+
+### **Screen Reader Announcements:**
+```javascript
+// Add aria-live region
+<div aria-live="polite" className="sr-only">
+  {gestureState.type === 'primary' && `Switching to ${state.activePrimary?.label} category`}
+  {gestureState.type === 'subcategory' && `Selected ${state.activeSub?.label}`}
+</div>
+```
+
+### **Reduced Motion:**
+```javascript
+// Respect prefers-reduced-motion
+const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// Simplify animations if user prefers
+const feedbackDuration = prefersReducedMotion ? 0 : 300;
+```
+
+---
+
+## **TESTING CHECKLIST:**
+
+- [ ] Primary swipe shows blue arrow
+- [ ] Primary swipe has strong double-pulse haptic
+- [ ] Primary swipe dims other categories
+- [ ] Primary swipe pulses crosshairs
+- [ ] New primary flashes/scales on activation
+- [ ] Subcategory rotation shows ↻ symbol
+- [ ] Subcategory rotation has soft triple-tick haptic
+- [ ] Subcategory rotation adds glow to circle
+- [ ] Active subcategory pulses on selection
+- [ ] Feedback is clearly different between gestures
+- [ ] Audio plays correctly (if enabled)
+- [ ] Reduced motion is respected
+- [ ] Screen reader announces changes
+- [ ] Tutorial is clear and dismissable
+
+---
+
+**This implementation makes the two gesture types unmistakably different through coordinated visual, haptic, and optional audio feedback!**
 
