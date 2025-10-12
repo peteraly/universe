@@ -45,16 +45,45 @@ export default function DialRing({ hoverSubIndex, activeSubIndex, subcategories 
       viewBox="0 0 100 100"
       preserveAspectRatio="xMidYMid meet"
     >
-      {/* Outer circle boundary - softer stroke, smaller radius to prevent clipping */}
+      {/* Outer circle boundary - more visible */}
       <circle
         cx={cx}
         cy={cy}
         r={47.5}
         stroke="white"
-        strokeOpacity="0.18"
-        strokeWidth="0.6"
+        strokeOpacity="0.4"
+        strokeWidth="1.2"
         fill="none"
       />
+      
+      {/* Inner circle for depth */}
+      <circle
+        cx={cx}
+        cy={cy}
+        r={42}
+        stroke="white"
+        strokeOpacity="0.15"
+        strokeWidth="0.8"
+        fill="none"
+      />
+      
+      {/* Cardinal direction tick marks (N/E/S/W) */}
+      {[0, 90, 180, 270].map((angle) => {
+        const p1 = polarToCartesian(cx, cy, 47.5, angle);
+        const p2 = polarToCartesian(cx, cy, 44, angle);
+        return (
+          <line
+            key={angle}
+            x1={p1.x}
+            y1={p1.y}
+            x2={p2.x}
+            y2={p2.y}
+            stroke="white"
+            strokeOpacity="0.6"
+            strokeWidth="1.5"
+          />
+        );
+      })}
 
       {/* Subcategory ticks and labels */}
       {subcategories.map((sub, i) => {
