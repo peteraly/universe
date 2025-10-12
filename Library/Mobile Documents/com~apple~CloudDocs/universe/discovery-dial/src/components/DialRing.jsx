@@ -49,8 +49,8 @@ export default function DialRing({ hoverSubIndex, activeSubIndex, subcategories 
         cy={cy}
         r={47.5}
         stroke="white"
-        strokeOpacity="0.18"
-        strokeWidth="0.6"
+        strokeOpacity="0.4"
+        strokeWidth="1.2"
         fill="none"
       />
 

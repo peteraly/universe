@@ -150,7 +150,9 @@ export default function EventCompass({ categories = [], config = {} }) {
         className="relative select-none"
         style={{
           width: 'min(90vw, 520px)',
-          height: 'min(90vw, 520px)'
+          height: 'min(90vw, 520px)',
+          // Temporary: Very subtle background to verify dial container is rendering
+          backgroundColor: 'rgba(255, 255, 255, 0.02)'
         }}
         {...bindDialAreaProps}
         tabIndex={0}
@@ -161,10 +163,11 @@ export default function EventCompass({ categories = [], config = {} }) {
       >
           {/* Outer circle boundary (visual reference) */}
           <div 
-            className="absolute inset-0 rounded-full border border-white"
+            className="absolute inset-0 rounded-full border-2 border-white"
             style={{ 
-              opacity: 0.2,
-              pointerEvents: 'none'
+              opacity: 0.5,
+              pointerEvents: 'none',
+              zIndex: 1
             }}
           />
 
