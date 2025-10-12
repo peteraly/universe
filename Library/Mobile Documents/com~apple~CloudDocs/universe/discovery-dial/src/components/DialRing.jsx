@@ -30,9 +30,7 @@ function polarToCartesian(cx, cy, r, angleDeg) {
 export default function DialRing({ hoverSubIndex, activeSubIndex, subcategories = [] }) {
   const prefersReducedMotion = useReducedMotion();
 
-  if (!subcategories || subcategories.length === 0) return null;
-
-  const count = subcategories.length;
+  const count = subcategories?.length || 0;
   const cx = 50; // Center X in viewBox
   const cy = 50; // Center Y in viewBox
   const rOuter = 48; // Outer radius
@@ -45,48 +43,19 @@ export default function DialRing({ hoverSubIndex, activeSubIndex, subcategories 
       viewBox="0 0 100 100"
       preserveAspectRatio="xMidYMid meet"
     >
-      {/* Outer circle boundary - more visible */}
+      {/* Outer circle boundary - always visible even with no subcategories */}
       <circle
         cx={cx}
         cy={cy}
         r={47.5}
         stroke="white"
-        strokeOpacity="0.4"
-        strokeWidth="1.2"
+        strokeOpacity="0.18"
+        strokeWidth="0.6"
         fill="none"
       />
-      
-      {/* Inner circle for depth */}
-      <circle
-        cx={cx}
-        cy={cy}
-        r={42}
-        stroke="white"
-        strokeOpacity="0.15"
-        strokeWidth="0.8"
-        fill="none"
-      />
-      
-      {/* Cardinal direction tick marks (N/E/S/W) */}
-      {[0, 90, 180, 270].map((angle) => {
-        const p1 = polarToCartesian(cx, cy, 47.5, angle);
-        const p2 = polarToCartesian(cx, cy, 44, angle);
-        return (
-          <line
-            key={angle}
-            x1={p1.x}
-            y1={p1.y}
-            x2={p2.x}
-            y2={p2.y}
-            stroke="white"
-            strokeOpacity="0.6"
-            strokeWidth="1.5"
-          />
-        );
-      })}
 
-      {/* Subcategory ticks and labels */}
-      {subcategories.map((sub, i) => {
+      {/* Subcategory ticks and labels - only if data exists */}
+      {count > 0 && (subcategories || []).map((sub, i) => {
         const angleDeg = (i * 360) / count;
         const isActive = i === activeSubIndex;
         const isHovered = hoverSubIndex !== null && i === (activeSubIndex + hoverSubIndex) % count;

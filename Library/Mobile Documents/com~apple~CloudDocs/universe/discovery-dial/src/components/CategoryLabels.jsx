@@ -8,8 +8,8 @@
 export default function CategoryLabels({ categories, activeDirection }) {
   const get = (dir) => categories.find((c) => c.direction === dir)?.label?.toUpperCase() ?? '';
   const cls = (dir) =>
-    `absolute text-sm md:text-base font-semibold tracking-wide ${
-      dir === activeDirection ? 'text-white' : 'text-white/50'
+    `absolute text-[11px] md:text-sm font-medium tracking-wide ${
+      dir === activeDirection ? 'text-white' : 'text-white/60'
     }`;
 
   return (

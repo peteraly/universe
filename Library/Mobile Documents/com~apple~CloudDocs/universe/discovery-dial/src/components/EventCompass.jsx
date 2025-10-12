@@ -146,12 +146,11 @@ export default function EventCompass({ categories = [], config = {} }) {
 
       {/* DIAL AREA: centered square (must be relative for absolute children) */}
       <div
+        data-dial-root
         className="relative select-none"
         style={{
-          width: 'min(90vw, 90vh, 520px)',
-          height: 'min(90vw, 90vh, 520px)',
-          maxWidth: '520px',
-          maxHeight: '520px'
+          width: 'min(90vw, 520px)',
+          height: 'min(90vw, 520px)'
         }}
         {...bindDialAreaProps}
         tabIndex={0}
