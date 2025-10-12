@@ -15,19 +15,19 @@ export default function CategoryLabels({ categories, activeDirection }) {
   return (
     <>
       {/* North */}
-      <div className={`${cls('north')} left-1/2 -translate-x-1/2`} style={{ top: 8 }}>
+      <div className={`${cls('north')} left-1/2 -translate-x-1/2`} style={{ top: 8, zIndex: 10 }}>
         {get('north')}
       </div>
       {/* East */}
-      <div className={`${cls('east')} top-1/2 -translate-y-1/2`} style={{ right: 8, position: 'absolute' }}>
+      <div className={`${cls('east')} top-1/2 -translate-y-1/2 absolute`} style={{ right: 8, zIndex: 10 }}>
         {get('east')}
       </div>
       {/* South */}
-      <div className={`${cls('south')} left-1/2 -translate-x-1/2`} style={{ bottom: 8, position: 'absolute' }}>
+      <div className={`${cls('south')} left-1/2 -translate-x-1/2 absolute`} style={{ bottom: 8, zIndex: 10 }}>
         {get('south')}
       </div>
       {/* West */}
-      <div className={`${cls('west')} top-1/2 -translate-y-1/2`} style={{ left: 8, position: 'absolute' }}>
+      <div className={`${cls('west')} top-1/2 -translate-y-1/2 absolute`} style={{ left: 8, zIndex: 10 }}>
         {get('west')}
       </div>
     </>

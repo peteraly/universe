@@ -11,6 +11,7 @@ export default function RedPointer() {
       width="18"
       height="12"
       viewBox="0 0 18 12"
+      focusable="false"
     >
       <path d="M9 0 L18 12 H0 Z" fill="#FF3B30" />
     </svg>
