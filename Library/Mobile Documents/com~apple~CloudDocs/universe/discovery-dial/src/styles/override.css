@@ -1,5 +1,31 @@
 /* URGENT: CSS OVERRIDE MANDATE - FORCE LIGHT THEME */
 
+/* MOBILE VIEWPORT OPTIMIZATION */
+@viewport {
+  width: device-width;
+  initial-scale: 1.0;
+  maximum-scale: 1.0;
+  user-scalable: no;
+}
+
+/* Safe area insets for modern devices */
+.safe-area-inset {
+  padding-top: env(safe-area-inset-top);
+  padding-bottom: env(safe-area-inset-bottom);
+  padding-left: env(safe-area-inset-left);
+  padding-right: env(safe-area-inset-right);
+}
+
+/* iPhone-specific optimizations */
+@supports (padding: max(0px)) {
+  .mobile-container {
+    padding-left: max(12px, env(safe-area-inset-left));
+    padding-right: max(12px, env(safe-area-inset-right));
+    padding-top: max(20px, env(safe-area-inset-top));
+    padding-bottom: max(20px, env(safe-area-inset-bottom));
+  }
+}
+
 /* Mandate 1: High-specificity selectors to force white background */
 html, body, #root, .App, #root > div, #root > div > div {
   background-color: #FFFFFF !important;
@@ -15,12 +41,7 @@ body, html, #root, .App, .discovery-dial-container, .main-content, .content-area
   background-image: none !important;
 }
 
-/* Force white background on all possible containers */
-* {
-  background-color: #FFFFFF !important;
-  background: #FFFFFF !important;
-  background-image: none !important;
-}
+/* PERFORMANCE: Removed heavy universal selector */
 
 /* Remove any old distraction elements */
 .vertical-clock,
@@ -47,21 +68,115 @@ body, html, #root, .App, .discovery-dial-container, .main-content, .content-area
   background-color: #FFFFFF !important;
   color: #000000 !important;
   min-height: 100vh !important;
+  min-height: 100dvh !important; /* Dynamic viewport height */
   max-height: 100vh !important;
+  max-height: 100dvh !important; /* Dynamic viewport height */
   overflow: hidden !important;
   width: 100% !important;
   position: relative !important;
+  border: 3px solid #0000FF !important; /* TEMPORARY: Blue border for main container visibility */
+  
+  /* Mobile-first layout system */
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: 100dvh; /* Dynamic viewport height */
 }
 
-/* Compass dial with light theme */
+/* Touch target optimization - minimum 44px for accessibility */
+.touch-target {
+  min-width: 44px;
+  min-height: 44px;
+  touch-action: manipulation;
+}
+
+/* Enhanced touch feedback */
+.touch-feedback:active {
+  transform: scale(0.95);
+  transition: transform 0.1s ease;
+}
+
+/* Prevent text selection during gestures */
+.no-select {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* Hardware acceleration for smooth animations */
+.hardware-accelerated {
+  transform: translateZ(0);
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+  perspective: 1000px;
+}
+
+/* Optimized transitions */
+.smooth-transition {
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: translateZ(0);
+}
+
+/* Compass dial - PERFORMANCE OPTIMIZED */
 .compass-dial {
-  background: transparent !important;
-  border: 1px solid rgba(0,0,0,0.2) !important;
-  border-radius: 50% !important;
-  width: 280px !important;
-  height: 280px !important;
-  position: relative !important;
-  margin: 0 auto !important;
+  background: rgba(255,0,0,0.1);
+  border: 3px solid #FF0000;
+  border-radius: 50%;
+  width: min(70vh, 70vw);
+  height: min(70vh, 70vw);
+  min-width: 280px;
+  max-width: 400px;
+  min-height: 280px;
+  max-height: 400px;
+  position: relative;
+  margin: 0 auto;
+  box-shadow: 0 0 20px rgba(255,0,0,0.3);
+  z-index: 100;
+  display: block;
+  visibility: visible;
+}
+
+/* Ensure dial container is properly positioned - FINAL LAYOUT */
+.dial-container {
+  position: relative;
+  width: 100%;
+  height: 70vh; /* 70% of viewport height for dial */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  background: rgba(0,255,0,0.1);
+  border: 2px dashed #00FF00;
+}
+
+/* Compass tick marks - iPhone precision */
+.compass-tick-major {
+  background: rgba(0,0,0,0.8) !important;
+  width: 2px !important;
+  height: 12px !important;
+}
+
+.compass-tick-minor {
+  background: rgba(0,0,0,0.4) !important;
+  width: 1px !important;
+  height: 6px !important;
+}
+
+/* Compass labels - iPhone clarity */
+.compass-label {
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  color: #000000 !important;
+  text-shadow: none !important;
+}
+
+/* Compass pointer - iPhone red */
+.compass-pointer {
+  border-bottom-color: #E63946 !important;
+  filter: drop-shadow(0 1px 2px rgba(0,0,0,0.2)) !important;
 }
 
 /* Red pointer for compass */
@@ -78,30 +193,7 @@ body, html, #root, .App, .discovery-dial-container, .main-content, .content-area
   z-index: 10 !important;
 }
 
-/* Force compass dial to be visible and properly sized */
-.compass-dial {
-  background: transparent !important;
-  border: 2px solid rgba(255,255,255,0.25) !important;
-  border-radius: 50% !important;
-  width: 280px !important;
-  height: 280px !important;
-  position: relative !important;
-  margin: 0 auto !important;
-}
-
-/* Ensure red pointer is visible */
-.red-pointer {
-  position: absolute !important;
-  top: -10px !important;
-  left: 50% !important;
-  transform: translateX(-50%) !important;
-  width: 0 !important;
-  height: 0 !important;
-  border-left: 6px solid transparent !important;
-  border-right: 6px solid transparent !important;
-  border-bottom: 10px solid #E63946 !important;
-  z-index: 10 !important;
-}
+/* REMOVED DUPLICATE CSS RULES - Using main compass-dial rules above */
 
 /* MIDDLE-RIGHT TIME PICKER - Gesture-optimized positioning */
 .time-slider {
@@ -172,42 +264,621 @@ body, html, #root, .App, .discovery-dial-container, .main-content, .content-area
   transform: scale(1.05) !important;
 }
 
-/* Event readout with light theme */
-.event-readout {
-  position: absolute !important;
-  bottom: 20px !important;
-  left: 20px !important;
-  right: 20px !important;
-  padding: 16px !important;
-  background: rgba(255,255,255,0.95) !important;
-  backdrop-filter: blur(10px) !important;
-  border-radius: 12px !important;
-  color: #000000 !important;
-  text-align: center !important;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1) !important;
+/* Enhanced event info with recommendations */
+.event-info-area {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  min-height: 140px;
+  max-height: 200px;
+  padding: 16px;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  color: #000000;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  z-index: 50;
+  overflow-y: auto;
 }
 
-/* MOBILE RESPONSIVENESS - Proportionality constraints */
+.current-event h3 {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 4px;
+  color: #000;
+  line-height: 1.2;
+}
+
+.current-event p {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 12px;
+}
+
+.recommendations h4 {
+  font-size: 12px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 8px;
+  text-align: left;
+}
+
+.recommendation-chips {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.recommendation-chip {
+  background: rgba(230,57,70,0.1);
+  color: #E63946;
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-size: 10px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.recommendation-chip:hover {
+  background: rgba(230,57,70,0.2);
+  transform: scale(1.05);
+}
+
+/* Legacy event readout - keep for compatibility */
+.event-readout {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  right: 20px;
+  height: 120px;
+  padding: 16px;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  color: #000000;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  z-index: 50;
+}
+
+/* Error boundary styling */
+.error-boundary {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 20px;
+}
+
+.error-content {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  max-width: 400px;
+  width: 100%;
+}
+
+.error-content h2 {
+  color: #E63946;
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 12px;
+}
+
+.error-content p {
+  color: #666;
+  font-size: 14px;
+  margin-bottom: 20px;
+  line-height: 1.5;
+}
+
+.error-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.retry-button {
+  background: #E63946;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 44px;
+  min-height: 44px;
+  touch-action: manipulation;
+}
+
+.retry-button:hover {
+  background: #C62828;
+  transform: scale(1.05);
+}
+
+.retry-button:active {
+  transform: scale(0.95);
+}
+
+.error-details {
+  margin-top: 20px;
+  text-align: left;
+}
+
+.error-details summary {
+  cursor: pointer;
+  font-weight: 500;
+  color: #333;
+  margin-bottom: 8px;
+}
+
+.error-details pre {
+  background: #f5f5f5;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* Low performance mode */
+.low-performance * {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
+
+/* System Integration Test */
+.system-integration-test {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  right: 20px;
+  bottom: 20px;
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+  z-index: 10000;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.test-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+.test-header h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+.close-button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  color: #666;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.close-button:hover {
+  background: rgba(0,0,0,0.1);
+  color: #333;
+}
+
+.test-content {
+  padding: 20px;
+}
+
+.test-loading {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid rgba(230,57,70,0.3);
+  border-top: 3px solid #E63946;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto 16px;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.test-section {
+  margin-bottom: 24px;
+}
+
+.test-section h4 {
+  margin: 0 0 12px 0;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+}
+
+.test-items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.test-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 12px;
+  background: rgba(0,0,0,0.05);
+  border-radius: 6px;
+}
+
+.test-icon {
+  font-size: 16px;
+  width: 20px;
+  text-align: center;
+}
+
+.test-name {
+  flex: 1;
+  font-size: 14px;
+  color: #333;
+  text-transform: capitalize;
+}
+
+.test-value {
+  font-size: 12px;
+  font-weight: 500;
+  color: #666;
+  background: rgba(0,0,0,0.1);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.test-actions {
+  margin-top: 24px;
+  text-align: center;
+}
+
+/* Rotating Day Selector */
+.rotating-day-selector {
+  background: rgba(255,255,255,0.95);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(0,0,0,0.1);
+  border-radius: 12px;
+  padding: 12px 16px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  min-width: 44px;
+  min-height: 44px;
+  touch-action: manipulation;
+}
+
+.rotating-day-selector:hover {
+  background: rgba(230,57,70,0.1);
+  border-color: rgba(230,57,70,0.3);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.day-selector-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.day-label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #000;
+  text-align: center;
+  min-height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.day-indicator {
+  display: flex;
+  justify-content: center;
+}
+
+.day-dots {
+  display: flex;
+  gap: 4px;
+}
+
+.day-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.2);
+  transition: all 0.2s ease;
+}
+
+.day-dot.active {
+  background: #E63946;
+  transform: scale(1.2);
+}
+
+/* Dynamic primary category positioning */
+.primary-category {
+  position: absolute;
+  transition: all 0.3s ease;
+  z-index: 60;
+  cursor: pointer;
+}
+
+.primary-category.north {
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.primary-category.east {
+  right: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.primary-category.south {
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.primary-category.west {
+  left: 20px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* Faded state for non-selected categories */
+.primary-category.faded {
+  opacity: 0.4;
+  font-weight: normal;
+}
+
+/* Active state for selected category */
+.primary-category.active {
+  opacity: 1;
+  font-weight: bold;
+  background: rgba(230,57,70,0.2);
+}
+
+/* Subcategory ring around dial perimeter */
+.subcategory-ring-perimeter {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 240px;
+  height: 240px;
+  pointer-events: none;
+  z-index: 50;
+}
+
+/* Legacy subcategory ring - keep for compatibility */
+.subcategory-ring {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 320px;
+  height: 320px;
+  pointer-events: none;
+  z-index: 50;
+}
+
+.subcategory-item {
+  position: absolute;
+  font-size: 11px;
+  font-weight: 500;
+  background: rgba(255,255,255,0.95);
+  color: #000;
+  padding: 6px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,0.1);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  pointer-events: auto;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  backdrop-filter: blur(10px);
+  
+  /* Touch target optimization */
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: manipulation;
+  
+  /* Hardware acceleration */
+  transform: translateZ(0);
+  will-change: transform, opacity;
+}
+
+.subcategory-item:hover {
+  background: rgba(230,57,70,0.1);
+  transform: translate(-50%, -50%) scale(1.05);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+/* Perimeter subcategory items */
+.subcategory-item-perimeter {
+  position: absolute;
+  font-size: 10px;
+  font-weight: 500;
+  background: rgba(255,255,255,0.95);
+  color: #000;
+  padding: 4px 8px;
+  border-radius: 10px;
+  border: 1px solid rgba(0,0,0,0.1);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  pointer-events: auto;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  backdrop-filter: blur(10px);
+  
+  /* Touch target optimization */
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: manipulation;
+  
+  /* Hardware acceleration */
+  transform: translateZ(0);
+  will-change: transform, opacity;
+}
+
+.subcategory-item-perimeter:hover {
+  background: rgba(230,57,70,0.1);
+  transform: translate(-50%, -50%) scale(1.05);
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+/* Primary categories perimeter container */
+.primary-categories-perimeter {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 320px;
+  height: 320px;
+  pointer-events: none;
+  z-index: 60;
+}
+
+/* Primary categories around perimeter - COMPASS APP TYPOGRAPHY */
+.primary-category-perimeter {
+  position: absolute;
+  transition: all 0.3s ease;
+  z-index: 60;
+  cursor: pointer;
+  pointer-events: auto;
+}
+
+.primary-category-perimeter.faded {
+  opacity: 0.4;
+  font-weight: normal;
+}
+
+.primary-category-perimeter.active {
+  opacity: 1;
+  font-weight: bold;
+  background: rgba(230,57,70,0.2);
+}
+
+/* Compass App typography for category labels */
+.compass-category-label {
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: #000000;
+  text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  background: rgba(255,255,255,0.95);
+  padding: 8px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,0.1);
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  backdrop-filter: blur(10px);
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  touch-action: manipulation;
+}
+
+/* MOBILE RESPONSIVENESS - VISUAL DOMINANCE MANDATE */
 @media (max-width: 768px) {
+  /* Dial sizing for mobile devices - MAINTAIN 70% VERTICAL DOMINANCE */
   .compass-dial {
-    width: min(240px, 60vw) !important;
-    height: min(240px, 60vw) !important;
+    width: min(70vh, 70vw) !important; /* Maintain 70% vertical dominance */
+    height: min(70vh, 70vw) !important; /* Maintain 70% vertical dominance */
+    min-width: 280px !important; /* Minimum for visual dominance */
+    max-width: 400px !important; /* Maximum for large mobile screens */
+    min-height: 280px !important;
+    max-height: 400px !important;
   }
   
+  /* iPhone SE (375px) specific adjustments - MAINTAIN DOMINANCE */
+  @media (max-width: 375px) {
+    .compass-dial {
+      width: min(70vh, 70vw) !important; /* Still 70% of viewport */
+      height: min(70vh, 70vw) !important; /* Still 70% of viewport */
+      min-width: 260px !important; /* Minimum for small screens */
+      min-height: 260px !important;
+    }
+  }
+  
+  /* iPhone 15 Pro (390px) specific adjustments - MAINTAIN DOMINANCE */
+  @media (min-width: 376px) and (max-width: 390px) {
+    .compass-dial {
+      width: min(70vh, 70vw) !important; /* Still 70% of viewport */
+      height: min(70vh, 70vw) !important; /* Still 70% of viewport */
+      min-width: 280px !important; /* Minimum for medium screens */
+      min-height: 280px !important;
+    }
+  }
+  
+  /* Time slider mobile optimization */
   .time-slider {
     width: 50px !important;
     height: 45vh !important;
     right: 16px !important;
+    max-width: 25vw !important;
   }
   
+  /* Category filters mobile optimization */
   .category-filters {
     top: 16px !important;
     left: 16px !important;
     right: 16px !important;
     height: 36px !important;
     padding: 0 12px !important;
+    max-width: 80vw !important;
   }
   
+  /* Event readout mobile optimization */
   .event-readout {
     bottom: 16px !important;
     left: 16px !important;
@@ -216,14 +887,17 @@ body, html, #root, .App, .discovery-dial-container, .main-content, .content-area
     font-size: 14px !important;
   }
   
-  /* Ensure max 25% screen width for time picker */
-  .time-slider {
-    max-width: 25vw !important;
+  /* Testing suite buttons mobile positioning */
+  .testing-suite-buttons {
+    top: 12px !important;
+    right: 12px !important;
+    flex-direction: column !important;
+    gap: 8px !important;
   }
   
-  /* Ensure max 20% screen width for category filters */
-  .category-filters {
-    max-width: 80vw !important;
+  .testing-suite-buttons button {
+    padding: 8px 12px !important;
+    font-size: 10px !important;
   }
 }
 

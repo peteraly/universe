@@ -1,5 +1,5 @@
-// URGENT: Cache Busting Utility
-export const CACHE_VERSION = Date.now();
+// URGENT: Cache Busting Utility - FORCE COMPASS DIAL VISIBILITY
+export const CACHE_VERSION = Date.now() + Math.random() * 1000;
 
 export const getCacheBustedUrl = (url) => {
   const separator = url.includes('?') ? '&' : '?';

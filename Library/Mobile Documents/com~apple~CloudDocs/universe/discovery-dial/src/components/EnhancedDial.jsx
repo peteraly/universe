@@ -1,8 +1,10 @@
 import { useState, useCallback, useRef, useEffect, memo } from 'react';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
 import useGestureDetection from '../hooks/useGestureDetection';
+import useDirectionalSwipeDetection from '../hooks/useDirectionalSwipeDetection';
 import { CATEGORIES, CATEGORY_ORDER, CATEGORY_ICONS } from '../data/categories';
 import { TIMEFRAMES, formatTime } from '../utils/formatters';
+import { COMPASS_PROPORTIONS } from '../constants/compassProportions';
 
 const EnhancedDial = ({ 
   onPrimaryCategoryChange, 
@@ -36,6 +38,61 @@ const EnhancedDial = ({
   // Get current category info
   const activeKey = CATEGORY_ORDER[currentPrimaryIndex];
   const activeCategory = CATEGORIES.find(c => c.key === activeKey);
+
+  // FIXED: Directional swipe detection for cardinal points
+  const handleDirectionalSwipe = useCallback((direction) => {
+    const directionMap = {
+      'up': 0,    // NORTH - Social
+      'right': 1, // EAST - Educational
+      'down': 2,  // SOUTH - Recreational
+      'left': 3   // WEST - Professional
+    };
+    
+    const newIndex = directionMap[direction];
+    if (newIndex !== undefined && newIndex !== currentPrimaryIndex) {
+      onPrimaryCategoryChange(newIndex);
+    }
+  }, [currentPrimaryIndex, onPrimaryCategoryChange]);
+
+  const { handleTouchStart: handleDirectionalTouchStart, handleTouchEnd: handleDirectionalTouchEnd } = useDirectionalSwipeDetection(handleDirectionalSwipe);
+
+  // FIXED: Primary categories permanently anchored at cardinal points
+  const getFixedCategoryPositions = () => {
+    return [
+      { key: 'social', label: 'Social', position: 'N', isActive: currentPrimaryIndex === 0 },
+      { key: 'education', label: 'Educational', position: 'E', isActive: currentPrimaryIndex === 1 },
+      { key: 'recreation', label: 'Recreational', position: 'S', isActive: currentPrimaryIndex === 2 },
+      { key: 'professional', label: 'Professional', position: 'W', isActive: currentPrimaryIndex === 3 }
+    ];
+  };
+
+  // Get subcategory positions around dial perimeter - FIXED positioning
+  const getSubcategoryPosition = (subIndex, totalSubs) => {
+    // Start at 0 degrees and distribute evenly around the circle
+    const angle = (subIndex / totalSubs) * 360;
+    const radius = 120; // Distance from center - closer to dial edge
+    const angleRad = angle * Math.PI / 180;
+    const x = Math.cos(angleRad) * radius;
+    const y = Math.sin(angleRad) * radius;
+    return { x, y, angle };
+  };
+
+  // FIXED: Primary category positions permanently anchored at cardinal points
+  const getPrimaryCategoryPosition = (position) => {
+    const positions = {
+      'N': { angle: -90, radius: 160 }, // North - 12 o'clock - Social
+      'E': { angle: 0, radius: 160 },   // East - 3 o'clock - Educational
+      'S': { angle: 90, radius: 160 },  // South - 6 o'clock - Recreational
+      'W': { angle: 180, radius: 160 }  // West - 9 o'clock - Professional
+    };
+    
+    const pos = positions[position];
+    // Convert angle to radians and calculate position
+    const angleRad = pos.angle * Math.PI / 180;
+    const x = Math.cos(angleRad) * pos.radius;
+    const y = Math.sin(angleRad) * pos.radius;
+    return { x, y, angle: pos.angle };
+  };
 
   // Get dial bounds for gesture detection
   const getDialBounds = useCallback(() => {
@@ -180,65 +237,93 @@ const EnhancedDial = ({
   });
 
   return (
-    <div className="relative w-full h-full">
-      {/* Main dial cluster */}
+    <div className="dial-container relative w-full h-full flex flex-col items-center justify-center">
+      {/* Main dial cluster - VISUAL DOMINANCE MANDATE (70% of vertical space) */}
       <div 
         ref={dialRef}
-        className="relative mx-auto mt-16 h-[280px] w-[280px]"
-        onTouchStart={onTouchStart}
+        className="compass-dial relative mx-auto"
+        style={{
+          width: COMPASS_PROPORTIONS.DIAL_SIZE,
+          height: COMPASS_PROPORTIONS.DIAL_SIZE,
+          minWidth: COMPASS_PROPORTIONS.DIAL_MIN_SIZE,
+          maxWidth: COMPASS_PROPORTIONS.DIAL_MAX_SIZE,
+          minHeight: COMPASS_PROPORTIONS.DIAL_MIN_SIZE,
+          maxHeight: COMPASS_PROPORTIONS.DIAL_MAX_SIZE,
+          zIndex: 100 // High z-index for visual dominance
+        }}
+        onTouchStart={handleDirectionalTouchStart}
         onTouchMove={onTouchMove}
-        onTouchEnd={onTouchEnd}
+        onTouchEnd={handleDirectionalTouchEnd}
         role="application"
         aria-label="Event discovery dial with gesture controls"
       >
-        {/* Outer ring with primary categories */}
-        <motion.div
-          className="absolute inset-0 rounded-full border border-black/20"
-          style={{ rotate: snapped }}
-          drag
-          dragConstraints={{ left: 0, right: 0, top: 0, bottom: 0 }}
-          dragElastic={0.05}
-          transition={{ type: 'spring', stiffness: 180, damping: 18 }}
+        {/* Outer ring with primary categories - PERFORMANCE OPTIMIZED */}
+        <div
+          className="absolute inset-0 rounded-full"
+          style={{ 
+            border: '1px solid rgba(0,0,0,0.3)',
+            backgroundColor: 'transparent',
+            boxShadow: 'none'
+          }}
         >
-          {/* Red pointer at top */}
+          {/* Red pointer at top - iPhone Compass style */}
           <div className="absolute left-1/2 top-[-10px] -translate-x-1/2 z-10">
-            <div className="w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent border-b-[10px] border-b-[#E63946]" />
-          </div>
-
-          {/* Tick marks around the perimeter */}
-          {[...Array(180)].map((_, i) => (
-            <div
-              key={`tick-${i}`}
-              className="absolute left-1/2 top-1/2 origin-[0_100%]"
+            <div 
+              className="w-0 h-0 border-l-[6px] border-l-transparent border-r-[6px] border-r-transparent"
               style={{
-                transform: `rotate(${i * 2}deg) translate(-1px, -168px)`,
-                width: i % 15 === 0 ? 2 : 1,
-                height: i % 15 === 0 ? 12 : 6,
-                backgroundColor: `rgba(0,0,0,${i % 15 === 0 ? 0.6 : 0.3})`
+                borderBottomWidth: `${COMPASS_PROPORTIONS.POINTER_SIZE}px`,
+                borderBottomColor: COMPASS_PROPORTIONS.POINTER_COLOR,
+                filter: `drop-shadow(${COMPASS_PROPORTIONS.POINTER_SHADOW})`
               }}
             />
-          ))}
+          </div>
 
-          {/* Primary labels at N/E/S/W */}
-          {outerRingLabels.map((label, idx) => (
-            <div
-              key={`label-${label.pos}`}
-              className={`absolute text-center text-[11px] font-medium ${label.className}`}
-              style={{
-                left: '50%',
-                top: '50%',
-                transform: {
-                  'N': 'translate(-50%, -165px)',
-                  'E': 'translate(150px, -50%) rotate(90deg)',
-                  'S': 'translate(-50%, 150px) rotate(180deg)',
-                  'W': 'translate(-165px, -50%) rotate(-90deg)'
-                }[label.pos]
-              }}
-            >
-              <span className="block max-w-[120px] leading-tight">{label.text}</span>
-            </div>
-          ))}
-        </motion.div>
+          {/* Tick marks around the perimeter - PERFORMANCE OPTIMIZED (only major ticks) */}
+          {[...Array(12)].map((_, i) => {
+            const angle = i * 30; // Major ticks every 30°
+            const distance = 138; // Distance from center
+            
+            return (
+              <div
+                key={`tick-${i}`}
+                className="absolute left-1/2 top-1/2 origin-[0_100%]"
+                style={{
+                  transform: `rotate(${angle}deg) translate(-1px, -${distance}px)`,
+                  width: 2,
+                  height: 12,
+                  backgroundColor: 'rgba(0,0,0,0.8)'
+                }}
+              />
+            );
+          })}
+
+          {/* Primary labels at N/E/S/W - iPhone Compass positioning */}
+          {outerRingLabels.map((label, idx) => {
+            const distance = COMPASS_PROPORTIONS.LABEL_DISTANCE;
+            
+            return (
+              <div
+                key={`label-${label.pos}`}
+                className="absolute text-center"
+                style={{
+                  left: '50%',
+                  top: '50%',
+                  fontSize: COMPASS_PROPORTIONS.LABEL_FONT_SIZE,
+                  fontWeight: COMPASS_PROPORTIONS.LABEL_FONT_WEIGHT,
+                  color: COMPASS_PROPORTIONS.LABEL_COLOR,
+                  transform: {
+                    'N': `translate(-50%, -${distance}px)`,
+                    'E': `translate(${distance}px, -50%) rotate(90deg)`,
+                    'S': `translate(-50%, ${distance}px) rotate(180deg)`,
+                    'W': `translate(-${distance}px, -50%) rotate(-90deg)`
+                  }[label.pos]
+                }}
+              >
+                <span className="block max-w-[120px] leading-tight">{label.text}</span>
+              </div>
+            );
+          })}
+        </div>
 
         {/* Inner subcategory ring - only visible after primary selection */}
         {hasSelectedPrimary && activeCategory?.sub && (
@@ -263,17 +348,99 @@ const EnhancedDial = ({
           </div>
         )}
 
-        {/* Center category indicator */}
-        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center">
-          <div className="text-[14px] font-semibold text-black">
+        {/* Center area - CLEAN COMPASS CENTER */}
+        <div 
+          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 text-center flex flex-col items-center justify-center"
+          style={{
+            width: COMPASS_PROPORTIONS.CENTER_SIZE,
+            height: COMPASS_PROPORTIONS.CENTER_SIZE,
+            backgroundColor: COMPASS_PROPORTIONS.CENTER_BACKGROUND,
+            border: '1px solid rgba(0,0,0,0.1)',
+            borderRadius: '50%',
+            padding: '10px'
+          }}
+        >
+          {/* Primary Category Label */}
+          <div 
+            className="font-semibold mb-2"
+            style={{
+              fontSize: COMPASS_PROPORTIONS.CENTER_FONT_SIZE,
+              color: COMPASS_PROPORTIONS.LABEL_COLOR
+            }}
+          >
             {activeCategory?.label || 'Select Category'}
           </div>
+          
+          {/* Subcategory Label */}
           {hasSelectedPrimary && activeCategory?.sub && (
-            <div className="text-[10px] text-black/60 mt-1">
+            <div 
+              className="mb-2"
+              style={{
+                fontSize: COMPASS_PROPORTIONS.LABEL_FONT_SIZE - 2,
+                color: `${COMPASS_PROPORTIONS.LABEL_COLOR}80`
+              }}
+            >
               {activeCategory.sub[currentSubIndex]}
             </div>
           )}
         </div>
+
+        {/* FIXED: Primary categories permanently anchored at cardinal points */}
+        <div className="primary-categories-perimeter">
+          {getFixedCategoryPositions().map((category, index) => {
+            const pos = getPrimaryCategoryPosition(category.position);
+            return (
+              <div 
+                key={category.key}
+                className={`primary-category-perimeter ${category.isActive ? 'active' : 'faded'} touch-target no-select`}
+                style={{
+                  left: `calc(50% + ${pos.x}px)`,
+                  top: `calc(50% + ${pos.y}px)`,
+                  transform: 'translate(-50%, -50%)',
+                  transition: 'all 0.3s ease',
+                  cursor: 'pointer',
+                  opacity: category.isActive ? 1 : 0.4,
+                  fontWeight: category.isActive ? 'bold' : 'normal'
+                }}
+                onClick={() => onPrimaryCategoryChange(index)}
+              >
+                <div className="compass-category-label">
+                  {category.label}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
+        {/* Subcategory ring around dial perimeter */}
+        <div className="subcategory-ring-perimeter">
+          {activeCategory?.sub?.map((sub, index) => {
+            const pos = getSubcategoryPosition(index, activeCategory.sub.length);
+            return (
+              <motion.div 
+                key={`subcategory-${sub}`}
+                className="subcategory-item-perimeter touch-target no-select hardware-accelerated"
+                style={{
+                  left: `calc(50% + ${pos.x}px)`,
+                  top: `calc(50% + ${pos.y}px)`,
+                  transform: 'translate(-50%, -50%)'
+                }}
+                onClick={() => onSubcategoryChange(index)}
+                whileHover={{ scale: 1.05, backgroundColor: 'rgba(230,57,70,0.1)' }}
+                whileTap={{ scale: 0.95 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 17 }}
+              >
+                {sub}
+              </motion.div>
+            );
+          })}
+        </div>
+
+        {/* Debug indicator - temporary visual confirmation */}
+        <div 
+          className="absolute -top-2 -left-2 w-4 h-4 bg-red-500 rounded-full z-20"
+          title="Dial is positioned here"
+        />
       </div>
 
       {/* Event area for horizontal swipe detection */}

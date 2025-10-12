@@ -1,66 +1,102 @@
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import useReducedMotion from '../hooks/useReducedMotion';
+import { SHOW_DISTANCE } from '../config/featureFlags';
 
-const EventReadout = ({ event, onSingleTap, onDoubleTap }) => {
-  const { title, time, city, distance, categoryLabel, categoryIcon } = event;
-
-  const handleTap = () => {
-    onSingleTap && onSingleTap(event);
-  };
-
-  const handleDoubleTap = () => {
-    onDoubleTap && onDoubleTap(event);
-  };
+/**
+ * EventReadout - Displays current event details with gesture support.
+ * Animates on event change with fade/slide transitions.
+ * Distance display is controlled by SHOW_DISTANCE feature flag.
+ * 
+ * @param {Object} activeEvent - Current event object
+ * @param {Object} activePrimary - Current primary category
+ * @param {Object} bindProps - Gesture props from useDialGestures (bindLowerAreaProps)
+ */
+export default function EventReadout({ activeEvent, activePrimary }) {
+  const prefersReducedMotion = useReducedMotion();
+  
+  if (!activeEvent) {
+    return (
+      <div 
+        className="w-full px-4 py-6 text-center mx-auto"
+        role="region"
+        aria-label="Event details"
+        aria-live="polite"
+      >
+        <p className="text-white" style={{ opacity: 0.5 }}>
+          No events found
+        </p>
+      </div>
+    );
+  }
 
   return (
-    <motion.div
-      className="text-center px-4 cursor-pointer"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.3 }}
-      onClick={handleTap}
-      onDoubleClick={handleDoubleTap}
-      role="button"
-      tabIndex={0}
-      aria-label={`Event: ${title}. ${time} in ${city}. ${distance} away. Category: ${categoryLabel}`}
+    <div 
+      className="w-full px-4 py-6 text-center mx-auto"
+      role="region"
+      aria-label="Event details"
       aria-live="polite"
-      aria-atomic="true"
     >
-      <motion.h2
-        className="text-[24px] font-semibold text-black mb-1 leading-tight"
-        initial={{ scale: 0.9 }}
-        animate={{ scale: 1 }}
-        transition={{ delay: 0.1, type: 'spring', stiffness: 300 }}
-        style={{ 
-          display: '-webkit-box',
-          WebkitLineClamp: 2,
-          WebkitBoxOrient: 'vertical',
-          overflow: 'hidden'
-        }}
-      >
-        {title}
-      </motion.h2>
-      
-      <motion.div
-        className="text-[14px] text-black/70 mb-1"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.2 }}
-      >
-        {time} • {city}
-      </motion.div>
-      
-      <motion.div
-        className="text-[13px] text-black/60 flex items-center justify-center gap-1"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 0.3 }}
-      >
-        <span>{distance || '— mi'}</span>
-        <span>•</span>
-        <span>{categoryIcon} {categoryLabel}</span>
-      </motion.div>
-    </motion.div>
-  );
-};
+      <AnimatePresence mode="wait" initial={false}>
+        <motion.div
+          key={activeEvent.id}
+          initial={{ opacity: 1, y: 0 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={prefersReducedMotion ? false : { opacity: 0, y: -20 }}
+          transition={{ duration: 0.15 }}
+        >
+          {/* Event name - bold, larger, responsive */}
+          <h2 
+            className="text-white font-bold mb-2 text-2xl md:text-3xl"
+            style={{
+              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+              lineHeight: 1.2,
+              letterSpacing: '-0.01em'
+            }}
+          >
+            {activeEvent.name}
+          </h2>
 
-export default EventReadout;
+          {/* Tags/Type - responsive */}
+          {activeEvent.tags && activeEvent.tags.length > 0 && (
+            <p 
+              className="text-white mb-1 text-sm md:text-base"
+              style={{
+                opacity: 0.9,
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+              }}
+            >
+              {(activeEvent.tags.length ? activeEvent.tags.join(' · ') + ' · ' : '')}
+              {activePrimary?.label}
+            </p>
+          )}
+
+          {/* Address - responsive */}
+          {activeEvent.address && (
+            <p 
+              className="text-white mb-1 text-sm md:text-base"
+              style={{
+                opacity: 0.8,
+                fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+              }}
+            >
+              {activeEvent.address}
+            </p>
+          )}
+
+          {/* Time & Distance - responsive */}
+          <div 
+            className="text-white flex items-center justify-center gap-3 text-sm md:text-base"
+            style={{
+              opacity: 0.7,
+              fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+            }}
+          >
+            {activeEvent.time && <span>{activeEvent.time}</span>}
+            {SHOW_DISTANCE && activeEvent.time && activeEvent.distance && <span>·</span>}
+            {SHOW_DISTANCE && activeEvent.distance && <span>{activeEvent.distance}</span>}
+          </div>
+        </motion.div>
+      </AnimatePresence>
+    </div>
+  );
+}

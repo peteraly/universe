@@ -1,0 +1,701 @@
+{
+  "categories": [
+    {
+      "id": "professional",
+      "label": "Professional",
+      "direction": "north",
+      "subcategories": [
+        {
+          "id": "talks",
+          "label": "Talks",
+          "events": [
+            {
+              "id": "e1",
+              "name": "Policy Summit",
+              "tags": ["Panel"],
+              "address": "100 Main St",
+              "time": "Today 2–4 PM",
+              "distance": "1.2 mi"
+            },
+            {
+              "id": "e2",
+              "name": "Civic Tech",
+              "tags": ["Networking"],
+              "address": "50 3rd Ave",
+              "time": "Tonight 6 PM",
+              "distance": "2.0 mi"
+            },
+            {
+              "id": "e3",
+              "name": "Startup Panel",
+              "tags": ["Panel"],
+              "address": "Tech Hub",
+              "time": "Tomorrow 3 PM",
+              "distance": "0.8 mi"
+            }
+          ]
+        },
+        {
+          "id": "workshops",
+          "label": "Workshops",
+          "events": [
+            {
+              "id": "e4",
+              "name": "Excel Skills",
+              "tags": ["Training"],
+              "address": "Learning Ctr",
+              "time": "Today 10 AM",
+              "distance": "1.5 mi"
+            },
+            {
+              "id": "e5",
+              "name": "Public Talk",
+              "tags": ["Skills"],
+              "address": "Library",
+              "time": "Tonight 7 PM",
+              "distance": "0.5 mi"
+            },
+            {
+              "id": "e6",
+              "name": "Design Sprint",
+              "tags": ["Workshop"],
+              "address": "Co-Work",
+              "time": "Sat 1–5 PM",
+              "distance": "2.2 mi"
+            },
+            {
+              "id": "e7",
+              "name": "Code Review",
+              "tags": ["Dev"],
+              "address": "Tech Hub",
+              "time": "Fri 6 PM",
+              "distance": "0.8 mi"
+            }
+          ]
+        },
+        {
+          "id": "conferences",
+          "label": "Conferences",
+          "events": [
+            {
+              "id": "e8",
+              "name": "DevCon 2025",
+              "tags": ["Tech"],
+              "address": "Convention",
+              "time": "Sat 9 AM",
+              "distance": "3.0 mi"
+            },
+            {
+              "id": "e9",
+              "name": "AI Summit",
+              "tags": ["Tech"],
+              "address": "Hotel Grand",
+              "time": "Next Week",
+              "distance": "2.5 mi"
+            },
+            {
+              "id": "e10",
+              "name": "Career Fair",
+              "tags": ["Jobs"],
+              "address": "Arena",
+              "time": "Thu 10 AM",
+              "distance": "1.8 mi"
+            }
+          ]
+        },
+        {
+          "id": "networking",
+          "label": "Networking",
+          "events": [
+            {
+              "id": "e11",
+              "name": "Coffee Mixer",
+              "tags": ["Casual"],
+              "address": "Cafe Main",
+              "time": "Today 8 AM",
+              "distance": "0.3 mi"
+            },
+            {
+              "id": "e12",
+              "name": "Happy Hour",
+              "tags": ["Social"],
+              "address": "Bar + Grill",
+              "time": "Tonight 5 PM",
+              "distance": "1.0 mi"
+            },
+            {
+              "id": "e13",
+              "name": "Founder Meet",
+              "tags": ["Startup"],
+              "address": "WeWork",
+              "time": "Wed 6 PM",
+              "distance": "1.2 mi"
+            },
+            {
+              "id": "e14",
+              "name": "Alumni Event",
+              "tags": ["Network"],
+              "address": "University",
+              "time": "Fri 7 PM",
+              "distance": "2.0 mi"
+            }
+          ]
+        },
+        {
+          "id": "mentorship",
+          "label": "Mentorship",
+          "events": [
+            {
+              "id": "e15",
+              "name": "Career Chat",
+              "tags": ["1-on-1"],
+              "address": "Cafe",
+              "time": "Tomorrow 2 PM",
+              "distance": "0.5 mi"
+            },
+            {
+              "id": "e16",
+              "name": "Office Hours",
+              "tags": ["Advice"],
+              "address": "Startup Hub",
+              "time": "Thu 4 PM",
+              "distance": "1.5 mi"
+            },
+            {
+              "id": "e17",
+              "name": "Group Session",
+              "tags": ["Workshop"],
+              "address": "Library",
+              "time": "Sat 11 AM",
+              "distance": "0.5 mi"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "social",
+      "label": "Social",
+      "direction": "east",
+      "subcategories": [
+        {
+          "id": "parties",
+          "label": "Parties",
+          "events": [
+            {
+              "id": "e18",
+              "name": "Rooftop Mix",
+              "tags": ["Dance"],
+              "address": "Sky Bar",
+              "time": "Tonight 9 PM",
+              "distance": "1.5 mi"
+            },
+            {
+              "id": "e19",
+              "name": "House Party",
+              "tags": ["Private"],
+              "address": "15 Oak St",
+              "time": "Sat 8 PM",
+              "distance": "2.0 mi"
+            },
+            {
+              "id": "e20",
+              "name": "DJ Night",
+              "tags": ["Club"],
+              "address": "The Loft",
+              "time": "Fri 10 PM",
+              "distance": "1.8 mi"
+            },
+            {
+              "id": "e21",
+              "name": "Birthday Bash",
+              "tags": ["Celebrate"],
+              "address": "Party Hall",
+              "time": "Sun 7 PM",
+              "distance": "2.5 mi"
+            }
+          ]
+        },
+        {
+          "id": "meetups",
+          "label": "Meetups",
+          "events": [
+            {
+              "id": "e22",
+              "name": "Book Club",
+              "tags": ["Reading"],
+              "address": "Library",
+              "time": "Wed 6 PM",
+              "distance": "0.5 mi"
+            },
+            {
+              "id": "e23",
+              "name": "Game Night",
+              "tags": ["Board"],
+              "address": "Cafe",
+              "time": "Thu 7 PM",
+              "distance": "1.0 mi"
+            },
+            {
+              "id": "e24",
+              "name": "Language Swap",
+              "tags": ["Learn"],
+              "address": "Community",
+              "time": "Tue 6 PM",
+              "distance": "0.8 mi"
+            },
+            {
+              "id": "e25",
+              "name": "Pet Owners",
+              "tags": ["Dogs"],
+              "address": "Dog Park",
+              "time": "Sat 10 AM",
+              "distance": "1.2 mi"
+            },
+            {
+              "id": "e26",
+              "name": "Photo Walk",
+              "tags": ["Camera"],
+              "address": "Waterfront",
+              "time": "Sun 3 PM",
+              "distance": "2.0 mi"
+            }
+          ]
+        },
+        {
+          "id": "dining",
+          "label": "Dining",
+          "events": [
+            {
+              "id": "e27",
+              "name": "Food Truck",
+              "tags": ["Street"],
+              "address": "Market Sq",
+              "time": "Today 12 PM",
+              "distance": "0.3 mi"
+            },
+            {
+              "id": "e28",
+              "name": "Wine Tasting",
+              "tags": ["Wine"],
+              "address": "Vineyard",
+              "time": "Sat 5 PM",
+              "distance": "3.5 mi"
+            },
+            {
+              "id": "e29",
+              "name": "Brunch Spot",
+              "tags": ["Breakfast"],
+              "address": "Bistro",
+              "time": "Sun 10 AM",
+              "distance": "1.0 mi"
+            },
+            {
+              "id": "e30",
+              "name": "Chef Table",
+              "tags": ["Fine Dining"],
+              "address": "Chez Louis",
+              "time": "Fri 8 PM",
+              "distance": "2.0 mi"
+            }
+          ]
+        },
+        {
+          "id": "volunteer",
+          "label": "Volunteer",
+          "events": [
+            {
+              "id": "e31",
+              "name": "Park Cleanup",
+              "tags": ["Service"],
+              "address": "City Park",
+              "time": "Sat 9 AM",
+              "distance": "1.5 mi"
+            },
+            {
+              "id": "e32",
+              "name": "Food Bank",
+              "tags": ["Help"],
+              "address": "Community",
+              "time": "Today 2 PM",
+              "distance": "2.0 mi"
+            },
+            {
+              "id": "e33",
+              "name": "Tree Plant",
+              "tags": ["Green"],
+              "address": "Forest",
+              "time": "Sun 8 AM",
+              "distance": "4.0 mi"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "arts",
+      "label": "Arts/Culture",
+      "direction": "south",
+      "subcategories": [
+        {
+          "id": "music",
+          "label": "Music",
+          "events": [
+            {
+              "id": "e34",
+              "name": "Jazz Night",
+              "tags": ["Live"],
+              "address": "Blue Note",
+              "time": "Tonight 8 PM",
+              "distance": "1.8 mi"
+            },
+            {
+              "id": "e35",
+              "name": "Symphony",
+              "tags": ["Classical"],
+              "address": "Concert Hall",
+              "time": "Sat 7 PM",
+              "distance": "2.5 mi"
+            },
+            {
+              "id": "e36",
+              "name": "Open Mic",
+              "tags": ["Amateur"],
+              "address": "Cafe",
+              "time": "Wed 7 PM",
+              "distance": "0.8 mi"
+            },
+            {
+              "id": "e37",
+              "name": "Rock Show",
+              "tags": ["Indie"],
+              "address": "The Venue",
+              "time": "Fri 9 PM",
+              "distance": "2.0 mi"
+            },
+            {
+              "id": "e38",
+              "name": "DJ Set",
+              "tags": ["Electronic"],
+              "address": "Club",
+              "time": "Sat 11 PM",
+              "distance": "1.5 mi"
+            }
+          ]
+        },
+        {
+          "id": "theater",
+          "label": "Theater",
+          "events": [
+            {
+              "id": "e39",
+              "name": "Shakespeare",
+              "tags": ["Classic"],
+              "address": "Theater",
+              "time": "Fri 8 PM",
+              "distance": "2.0 mi"
+            },
+            {
+              "id": "e40",
+              "name": "Comedy Show",
+              "tags": ["Standup"],
+              "address": "Laugh Lounge",
+              "time": "Sat 9 PM",
+              "distance": "1.5 mi"
+            },
+            {
+              "id": "e41",
+              "name": "Improv Night",
+              "tags": ["Comedy"],
+              "address": "Studio",
+              "time": "Thu 8 PM",
+              "distance": "1.2 mi"
+            },
+            {
+              "id": "e42",
+              "name": "Musical",
+              "tags": ["Broadway"],
+              "address": "Playhouse",
+              "time": "Sun 3 PM",
+              "distance": "2.5 mi"
+            }
+          ]
+        },
+        {
+          "id": "galleries",
+          "label": "Galleries",
+          "events": [
+            {
+              "id": "e43",
+              "name": "Photo Exhibit",
+              "tags": ["Visual"],
+              "address": "Gallery 1",
+              "time": "Today 1 PM",
+              "distance": "1.0 mi"
+            },
+            {
+              "id": "e44",
+              "name": "Art Opening",
+              "tags": ["Modern"],
+              "address": "Studio",
+              "time": "Fri 6 PM",
+              "distance": "1.5 mi"
+            },
+            {
+              "id": "e45",
+              "name": "Sculpture",
+              "tags": ["3D"],
+              "address": "Museum",
+              "time": "Sat 11 AM",
+              "distance": "2.0 mi"
+            }
+          ]
+        },
+        {
+          "id": "film",
+          "label": "Film",
+          "events": [
+            {
+              "id": "e46",
+              "name": "Indie Screen",
+              "tags": ["Cinema"],
+              "address": "Arthouse",
+              "time": "Tonight 7 PM",
+              "distance": "1.8 mi"
+            },
+            {
+              "id": "e47",
+              "name": "Classic Film",
+              "tags": ["Retro"],
+              "address": "Cinema",
+              "time": "Sun 4 PM",
+              "distance": "2.0 mi"
+            },
+            {
+              "id": "e48",
+              "name": "Doc Festival",
+              "tags": ["Documentary"],
+              "address": "Theater",
+              "time": "Sat 2 PM",
+              "distance": "2.5 mi"
+            },
+            {
+              "id": "e49",
+              "name": "Filmmaker Q&A",
+              "tags": ["Talk"],
+              "address": "Studio",
+              "time": "Wed 6 PM",
+              "distance": "1.5 mi"
+            }
+          ]
+        },
+        {
+          "id": "festivals",
+          "label": "Festivals",
+          "events": [
+            {
+              "id": "e50",
+              "name": "Street Fair",
+              "tags": ["Market"],
+              "address": "Main St",
+              "time": "Sat 10 AM",
+              "distance": "0.5 mi"
+            },
+            {
+              "id": "e51",
+              "name": "Music Fest",
+              "tags": ["Outdoor"],
+              "address": "Park",
+              "time": "Sun 12 PM",
+              "distance": "2.0 mi"
+            },
+            {
+              "id": "e52",
+              "name": "Food Festival",
+              "tags": ["Taste"],
+              "address": "Waterfront",
+              "time": "Sat 1 PM",
+              "distance": "1.5 mi"
+            },
+            {
+              "id": "e53",
+              "name": "Craft Fair",
+              "tags": ["Handmade"],
+              "address": "Convention",
+              "time": "Sun 10 AM",
+              "distance": "2.5 mi"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "wellness",
+      "label": "Wellness",
+      "direction": "west",
+      "subcategories": [
+        {
+          "id": "fitness",
+          "label": "Fitness",
+          "events": [
+            {
+              "id": "e54",
+              "name": "Yoga Class",
+              "tags": ["Flow"],
+              "address": "Studio",
+              "time": "Today 6 AM",
+              "distance": "0.8 mi"
+            },
+            {
+              "id": "e55",
+              "name": "Run Club",
+              "tags": ["Cardio"],
+              "address": "Trail",
+              "time": "Sat 7 AM",
+              "distance": "1.0 mi"
+            },
+            {
+              "id": "e56",
+              "name": "CrossFit WOD",
+              "tags": ["Strength"],
+              "address": "Gym",
+              "time": "Today 5 PM",
+              "distance": "1.2 mi"
+            },
+            {
+              "id": "e57",
+              "name": "Spin Class",
+              "tags": ["Bike"],
+              "address": "Fitness",
+              "time": "Wed 6 PM",
+              "distance": "1.5 mi"
+            },
+            {
+              "id": "e58",
+              "name": "Bootcamp",
+              "tags": ["HIIT"],
+              "address": "Park",
+              "time": "Sat 8 AM",
+              "distance": "0.5 mi"
+            }
+          ]
+        },
+        {
+          "id": "outdoor",
+          "label": "Outdoor",
+          "events": [
+            {
+              "id": "e59",
+              "name": "Hiking Group",
+              "tags": ["Trail"],
+              "address": "Mountain",
+              "time": "Sun 9 AM",
+              "distance": "5.0 mi"
+            },
+            {
+              "id": "e60",
+              "name": "Bike Ride",
+              "tags": ["Cycling"],
+              "address": "Trail",
+              "time": "Sat 8 AM",
+              "distance": "2.0 mi"
+            },
+            {
+              "id": "e61",
+              "name": "Rock Climb",
+              "tags": ["Bouldering"],
+              "address": "Gym",
+              "time": "Thu 7 PM",
+              "distance": "2.5 mi"
+            },
+            {
+              "id": "e62",
+              "name": "Kayak Tour",
+              "tags": ["Water"],
+              "address": "River",
+              "time": "Sun 10 AM",
+              "distance": "4.0 mi"
+            }
+          ]
+        },
+        {
+          "id": "sports",
+          "label": "Sports",
+          "events": [
+            {
+              "id": "e63",
+              "name": "Pickup Game",
+              "tags": ["Basketball"],
+              "address": "Court",
+              "time": "Today 6 PM",
+              "distance": "0.5 mi"
+            },
+            {
+              "id": "e64",
+              "name": "Soccer Match",
+              "tags": ["League"],
+              "address": "Field",
+              "time": "Sat 2 PM",
+              "distance": "1.5 mi"
+            },
+            {
+              "id": "e65",
+              "name": "Tennis Mixer",
+              "tags": ["Doubles"],
+              "address": "Club",
+              "time": "Sun 10 AM",
+              "distance": "2.0 mi"
+            },
+            {
+              "id": "e66",
+              "name": "Volleyball",
+              "tags": ["Beach"],
+              "address": "Sand Court",
+              "time": "Sat 4 PM",
+              "distance": "3.0 mi"
+            }
+          ]
+        },
+        {
+          "id": "mindfulness",
+          "label": "Mindfulness",
+          "events": [
+            {
+              "id": "e67",
+              "name": "Meditation",
+              "tags": ["Zen"],
+              "address": "Center",
+              "time": "Today 7 AM",
+              "distance": "1.0 mi"
+            },
+            {
+              "id": "e68",
+              "name": "Breathwork",
+              "tags": ["Workshop"],
+              "address": "Studio",
+              "time": "Wed 6 PM",
+              "distance": "1.2 mi"
+            },
+            {
+              "id": "e69",
+              "name": "Sound Bath",
+              "tags": ["Healing"],
+              "address": "Wellness",
+              "time": "Sun 5 PM",
+              "distance": "2.0 mi"
+            },
+            {
+              "id": "e70",
+              "name": "Tai Chi",
+              "tags": ["Movement"],
+              "address": "Park",
+              "time": "Sat 8 AM",
+              "distance": "0.5 mi"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
+

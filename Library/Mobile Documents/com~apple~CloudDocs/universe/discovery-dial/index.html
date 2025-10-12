@@ -5,12 +5,20 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Discovery Dial</title>
-    <style>
-      /* URGENT: Force white background immediately */
-      body { background-color: #FFFFFF !important; }
-      html { background-color: #FFFFFF !important; }
-      #root { background-color: #FFFFFF !important; }
-    </style>
+        <style>
+          /* URGENT: Force white background immediately */
+          body { background-color: #FFFFFF !important; }
+          html { background-color: #FFFFFF !important; }
+          #root { background-color: #FFFFFF !important; }
+          
+          /* URGENT: Force compass dial visibility */
+          .compass-dial { 
+            background: rgba(255,0,0,0.2) !important; 
+            border: 3px solid #FF0000 !important; 
+            display: block !important; 
+            visibility: visible !important; 
+          }
+        </style>
   </head>
   <body>
     <div id="root"></div>
