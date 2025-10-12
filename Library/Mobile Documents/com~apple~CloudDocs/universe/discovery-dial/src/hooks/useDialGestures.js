@@ -38,9 +38,18 @@ export default function useDialGestures(actions, options = {}) {
   /** Transient hover index during subcategory rotation */
   const [hoverSubIndex, setHoverSubIndex] = useState(null);
   
+  /** REAL-TIME ROTATION: Current drag distance for visual feedback */
+  const [dragDeltaX, setDragDeltaX] = useState(0);
+  
   /** Throttled setter for hover index (~60fps) to prevent render storms */
   const setHoverSubIndexThrottled = useMemo(
     () => throttleRAF(setHoverSubIndex),
+    []
+  );
+  
+  /** Throttled setter for drag delta (~60fps) for smooth rotation */
+  const setDragDeltaXThrottled = useMemo(
+    () => throttleRAF(setDragDeltaX),
     []
   );
   
@@ -227,6 +236,9 @@ export default function useDialGestures(actions, options = {}) {
     if (g.gestureType === 'rotate') {
       g.totalDeltaX = deltaX;
       
+      // REAL-TIME ROTATION: Update drag distance for visual feedback
+      setDragDeltaXThrottled(deltaX);
+      
       // Calculate hover index (tentative subcategory)
       const steps = Math.round(g.totalDeltaX / config.dialSensitivity);
       
@@ -298,6 +310,7 @@ export default function useDialGestures(actions, options = {}) {
     g.gestureType = null;
     g.area = null;
     setHoverSubIndex(null);
+    setDragDeltaX(0);  // REAL-TIME ROTATION: Reset visual feedback
   }, [
     actions,
     config.minSwipeVelocity,
@@ -316,6 +329,7 @@ export default function useDialGestures(actions, options = {}) {
     g.gestureType = null;
     g.area = null;
     setHoverSubIndex(null);
+    setDragDeltaX(0);  // REAL-TIME ROTATION: Reset visual feedback
     
     // Cancel inertia on gesture interrupt
     if (inertiaRAF.current) {
@@ -460,7 +474,16 @@ export default function useDialGestures(actions, options = {}) {
      * 
      * @type {number|null}
      */
-    hoverSubIndex
+    hoverSubIndex,
+
+    /**
+     * REAL-TIME ROTATION: Current horizontal drag distance in pixels.
+     * Updates continuously during rotation gesture for visual feedback.
+     * Use to calculate real-time label rotation offset.
+     * 
+     * @type {number}
+     */
+    dragDeltaX
   };
 }
 

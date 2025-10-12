@@ -90,7 +90,7 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
     }
   }), [actions, primaryHaptic, subcategoryHaptic]);
 
-  const { bindDialAreaProps, bindLowerAreaProps, hoverSubIndex } = 
+  const { bindDialAreaProps, bindLowerAreaProps, hoverSubIndex, dragDeltaX } = 
     useDialGestures(actionsWithFeedback, config.gestures);
 
   // Get subcategories for active primary
@@ -478,7 +478,12 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
 
         {/* SUBCATEGORY LABELS (with pulse on rotation & progressive opacity) */}
         {subcategories.map((sub, i) => {
-          const angle = (i * 360) / subCount;
+          // REAL-TIME ROTATION: Calculate rotation offset from drag
+          const dragRotation = subCount > 0 
+            ? (dragDeltaX / 140) * (360 / subCount)  // 140 = dialSensitivity
+            : 0;
+          
+          const angle = (i * 360) / subCount - dragRotation;  // Subtract to rotate with drag
           const radius = dialSize * 0.58; // 58% from center (OUTSIDE the circle)
           const centerX = dialSize / 2;
           const centerY = dialSize / 2;
