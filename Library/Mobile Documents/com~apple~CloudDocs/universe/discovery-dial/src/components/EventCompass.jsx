@@ -143,10 +143,14 @@ export default function EventCompass({ categories = [], config = {} }) {
     );
   }
   
-  // Debug: Confirm render in production
-  if (typeof window !== 'undefined' && import.meta.env.PROD) {
-    console.log('✓ EventCompass rendering with', categories.length, 'categories');
-  }
+  // Debug: Confirm render in ALL modes
+  console.log('🔵 EventCompass component rendering with', categories.length, 'categories');
+  console.log('🔵 State:', { 
+    primaryIndex: state.primaryIndex, 
+    subIndex: state.subIndex, 
+    eventIndex: state.eventIndex,
+    activePrimary: state.activePrimary?.label
+  });
 
   return (
     <div 

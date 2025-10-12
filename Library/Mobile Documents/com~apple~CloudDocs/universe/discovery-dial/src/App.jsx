@@ -1,13 +1,13 @@
-import EventCompass from './components/EventCompass';
+import EventCompassFinal from './components/EventCompassFinal';
 import categoriesData from './data/categories.json';
 
 /**
  * Main application component.
- * Renders the Event Compass dial interface.
+ * FINAL PRODUCTION VERSION - Clean compass dial
  */
 function App() {
   return (
-    <EventCompass categories={categoriesData.categories} />
+    <EventCompassFinal categories={categoriesData.categories} />
   );
 }
 

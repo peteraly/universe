@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🔴 DIAL DIAGNOSTIC</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background: #000;
+      color: #fff;
+      font-family: monospace;
+      padding: 20px;
+      line-height: 1.6;
+    }
+    h1 { color: #FF3B30; margin-bottom: 20px; }
+    .section { 
+      background: #111; 
+      padding: 15px; 
+      margin-bottom: 15px; 
+      border-left: 3px solid #FF3B30;
+      border-radius: 4px;
+    }
+    .pass { color: #00FF00; }
+    .fail { color: #FF3B30; }
+    .warn { color: #FFCC00; }
+    pre { 
+      background: #000; 
+      padding: 10px; 
+      overflow: auto; 
+      border: 1px solid #333;
+      margin-top: 10px;
+    }
+    .test-dial {
+      width: 300px;
+      height: 300px;
+      margin: 20px auto;
+      position: relative;
+      background: rgba(255, 255, 255, 0.05);
+      outline: 2px solid rgba(255, 59, 48, 0.3);
+    }
+    .test-circle {
+      position: absolute;
+      inset: 0;
+      border: 4px solid white;
+      border-radius: 50%;
+      opacity: 1.0;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+    }
+    .test-svg {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+    }
+    button {
+      background: #FF3B30;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      cursor: pointer;
+      border-radius: 4px;
+      margin: 5px;
+    }
+    button:hover { background: #FF5542; }
+  </style>
+</head>
+<body>
+  <h1>🔴 DIAL MISSING - LIVE DIAGNOSTIC</h1>
+  
+  <div class="section">
+    <h2>1. VISUAL TEST: Can you see this test dial?</h2>
+    <div class="test-dial">
+      <div class="test-circle"></div>
+      <svg class="test-svg" viewBox="0 0 100 100">
+        <circle cx="50" cy="50" r="47.5" stroke="white" stroke-opacity="0.8" stroke-width="2" fill="none"/>
+        <path d="M50 5 L52 10 L48 10 Z" fill="#FF3B30"/>
+      </svg>
+    </div>
+    <div id="visual-result" style="text-align: center; font-size: 18px;">
+      <button onclick="reportVisual('yes')">✅ YES, I see a white circle</button>
+      <button onclick="reportVisual('no')">❌ NO, I don't see anything</button>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>2. MAIN APP CHECK</h2>
+    <button onclick="checkMainApp()">🔍 Check Main App</button>
+    <pre id="app-check">Click button to run check...</pre>
+  </div>
+
+  <div class="section">
+    <h2>3. CATEGORIES DATA CHECK</h2>
+    <button onclick="checkCategories()">📊 Check Categories</button>
+    <pre id="categories-check">Click button to run check...</pre>
+  </div>
+
+  <div class="section">
+    <h2>4. DOM INSPECTION</h2>
+    <button onclick="inspectDOM()">🔬 Inspect DOM</button>
+    <pre id="dom-check">Click button to run check...</pre>
+  </div>
+
+  <div class="section">
+    <h2>5. COMPUTED STYLES</h2>
+    <button onclick="checkStyles()">🎨 Check Styles</button>
+    <pre id="styles-check">Click button to run check...</pre>
+  </div>
+
+  <div class="section">
+    <h2>6. CONSOLE LOGS</h2>
+    <button onclick="checkConsole()">📝 Check Console</button>
+    <pre id="console-check">Open browser console and check for errors</pre>
+  </div>
+
+  <div class="section">
+    <h2>7. EMERGENCY FIX</h2>
+    <button onclick="applyEmergencyFix()">🚨 Apply Emergency Fix</button>
+    <pre id="fix-result">Click to force dial to be BRIGHT RED</pre>
+  </div>
+
+  <script>
+    let visualReport = null;
+
+    function reportVisual(answer) {
+      visualReport = answer;
+      const result = document.getElementById('visual-result');
+      if (answer === 'yes') {
+        result.innerHTML = '<span class="pass">✅ GOOD: Your screen can display white circles. Problem is app-specific.</span>';
+      } else {
+        result.innerHTML = '<span class="fail">❌ CRITICAL: Cannot see test circle. Check monitor brightness or browser.</span>';
+      }
+    }
+
+    function checkMainApp() {
+      const output = document.getElementById('app-check');
+      const root = document.getElementById('root');
+      
+      let report = [];
+      report.push('ROOT ELEMENT:');
+      report.push('  Exists: ' + (root ? '✅ YES' : '❌ NO'));
+      
+      if (root) {
+        const rect = root.getBoundingClientRect();
+        report.push('  Width: ' + rect.width);
+        report.push('  Height: ' + rect.height);
+        report.push('  Children: ' + root.children.length);
+        report.push('  HTML Preview: ' + root.innerHTML.substring(0, 200) + '...');
+      }
+      
+      output.textContent = report.join('\n');
+    }
+
+    function checkCategories() {
+      const output = document.getElementById('categories-check');
+      
+      fetch('/src/data/categories.json')
+        .then(r => r.json())
+        .then(data => {
+          const report = [];
+          report.push('CATEGORIES.JSON:');
+          report.push('  Status: ✅ LOADED');
+          report.push('  Count: ' + (data.categories?.length || 0));
+          report.push('  Categories: ' + data.categories?.map(c => c.label).join(', '));
+          output.textContent = report.join('\n');
+        })
+        .catch(e => {
+          output.textContent = '❌ FAILED TO LOAD:\n' + e.message;
+        });
+    }
+
+    function inspectDOM() {
+      const output = document.getElementById('dom-check');
+      const dial = document.querySelector('[data-dial-root]');
+      
+      let report = [];
+      report.push('DIAL CONTAINER [data-dial-root]:');
+      report.push('  Exists: ' + (dial ? '✅ YES' : '❌ NO - COMPONENT NOT MOUNTING!'));
+      
+      if (dial) {
+        const rect = dial.getBoundingClientRect();
+        report.push('  Position: ' + rect.x + ', ' + rect.y);
+        report.push('  Size: ' + rect.width + ' x ' + rect.height);
+        report.push('  Visible: ' + (rect.width > 0 && rect.height > 0 ? '✅ YES' : '❌ NO'));
+        report.push('  Classes: ' + dial.className);
+        
+        const svg = dial.querySelector('svg');
+        report.push('\nSVG ELEMENT:');
+        report.push('  Exists: ' + (svg ? '✅ YES' : '❌ NO'));
+        
+        if (svg) {
+          const circle = svg.querySelector('circle');
+          report.push('  Circle: ' + (circle ? '✅ YES' : '❌ NO'));
+          if (circle) {
+            report.push('  Circle stroke: ' + circle.getAttribute('stroke'));
+            report.push('  Circle opacity: ' + circle.getAttribute('stroke-opacity'));
+          }
+        }
+        
+        const border = dial.querySelector('.rounded-full');
+        report.push('\nBORDER DIV:');
+        report.push('  Exists: ' + (border ? '✅ YES' : '❌ NO'));
+        
+      } else {
+        report.push('\n❌ CRITICAL ERROR: Component not mounting!');
+        report.push('Possible causes:');
+        report.push('  1. JavaScript error (check console)');
+        report.push('  2. Categories data not loading');
+        report.push('  3. React not initializing');
+      }
+      
+      output.textContent = report.join('\n');
+    }
+
+    function checkStyles() {
+      const output = document.getElementById('styles-check');
+      const dial = document.querySelector('[data-dial-root]');
+      
+      if (!dial) {
+        output.textContent = '❌ Cannot check styles - dial not found';
+        return;
+      }
+      
+      const computed = window.getComputedStyle(dial);
+      const report = [];
+      report.push('COMPUTED STYLES:');
+      report.push('  display: ' + computed.display);
+      report.push('  position: ' + computed.position);
+      report.push('  width: ' + computed.width);
+      report.push('  height: ' + computed.height);
+      report.push('  background: ' + computed.backgroundColor);
+      report.push('  outline: ' + computed.outline);
+      report.push('  opacity: ' + computed.opacity);
+      report.push('  visibility: ' + computed.visibility);
+      report.push('  z-index: ' + computed.zIndex);
+      
+      const circle = dial.querySelector('.rounded-full');
+      if (circle) {
+        const circleStyle = window.getComputedStyle(circle);
+        report.push('\nCIRCLE BORDER:');
+        report.push('  border: ' + circleStyle.border);
+        report.push('  opacity: ' + circleStyle.opacity);
+      }
+      
+      output.textContent = report.join('\n');
+    }
+
+    function checkConsole() {
+      const output = document.getElementById('console-check');
+      output.textContent = 'Check your browser console (F12) for:\n\n' +
+        '✅ "EventCompass rendering with X categories"\n' +
+        '✅ "DialRing rendering: {...}"\n\n' +
+        'OR\n\n' +
+        '❌ "🔴 DIAL ERROR: No categories..."\n' +
+        '❌ Any red error messages\n\n' +
+        'Console is open? Press F12 or Cmd+Option+J';
+    }
+
+    function applyEmergencyFix() {
+      const output = document.getElementById('fix-result');
+      const dial = document.querySelector('[data-dial-root]');
+      
+      if (!dial) {
+        output.textContent = '❌ Cannot apply fix - dial not found!\n' +
+          'This means the component is not mounting at all.\n' +
+          'Check categories.json and console errors.';
+        return;
+      }
+      
+      // Make dial BRIGHT RED
+      dial.style.outline = '5px solid red';
+      dial.style.backgroundColor = 'rgba(255, 0, 0, 0.1)';
+      
+      const circle = dial.querySelector('.rounded-full');
+      if (circle) {
+        circle.style.border = '6px solid red';
+        circle.style.opacity = '1.0';
+      }
+      
+      const svg = dial.querySelector('svg circle');
+      if (svg) {
+        svg.setAttribute('stroke', 'red');
+        svg.setAttribute('stroke-opacity', '1.0');
+        svg.setAttribute('stroke-width', '4');
+      }
+      
+      output.textContent = '✅ EMERGENCY FIX APPLIED!\n\n' +
+        'The dial should now be BRIGHT RED.\n' +
+        'If you still don\'t see it, the component is not rendering.';
+    }
+
+    // Auto-run basic checks on load
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        checkMainApp();
+        checkCategories();
+        inspectDOM();
+      }, 1000);
+    });
+  </script>
+</body>
+</html>
+
