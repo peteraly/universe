@@ -247,6 +247,36 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
             }}
           />
           
+          {/* ENHANCED: Rotation ring (visual affordance for subcategory rotation) */}
+          <circle
+            cx="50"
+            cy="50"
+            r="54"
+            fill="none"
+            stroke="rgba(255, 255, 255, 0.08)"
+            strokeWidth="3"
+            strokeDasharray="2 3"  /* Dotted pattern suggests rotation */
+            opacity="0.6"
+            style={{
+              transition: 'opacity 0.3s, stroke 0.3s'
+            }}
+          />
+          
+          {/* Rotation ring glow during active rotation */}
+          {gestureState.type === 'subcategory' && gestureState.isActive && (
+            <circle
+              cx="50"
+              cy="50"
+              r="54"
+              fill="none"
+              stroke="rgba(255, 255, 255, 0.25)"
+              strokeWidth="5"
+              style={{
+                filter: 'blur(6px)'
+              }}
+            />
+          )}
+          
           {/* Subcategory tick marks */}
           {subcategories.map((sub, i) => {
             const angle = (i * 360) / subCount;
@@ -316,6 +346,95 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
           <line x1="0" y1="50" x2="100" y2="50" stroke="white" strokeWidth="0.3" />
         </svg>
 
+        {/* ENHANCED: Directional hint arrows (subtle affordance) */}
+        <AnimatePresence>
+          {gestureState.type === 'primary' && gestureState.isActive && (
+            <>
+              {/* Arrow pointing to target direction */}
+              {gestureState.direction === 'north' && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 0.4, y: 0 }}
+                  exit={{ opacity: 0, y: -10 }}
+                  transition={{ duration: 0.2 }}
+                  style={{
+                    position: 'absolute',
+                    left: '50%',
+                    top: '30%',
+                    transform: 'translateX(-50%)',
+                    fontSize: '20px',
+                    color: 'rgba(100, 150, 255, 0.6)',
+                    pointerEvents: 'none',
+                    zIndex: 8
+                  }}
+                >
+                  ⌃ ⌃ ⌃
+                </motion.div>
+              )}
+              {gestureState.direction === 'east' && (
+                <motion.div
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 0.4, x: 0 }}
+                  exit={{ opacity: 0, x: 10 }}
+                  transition={{ duration: 0.2 }}
+                  style={{
+                    position: 'absolute',
+                    right: '30%',
+                    top: '50%',
+                    transform: 'translateY(-50%)',
+                    fontSize: '20px',
+                    color: 'rgba(100, 150, 255, 0.6)',
+                    pointerEvents: 'none',
+                    zIndex: 8
+                  }}
+                >
+                  ⌃ ⌃ ⌃
+                </motion.div>
+              )}
+              {gestureState.direction === 'south' && (
+                <motion.div
+                  initial={{ opacity: 0, y: -10 }}
+                  animate={{ opacity: 0.4, y: 0 }}
+                  exit={{ opacity: 0, y: 10 }}
+                  transition={{ duration: 0.2 }}
+                  style={{
+                    position: 'absolute',
+                    left: '50%',
+                    bottom: '30%',
+                    transform: 'translateX(-50%) rotate(180deg)',
+                    fontSize: '20px',
+                    color: 'rgba(100, 150, 255, 0.6)',
+                    pointerEvents: 'none',
+                    zIndex: 8
+                  }}
+                >
+                  ⌃ ⌃ ⌃
+                </motion.div>
+              )}
+              {gestureState.direction === 'west' && (
+                <motion.div
+                  initial={{ opacity: 0, x: 10 }}
+                  animate={{ opacity: 0.4, x: 0 }}
+                  exit={{ opacity: 0, x: -10 }}
+                  transition={{ duration: 0.2 }}
+                  style={{
+                    position: 'absolute',
+                    left: '30%',
+                    top: '50%',
+                    transform: 'translateY(-50%) rotate(-90deg)',
+                    fontSize: '20px',
+                    color: 'rgba(100, 150, 255, 0.6)',
+                    pointerEvents: 'none',
+                    zIndex: 8
+                  }}
+                >
+                  ⌃ ⌃ ⌃
+                </motion.div>
+              )}
+            </>
+          )}
+        </AnimatePresence>
+
         {/* PRIMARY CATEGORY LABELS (with flash animation on change) */}
         {categories.map((cat, index) => {
           const directions = ['north', 'east', 'south', 'west'];
@@ -337,14 +456,15 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
                 left: `${pos.x}px`,
                 top: `${pos.y}px`,
                 transform: 'translate(-50%, -50%)',
-                fontSize: isActive ? '15px' : '14px',
-                fontWeight: isActive ? '700' : '600',
+                fontSize: isActive ? '18px' : '13px',  // Enhanced: larger active, smaller inactive
+                fontWeight: isActive ? '700' : '500',  // Enhanced: bolder active
                 letterSpacing: '0.5px',
                 color: 'white',
                 opacity: gestureState.type === 'primary' && gestureState.isActive && !isActive 
                   ? 0.2  // Dim others during swipe
-                  : isActive ? 1 : 0.4,
-                transition: 'opacity 0.3s, font-size 0.2s, font-weight 0.2s',
+                  : isActive ? 1 : 0.35,  // Enhanced: lower inactive opacity
+                textShadow: isActive ? '0 0 8px rgba(255, 255, 255, 0.3)' : 'none',  // Enhanced: glow
+                transition: 'opacity 0.3s, font-size 0.2s, font-weight 0.2s, text-shadow 0.3s',
                 whiteSpace: 'nowrap',
                 textAlign: 'center',
                 zIndex: 10,
@@ -356,7 +476,7 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
           );
         })}
 
-        {/* SUBCATEGORY LABELS (with pulse on rotation) */}
+        {/* SUBCATEGORY LABELS (with pulse on rotation & progressive opacity) */}
         {subcategories.map((sub, i) => {
           const angle = (i * 360) / subCount;
           const radius = dialSize * 0.58; // 58% from center (OUTSIDE the circle)
@@ -368,6 +488,31 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
           const isHovered = hoverSubIndex !== null && i === hoverSubIndex;
           const highlighted = isActive || isHovered;
           const justActivated = gestureState.type === 'subcategory' && isActive && gestureState.isActive;
+          
+          // Enhanced: Calculate distance from active for progressive opacity
+          const distance = Math.min(
+            Math.abs(i - state.subIndex),
+            Math.abs((i - state.subIndex + subCount) % subCount),
+            Math.abs((i - state.subIndex - subCount) % subCount)
+          );
+          const isAdjacent = distance === 1;
+          
+          // Enhanced: Progressive sizing and opacity
+          let fontSize = '10px';
+          let fontWeight = '500';
+          let opacity = 0.4;
+          let textShadow = 'none';
+          
+          if (isActive) {
+            fontSize = '14px';  // Enhanced: larger active
+            fontWeight = '700';
+            opacity = 1;
+            textShadow = '0 0 6px rgba(255, 255, 255, 0.4)';  // Enhanced: glow
+          } else if (isAdjacent) {
+            fontSize = '12px';
+            fontWeight = '600';
+            opacity = 0.8;  // Enhanced: brighter adjacent
+          }
           
           return (
             <motion.div
@@ -382,12 +527,13 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
                 left: `${pos.x}px`,
                 top: `${pos.y}px`,
                 transform: 'translate(-50%, -50%)',
-                fontSize: highlighted ? '12px' : '11px',
-                fontWeight: highlighted ? '600' : '500',
+                fontSize,
+                fontWeight,
                 letterSpacing: '0.3px',
                 color: 'white',
-                opacity: highlighted ? 1 : 0.6,
-                transition: 'opacity 0.2s, font-size 0.2s, font-weight 0.2s',
+                opacity,
+                textShadow,
+                transition: 'opacity 0.2s, font-size 0.2s, font-weight 0.2s, text-shadow 0.2s',
                 whiteSpace: 'nowrap',
                 textAlign: 'center',
                 zIndex: 5,
