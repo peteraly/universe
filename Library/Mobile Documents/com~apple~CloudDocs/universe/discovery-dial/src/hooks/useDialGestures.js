@@ -1,7 +1,7 @@
 import { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 import { throttleRAF } from '../utils/performance';
 import { getGestureConfig } from '../config/compassConfig';
-import { ENABLE_INERTIA } from '../config/featureFlags';
+import { ENABLE_INERTIA, DEBUG_GESTURES } from '../config/featureFlags';
 
 /**
  * Gesture detection engine for Event Compass dial.
@@ -110,8 +110,9 @@ export default function useDialGestures(actions, options = {}) {
     const absDeltaX = Math.abs(deltaX);
     const absDeltaY = Math.abs(deltaY);
     
-    // Rotation is primarily horizontal (2:1 ratio)
-    return absDeltaX > absDeltaY * 2;
+    // Rotation is primarily horizontal (1.5:1 ratio - more lenient)
+    // This allows for natural circular drag with slight vertical variance
+    return absDeltaX > absDeltaY * 1.5;
   }, []);
 
   // ========================================
@@ -203,8 +204,22 @@ export default function useDialGestures(actions, options = {}) {
     if (!g.gestureType && (Math.abs(deltaX) > 10 || Math.abs(deltaY) > 10)) {
       if (isRotationGesture(deltaX, deltaY)) {
         g.gestureType = 'rotate';
+        if (DEBUG_GESTURES) {
+          console.log('🔵 Gesture detected: ROTATION', {
+            deltaX: deltaX.toFixed(1),
+            deltaY: deltaY.toFixed(1),
+            ratio: (Math.abs(deltaX) / Math.abs(deltaY)).toFixed(2)
+          });
+        }
       } else {
         g.gestureType = 'swipe';
+        if (DEBUG_GESTURES) {
+          console.log('🔵 Gesture detected: SWIPE', {
+            deltaX: deltaX.toFixed(1),
+            deltaY: deltaY.toFixed(1),
+            ratio: (Math.abs(deltaX) / Math.abs(deltaY)).toFixed(2)
+          });
+        }
       }
     }
     
@@ -244,6 +259,12 @@ export default function useDialGestures(actions, options = {}) {
       if (velocity >= config.minSwipeVelocity) {
         const direction = getSwipeDirection(deltaX, deltaY, distance);
         if (direction && actions.setPrimaryByDirection) {
+          if (DEBUG_GESTURES) {
+            console.log('✅ PRIMARY SWIPE:', direction, {
+              velocity: velocity.toFixed(2),
+              distance: distance.toFixed(1)
+            });
+          }
           actions.setPrimaryByDirection(direction);
         }
       }
@@ -251,6 +272,12 @@ export default function useDialGestures(actions, options = {}) {
       // Rotation for subcategory
       const steps = Math.round(g.totalDeltaX / config.dialSensitivity);
       if (steps !== 0 && actions.rotateSub) {
+        if (DEBUG_GESTURES) {
+          console.log('✅ SUBCATEGORY ROTATION:', steps, 'steps', {
+            totalDeltaX: g.totalDeltaX.toFixed(1),
+            sensitivity: config.dialSensitivity
+          });
+        }
         actions.rotateSub(steps);
       }
       

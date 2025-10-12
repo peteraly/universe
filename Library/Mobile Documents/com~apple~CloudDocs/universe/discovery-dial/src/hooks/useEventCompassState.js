@@ -114,21 +114,24 @@ export default function useEventCompassState(categories = []) {
 
   /**
    * Rotate through subcategories by delta steps.
-   * Snaps to nearest subcategory and clamps to valid range.
+   * Wraps around in a circular fashion (last → first, first → last).
    * 
    * @param {number} deltaSteps - Number of steps to rotate (+/-)
    */
   const rotateSub = useCallback((deltaSteps) => {
     if (!activePrimary?.subcategories) return;
     
-    const maxIndex = activePrimary.subcategories.length - 1;
+    const length = activePrimary.subcategories.length;
+    if (length === 0) return;
+    
     const newIndex = subIndex + deltaSteps;
     
-    // Clamp to valid range [0, maxIndex]
-    const clampedIndex = Math.max(0, Math.min(maxIndex, Math.round(newIndex)));
+    // Wrap to valid range [0, length-1] using modulo
+    // Handle negative wrapping: ((x % n) + n) % n
+    const wrappedIndex = ((newIndex % length) + length) % length;
     
-    if (clampedIndex !== subIndex) {
-      setSubIndex(clampedIndex);
+    if (wrappedIndex !== subIndex) {
+      setSubIndex(wrappedIndex);
       setEventIndex(0); // Reset event when subcategory changes
     }
   }, [activePrimary, subIndex]);

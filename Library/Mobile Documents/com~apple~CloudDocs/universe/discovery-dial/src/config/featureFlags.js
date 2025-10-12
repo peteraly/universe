@@ -64,6 +64,15 @@ export const ENABLE_KEYBOARD_SHORTCUTS = true;
 export const ENABLE_ANIMATIONS = true;
 
 /**
+ * Enable console logging for gesture detection.
+ * Logs gesture type, deltas, and actions for debugging.
+ * Useful for troubleshooting rotation vs swipe conflicts.
+ * 
+ * @type {boolean}
+ */
+export const DEBUG_GESTURES = false;
+
+/**
  * Feature flag configuration object.
  * Useful for passing all flags at once.
  */
@@ -73,7 +82,8 @@ export const FEATURE_FLAGS = {
   SHOW_DISTANCE,
   SHOW_DEBUG_INFO,
   ENABLE_KEYBOARD_SHORTCUTS,
-  ENABLE_ANIMATIONS
+  ENABLE_ANIMATIONS,
+  DEBUG_GESTURES
 };
 
 /**
