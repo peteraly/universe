@@ -171,8 +171,10 @@ export default function EventCompass({ categories = [], config = {} }) {
         style={{
           width: 'min(90vw, 520px)',
           height: 'min(90vw, 520px)',
-          // Temporary: Very subtle background to verify dial container is rendering
-          backgroundColor: 'rgba(255, 255, 255, 0.02)'
+          // EMERGENCY: Visible background to confirm container renders
+          backgroundColor: 'rgba(255, 255, 255, 0.05)',
+          // EMERGENCY: Red outline to make dial area obvious
+          outline: '2px solid rgba(255, 59, 48, 0.3)'
         }}
         {...bindDialAreaProps}
         tabIndex={0}
@@ -181,13 +183,14 @@ export default function EventCompass({ categories = [], config = {} }) {
         aria-label="Event Compass Dial"
         aria-describedby="compass-instructions"
       >
-          {/* Outer circle boundary (visual reference) */}
+          {/* Outer circle boundary (visual reference) - EMERGENCY BRIGHT MODE */}
           <div 
-            className="absolute inset-0 rounded-full border-2 border-white"
+            className="absolute inset-0 rounded-full border-4 border-white"
             style={{ 
-              opacity: 0.5,
+              opacity: 1.0,
               pointerEvents: 'none',
-              zIndex: 1
+              zIndex: 1,
+              boxShadow: '0 0 20px rgba(255, 255, 255, 0.5)'
             }}
           />
 

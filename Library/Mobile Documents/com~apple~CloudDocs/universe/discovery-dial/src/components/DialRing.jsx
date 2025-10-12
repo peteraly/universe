@@ -52,14 +52,14 @@ export default function DialRing({ hoverSubIndex, activeSubIndex, subcategories 
       viewBox="0 0 100 100"
       preserveAspectRatio="xMidYMid meet"
     >
-      {/* Outer circle boundary - always visible even with no subcategories */}
+      {/* Outer circle boundary - EMERGENCY BRIGHT MODE */}
       <circle
         cx={cx}
         cy={cy}
         r={47.5}
         stroke="white"
-        strokeOpacity="0.4"
-        strokeWidth="1.2"
+        strokeOpacity="0.8"
+        strokeWidth="2.0"
         fill="none"
       />
 
