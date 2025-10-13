@@ -95,11 +95,13 @@ export default function TimePickerSlider({ selectedTime, onTimeChange }) {
       onPointerCancel={handlePointerUp}
       style={{
         position: 'fixed',
-        right: '12px',
+        right: 'max(8px, env(safe-area-inset-right))',
         top: '50%',
         transform: 'translateY(-50%)',
-        height: '240px',
-        width: '44px',
+        height: 'clamp(200px, 30vh, 280px)',
+        width: 'clamp(40px, 10vw, 56px)',
+        minWidth: '44px', // WCAG minimum touch target
+        maxWidth: 'calc(100vw - 80px)', // Prevent overflow at high zoom
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
@@ -107,8 +109,8 @@ export default function TimePickerSlider({ selectedTime, onTimeChange }) {
         zIndex: 45,
         touchAction: 'none',
         userSelect: 'none',
-        paddingTop: 'env(safe-area-inset-top)',
-        paddingBottom: 'env(safe-area-inset-bottom)'
+        paddingTop: 'max(4px, env(safe-area-inset-top))',
+        paddingBottom: 'max(4px, env(safe-area-inset-bottom))'
       }}
     >
       {/* Time markers */}
@@ -124,7 +126,7 @@ export default function TimePickerSlider({ selectedTime, onTimeChange }) {
             animate={isActive ? { scale: 1.1 } : { scale: 1 }}
             transition={{ duration: 0.2 }}
             style={{
-              fontSize: isActive ? '13px' : '11px',
+              fontSize: isActive ? 'clamp(12px, 3vw, 14px)' : 'clamp(10px, 2.5vw, 12px)',
               fontWeight: isActive ? '700' : '500',
               color: isActive 
                 ? 'rgba(100, 150, 255, 0.8)'  // Blue accent (matches primary swipe)
@@ -136,7 +138,12 @@ export default function TimePickerSlider({ selectedTime, onTimeChange }) {
               letterSpacing: '0.3px',
               textTransform: 'uppercase',
               fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-              pointerEvents: 'auto'
+              pointerEvents: 'auto',
+              minWidth: '44px', // WCAG minimum touch target
+              minHeight: '44px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
             }}
           >
             {marker.label}

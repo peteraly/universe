@@ -34,19 +34,22 @@ export default function DateRangeButton({ selectedRange, onRangeChange }) {
       transition={{ type: 'spring', stiffness: 400, damping: 25 }}
       style={{
         position: 'fixed',
-        right: '8px',
-        bottom: '28%',
-        width: '88px',
-        height: '32px',
+        right: 'max(8px, env(safe-area-inset-right))',
+        bottom: 'clamp(25%, 28%, 35%)',
+        width: 'clamp(80px, 20vw, 100px)',
+        height: 'clamp(28px, 8vw, 40px)',
+        minWidth: '44px',  // WCAG minimum touch target
+        minHeight: '44px', // WCAG minimum touch target
+        maxWidth: 'calc(100vw - env(safe-area-inset-right) - 20px)', // Prevent overflow
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '0',
+        padding: 'clamp(6px, 2vw, 10px) clamp(10px, 3vw, 14px)',
         background: 'rgba(100, 150, 255, 0.15)',
         border: '1px solid rgba(100, 150, 255, 0.3)',
         borderRadius: '16px',
         color: 'white',
-        fontSize: '11px',
+        fontSize: 'clamp(10px, 2.5vw, 13px)',
         fontWeight: '700',
         textTransform: 'uppercase',
         letterSpacing: '0.5px',

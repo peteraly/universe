@@ -42,12 +42,14 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
   // DATE RANGE STATE (NEW - ADDITIVE)
   const [dateRange, setDateRange] = useState('TODAY');
   
-  // Calculate responsive dial size
+  // Calculate responsive dial size (handles resize AND orientation change)
   useEffect(() => {
     const calculateSize = () => {
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
       const size = Math.min(
-        window.innerWidth * 0.85,
-        window.innerHeight * 0.5,
+        vw * 0.85,
+        vh * 0.5,
         480
       );
       setDialSize(size);
@@ -55,7 +57,12 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
     
     calculateSize();
     window.addEventListener('resize', calculateSize);
-    return () => window.removeEventListener('resize', calculateSize);
+    window.addEventListener('orientationchange', calculateSize);
+    
+    return () => {
+      window.removeEventListener('resize', calculateSize);
+      window.removeEventListener('orientationchange', calculateSize);
+    };
   }, []);
   
   const { state, actions } = useEventCompassState(categories);
@@ -665,20 +672,24 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.2 }}
         style={{
-          marginTop: '20px',
-          marginBottom: '10px',
-          padding: '8px 16px',
+          marginTop: 'clamp(16px, 5vw, 24px)',
+          marginBottom: 'clamp(8px, 2.5vw, 12px)',
+          padding: 'clamp(6px, 2vw, 10px) clamp(12px, 4vw, 20px)',
           background: 'rgba(100, 150, 255, 0.15)',
           border: '1px solid rgba(100, 150, 255, 0.3)',
           borderRadius: '20px',
-          fontSize: '14px',
+          fontSize: 'clamp(12px, 3.5vw, 16px)',
           textAlign: 'center',
           opacity: 0.9,
           display: 'inline-flex',
           alignItems: 'center',
           justifyContent: 'center',
-          gap: '8px',
-          alignSelf: 'center'
+          gap: 'clamp(6px, 2vw, 10px)',
+          alignSelf: 'center',
+          maxWidth: 'calc(100vw - 40px)', // Prevent overflow at high zoom
+          whiteSpace: 'normal', // Allow wrapping if needed
+          lineHeight: 1.4,
+          flexWrap: 'wrap' // Allow content to wrap gracefully
         }}
       >
         <span style={{ opacity: 0.8 }}>🕐</span>

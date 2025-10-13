@@ -25,6 +25,13 @@
   font-kerning: normal;
 }
 
+html {
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
+  position: relative;
+}
+
 html,
 body,
 #root,
@@ -36,10 +43,12 @@ body,
 
 body {
   width: 100%;
+  max-width: 100vw;
   height: 100vh;
   background-color: #000000 !important;
   color: #ffffff;
   overflow: hidden;
+  overflow-x: hidden;
   /* Mobile Safari safe area insets */
   padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
   /* Prevent iOS bounce/overscroll */
@@ -50,9 +59,11 @@ body {
 
 #root {
   width: 100%;
+  max-width: 100vw;
   height: 100vh;
   background-color: #000000 !important;
   color: #ffffff;
+  overflow-x: hidden;
 }
 
 * {
