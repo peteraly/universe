@@ -122,7 +122,8 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
   
   const subcategoryHaptic = useCallback(() => {
     if (navigator.vibrate) {
-      navigator.vibrate([0, 15, 30, 15, 30, 15]); // Soft triple tick
+      // ENHANCED: Double pulse pattern - stronger feedback for snap
+      navigator.vibrate([0, 20, 40, 20]); // Two strong pulses
     }
   }, []);
   
@@ -395,7 +396,7 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
           })}
         </svg>
 
-        {/* RED POINTER (with pulse during primary change) */}
+        {/* RED POINTER - Primary Category Indicator (with pulse during primary change) */}
         <motion.svg
           animate={gestureState.type === 'primary' && gestureState.isActive ? {
             scale: [1, 1.3, 1],
@@ -414,6 +415,28 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
           viewBox="0 0 14 10"
         >
           <path d="M7 0 L14 10 H0 Z" fill="#FF3B30" />
+        </motion.svg>
+
+        {/* BLUE POINTER - Subcategory Selector (shows active alignment) */}
+        <motion.svg
+          animate={gestureState.type === 'subcategory' && gestureState.isActive ? {
+            scale: [1, 1.2, 1],
+            opacity: [0.8, 1, 0.9]
+          } : {}}
+          transition={{ duration: 0.3 }}
+          style={{
+            position: 'absolute',
+            left: '50%',
+            top: `${dialSize * 0.08}px`, // Positioned just inside outer ring
+            transform: 'translateX(-50%)',
+            zIndex: 20,
+            filter: 'drop-shadow(0 2px 6px rgba(100, 150, 255, 0.6))'
+          }}
+          width="16"
+          height="12"
+          viewBox="0 0 16 12"
+        >
+          <path d="M8 12 L16 0 H0 Z" fill="rgba(100, 150, 255, 0.95)" />
         </motion.svg>
 
         {/* CROSSHAIRS (pulse during primary change) */}
@@ -590,31 +613,54 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
           );
           const isAdjacent = distance === 1;
           
-          // Enhanced: Progressive sizing and opacity
-          let fontSize = '10px';
-          let fontWeight = '500';
-          let opacity = 0.4;
-          let textShadow = 'none';
+          // ENHANCED: Progressive sizing, opacity, and color hierarchy
+          let fontSize, fontWeight, opacity, color, textShadow, scale;
           
           if (isActive) {
-            fontSize = '14px';  // Enhanced: larger active
-            fontWeight = '700';
+            // ACTIVE: Blue, large, strong glow - unmistakable
+            fontSize = 'clamp(16px, 4vw, 20px)';
+            fontWeight = '800';
             opacity = 1;
-            textShadow = '0 0 6px rgba(255, 255, 255, 0.4)';  // Enhanced: glow
+            color = 'rgba(100, 150, 255, 1)';  // BLUE accent
+            textShadow = '0 0 12px rgba(100, 150, 255, 0.8), 0 0 24px rgba(100, 150, 255, 0.4)';
+            scale = 1.2;
           } else if (isAdjacent) {
-            fontSize = '12px';
+            // ADJACENT: White, medium, semi-visible
+            fontSize = 'clamp(13px, 3.5vw, 16px)';
             fontWeight = '600';
-            opacity = 0.8;  // Enhanced: brighter adjacent
+            opacity = 0.75;
+            color = 'white';
+            textShadow = 'none';
+            scale = 1.0;
+          } else {
+            // FAR: White, small, faded
+            fontSize = 'clamp(11px, 3vw, 13px)';
+            fontWeight = '500';
+            opacity = 0.3;
+            color = 'white';
+            textShadow = 'none';
+            scale = 0.95;
           }
           
           return (
             <motion.div
               key={sub.id}
               animate={justActivated ? {
-                scale: [1, 1.15, 1],
-                opacity: [0.6, 1, 1]
-              } : {}}
-              transition={{ duration: 0.3 }}
+                // ENHANCED: Stronger snap animation with pulse
+                scale: [0.8, 1.3, 1.15],  // Pop in → overshoot → settle
+                opacity: [0.5, 1, 1]
+              } : {
+                scale,
+                opacity
+              }}
+              transition={justActivated ? {
+                duration: 0.4,
+                times: [0, 0.6, 1],
+                ease: 'easeOut'
+              } : {
+                duration: 0.2,
+                ease: 'easeInOut'
+              }}
               style={{
                 position: 'absolute',
                 left: `${pos.x}px`,
@@ -623,14 +669,13 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
                 fontSize,
                 fontWeight,
                 letterSpacing: '0.3px',
-                color: 'white',
-                opacity,
-                textShadow,
-                transition: 'opacity 0.2s, font-size 0.2s, font-weight 0.2s, text-shadow 0.2s',
+                color,  // CHANGED: Use variable color (blue for active)
+                textShadow,  // CHANGED: Enhanced glow
                 whiteSpace: 'nowrap',
                 textAlign: 'center',
-                zIndex: 5,
-                textTransform: 'uppercase'
+                zIndex: isActive ? 10 : 5,  // CHANGED: Active on top
+                textTransform: 'uppercase',
+                transition: 'color 0.2s, text-shadow 0.2s'
               }}
             >
               {sub.label}
