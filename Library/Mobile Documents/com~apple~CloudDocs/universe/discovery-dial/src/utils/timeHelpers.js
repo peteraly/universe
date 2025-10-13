@@ -151,3 +151,95 @@ export const TIME_MARKERS = [
   { label: '11PM', hours: 23, minutes: 0 }
 ];
 
+// ============================================
+// DATE HELPERS (for time filtering)
+// ============================================
+
+/**
+ * Get today's date in YYYY-MM-DD format
+ * 
+ * @returns {string} Today's date
+ * 
+ * @example
+ * getTodayDate() → "2025-10-13"
+ */
+export function getTodayDate() {
+  const today = new Date();
+  return formatDateToISO(today);
+}
+
+/**
+ * Format a Date object to YYYY-MM-DD
+ * 
+ * @param {Date} date - Date object
+ * @returns {string} ISO date string
+ */
+export function formatDateToISO(date) {
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0');
+  const day = String(date.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`;
+}
+
+/**
+ * Check if a date string is today
+ * 
+ * @param {string} dateString - Date in YYYY-MM-DD format
+ * @returns {boolean} True if date is today
+ */
+export function isToday(dateString) {
+  return dateString === getTodayDate();
+}
+
+/**
+ * Check if a date string is this week (within next 7 days)
+ * 
+ * @param {string} dateString - Date in YYYY-MM-DD format
+ * @returns {boolean} True if date is within this week
+ */
+export function isThisWeek(dateString) {
+  const eventDate = new Date(dateString);
+  const today = new Date();
+  const nextWeek = new Date(today);
+  nextWeek.setDate(today.getDate() + 7);
+  
+  return eventDate >= today && eventDate <= nextWeek;
+}
+
+/**
+ * Compare two date strings
+ * 
+ * @param {string} dateA - Date in YYYY-MM-DD format
+ * @param {string} dateB - Date in YYYY-MM-DD format
+ * @returns {number} -1 if dateA < dateB, 0 if equal, 1 if dateA > dateB
+ */
+export function compareDates(dateA, dateB) {
+  if (dateA < dateB) return -1;
+  if (dateA > dateB) return 1;
+  return 0;
+}
+
+/**
+ * Check if an event should be shown based on date and time
+ * 
+ * @param {string} eventDate - Event date in YYYY-MM-DD format
+ * @param {{ hours: number, minutes: number }} eventTime - Event start time
+ * @param {string} filterDate - Filter date in YYYY-MM-DD format
+ * @param {{ hours: number, minutes: number }} filterTime - Filter time
+ * @returns {boolean} True if event should be shown
+ */
+export function shouldShowEvent(eventDate, eventTime, filterDate, filterTime) {
+  // If event is on a future date, show it
+  if (compareDates(eventDate, filterDate) > 0) {
+    return true;
+  }
+  
+  // If event is on the same date, check time
+  if (compareDates(eventDate, filterDate) === 0) {
+    return isAtOrAfter(eventTime, filterTime);
+  }
+  
+  // Event is in the past
+  return false;
+}
+

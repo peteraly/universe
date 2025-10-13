@@ -4,7 +4,12 @@ import useEventCompassState from '../hooks/useEventCompassState';
 import useDialGestures from '../hooks/useDialGestures';
 import TimePickerSlider from './TimePickerSlider';
 import { hardTick, softTick } from '../utils/haptics';
-import { getCurrentTime } from '../utils/timeHelpers';
+import { 
+  getCurrentTime, 
+  parseEventTime, 
+  getTodayDate,
+  shouldShowEvent 
+} from '../utils/timeHelpers';
 
 /**
  * FINAL PRODUCTION VERSION with Enhanced Gesture Feedback
@@ -46,6 +51,44 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
   }, []);
   
   const { state, actions } = useEventCompassState(categories);
+  
+  // TIME FILTERING: Filter events in active subcategory by selected time
+  const filteredEvents = useMemo(() => {
+    if (!state.activeSub?.events) return [];
+    
+    const today = getTodayDate();
+    
+    return state.activeSub.events.filter(event => {
+      const eventTime = parseEventTime(event.startTime);
+      const eventDate = event.date || today;
+      
+      return shouldShowEvent(eventDate, eventTime, today, selectedTime);
+    }).sort((a, b) => {
+      // Sort by date, then by time
+      if (a.date !== b.date) {
+        return a.date < b.date ? -1 : 1;
+      }
+      const timeA = parseEventTime(a.startTime);
+      const timeB = parseEventTime(b.startTime);
+      const totalMinutesA = timeA.hours * 60 + timeA.minutes;
+      const totalMinutesB = timeB.hours * 60 + timeB.minutes;
+      return totalMinutesA - totalMinutesB;
+    });
+  }, [state.activeSub, selectedTime]);
+  
+  // Track filtered event index (separate from state.eventIndex)
+  const [filteredEventIndex, setFilteredEventIndex] = useState(0);
+  
+  // Reset filtered index when subcategory or time changes
+  useEffect(() => {
+    setFilteredEventIndex(0);
+  }, [state.subIndex, selectedTime]);
+  
+  // Get the currently displayed event from filtered list
+  const displayedEvent = useMemo(() => {
+    if (filteredEvents.length === 0) return null;
+    return filteredEvents[filteredEventIndex] || filteredEvents[0];
+  }, [filteredEvents, filteredEventIndex]);
   
   // Enhanced haptic patterns
   const primaryHaptic = useCallback(() => {
@@ -94,13 +137,23 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
     },
     nextEvent: () => {
       softTick();
-      actions.nextEvent();
+      // Navigate through filtered events
+      if (filteredEvents.length > 0) {
+        setFilteredEventIndex((prev) => 
+          prev >= filteredEvents.length - 1 ? 0 : prev + 1
+        );
+      }
     },
     prevEvent: () => {
       softTick();
-      actions.prevEvent();
+      // Navigate through filtered events
+      if (filteredEvents.length > 0) {
+        setFilteredEventIndex((prev) => 
+          prev <= 0 ? filteredEvents.length - 1 : prev - 1
+        );
+      }
     }
-  }), [actions, primaryHaptic, subcategoryHaptic]);
+  }), [primaryHaptic, subcategoryHaptic, filteredEvents]);
 
   const { bindDialAreaProps, bindLowerAreaProps, hoverSubIndex, dragDeltaX } = 
     useDialGestures(actionsWithFeedback, config.gestures);
@@ -586,7 +639,7 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
       {/* EVENT READOUT (with slide transition) */}
       <AnimatePresence mode="wait">
         <motion.div
-          key={state.activeEvent?.id}
+          key={displayedEvent?.id || 'no-event'}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
@@ -599,7 +652,7 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
             width: '100%'
           }}
         >
-          {state.activeEvent ? (
+          {displayedEvent ? (
           <>
             <h2 style={{
               fontSize: 'clamp(24px, 6vw, 32px)',
@@ -608,7 +661,7 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
               lineHeight: '1.2',
               letterSpacing: '-0.02em'
             }}>
-              {state.activeEvent.name}
+              {displayedEvent.name}
             </h2>
 
             <p style={{
@@ -616,8 +669,8 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
               opacity: 0.9,
               marginBottom: '6px'
             }}>
-              {state.activeEvent.tags?.join(' · ')}
-              {state.activeEvent.tags?.length > 0 && ' · '}
+              {displayedEvent.tags?.join(' · ')}
+              {displayedEvent.tags?.length > 0 && ' · '}
               {state.activePrimary?.label}
             </p>
 
@@ -626,19 +679,35 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
               opacity: 0.8,
               marginBottom: '6px'
             }}>
-              {state.activeEvent.address}
+              {displayedEvent.address}
             </p>
 
             <p style={{
               fontSize: 'clamp(14px, 3.5vw, 16px)',
               opacity: 0.7
             }}>
-              {state.activeEvent.time}
-              {state.activeEvent.distance && ` · ${state.activeEvent.distance}`}
+              {displayedEvent.time}
+              {displayedEvent.distance && ` · ${displayedEvent.distance}`}
             </p>
+
+            {/* EVENT COUNT INDICATOR */}
+            {filteredEvents.length > 1 && (
+              <p style={{
+                fontSize: '12px',
+                opacity: 0.5,
+                marginTop: '12px'
+              }}>
+                {filteredEventIndex + 1} of {filteredEvents.length} events
+              </p>
+            )}
           </>
           ) : (
-            <p style={{ opacity: 0.5 }}>No events found</p>
+            <div style={{ opacity: 0.6 }}>
+              <p style={{ marginBottom: '8px' }}>No events found</p>
+              <p style={{ fontSize: '14px', opacity: 0.7 }}>
+                Try selecting a different time or category
+              </p>
+            </div>
           )}
         </motion.div>
       </AnimatePresence>

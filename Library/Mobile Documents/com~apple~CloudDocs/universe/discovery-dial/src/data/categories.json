@@ -12,26 +12,44 @@
             {
               "id": "e1",
               "name": "Policy Summit",
-              "tags": ["Panel"],
+              "tags": [
+                "Panel"
+              ],
               "address": "100 Main St",
               "time": "Today 2–4 PM",
-              "distance": "1.2 mi"
+              "distance": "1.2 mi",
+              "startTime": "4:00 PM",
+              "date": "2025-10-13",
+              "primaryCategory": "Professional",
+              "subcategory": "Talks"
             },
             {
               "id": "e2",
               "name": "Civic Tech",
-              "tags": ["Networking"],
+              "tags": [
+                "Networking"
+              ],
               "address": "50 3rd Ave",
               "time": "Tonight 6 PM",
-              "distance": "2.0 mi"
+              "distance": "2.0 mi",
+              "startTime": "6:00 PM",
+              "date": "2025-10-13",
+              "primaryCategory": "Professional",
+              "subcategory": "Talks"
             },
             {
               "id": "e3",
               "name": "Startup Panel",
-              "tags": ["Panel"],
+              "tags": [
+                "Panel"
+              ],
               "address": "Tech Hub",
               "time": "Tomorrow 3 PM",
-              "distance": "0.8 mi"
+              "distance": "0.8 mi",
+              "startTime": "3:00 PM",
+              "date": "2025-10-14",
+              "primaryCategory": "Professional",
+              "subcategory": "Talks"
             }
           ]
         },
@@ -42,34 +60,58 @@
             {
               "id": "e4",
               "name": "Excel Skills",
-              "tags": ["Training"],
+              "tags": [
+                "Training"
+              ],
               "address": "Learning Ctr",
               "time": "Today 10 AM",
-              "distance": "1.5 mi"
+              "distance": "1.5 mi",
+              "startTime": "10:00 AM",
+              "date": "2025-10-13",
+              "primaryCategory": "Professional",
+              "subcategory": "Workshops"
             },
             {
               "id": "e5",
               "name": "Public Talk",
-              "tags": ["Skills"],
+              "tags": [
+                "Skills"
+              ],
               "address": "Library",
               "time": "Tonight 7 PM",
-              "distance": "0.5 mi"
+              "distance": "0.5 mi",
+              "startTime": "7:00 PM",
+              "date": "2025-10-13",
+              "primaryCategory": "Professional",
+              "subcategory": "Workshops"
             },
             {
               "id": "e6",
               "name": "Design Sprint",
-              "tags": ["Workshop"],
+              "tags": [
+                "Workshop"
+              ],
               "address": "Co-Work",
               "time": "Sat 1–5 PM",
-              "distance": "2.2 mi"
+              "distance": "2.2 mi",
+              "startTime": "5:00 PM",
+              "date": "2025-10-18",
+              "primaryCategory": "Professional",
+              "subcategory": "Workshops"
             },
             {
               "id": "e7",
               "name": "Code Review",
-              "tags": ["Dev"],
+              "tags": [
+                "Dev"
+              ],
               "address": "Tech Hub",
               "time": "Fri 6 PM",
-              "distance": "0.8 mi"
+              "distance": "0.8 mi",
+              "startTime": "6:00 PM",
+              "date": "2025-10-17",
+              "primaryCategory": "Professional",
+              "subcategory": "Workshops"
             }
           ]
         },
@@ -80,26 +122,44 @@
             {
               "id": "e8",
               "name": "DevCon 2025",
-              "tags": ["Tech"],
+              "tags": [
+                "Tech"
+              ],
               "address": "Convention",
               "time": "Sat 9 AM",
-              "distance": "3.0 mi"
+              "distance": "3.0 mi",
+              "startTime": "9:00 AM",
+              "date": "2025-10-18",
+              "primaryCategory": "Professional",
+              "subcategory": "Conferences"
             },
             {
               "id": "e9",
               "name": "AI Summit",
-              "tags": ["Tech"],
+              "tags": [
+                "Tech"
+              ],
               "address": "Hotel Grand",
               "time": "Next Week",
-              "distance": "2.5 mi"
+              "distance": "2.5 mi",
+              "startTime": "12:00 PM",
+              "date": "2025-10-20",
+              "primaryCategory": "Professional",
+              "subcategory": "Conferences"
             },
             {
               "id": "e10",
               "name": "Career Fair",
-              "tags": ["Jobs"],
+              "tags": [
+                "Jobs"
+              ],
               "address": "Arena",
               "time": "Thu 10 AM",
-              "distance": "1.8 mi"
+              "distance": "1.8 mi",
+              "startTime": "10:00 AM",
+              "date": "2025-10-13",
+              "primaryCategory": "Professional",
+              "subcategory": "Conferences"
             }
           ]
         },
@@ -110,34 +170,58 @@
             {
               "id": "e11",
               "name": "Coffee Mixer",
-              "tags": ["Casual"],
+              "tags": [
+                "Casual"
+              ],
               "address": "Cafe Main",
               "time": "Today 8 AM",
-              "distance": "0.3 mi"
+              "distance": "0.3 mi",
+              "startTime": "8:00 AM",
+              "date": "2025-10-13",
+              "primaryCategory": "Professional",
+              "subcategory": "Networking"
             },
             {
               "id": "e12",
               "name": "Happy Hour",
-              "tags": ["Social"],
+              "tags": [
+                "Social"
+              ],
               "address": "Bar + Grill",
               "time": "Tonight 5 PM",
-              "distance": "1.0 mi"
+              "distance": "1.0 mi",
+              "startTime": "5:00 PM",
+              "date": "2025-10-13",
+              "primaryCategory": "Professional",
+              "subcategory": "Networking"
             },
             {
               "id": "e13",
               "name": "Founder Meet",
-              "tags": ["Startup"],
+              "tags": [
+                "Startup"
+              ],
               "address": "WeWork",
               "time": "Wed 6 PM",
-              "distance": "1.2 mi"
+              "distance": "1.2 mi",
+              "startTime": "6:00 PM",
+              "date": "2025-10-13",
+              "primaryCategory": "Professional",
+              "subcategory": "Networking"
             },
             {
               "id": "e14",
               "name": "Alumni Event",
-              "tags": ["Network"],
+              "tags": [
+                "Network"
+              ],
               "address": "University",
               "time": "Fri 7 PM",
-              "distance": "2.0 mi"
+              "distance": "2.0 mi",
+              "startTime": "7:00 PM",
+              "date": "2025-10-17",
+              "primaryCategory": "Professional",
+              "subcategory": "Networking"
             }
           ]
         },
@@ -148,26 +232,44 @@
             {
               "id": "e15",
               "name": "Career Chat",
-              "tags": ["1-on-1"],
+              "tags": [
+                "1-on-1"
+              ],
               "address": "Cafe",
               "time": "Tomorrow 2 PM",
-              "distance": "0.5 mi"
+              "distance": "0.5 mi",
+              "startTime": "2:00 PM",
+              "date": "2025-10-14",
+              "primaryCategory": "Professional",
+              "subcategory": "Mentorship"
             },
             {
               "id": "e16",
               "name": "Office Hours",
-              "tags": ["Advice"],
+              "tags": [
+                "Advice"
+              ],
               "address": "Startup Hub",
               "time": "Thu 4 PM",
-              "distance": "1.5 mi"
+              "distance": "1.5 mi",
+              "startTime": "4:00 PM",
+              "date": "2025-10-13",
+              "primaryCategory": "Professional",
+              "subcategory": "Mentorship"
             },
             {
               "id": "e17",
               "name": "Group Session",
-              "tags": ["Workshop"],
+              "tags": [
+                "Workshop"
+              ],
               "address": "Library",
               "time": "Sat 11 AM",
-              "distance": "0.5 mi"
+              "distance": "0.5 mi",
+              "startTime": "11:00 AM",
+              "date": "2025-10-18",
+              "primaryCategory": "Professional",
+              "subcategory": "Mentorship"
             }
           ]
         }
@@ -185,34 +287,58 @@
             {
               "id": "e18",
               "name": "Rooftop Mix",
-              "tags": ["Dance"],
+              "tags": [
+                "Dance"
+              ],
               "address": "Sky Bar",
               "time": "Tonight 9 PM",
-              "distance": "1.5 mi"
+              "distance": "1.5 mi",
+              "startTime": "9:00 PM",
+              "date": "2025-10-13",
+              "primaryCategory": "Social",
+              "subcategory": "Parties"
             },
             {
               "id": "e19",
               "name": "House Party",
-              "tags": ["Private"],
+              "tags": [
+                "Private"
+              ],
               "address": "15 Oak St",
               "time": "Sat 8 PM",
-              "distance": "2.0 mi"
+              "distance": "2.0 mi",
+              "startTime": "8:00 PM",
+              "date": "2025-10-18",
+              "primaryCategory": "Social",
+              "subcategory": "Parties"
             },
             {
               "id": "e20",
               "name": "DJ Night",
-              "tags": ["Club"],
+              "tags": [
+                "Club"
+              ],
               "address": "The Loft",
               "time": "Fri 10 PM",
-              "distance": "1.8 mi"
+              "distance": "1.8 mi",
+              "startTime": "10:00 PM",
+              "date": "2025-10-17",
+              "primaryCategory": "Social",
+              "subcategory": "Parties"
             },
             {
               "id": "e21",
               "name": "Birthday Bash",
-              "tags": ["Celebrate"],
+              "tags": [
+                "Celebrate"
+              ],
               "address": "Party Hall",
               "time": "Sun 7 PM",
-              "distance": "2.5 mi"
+              "distance": "2.5 mi",
+              "startTime": "7:00 PM",
+              "date": "2025-10-19",
+              "primaryCategory": "Social",
+              "subcategory": "Parties"
             }
           ]
         },
@@ -223,42 +349,72 @@
             {
               "id": "e22",
               "name": "Book Club",
-              "tags": ["Reading"],
+              "tags": [
+                "Reading"
+              ],
               "address": "Library",
               "time": "Wed 6 PM",
-              "distance": "0.5 mi"
+              "distance": "0.5 mi",
+              "startTime": "6:00 PM",
+              "date": "2025-10-13",
+              "primaryCategory": "Social",
+              "subcategory": "Meetups"
             },
             {
               "id": "e23",
               "name": "Game Night",
-              "tags": ["Board"],
+              "tags": [
+                "Board"
+              ],
               "address": "Cafe",
               "time": "Thu 7 PM",
-              "distance": "1.0 mi"
+              "distance": "1.0 mi",
+              "startTime": "7:00 PM",
+              "date": "2025-10-13",
+              "primaryCategory": "Social",
+              "subcategory": "Meetups"
             },
             {
               "id": "e24",
               "name": "Language Swap",
-              "tags": ["Learn"],
+              "tags": [
+                "Learn"
+              ],
               "address": "Community",
               "time": "Tue 6 PM",
-              "distance": "0.8 mi"
+              "distance": "0.8 mi",
+              "startTime": "6:00 PM",
+              "date": "2025-10-13",
+              "primaryCategory": "Social",
+              "subcategory": "Meetups"
             },
             {
               "id": "e25",
               "name": "Pet Owners",
-              "tags": ["Dogs"],
+              "tags": [
+                "Dogs"
+              ],
               "address": "Dog Park",
               "time": "Sat 10 AM",
-              "distance": "1.2 mi"
+              "distance": "1.2 mi",
+              "startTime": "10:00 AM",
+              "date": "2025-10-18",
+              "primaryCategory": "Social",
+              "subcategory": "Meetups"
             },
             {
               "id": "e26",
               "name": "Photo Walk",
-              "tags": ["Camera"],
+              "tags": [
+                "Camera"
+              ],
               "address": "Waterfront",
               "time": "Sun 3 PM",
-              "distance": "2.0 mi"
+              "distance": "2.0 mi",
+              "startTime": "3:00 PM",
+              "date": "2025-10-19",
+              "primaryCategory": "Social",
+              "subcategory": "Meetups"
             }
           ]
         },
@@ -269,34 +425,58 @@
             {
               "id": "e27",
               "name": "Food Truck",
-              "tags": ["Street"],
+              "tags": [
+                "Street"
+              ],
               "address": "Market Sq",
               "time": "Today 12 PM",
-              "distance": "0.3 mi"
+              "distance": "0.3 mi",
+              "startTime": "12:00 PM",
+              "date": "2025-10-13",
+              "primaryCategory": "Social",
+              "subcategory": "Dining"
             },
             {
               "id": "e28",
               "name": "Wine Tasting",
-              "tags": ["Wine"],
+              "tags": [
+                "Wine"
+              ],
               "address": "Vineyard",
               "time": "Sat 5 PM",
-              "distance": "3.5 mi"
+              "distance": "3.5 mi",
+              "startTime": "5:00 PM",
+              "date": "2025-10-18",
+              "primaryCategory": "Social",
+              "subcategory": "Dining"
             },
             {
               "id": "e29",
               "name": "Brunch Spot",
-              "tags": ["Breakfast"],
+              "tags": [
+                "Breakfast"
+              ],
               "address": "Bistro",
               "time": "Sun 10 AM",
-              "distance": "1.0 mi"
+              "distance": "1.0 mi",
+              "startTime": "10:00 AM",
+              "date": "2025-10-19",
+              "primaryCategory": "Social",
+              "subcategory": "Dining"
             },
             {
               "id": "e30",
               "name": "Chef Table",
-              "tags": ["Fine Dining"],
+              "tags": [
+                "Fine Dining"
+              ],
               "address": "Chez Louis",
               "time": "Fri 8 PM",
-              "distance": "2.0 mi"
+              "distance": "2.0 mi",
+              "startTime": "8:00 PM",
+              "date": "2025-10-17",
+              "primaryCategory": "Social",
+              "subcategory": "Dining"
             }
           ]
         },
@@ -307,26 +487,44 @@
             {
               "id": "e31",
               "name": "Park Cleanup",
-              "tags": ["Service"],
+              "tags": [
+                "Service"
+              ],
               "address": "City Park",
               "time": "Sat 9 AM",
-              "distance": "1.5 mi"
+              "distance": "1.5 mi",
+              "startTime": "9:00 AM",
+              "date": "2025-10-18",
+              "primaryCategory": "Social",
+              "subcategory": "Volunteer"
             },
             {
               "id": "e32",
               "name": "Food Bank",
-              "tags": ["Help"],
+              "tags": [
+                "Help"
+              ],
               "address": "Community",
               "time": "Today 2 PM",
-              "distance": "2.0 mi"
+              "distance": "2.0 mi",
+              "startTime": "2:00 PM",
+              "date": "2025-10-13",
+              "primaryCategory": "Social",
+              "subcategory": "Volunteer"
             },
             {
               "id": "e33",
               "name": "Tree Plant",
-              "tags": ["Green"],
+              "tags": [
+                "Green"
+              ],
               "address": "Forest",
               "time": "Sun 8 AM",
-              "distance": "4.0 mi"
+              "distance": "4.0 mi",
+              "startTime": "8:00 AM",
+              "date": "2025-10-19",
+              "primaryCategory": "Social",
+              "subcategory": "Volunteer"
             }
           ]
         }
@@ -344,42 +542,72 @@
             {
               "id": "e34",
               "name": "Jazz Night",
-              "tags": ["Live"],
+              "tags": [
+                "Live"
+              ],
               "address": "Blue Note",
               "time": "Tonight 8 PM",
-              "distance": "1.8 mi"
+              "distance": "1.8 mi",
+              "startTime": "8:00 PM",
+              "date": "2025-10-13",
+              "primaryCategory": "Arts/Culture",
+              "subcategory": "Music"
             },
             {
               "id": "e35",
               "name": "Symphony",
-              "tags": ["Classical"],
+              "tags": [
+                "Classical"
+              ],
               "address": "Concert Hall",
               "time": "Sat 7 PM",
-              "distance": "2.5 mi"
+              "distance": "2.5 mi",
+              "startTime": "7:00 PM",
+              "date": "2025-10-18",
+              "primaryCategory": "Arts/Culture",
+              "subcategory": "Music"
             },
             {
               "id": "e36",
               "name": "Open Mic",
-              "tags": ["Amateur"],
+              "tags": [
+                "Amateur"
+              ],
               "address": "Cafe",
               "time": "Wed 7 PM",
-              "distance": "0.8 mi"
+              "distance": "0.8 mi",
+              "startTime": "7:00 PM",
+              "date": "2025-10-13",
+              "primaryCategory": "Arts/Culture",
+              "subcategory": "Music"
             },
             {
               "id": "e37",
               "name": "Rock Show",
-              "tags": ["Indie"],
+              "tags": [
+                "Indie"
+              ],
               "address": "The Venue",
               "time": "Fri 9 PM",
-              "distance": "2.0 mi"
+              "distance": "2.0 mi",
+              "startTime": "9:00 PM",
+              "date": "2025-10-17",
+              "primaryCategory": "Arts/Culture",
+              "subcategory": "Music"
             },
             {
               "id": "e38",
               "name": "DJ Set",
-              "tags": ["Electronic"],
+              "tags": [
+                "Electronic"
+              ],
               "address": "Club",
               "time": "Sat 11 PM",
-              "distance": "1.5 mi"
+              "distance": "1.5 mi",
+              "startTime": "11:00 PM",
+              "date": "2025-10-18",
+              "primaryCategory": "Arts/Culture",
+              "subcategory": "Music"
             }
           ]
         },
@@ -390,34 +618,58 @@
             {
               "id": "e39",
               "name": "Shakespeare",
-              "tags": ["Classic"],
+              "tags": [
+                "Classic"
+              ],
               "address": "Theater",
               "time": "Fri 8 PM",
-              "distance": "2.0 mi"
+              "distance": "2.0 mi",
+              "startTime": "8:00 PM",
+              "date": "2025-10-17",
+              "primaryCategory": "Arts/Culture",
+              "subcategory": "Theater"
             },
             {
               "id": "e40",
               "name": "Comedy Show",
-              "tags": ["Standup"],
+              "tags": [
+                "Standup"
+              ],
               "address": "Laugh Lounge",
               "time": "Sat 9 PM",
-              "distance": "1.5 mi"
+              "distance": "1.5 mi",
+              "startTime": "9:00 PM",
+              "date": "2025-10-18",
+              "primaryCategory": "Arts/Culture",
+              "subcategory": "Theater"
             },
             {
               "id": "e41",
               "name": "Improv Night",
-              "tags": ["Comedy"],
+              "tags": [
+                "Comedy"
+              ],
               "address": "Studio",
               "time": "Thu 8 PM",
-              "distance": "1.2 mi"
+              "distance": "1.2 mi",
+              "startTime": "8:00 PM",
+              "date": "2025-10-13",
+              "primaryCategory": "Arts/Culture",
+              "subcategory": "Theater"
             },
             {
               "id": "e42",
               "name": "Musical",
-              "tags": ["Broadway"],
+              "tags": [
+                "Broadway"
+              ],
               "address": "Playhouse",
               "time": "Sun 3 PM",
-              "distance": "2.5 mi"
+              "distance": "2.5 mi",
+              "startTime": "3:00 PM",
+              "date": "2025-10-19",
+              "primaryCategory": "Arts/Culture",
+              "subcategory": "Theater"
             }
           ]
         },
@@ -428,26 +680,44 @@
             {
               "id": "e43",
               "name": "Photo Exhibit",
-              "tags": ["Visual"],
+              "tags": [
+                "Visual"
+              ],
               "address": "Gallery 1",
               "time": "Today 1 PM",
-              "distance": "1.0 mi"
+              "distance": "1.0 mi",
+              "startTime": "1:00 PM",
+              "date": "2025-10-13",
+              "primaryCategory": "Arts/Culture",
+              "subcategory": "Galleries"
             },
             {
               "id": "e44",
               "name": "Art Opening",
-              "tags": ["Modern"],
+              "tags": [
+                "Modern"
+              ],
               "address": "Studio",
               "time": "Fri 6 PM",
-              "distance": "1.5 mi"
+              "distance": "1.5 mi",
+              "startTime": "6:00 PM",
+              "date": "2025-10-17",
+              "primaryCategory": "Arts/Culture",
+              "subcategory": "Galleries"
             },
             {
               "id": "e45",
               "name": "Sculpture",
-              "tags": ["3D"],
+              "tags": [
+                "3D"
+              ],
               "address": "Museum",
               "time": "Sat 11 AM",
-              "distance": "2.0 mi"
+              "distance": "2.0 mi",
+              "startTime": "11:00 AM",
+              "date": "2025-10-18",
+              "primaryCategory": "Arts/Culture",
+              "subcategory": "Galleries"
             }
           ]
         },
@@ -458,34 +728,58 @@
             {
               "id": "e46",
               "name": "Indie Screen",
-              "tags": ["Cinema"],
+              "tags": [
+                "Cinema"
+              ],
               "address": "Arthouse",
               "time": "Tonight 7 PM",
-              "distance": "1.8 mi"
+              "distance": "1.8 mi",
+              "startTime": "7:00 PM",
+              "date": "2025-10-13",
+              "primaryCategory": "Arts/Culture",
+              "subcategory": "Film"
             },
             {
               "id": "e47",
               "name": "Classic Film",
-              "tags": ["Retro"],
+              "tags": [
+                "Retro"
+              ],
               "address": "Cinema",
               "time": "Sun 4 PM",
-              "distance": "2.0 mi"
+              "distance": "2.0 mi",
+              "startTime": "4:00 PM",
+              "date": "2025-10-19",
+              "primaryCategory": "Arts/Culture",
+              "subcategory": "Film"
             },
             {
               "id": "e48",
               "name": "Doc Festival",
-              "tags": ["Documentary"],
+              "tags": [
+                "Documentary"
+              ],
               "address": "Theater",
               "time": "Sat 2 PM",
-              "distance": "2.5 mi"
+              "distance": "2.5 mi",
+              "startTime": "2:00 PM",
+              "date": "2025-10-18",
+              "primaryCategory": "Arts/Culture",
+              "subcategory": "Film"
             },
             {
               "id": "e49",
               "name": "Filmmaker Q&A",
-              "tags": ["Talk"],
+              "tags": [
+                "Talk"
+              ],
               "address": "Studio",
               "time": "Wed 6 PM",
-              "distance": "1.5 mi"
+              "distance": "1.5 mi",
+              "startTime": "6:00 PM",
+              "date": "2025-10-13",
+              "primaryCategory": "Arts/Culture",
+              "subcategory": "Film"
             }
           ]
         },
@@ -496,34 +790,58 @@
             {
               "id": "e50",
               "name": "Street Fair",
-              "tags": ["Market"],
+              "tags": [
+                "Market"
+              ],
               "address": "Main St",
               "time": "Sat 10 AM",
-              "distance": "0.5 mi"
+              "distance": "0.5 mi",
+              "startTime": "10:00 AM",
+              "date": "2025-10-18",
+              "primaryCategory": "Arts/Culture",
+              "subcategory": "Festivals"
             },
             {
               "id": "e51",
               "name": "Music Fest",
-              "tags": ["Outdoor"],
+              "tags": [
+                "Outdoor"
+              ],
               "address": "Park",
               "time": "Sun 12 PM",
-              "distance": "2.0 mi"
+              "distance": "2.0 mi",
+              "startTime": "12:00 PM",
+              "date": "2025-10-19",
+              "primaryCategory": "Arts/Culture",
+              "subcategory": "Festivals"
             },
             {
               "id": "e52",
               "name": "Food Festival",
-              "tags": ["Taste"],
+              "tags": [
+                "Taste"
+              ],
               "address": "Waterfront",
               "time": "Sat 1 PM",
-              "distance": "1.5 mi"
+              "distance": "1.5 mi",
+              "startTime": "1:00 PM",
+              "date": "2025-10-18",
+              "primaryCategory": "Arts/Culture",
+              "subcategory": "Festivals"
             },
             {
               "id": "e53",
               "name": "Craft Fair",
-              "tags": ["Handmade"],
+              "tags": [
+                "Handmade"
+              ],
               "address": "Convention",
               "time": "Sun 10 AM",
-              "distance": "2.5 mi"
+              "distance": "2.5 mi",
+              "startTime": "10:00 AM",
+              "date": "2025-10-19",
+              "primaryCategory": "Arts/Culture",
+              "subcategory": "Festivals"
             }
           ]
         }
@@ -541,42 +859,72 @@
             {
               "id": "e54",
               "name": "Yoga Class",
-              "tags": ["Flow"],
+              "tags": [
+                "Flow"
+              ],
               "address": "Studio",
               "time": "Today 6 AM",
-              "distance": "0.8 mi"
+              "distance": "0.8 mi",
+              "startTime": "6:00 AM",
+              "date": "2025-10-13",
+              "primaryCategory": "Wellness",
+              "subcategory": "Fitness"
             },
             {
               "id": "e55",
               "name": "Run Club",
-              "tags": ["Cardio"],
+              "tags": [
+                "Cardio"
+              ],
               "address": "Trail",
               "time": "Sat 7 AM",
-              "distance": "1.0 mi"
+              "distance": "1.0 mi",
+              "startTime": "7:00 AM",
+              "date": "2025-10-18",
+              "primaryCategory": "Wellness",
+              "subcategory": "Fitness"
             },
             {
               "id": "e56",
               "name": "CrossFit WOD",
-              "tags": ["Strength"],
+              "tags": [
+                "Strength"
+              ],
               "address": "Gym",
               "time": "Today 5 PM",
-              "distance": "1.2 mi"
+              "distance": "1.2 mi",
+              "startTime": "5:00 PM",
+              "date": "2025-10-13",
+              "primaryCategory": "Wellness",
+              "subcategory": "Fitness"
             },
             {
               "id": "e57",
               "name": "Spin Class",
-              "tags": ["Bike"],
+              "tags": [
+                "Bike"
+              ],
               "address": "Fitness",
               "time": "Wed 6 PM",
-              "distance": "1.5 mi"
+              "distance": "1.5 mi",
+              "startTime": "6:00 PM",
+              "date": "2025-10-13",
+              "primaryCategory": "Wellness",
+              "subcategory": "Fitness"
             },
             {
               "id": "e58",
               "name": "Bootcamp",
-              "tags": ["HIIT"],
+              "tags": [
+                "HIIT"
+              ],
               "address": "Park",
               "time": "Sat 8 AM",
-              "distance": "0.5 mi"
+              "distance": "0.5 mi",
+              "startTime": "8:00 AM",
+              "date": "2025-10-18",
+              "primaryCategory": "Wellness",
+              "subcategory": "Fitness"
             }
           ]
         },
@@ -587,34 +935,58 @@
             {
               "id": "e59",
               "name": "Hiking Group",
-              "tags": ["Trail"],
+              "tags": [
+                "Trail"
+              ],
               "address": "Mountain",
               "time": "Sun 9 AM",
-              "distance": "5.0 mi"
+              "distance": "5.0 mi",
+              "startTime": "9:00 AM",
+              "date": "2025-10-19",
+              "primaryCategory": "Wellness",
+              "subcategory": "Outdoor"
             },
             {
               "id": "e60",
               "name": "Bike Ride",
-              "tags": ["Cycling"],
+              "tags": [
+                "Cycling"
+              ],
               "address": "Trail",
               "time": "Sat 8 AM",
-              "distance": "2.0 mi"
+              "distance": "2.0 mi",
+              "startTime": "8:00 AM",
+              "date": "2025-10-18",
+              "primaryCategory": "Wellness",
+              "subcategory": "Outdoor"
             },
             {
               "id": "e61",
               "name": "Rock Climb",
-              "tags": ["Bouldering"],
+              "tags": [
+                "Bouldering"
+              ],
               "address": "Gym",
               "time": "Thu 7 PM",
-              "distance": "2.5 mi"
+              "distance": "2.5 mi",
+              "startTime": "7:00 PM",
+              "date": "2025-10-13",
+              "primaryCategory": "Wellness",
+              "subcategory": "Outdoor"
             },
             {
               "id": "e62",
               "name": "Kayak Tour",
-              "tags": ["Water"],
+              "tags": [
+                "Water"
+              ],
               "address": "River",
               "time": "Sun 10 AM",
-              "distance": "4.0 mi"
+              "distance": "4.0 mi",
+              "startTime": "10:00 AM",
+              "date": "2025-10-19",
+              "primaryCategory": "Wellness",
+              "subcategory": "Outdoor"
             }
           ]
         },
@@ -625,34 +997,58 @@
             {
               "id": "e63",
               "name": "Pickup Game",
-              "tags": ["Basketball"],
+              "tags": [
+                "Basketball"
+              ],
               "address": "Court",
               "time": "Today 6 PM",
-              "distance": "0.5 mi"
+              "distance": "0.5 mi",
+              "startTime": "6:00 PM",
+              "date": "2025-10-13",
+              "primaryCategory": "Wellness",
+              "subcategory": "Sports"
             },
             {
               "id": "e64",
               "name": "Soccer Match",
-              "tags": ["League"],
+              "tags": [
+                "League"
+              ],
               "address": "Field",
               "time": "Sat 2 PM",
-              "distance": "1.5 mi"
+              "distance": "1.5 mi",
+              "startTime": "2:00 PM",
+              "date": "2025-10-18",
+              "primaryCategory": "Wellness",
+              "subcategory": "Sports"
             },
             {
               "id": "e65",
               "name": "Tennis Mixer",
-              "tags": ["Doubles"],
+              "tags": [
+                "Doubles"
+              ],
               "address": "Club",
               "time": "Sun 10 AM",
-              "distance": "2.0 mi"
+              "distance": "2.0 mi",
+              "startTime": "10:00 AM",
+              "date": "2025-10-19",
+              "primaryCategory": "Wellness",
+              "subcategory": "Sports"
             },
             {
               "id": "e66",
               "name": "Volleyball",
-              "tags": ["Beach"],
+              "tags": [
+                "Beach"
+              ],
               "address": "Sand Court",
               "time": "Sat 4 PM",
-              "distance": "3.0 mi"
+              "distance": "3.0 mi",
+              "startTime": "4:00 PM",
+              "date": "2025-10-18",
+              "primaryCategory": "Wellness",
+              "subcategory": "Sports"
             }
           ]
         },
@@ -663,34 +1059,58 @@
             {
               "id": "e67",
               "name": "Meditation",
-              "tags": ["Zen"],
+              "tags": [
+                "Zen"
+              ],
               "address": "Center",
               "time": "Today 7 AM",
-              "distance": "1.0 mi"
+              "distance": "1.0 mi",
+              "startTime": "7:00 AM",
+              "date": "2025-10-13",
+              "primaryCategory": "Wellness",
+              "subcategory": "Mindfulness"
             },
             {
               "id": "e68",
               "name": "Breathwork",
-              "tags": ["Workshop"],
+              "tags": [
+                "Workshop"
+              ],
               "address": "Studio",
               "time": "Wed 6 PM",
-              "distance": "1.2 mi"
+              "distance": "1.2 mi",
+              "startTime": "6:00 PM",
+              "date": "2025-10-13",
+              "primaryCategory": "Wellness",
+              "subcategory": "Mindfulness"
             },
             {
               "id": "e69",
               "name": "Sound Bath",
-              "tags": ["Healing"],
+              "tags": [
+                "Healing"
+              ],
               "address": "Wellness",
               "time": "Sun 5 PM",
-              "distance": "2.0 mi"
+              "distance": "2.0 mi",
+              "startTime": "5:00 PM",
+              "date": "2025-10-19",
+              "primaryCategory": "Wellness",
+              "subcategory": "Mindfulness"
             },
             {
               "id": "e70",
               "name": "Tai Chi",
-              "tags": ["Movement"],
+              "tags": [
+                "Movement"
+              ],
               "address": "Park",
               "time": "Sat 8 AM",
-              "distance": "0.5 mi"
+              "distance": "0.5 mi",
+              "startTime": "8:00 AM",
+              "date": "2025-10-18",
+              "primaryCategory": "Wellness",
+              "subcategory": "Mindfulness"
             }
           ]
         }
@@ -698,4 +1118,3 @@
     }
   ]
 }
-
