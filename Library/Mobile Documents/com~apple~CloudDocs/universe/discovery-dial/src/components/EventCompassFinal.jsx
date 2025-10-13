@@ -2,7 +2,9 @@ import { useMemo, useCallback, useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import useEventCompassState from '../hooks/useEventCompassState';
 import useDialGestures from '../hooks/useDialGestures';
+import TimePickerSlider from './TimePickerSlider';
 import { hardTick, softTick } from '../utils/haptics';
+import { getCurrentTime } from '../utils/timeHelpers';
 
 /**
  * FINAL PRODUCTION VERSION with Enhanced Gesture Feedback
@@ -15,6 +17,16 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
     type: null,  // 'primary' | 'subcategory' | null
     direction: null,  // 'north' | 'east' | 'south' | 'west' | 'rotate'
     isActive: false
+  });
+  
+  // TIME PICKER STATE (NEW - ADDITIVE ONLY)
+  const [selectedTime, setSelectedTime] = useState(() => {
+    const now = getCurrentTime();
+    // If it's after 11PM, default to 6PM for discovery
+    if (now.hours >= 23) {
+      return { hours: 18, minutes: 0 };
+    }
+    return now;
   });
   
   // Calculate responsive dial size
@@ -564,6 +576,12 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
           zIndex: 1
         }} />
       </div>
+
+      {/* TIME PICKER SLIDER (NEW - ADDITIVE ONLY) */}
+      <TimePickerSlider 
+        selectedTime={selectedTime} 
+        onTimeChange={(newTime) => setSelectedTime(newTime)} 
+      />
 
       {/* EVENT READOUT (with slide transition) */}
       <AnimatePresence mode="wait">

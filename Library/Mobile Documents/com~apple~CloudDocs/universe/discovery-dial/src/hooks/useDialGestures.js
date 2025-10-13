@@ -182,6 +182,13 @@ export default function useDialGestures(actions, options = {}) {
    */
   const handleDialPointerDown = useCallback((e) => {
     const g = gestureRef.current;
+    
+    // TIME PICKER EXCLUSION: Don't start dial gesture if touch is in time picker zone (right 60px)
+    const timePickerZoneStart = typeof window !== 'undefined' ? window.innerWidth - 60 : 0;
+    if (e.clientX > timePickerZoneStart) {
+      return; // Let time picker handle this touch
+    }
+    
     g.isActive = true;
     g.startX = e.clientX;
     g.startY = e.clientY;
