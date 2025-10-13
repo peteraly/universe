@@ -3,13 +3,17 @@ import { motion, AnimatePresence } from 'framer-motion';
 import useEventCompassState from '../hooks/useEventCompassState';
 import useDialGestures from '../hooks/useDialGestures';
 import TimePickerSlider from './TimePickerSlider';
+import DateRangeButton from './DateRangeButton';
 import { hardTick, softTick } from '../utils/haptics';
 import { 
   getCurrentTime, 
   parseEventTime, 
   getTodayDate,
   shouldShowEvent,
-  formatTime
+  formatTime,
+  getDateRangeBounds,
+  isDateInRange,
+  getDateRangeLabel
 } from '../utils/timeHelpers';
 
 /**
@@ -35,6 +39,9 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
     return now;
   });
   
+  // DATE RANGE STATE (NEW - ADDITIVE)
+  const [dateRange, setDateRange] = useState('TODAY');
+  
   // Calculate responsive dial size
   useEffect(() => {
     const calculateSize = () => {
@@ -53,17 +60,25 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
   
   const { state, actions } = useEventCompassState(categories);
   
-  // TIME FILTERING: Filter events in active subcategory by selected time
+  // TIME & DATE RANGE FILTERING: Filter events by time AND date range
   const filteredEvents = useMemo(() => {
     if (!state.activeSub?.events) return [];
     
     const today = getTodayDate();
+    const { startDate, endDate } = getDateRangeBounds(dateRange);
     
     return state.activeSub.events.filter(event => {
       const eventTime = parseEventTime(event.startTime);
       const eventDate = event.date || today;
       
-      return shouldShowEvent(eventDate, eventTime, today, selectedTime);
+      // DATE RANGE FILTER: Check if event is in selected date range
+      const dateRangeMatch = isDateInRange(eventDate, startDate, endDate);
+      
+      // TIME FILTER: Event starts at or after selected time
+      const timeMatch = shouldShowEvent(eventDate, eventTime, today, selectedTime);
+      
+      // BOTH filters must pass
+      return dateRangeMatch && timeMatch;
     }).sort((a, b) => {
       // Sort by date, then by time
       if (a.date !== b.date) {
@@ -75,15 +90,15 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
       const totalMinutesB = timeB.hours * 60 + timeB.minutes;
       return totalMinutesA - totalMinutesB;
     });
-  }, [state.activeSub, selectedTime]);
+  }, [state.activeSub, selectedTime, dateRange]);
   
   // Track filtered event index (separate from state.eventIndex)
   const [filteredEventIndex, setFilteredEventIndex] = useState(0);
   
-  // Reset filtered index when subcategory or time changes
+  // Reset filtered index when subcategory, time, or date range changes
   useEffect(() => {
     setFilteredEventIndex(0);
-  }, [state.subIndex, selectedTime]);
+  }, [state.subIndex, selectedTime, dateRange]);
   
   // Get the currently displayed event from filtered list
   const displayedEvent = useMemo(() => {
@@ -637,9 +652,15 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
         onTimeChange={(newTime) => setSelectedTime(newTime)} 
       />
 
-      {/* TIME FILTER BADGE - Shows current selected time */}
+      {/* DATE RANGE BUTTON (NEW - ADDITIVE) */}
+      <DateRangeButton 
+        selectedRange={dateRange}
+        onRangeChange={setDateRange}
+      />
+
+      {/* TIME & DATE FILTER BADGE - Shows current selected time and date range */}
       <motion.div
-        key={`${selectedTime.hours}-${selectedTime.minutes}`}
+        key={`${selectedTime.hours}-${selectedTime.minutes}-${dateRange}`}
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ duration: 0.2 }}
@@ -664,13 +685,17 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
         <span style={{ fontWeight: '500' }}>
           After {formatTime(selectedTime.hours, selectedTime.minutes)}
         </span>
+        <span style={{ opacity: 0.6 }}>·</span>
+        <span style={{ fontWeight: '500' }}>
+          {getDateRangeLabel(dateRange)}
+        </span>
         {filteredEvents.length > 0 && (
           <span style={{ 
             opacity: 0.7,
             fontSize: '13px',
             marginLeft: '4px'
           }}>
-            ({filteredEvents.length} {filteredEvents.length === 1 ? 'event' : 'events'})
+            ({filteredEvents.length})
           </span>
         )}
       </motion.div>

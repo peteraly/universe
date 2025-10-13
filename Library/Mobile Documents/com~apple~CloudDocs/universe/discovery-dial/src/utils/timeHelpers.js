@@ -243,3 +243,90 @@ export function shouldShowEvent(eventDate, eventTime, filterDate, filterTime) {
   return false;
 }
 
+// ============================================
+// DATE RANGE HELPERS (for date range button)
+// ============================================
+
+/**
+ * Get date range boundaries based on selection
+ * 
+ * @param {string} range - 'TODAY' | 'TOMORROW' | 'THIS WEEK' | 'THIS MONTH'
+ * @returns {{ startDate: string, endDate: string }} ISO date strings (YYYY-MM-DD)
+ * 
+ * @example
+ * getDateRangeBounds('TODAY') → { startDate: '2025-10-13', endDate: '2025-10-13' }
+ * getDateRangeBounds('THIS WEEK') → { startDate: '2025-10-13', endDate: '2025-10-20' }
+ */
+export function getDateRangeBounds(range) {
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  
+  let startDate, endDate;
+  
+  switch(range) {
+    case 'TODAY':
+      startDate = formatDateToISO(today);
+      endDate = formatDateToISO(today);
+      break;
+      
+    case 'TOMORROW':
+      const tomorrow = new Date(today);
+      tomorrow.setDate(tomorrow.getDate() + 1);
+      startDate = formatDateToISO(tomorrow);
+      endDate = formatDateToISO(tomorrow);
+      break;
+      
+    case 'THIS WEEK':
+      startDate = formatDateToISO(today);
+      const nextWeek = new Date(today);
+      nextWeek.setDate(today.getDate() + 7);
+      endDate = formatDateToISO(nextWeek);
+      break;
+      
+    case 'THIS MONTH':
+      startDate = formatDateToISO(today);
+      const nextMonth = new Date(today);
+      nextMonth.setDate(today.getDate() + 30);
+      endDate = formatDateToISO(nextMonth);
+      break;
+      
+    default:
+      startDate = formatDateToISO(today);
+      endDate = formatDateToISO(today);
+  }
+  
+  return { startDate, endDate };
+}
+
+/**
+ * Check if event date falls within range
+ * 
+ * @param {string} eventDate - Event date in YYYY-MM-DD format
+ * @param {string} startDate - Range start date in YYYY-MM-DD format
+ * @param {string} endDate - Range end date in YYYY-MM-DD format
+ * @returns {boolean} True if event date is within range (inclusive)
+ * 
+ * @example
+ * isDateInRange('2025-10-15', '2025-10-13', '2025-10-20') → true
+ * isDateInRange('2025-10-25', '2025-10-13', '2025-10-20') → false
+ */
+export function isDateInRange(eventDate, startDate, endDate) {
+  return eventDate >= startDate && eventDate <= endDate;
+}
+
+/**
+ * Get display label for date range
+ * 
+ * @param {string} range - Date range key
+ * @returns {string} Display label
+ */
+export function getDateRangeLabel(range) {
+  const labels = {
+    'TODAY': 'Today',
+    'TOMORROW': 'Tomorrow',
+    'THIS WEEK': 'This Week',
+    'THIS MONTH': 'This Month'
+  };
+  return labels[range] || range;
+}
+
