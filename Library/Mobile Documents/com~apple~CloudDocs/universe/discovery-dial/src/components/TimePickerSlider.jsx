@@ -1,7 +1,7 @@
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useMemo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { softTick } from '../utils/haptics';
-import { TIME_MARKERS, getTimeFromPosition, formatTime } from '../utils/timeHelpers';
+import { TIME_MARKERS, getTimeFromPosition, formatTime, getPositionFromTime } from '../utils/timeHelpers';
 
 /**
  * TimePickerSlider - Minimalist 24-hour time picker for Discovery Dial
@@ -75,6 +75,15 @@ export default function TimePickerSlider({ selectedTime, onTimeChange }) {
     onTimeChange({ hours: marker.hours, minutes: marker.minutes });
     softTick();
   }, [onTimeChange]);
+
+  /**
+   * Calculate persistent marker position from selectedTime
+   */
+  const selectedTimePosition = useMemo(() => {
+    if (!containerRef.current) return 0;
+    const fraction = getPositionFromTime(selectedTime.hours, selectedTime.minutes);
+    return fraction * 240; // 240px is the container height
+  }, [selectedTime]);
 
   return (
     <div
@@ -182,6 +191,48 @@ export default function TimePickerSlider({ selectedTime, onTimeChange }) {
           }}
         />
       )}
+
+      {/* PERSISTENT MARKER - Shows selected time position */}
+      <motion.div
+        animate={{ 
+          top: `${selectedTimePosition}px`,
+          scale: isDragging ? 1.2 : 1
+        }}
+        transition={{ 
+          type: 'spring', 
+          stiffness: 300, 
+          damping: 25,
+          duration: 0.2
+        }}
+        style={{
+          position: 'absolute',
+          right: '0px',
+          transform: 'translateY(-50%)',
+          width: '10px',
+          height: '10px',
+          borderRadius: '50%',
+          background: 'rgba(100, 150, 255, 0.9)',
+          border: '2px solid rgba(255, 255, 255, 0.8)',
+          boxShadow: '0 2px 8px rgba(100, 150, 255, 0.4)',
+          pointerEvents: 'none',
+          zIndex: 50
+        }}
+      />
+
+      {/* SUBTLE TRACK LINE - Shows full range */}
+      <div
+        style={{
+          position: 'absolute',
+          right: '4px',
+          top: '0',
+          width: '2px',
+          height: '100%',
+          background: 'rgba(255, 255, 255, 0.1)',
+          borderRadius: '1px',
+          pointerEvents: 'none',
+          zIndex: 1
+        }}
+      />
     </div>
   );
 }

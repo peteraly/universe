@@ -8,7 +8,8 @@ import {
   getCurrentTime, 
   parseEventTime, 
   getTodayDate,
-  shouldShowEvent 
+  shouldShowEvent,
+  formatTime
 } from '../utils/timeHelpers';
 
 /**
@@ -636,6 +637,44 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
         onTimeChange={(newTime) => setSelectedTime(newTime)} 
       />
 
+      {/* TIME FILTER BADGE - Shows current selected time */}
+      <motion.div
+        key={`${selectedTime.hours}-${selectedTime.minutes}`}
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.2 }}
+        style={{
+          marginTop: '20px',
+          marginBottom: '10px',
+          padding: '8px 16px',
+          background: 'rgba(100, 150, 255, 0.15)',
+          border: '1px solid rgba(100, 150, 255, 0.3)',
+          borderRadius: '20px',
+          fontSize: '14px',
+          textAlign: 'center',
+          opacity: 0.9,
+          display: 'inline-flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '8px',
+          alignSelf: 'center'
+        }}
+      >
+        <span style={{ opacity: 0.8 }}>🕐</span>
+        <span style={{ fontWeight: '500' }}>
+          After {formatTime(selectedTime.hours, selectedTime.minutes)}
+        </span>
+        {filteredEvents.length > 0 && (
+          <span style={{ 
+            opacity: 0.7,
+            fontSize: '13px',
+            marginLeft: '4px'
+          }}>
+            ({filteredEvents.length} {filteredEvents.length === 1 ? 'event' : 'events'})
+          </span>
+        )}
+      </motion.div>
+
       {/* EVENT READOUT (with slide transition) */}
       <AnimatePresence mode="wait">
         <motion.div
@@ -692,13 +731,18 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
 
             {/* EVENT COUNT INDICATOR */}
             {filteredEvents.length > 1 && (
-              <p style={{
-                fontSize: '12px',
-                opacity: 0.5,
-                marginTop: '12px'
-              }}>
+              <motion.p
+                key={`${filteredEventIndex}-${filteredEvents.length}`}
+                initial={{ opacity: 0.3, scale: 0.95 }}
+                animate={{ opacity: 0.5, scale: 1 }}
+                transition={{ duration: 0.2 }}
+                style={{
+                  fontSize: '12px',
+                  marginTop: '12px'
+                }}
+              >
                 {filteredEventIndex + 1} of {filteredEvents.length} events
-              </p>
+              </motion.p>
             )}
           </>
           ) : (
