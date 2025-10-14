@@ -194,8 +194,12 @@ const EnhancedDial = ({
     }
   }, [handlePrimaryCategoryChange, handleSubcategoryChange, handleEventChange]);
 
-  // Touch event handlers
+  // Touch event handlers with proper event prevention
   const onTouchStart = useCallback((e) => {
+    // Prevent default browser behaviors that interfere with dial gestures
+    e.preventDefault();
+    e.stopPropagation();
+    
     const dialBounds = getDialBounds();
     const eventBounds = getEventAreaBounds();
     const dialCenter = dialBounds ? { x: dialBounds.centerX, y: dialBounds.centerY } : null;
@@ -204,6 +208,10 @@ const EnhancedDial = ({
   }, [handleTouchStart, getDialBounds, getEventAreaBounds]);
 
   const onTouchMove = useCallback((e) => {
+    // Prevent default browser behaviors that interfere with dial gestures
+    e.preventDefault();
+    e.stopPropagation();
+    
     const dialBounds = getDialBounds();
     const eventBounds = getEventAreaBounds();
     const dialCenter = dialBounds ? { x: dialBounds.centerX, y: dialBounds.centerY } : null;
@@ -212,6 +220,10 @@ const EnhancedDial = ({
   }, [handleTouchMove, getDialBounds, getEventAreaBounds, onGestureDetected]);
 
   const onTouchEnd = useCallback((e) => {
+    // Prevent default browser behaviors that interfere with dial gestures
+    e.preventDefault();
+    e.stopPropagation();
+    
     handleTouchEnd(e, onGestureComplete);
   }, [handleTouchEnd, onGestureComplete]);
 
@@ -241,7 +253,7 @@ const EnhancedDial = ({
       {/* Main dial cluster - VISUAL DOMINANCE MANDATE (70% of vertical space) */}
       <div 
         ref={dialRef}
-        className="compass-dial relative mx-auto"
+        className="compass-dial enhanced-dial relative mx-auto"
         style={{
           width: COMPASS_PROPORTIONS.DIAL_SIZE,
           height: COMPASS_PROPORTIONS.DIAL_SIZE,
@@ -249,7 +261,8 @@ const EnhancedDial = ({
           maxWidth: COMPASS_PROPORTIONS.DIAL_MAX_SIZE,
           minHeight: COMPASS_PROPORTIONS.DIAL_MIN_SIZE,
           maxHeight: COMPASS_PROPORTIONS.DIAL_MAX_SIZE,
-          zIndex: 100 // High z-index for visual dominance
+          zIndex: 100, // High z-index for visual dominance
+          touchAction: 'none' // Critical: prevents all default touch behaviors
         }}
         onTouchStart={handleDirectionalTouchStart}
         onTouchMove={onTouchMove}
@@ -423,9 +436,25 @@ const EnhancedDial = ({
                 style={{
                   left: `calc(50% + ${pos.x}px)`,
                   top: `calc(50% + ${pos.y}px)`,
-                  transform: 'translate(-50%, -50%)'
+                  transform: 'translate(-50%, -50%)',
+                  touchAction: 'manipulation' // Allow tap but prevent scroll/drag
                 }}
-                onClick={() => onSubcategoryChange(index)}
+                onClick={(e) => {
+                  // Prevent default browser behaviors that interfere with subcategory selection
+                  e.preventDefault();
+                  e.stopPropagation();
+                  onSubcategoryChange(index);
+                }}
+                onTouchStart={(e) => {
+                  // Prevent default browser behaviors that interfere with subcategory selection
+                  e.preventDefault();
+                  e.stopPropagation();
+                }}
+                onTouchEnd={(e) => {
+                  // Prevent default browser behaviors that interfere with subcategory selection
+                  e.preventDefault();
+                  e.stopPropagation();
+                }}
                 whileHover={{ scale: 1.05, backgroundColor: 'rgba(230,57,70,0.1)' }}
                 whileTap={{ scale: 0.95 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 17 }}
@@ -446,7 +475,10 @@ const EnhancedDial = ({
       {/* Event area for horizontal swipe detection */}
       <div 
         ref={eventAreaRef}
-        className="absolute inset-x-0 bottom-20 h-32"
+        className="absolute inset-x-0 bottom-20 h-32 event-area"
+        style={{
+          touchAction: 'pan-y' // Allow only vertical scrolling in event area
+        }}
         onTouchStart={onTouchStart}
         onTouchMove={onTouchMove}
         onTouchEnd={onTouchEnd}

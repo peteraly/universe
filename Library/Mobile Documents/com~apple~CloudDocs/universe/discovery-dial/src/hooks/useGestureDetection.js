@@ -159,6 +159,10 @@ const useGestureDetection = () => {
 
   // Handle touch start
   const handleTouchStart = useCallback((e, dialBounds, eventBounds, dialCenter) => {
+    // Prevent default browser behaviors that interfere with dial gestures
+    e.preventDefault();
+    e.stopPropagation();
+    
     const touch = e.touches[0];
     const startPos = { x: touch.clientX, y: touch.clientY };
     const startTime = Date.now();
@@ -189,6 +193,10 @@ const useGestureDetection = () => {
   // Handle touch move
   const handleTouchMove = useCallback((e, dialBounds, eventBounds, dialCenter, onGestureDetected) => {
     if (!gestureState.startPos || !gestureState.startTime) return;
+
+    // Prevent default browser behaviors that interfere with dial gestures
+    e.preventDefault();
+    e.stopPropagation();
 
     const touch = e.touches[0];
     const currentPos = { x: touch.clientX, y: touch.clientY };
@@ -223,6 +231,10 @@ const useGestureDetection = () => {
 
   // Handle touch end
   const handleTouchEnd = useCallback((e, onGestureComplete) => {
+    // Prevent default browser behaviors that interfere with dial gestures
+    e.preventDefault();
+    e.stopPropagation();
+    
     if (gestureState.activeGesture) {
       onGestureComplete?.(gestureState.activeGesture);
     }

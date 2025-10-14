@@ -70,6 +70,15 @@ body {
   box-sizing: border-box;
 }
 
+/* Disable text selection globally */
+* {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+
 /* Performance: GPU acceleration for transforms */
 .hardware-accelerated,
 [class*="motion-"],
@@ -79,6 +88,38 @@ body {
   will-change: transform;
   backface-visibility: hidden;
   perspective: 1000px;
+}
+
+/* Dial container - prevent all default touch behaviors */
+.dial-container, .discovery-dial, .dial-rotation-zone, .enhanced-dial {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  touch-action: none; /* Critical: prevents all default touch behaviors */
+  position: relative;
+  z-index: 10; /* Ensure dial is above other elements */
+  pointer-events: auto; /* Ensure touch events are captured */
+}
+
+/* Subcategory selection areas */
+.subcategory-item, .subcategory-selector, .subcategory-button, .subcategory-item-perimeter {
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  touch-action: manipulation; /* Allow tap but prevent scroll/drag */
+  position: relative;
+  z-index: 5;
+  pointer-events: auto;
+}
+
+/* Scrollable content areas (outside dial) */
+.scrollable-content, .main-content, .event-area {
+  touch-action: pan-y; /* Allow only vertical scrolling */
+}
+
+/* Prevent any touch interference on parent containers */
+.app-container, .main-app, .App {
+  touch-action: auto; /* Let child elements control their own touch behavior */
 }
 
 /* Ensure transforms are used for animations, never layout properties */

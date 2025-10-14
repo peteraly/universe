@@ -8,6 +8,10 @@ const useDirectionalSwipeDetection = (onSwipe) => {
   const velocityThreshold = 0.3; // Minimum velocity for swipe
 
   const handleTouchStart = useCallback((e) => {
+    // Prevent default browser behaviors that interfere with dial gestures
+    e.preventDefault();
+    e.stopPropagation();
+    
     const touch = e.touches[0];
     startX.current = touch.clientX;
     startY.current = touch.clientY;
@@ -15,6 +19,10 @@ const useDirectionalSwipeDetection = (onSwipe) => {
   }, []);
 
   const handleTouchEnd = useCallback((e) => {
+    // Prevent default browser behaviors that interfere with dial gestures
+    e.preventDefault();
+    e.stopPropagation();
+    
     const touch = e.changedTouches[0];
     const endX = touch.clientX;
     const endY = touch.clientY;
