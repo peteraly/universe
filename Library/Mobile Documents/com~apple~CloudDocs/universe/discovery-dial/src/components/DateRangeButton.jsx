@@ -35,7 +35,7 @@ export default function DateRangeButton({ selectedRange, onRangeChange }) {
       style={{
         position: 'fixed',
         right: 'max(8px, env(safe-area-inset-right))',
-        bottom: 'clamp(25%, 28%, 35%)',
+        bottom: 'clamp(18%, 20%, 22%)', // Moved further from time picker
         width: 'clamp(80px, 20vw, 100px)',
         height: 'clamp(28px, 8vw, 40px)',
         minWidth: '44px',  // WCAG minimum touch target
@@ -54,7 +54,7 @@ export default function DateRangeButton({ selectedRange, onRangeChange }) {
         textTransform: 'uppercase',
         letterSpacing: '0.5px',
         cursor: 'pointer',
-        zIndex: 45,
+        zIndex: 40, // Below time picker
         fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
         touchAction: 'manipulation',
         userSelect: 'none',

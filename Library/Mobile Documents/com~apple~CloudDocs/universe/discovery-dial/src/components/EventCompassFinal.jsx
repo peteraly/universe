@@ -122,8 +122,7 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
   
   const subcategoryHaptic = useCallback(() => {
     if (navigator.vibrate) {
-      // ENHANCED: Double pulse pattern - stronger feedback for snap
-      navigator.vibrate([0, 20, 40, 20]); // Two strong pulses
+      navigator.vibrate([0, 15, 30, 15, 30, 15]); // Soft triple tick
     }
   }, []);
   
@@ -199,7 +198,7 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
   const getPrimaryPosition = (direction) => {
     const centerX = dialSize / 2;
     const centerY = dialSize / 2;
-    const radius = dialSize * 0.28; // 28% from center (well inside circle)
+    const radius = dialSize * 0.24; // 24% from center (closer to avoid overlap with subcategories)
     
     const angles = {
       north: 0,
@@ -396,7 +395,7 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
           })}
         </svg>
 
-        {/* RED POINTER - Primary Category Indicator (with pulse during primary change) */}
+        {/* RED POINTER (with pulse during primary change) */}
         <motion.svg
           animate={gestureState.type === 'primary' && gestureState.isActive ? {
             scale: [1, 1.3, 1],
@@ -415,28 +414,6 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
           viewBox="0 0 14 10"
         >
           <path d="M7 0 L14 10 H0 Z" fill="#FF3B30" />
-        </motion.svg>
-
-        {/* BLUE POINTER - Subcategory Selector (shows active alignment) */}
-        <motion.svg
-          animate={gestureState.type === 'subcategory' && gestureState.isActive ? {
-            scale: [1, 1.2, 1],
-            opacity: [0.8, 1, 0.9]
-          } : {}}
-          transition={{ duration: 0.3 }}
-          style={{
-            position: 'absolute',
-            left: '50%',
-            top: `${dialSize * 0.08}px`, // Positioned just inside outer ring
-            transform: 'translateX(-50%)',
-            zIndex: 20,
-            filter: 'drop-shadow(0 2px 6px rgba(100, 150, 255, 0.6))'
-          }}
-          width="16"
-          height="12"
-          viewBox="0 0 16 12"
-        >
-          <path d="M8 12 L16 0 H0 Z" fill="rgba(100, 150, 255, 0.95)" />
         </motion.svg>
 
         {/* CROSSHAIRS (pulse during primary change) */}
@@ -613,54 +590,31 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
           );
           const isAdjacent = distance === 1;
           
-          // ENHANCED: Progressive sizing, opacity, and color hierarchy
-          let fontSize, fontWeight, opacity, color, textShadow, scale;
+          // Enhanced: Progressive sizing and opacity
+          let fontSize = '10px';
+          let fontWeight = '500';
+          let opacity = 0.4;
+          let textShadow = 'none';
           
           if (isActive) {
-            // ACTIVE: Blue, large, strong glow - unmistakable
-            fontSize = 'clamp(16px, 4vw, 20px)';
-            fontWeight = '800';
+            fontSize = '14px';  // Enhanced: larger active
+            fontWeight = '700';
             opacity = 1;
-            color = 'rgba(100, 150, 255, 1)';  // BLUE accent
-            textShadow = '0 0 12px rgba(100, 150, 255, 0.8), 0 0 24px rgba(100, 150, 255, 0.4)';
-            scale = 1.2;
+            textShadow = '0 0 6px rgba(255, 255, 255, 0.4)';  // Enhanced: glow
           } else if (isAdjacent) {
-            // ADJACENT: White, medium, semi-visible
-            fontSize = 'clamp(13px, 3.5vw, 16px)';
+            fontSize = '12px';
             fontWeight = '600';
-            opacity = 0.75;
-            color = 'white';
-            textShadow = 'none';
-            scale = 1.0;
-          } else {
-            // FAR: White, small, faded
-            fontSize = 'clamp(11px, 3vw, 13px)';
-            fontWeight = '500';
-            opacity = 0.3;
-            color = 'white';
-            textShadow = 'none';
-            scale = 0.95;
+            opacity = 0.8;  // Enhanced: brighter adjacent
           }
           
           return (
             <motion.div
               key={sub.id}
               animate={justActivated ? {
-                // ENHANCED: Stronger snap animation with pulse
-                scale: [0.8, 1.3, 1.15],  // Pop in → overshoot → settle
-                opacity: [0.5, 1, 1]
-              } : {
-                scale,
-                opacity
-              }}
-              transition={justActivated ? {
-                duration: 0.4,
-                times: [0, 0.6, 1],
-                ease: 'easeOut'
-              } : {
-                duration: 0.2,
-                ease: 'easeInOut'
-              }}
+                scale: [1, 1.15, 1],
+                opacity: [0.6, 1, 1]
+              } : {}}
+              transition={{ duration: 0.3 }}
               style={{
                 position: 'absolute',
                 left: `${pos.x}px`,
@@ -669,13 +623,14 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
                 fontSize,
                 fontWeight,
                 letterSpacing: '0.3px',
-                color,  // CHANGED: Use variable color (blue for active)
-                textShadow,  // CHANGED: Enhanced glow
+                color: 'white',
+                opacity,
+                textShadow,
+                transition: 'opacity 0.2s, font-size 0.2s, font-weight 0.2s, text-shadow 0.2s',
                 whiteSpace: 'nowrap',
                 textAlign: 'center',
-                zIndex: isActive ? 10 : 5,  // CHANGED: Active on top
-                textTransform: 'uppercase',
-                transition: 'color 0.2s, text-shadow 0.2s'
+                zIndex: 5,
+                textTransform: 'uppercase'
               }}
             >
               {sub.label}
@@ -718,7 +673,7 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
         transition={{ duration: 0.2 }}
         style={{
           marginTop: 'clamp(16px, 5vw, 24px)',
-          marginBottom: 'clamp(8px, 2.5vw, 12px)',
+          marginBottom: 'clamp(14px, 4vw, 20px)', // Increased spacing to event readout
           padding: 'clamp(6px, 2vw, 10px) clamp(12px, 4vw, 20px)',
           background: 'rgba(100, 150, 255, 0.15)',
           border: '1px solid rgba(100, 150, 255, 0.3)',
@@ -734,7 +689,8 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
           maxWidth: 'calc(100vw - 40px)', // Prevent overflow at high zoom
           whiteSpace: 'normal', // Allow wrapping if needed
           lineHeight: 1.4,
-          flexWrap: 'wrap' // Allow content to wrap gracefully
+          flexWrap: 'wrap', // Allow content to wrap gracefully
+          zIndex: 30 // Above dial, below buttons
         }}
       >
         <span style={{ opacity: 0.8 }}>🕐</span>
@@ -766,10 +722,11 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
           transition={{ duration: 0.3 }}
           {...bindLowerAreaProps}
           style={{
-            marginTop: '40px',
+            marginTop: 'clamp(24px, 6vw, 32px)', // Increased spacing from time badge
             textAlign: 'center',
             maxWidth: '90vw',
-            width: '100%'
+            width: '100%',
+            zIndex: 35 // Above time badge, below buttons
           }}
         >
           {displayedEvent ? (

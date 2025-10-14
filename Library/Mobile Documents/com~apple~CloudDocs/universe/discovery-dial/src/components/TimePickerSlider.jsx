@@ -106,7 +106,7 @@ export default function TimePickerSlider({ selectedTime, onTimeChange }) {
         flexDirection: 'column',
         justifyContent: 'space-between',
         alignItems: 'center',
-        zIndex: 45,
+        zIndex: 50, // Highest - must be on top
         touchAction: 'none',
         userSelect: 'none',
         paddingTop: 'max(4px, env(safe-area-inset-top))',
