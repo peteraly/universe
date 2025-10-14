@@ -4,7 +4,8 @@ import useEventCompassState from '../hooks/useEventCompassState';
 import useDialGestures from '../hooks/useDialGestures';
 import TimePickerSlider from './TimePickerSlider';
 import DateRangeButton from './DateRangeButton';
-import { hardTick, softTick } from '../utils/haptics';
+import GestureHints from './GestureHints';
+import { softTick } from '../utils/haptics';
 import { 
   getCurrentTime, 
   parseEventTime, 
@@ -21,11 +22,6 @@ import {
  */
 export default function EventCompassFinal({ categories = [], config = {} }) {
   const [dialSize, setDialSize] = useState(400);
-  const [gestureState, setGestureState] = useState({
-    type: null,  // 'primary' | 'subcategory' | null
-    direction: null,  // 'north' | 'east' | 'south' | 'west' | 'rotate'
-    isActive: false
-  });
   
   // TIME PICKER STATE (NEW - ADDITIVE ONLY)
   const [selectedTime, setSelectedTime] = useState(() => {
@@ -111,51 +107,9 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
     return filteredEvents[filteredEventIndex] || filteredEvents[0];
   }, [filteredEvents, filteredEventIndex]);
   
-  // Enhanced haptic patterns
-  const primaryHaptic = useCallback(() => {
-    if (navigator.vibrate) {
-      navigator.vibrate([0, 50, 100, 50]); // Strong double pulse (DA-DUM)
-    }
-  }, []);
-  
-  const subcategoryHaptic = useCallback(() => {
-    if (navigator.vibrate) {
-      navigator.vibrate([0, 15, 30, 15, 30, 15]); // Soft triple tick
-    }
-  }, []);
-  
-  // Wrapped actions with enhanced multi-sensory feedback
-  const actionsWithFeedback = useMemo(() => ({
-    setPrimaryByDirection: (direction) => {
-      // Set gesture state for visual feedback
-      setGestureState({ type: 'primary', direction, isActive: true });
-      
-      // Multi-sensory feedback
-      primaryHaptic();
-      
-      // Execute action
-      actions.setPrimaryByDirection(direction);
-      
-      // Clear gesture state after animation
-      setTimeout(() => {
-        setGestureState({ type: null, direction: null, isActive: false });
-      }, 600);
-    },
-    rotateSub: (steps) => {
-      // Set gesture state for visual feedback
-      setGestureState({ type: 'subcategory', direction: 'rotate', isActive: true });
-      
-      // Multi-sensory feedback
-      subcategoryHaptic();
-      
-      // Execute action
-      actions.rotateSub(steps);
-      
-      // Clear gesture state after animation
-      setTimeout(() => {
-        setGestureState({ type: null, direction: null, isActive: false });
-      }, 300);
-    },
+  // Actions for event navigation (with haptics)
+  const extendedActions = useMemo(() => ({
+    ...actions,
     nextEvent: () => {
       softTick();
       // Navigate through filtered events
@@ -174,10 +128,18 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
         );
       }
     }
-  }), [primaryHaptic, subcategoryHaptic, filteredEvents]);
+  }), [actions, filteredEvents]);
 
-  const { bindDialAreaProps, bindLowerAreaProps, hoverSubIndex, dragDeltaX } = 
-    useDialGestures(actionsWithFeedback, config.gestures);
+  const { 
+    bindDialAreaProps, 
+    bindLowerAreaProps, 
+    hoverSubIndex, 
+    dragDeltaX,
+    activeZone,
+    activeGestureType,
+    gestureDirection,
+    dialRef
+  } = useDialGestures(extendedActions, config.gestures);
 
   // Get subcategories for active primary
   const subcategories = state.activePrimary?.subcategories || [];
@@ -242,6 +204,7 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
       
       {/* DIAL CONTAINER */}
       <div
+        ref={dialRef}
         data-dial-root
         {...bindDialAreaProps}
         style={{
@@ -251,56 +214,12 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
           flexShrink: 0
         }}
       >
-        {/* VISUAL FEEDBACK: Directional arrow during primary swipe */}
-        <AnimatePresence>
-          {gestureState.type === 'primary' && gestureState.isActive && (
-            <motion.div
-              initial={{ opacity: 0, scale: 0.5 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.5 }}
-              transition={{ duration: 0.2 }}
-              style={{
-                position: 'absolute',
-                left: '50%',
-                top: '50%',
-                transform: 'translate(-50%, -50%)',
-                fontSize: '48px',
-                color: 'rgba(100, 150, 255, 0.8)',
-                zIndex: 30,
-                pointerEvents: 'none'
-              }}
-            >
-              {gestureState.direction === 'north' && '↑'}
-              {gestureState.direction === 'east' && '→'}
-              {gestureState.direction === 'south' && '↓'}
-              {gestureState.direction === 'west' && '←'}
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* VISUAL FEEDBACK: Rotation indicator during subcategory drag */}
-        <AnimatePresence>
-          {gestureState.type === 'subcategory' && gestureState.isActive && (
-            <motion.div
-              initial={{ opacity: 0, rotate: -30 }}
-              animate={{ opacity: 0.6, rotate: 0 }}
-              exit={{ opacity: 0, rotate: 30 }}
-              transition={{ duration: 0.3 }}
-              style={{
-                position: 'absolute',
-                left: '50%',
-                top: '50%',
-                transform: 'translate(-50%, -50%)',
-                fontSize: '32px',
-                color: 'rgba(255, 255, 255, 0.5)',
-                zIndex: 30,
-                pointerEvents: 'none'
-              }}
-            >
-              ↻
-            </motion.div>
-          )}
-        </AnimatePresence>
+        {/* GESTURE HINTS - Zone-aware visual feedback */}
+        <GestureHints 
+          activeZone={activeZone}
+          activeGesture={activeGestureType}
+          direction={gestureDirection}
+        />
 
         {/* OUTER CIRCLE + SUBCATEGORY TICKS */}
         <svg
@@ -312,7 +231,7 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
             height: '100%',
             pointerEvents: 'none',
             // Glow during rotation
-            filter: gestureState.type === 'subcategory' && gestureState.isActive 
+            filter: activeGestureType === 'subcategoryRotation'
               ? 'drop-shadow(0 0 8px rgba(255, 255, 255, 0.4))' 
               : 'none',
             transition: 'filter 0.3s'
@@ -325,8 +244,8 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
             cy="50"
             r="48"
             fill="none"
-            stroke={gestureState.type === 'primary' ? 'rgba(100, 150, 255, 0.6)' : 'white'}
-            strokeWidth={gestureState.type === 'primary' ? '1.0' : '0.5'}
+            stroke={activeGestureType === 'primarySwipe' ? 'rgba(100, 150, 255, 0.6)' : 'white'}
+            strokeWidth={activeGestureType === 'primarySwipe' ? '1.0' : '0.5'}
             opacity="0.4"
             style={{
               transition: 'stroke 0.3s, stroke-width 0.3s'
@@ -349,7 +268,7 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
           />
           
           {/* Rotation ring glow during active rotation */}
-          {gestureState.type === 'subcategory' && gestureState.isActive && (
+          {activeGestureType === 'subcategoryRotation' && (
             <circle
               cx="50"
               cy="50"
@@ -395,7 +314,7 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
 
         {/* RED POINTER (with pulse during primary change) */}
         <motion.svg
-          animate={gestureState.type === 'primary' && gestureState.isActive ? {
+          animate={activeGestureType === 'primarySwipe' ? {
             scale: [1, 1.3, 1],
             opacity: [1, 0.7, 1]
           } : {}}
@@ -423,7 +342,7 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
             width: '100%',
             height: '100%',
             pointerEvents: 'none',
-            opacity: gestureState.type === 'primary' && gestureState.isActive ? 0.4 : 0.15,
+            opacity: activeGestureType === 'primarySwipe' ? 0.4 : 0.15,
             transition: 'opacity 0.3s'
           }}
           viewBox="0 0 100 100"
@@ -432,102 +351,13 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
           <line x1="0" y1="50" x2="100" y2="50" stroke="white" strokeWidth="0.3" />
         </svg>
 
-        {/* ENHANCED: Directional hint arrows (subtle affordance) */}
-        <AnimatePresence>
-          {gestureState.type === 'primary' && gestureState.isActive && (
-            <>
-              {/* Arrow pointing to target direction */}
-              {gestureState.direction === 'north' && (
-                <motion.div
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 0.4, y: 0 }}
-                  exit={{ opacity: 0, y: -10 }}
-                  transition={{ duration: 0.2 }}
-                  style={{
-                    position: 'absolute',
-                    left: '50%',
-                    top: '30%',
-                    transform: 'translateX(-50%)',
-                    fontSize: '20px',
-                    color: 'rgba(100, 150, 255, 0.6)',
-                    pointerEvents: 'none',
-                    zIndex: 8
-                  }}
-                >
-                  ⌃ ⌃ ⌃
-                </motion.div>
-              )}
-              {gestureState.direction === 'east' && (
-                <motion.div
-                  initial={{ opacity: 0, x: -10 }}
-                  animate={{ opacity: 0.4, x: 0 }}
-                  exit={{ opacity: 0, x: 10 }}
-                  transition={{ duration: 0.2 }}
-                  style={{
-                    position: 'absolute',
-                    right: '30%',
-                    top: '50%',
-                    transform: 'translateY(-50%)',
-                    fontSize: '20px',
-                    color: 'rgba(100, 150, 255, 0.6)',
-                    pointerEvents: 'none',
-                    zIndex: 8
-                  }}
-                >
-                  ⌃ ⌃ ⌃
-                </motion.div>
-              )}
-              {gestureState.direction === 'south' && (
-                <motion.div
-                  initial={{ opacity: 0, y: -10 }}
-                  animate={{ opacity: 0.4, y: 0 }}
-                  exit={{ opacity: 0, y: 10 }}
-                  transition={{ duration: 0.2 }}
-                  style={{
-                    position: 'absolute',
-                    left: '50%',
-                    bottom: '30%',
-                    transform: 'translateX(-50%) rotate(180deg)',
-                    fontSize: '20px',
-                    color: 'rgba(100, 150, 255, 0.6)',
-                    pointerEvents: 'none',
-                    zIndex: 8
-                  }}
-                >
-                  ⌃ ⌃ ⌃
-                </motion.div>
-              )}
-              {gestureState.direction === 'west' && (
-                <motion.div
-                  initial={{ opacity: 0, x: 10 }}
-                  animate={{ opacity: 0.4, x: 0 }}
-                  exit={{ opacity: 0, x: -10 }}
-                  transition={{ duration: 0.2 }}
-                  style={{
-                    position: 'absolute',
-                    left: '30%',
-                    top: '50%',
-                    transform: 'translateY(-50%) rotate(-90deg)',
-                    fontSize: '20px',
-                    color: 'rgba(100, 150, 255, 0.6)',
-                    pointerEvents: 'none',
-                    zIndex: 8
-                  }}
-                >
-                  ⌃ ⌃ ⌃
-                </motion.div>
-              )}
-            </>
-          )}
-        </AnimatePresence>
-
         {/* PRIMARY CATEGORY LABELS (with flash animation on change) */}
         {categories.map((cat, index) => {
           const directions = ['north', 'east', 'south', 'west'];
           const direction = directions[index];
           const pos = getPrimaryPosition(direction);
           const isActive = index === state.primaryIndex;
-          const justActivated = gestureState.type === 'primary' && isActive && gestureState.isActive;
+          const justActivated = activeGestureType === 'primarySwipe' && isActive;
           
           return (
             <motion.div
@@ -546,7 +376,7 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
                 fontWeight: isActive ? '700' : '500',  // Enhanced: bolder active
                 letterSpacing: '0.5px',
                 color: 'white',
-                opacity: gestureState.type === 'primary' && gestureState.isActive && !isActive 
+                opacity: activeGestureType === 'primarySwipe' && !isActive 
                   ? 0.2  // Dim others during swipe
                   : isActive ? 1 : 0.35,  // Enhanced: lower inactive opacity
                 textShadow: isActive ? '0 0 8px rgba(255, 255, 255, 0.3)' : 'none',  // Enhanced: glow
@@ -578,7 +408,7 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
           const isActive = i === state.subIndex;
           const isHovered = hoverSubIndex !== null && i === hoverSubIndex;
           const highlighted = isActive || isHovered;
-          const justActivated = gestureState.type === 'subcategory' && isActive && gestureState.isActive;
+          const justActivated = activeGestureType === 'subcategoryRotation' && isActive;
           
           // Enhanced: Calculate distance from active for progressive opacity
           const distance = Math.min(

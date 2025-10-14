@@ -92,8 +92,72 @@ export function isHapticSupported() {
  * customPattern([10, 50, 10]);
  */
 export function customPattern(pattern) {
+  if (!ENABLE_HAPTICS) return;
   if (typeof navigator !== 'undefined' && navigator.vibrate) {
     navigator.vibrate(pattern);
+  }
+}
+
+/**
+ * PRIMARY CATEGORY SWIPE HAPTIC
+ * Strong double-pulse: DA-DUM
+ * Distinctive feedback for major navigation change
+ * 
+ * Pattern: [0ms wait, 50ms vibrate, 100ms pause, 50ms vibrate]
+ * 
+ * @example
+ * // On primary category change (Professional → Wellness)
+ * primarySwipeHaptic();
+ */
+export function primarySwipeHaptic() {
+  if (!ENABLE_HAPTICS) return;
+  if (typeof navigator !== 'undefined' && navigator.vibrate) {
+    // Strong double-pulse: DA-DUM
+    navigator.vibrate([0, 50, 100, 50]);
+  }
+}
+
+/**
+ * SUBCATEGORY ROTATION HAPTIC
+ * Soft triple-tick: tick-tick-tick
+ * Continuous feedback for rotation gesture
+ * 
+ * Pattern: [0ms wait, 10ms vibrate, 20ms pause, 10ms vibrate, 20ms pause, 10ms vibrate]
+ * 
+ * @example
+ * // On subcategory rotation snap
+ * subcategoryRotationHaptic();
+ */
+export function subcategoryRotationHaptic() {
+  if (!ENABLE_HAPTICS) return;
+  if (typeof navigator !== 'undefined' && navigator.vibrate) {
+    // Soft triple-tick: tick-tick-tick
+    navigator.vibrate([0, 10, 20, 10, 20, 10]);
+  }
+}
+
+/**
+ * ZONE ENTRY HAPTIC
+ * Subtle single tick when entering a gesture zone
+ * Provides feedback that touch has been registered in a zone
+ * 
+ * @param {string} zone - 'CENTER' | 'PERIMETER'
+ * 
+ * @example
+ * // User touches center zone
+ * zoneEntryHaptic('CENTER'); // 8ms tick
+ * 
+ * // User touches perimeter zone
+ * zoneEntryHaptic('PERIMETER'); // 12ms tick
+ */
+export function zoneEntryHaptic(zone) {
+  if (!ENABLE_HAPTICS) return;
+  if (typeof navigator !== 'undefined' && navigator.vibrate) {
+    if (zone === 'CENTER') {
+      navigator.vibrate(8);  // Short tick for center
+    } else if (zone === 'PERIMETER') {
+      navigator.vibrate(12); // Slightly longer for perimeter
+    }
   }
 }
 

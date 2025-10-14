@@ -2,6 +2,8 @@ import { useState, useRef, useCallback, useMemo, useEffect } from 'react';
 import { throttleRAF } from '../utils/performance';
 import { getGestureConfig } from '../config/compassConfig';
 import { ENABLE_INERTIA, DEBUG_GESTURES } from '../config/featureFlags';
+import { getTouchZone, getDialGeometry, ZONES } from '../utils/gestureZones';
+import { primarySwipeHaptic, subcategoryRotationHaptic, zoneEntryHaptic } from '../utils/haptics';
 
 /**
  * Gesture detection engine for Event Compass dial.
@@ -41,6 +43,18 @@ export default function useDialGestures(actions, options = {}) {
   /** REAL-TIME ROTATION: Current drag distance for visual feedback */
   const [dragDeltaX, setDragDeltaX] = useState(0);
   
+  /** ZONE-AWARE: Current touch zone (CENTER | PERIMETER | null) */
+  const [activeZone, setActiveZone] = useState(null);
+  
+  /** GESTURE FEEDBACK: Current active gesture type for visual hints */
+  const [activeGestureType, setActiveGestureType] = useState(null);
+  
+  /** GESTURE FEEDBACK: Direction for primary swipe feedback */
+  const [gestureDirection, setGestureDirection] = useState(null);
+  
+  /** Ref to dial element for zone calculations */
+  const dialRef = useRef(null);
+  
   /** Throttled setter for hover index (~60fps) to prevent render storms */
   const setHoverSubIndexThrottled = useMemo(
     () => throttleRAF(setHoverSubIndex),
@@ -63,7 +77,8 @@ export default function useDialGestures(actions, options = {}) {
     currentY: 0,
     totalDeltaX: 0,
     gestureType: null, // 'swipe' | 'rotate' | 'event'
-    area: null // 'dial' | 'lower'
+    area: null, // 'dial' | 'lower'
+    zone: null // 'CENTER' | 'PERIMETER' | null (touch zone on dial)
   });
 
   // ========================================
@@ -178,7 +193,7 @@ export default function useDialGestures(actions, options = {}) {
 
   /**
    * Handle pointer down on dial area.
-   * Initializes gesture tracking.
+   * Initializes gesture tracking and detects touch zone.
    */
   const handleDialPointerDown = useCallback((e) => {
     const g = gestureRef.current;
@@ -187,6 +202,28 @@ export default function useDialGestures(actions, options = {}) {
     const timePickerZoneStart = typeof window !== 'undefined' ? window.innerWidth - 60 : 0;
     if (e.clientX > timePickerZoneStart) {
       return; // Let time picker handle this touch
+    }
+    
+    // ZONE DETECTION: Determine if touch is in CENTER or PERIMETER
+    let touchZone = null;
+    if (dialRef.current) {
+      const { center, radius } = getDialGeometry(dialRef.current);
+      touchZone = getTouchZone(e.clientX, e.clientY, center, radius);
+      
+      // Ignore touches outside dial
+      if (touchZone === ZONES.OUTSIDE) {
+        return;
+      }
+      
+      // Set active zone for visual hints
+      setActiveZone(touchZone);
+      
+      // Zone entry haptic feedback
+      zoneEntryHaptic(touchZone);
+      
+      if (DEBUG_GESTURES) {
+        console.log('🔵 Touch down in zone:', touchZone);
+      }
     }
     
     g.isActive = true;
@@ -198,13 +235,16 @@ export default function useDialGestures(actions, options = {}) {
     g.totalDeltaX = 0;
     g.gestureType = null;
     g.area = 'dial';
+    g.zone = touchZone; // Store zone for gesture processing
     
     setHoverSubIndex(null);
+    setActiveGestureType(null);
+    setGestureDirection(null);
   }, []);
 
   /**
    * Handle pointer move on dial area.
-   * Determines gesture type and provides live feedback.
+   * Determines gesture type based on zone and provides live feedback.
    */
   const handleDialPointerMove = useCallback((e) => {
     const g = gestureRef.current;
@@ -216,25 +256,35 @@ export default function useDialGestures(actions, options = {}) {
     g.currentX = e.clientX;
     g.currentY = e.clientY;
     
-    // Determine gesture type on first significant movement
+    // ZONE-AWARE: Determine gesture type based on touch zone and movement
     if (!g.gestureType && (Math.abs(deltaX) > 10 || Math.abs(deltaY) > 10)) {
-      if (isRotationGesture(deltaX, deltaY)) {
-        g.gestureType = 'rotate';
+      
+      if (g.zone === ZONES.CENTER) {
+        // CENTER ZONE: Only allow directional swipes (primary category)
+        g.gestureType = 'swipe';
+        setActiveGestureType('primarySwipe');
+        
         if (DEBUG_GESTURES) {
-          console.log('🔵 Gesture detected: ROTATION', {
+          console.log('🔵 CENTER ZONE → PRIMARY SWIPE', {
             deltaX: deltaX.toFixed(1),
-            deltaY: deltaY.toFixed(1),
-            ratio: (Math.abs(deltaX) / Math.abs(deltaY)).toFixed(2)
+            deltaY: deltaY.toFixed(1)
           });
         }
-      } else {
-        g.gestureType = 'swipe';
-        if (DEBUG_GESTURES) {
-          console.log('🔵 Gesture detected: SWIPE', {
-            deltaX: deltaX.toFixed(1),
-            deltaY: deltaY.toFixed(1),
-            ratio: (Math.abs(deltaX) / Math.abs(deltaY)).toFixed(2)
-          });
+        
+      } else if (g.zone === ZONES.PERIMETER) {
+        // PERIMETER ZONE: Only allow rotation (subcategory)
+        // Still check if movement is primarily horizontal for natural feel
+        if (isRotationGesture(deltaX, deltaY)) {
+          g.gestureType = 'rotate';
+          setActiveGestureType('subcategoryRotation');
+          
+          if (DEBUG_GESTURES) {
+            console.log('🔵 PERIMETER ZONE → SUBCATEGORY ROTATION', {
+              deltaX: deltaX.toFixed(1),
+              deltaY: deltaY.toFixed(1),
+              ratio: (Math.abs(deltaX) / Math.abs(deltaY)).toFixed(2)
+            });
+          }
         }
       }
     }
@@ -256,11 +306,22 @@ export default function useDialGestures(actions, options = {}) {
         setHoverSubIndexThrottled(null);
       }
     }
-  }, [config.dialSensitivity, isRotationGesture]);
+    
+    // Handle swipe gesture - track direction for visual feedback
+    if (g.gestureType === 'swipe') {
+      const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+      if (distance > config.minSwipeDistance) {
+        const direction = getSwipeDirection(deltaX, deltaY, distance);
+        if (direction) {
+          setGestureDirection(direction);
+        }
+      }
+    }
+  }, [config.dialSensitivity, config.minSwipeDistance, isRotationGesture, getSwipeDirection]);
 
   /**
    * Handle pointer up on dial area.
-   * Commits the gesture and triggers appropriate action.
+   * Commits the gesture and triggers appropriate action with enhanced haptics.
    */
   const handleDialPointerUp = useCallback((e) => {
     const g = gestureRef.current;
@@ -281,9 +342,14 @@ export default function useDialGestures(actions, options = {}) {
           if (DEBUG_GESTURES) {
             console.log('✅ PRIMARY SWIPE:', direction, {
               velocity: velocity.toFixed(2),
-              distance: distance.toFixed(1)
+              distance: distance.toFixed(1),
+              zone: g.zone
             });
           }
+          
+          // Enhanced haptic feedback for primary swipe
+          primarySwipeHaptic();
+          
           actions.setPrimaryByDirection(direction);
         }
       }
@@ -294,9 +360,14 @@ export default function useDialGestures(actions, options = {}) {
         if (DEBUG_GESTURES) {
           console.log('✅ SUBCATEGORY ROTATION:', steps, 'steps', {
             totalDeltaX: g.totalDeltaX.toFixed(1),
-            sensitivity: config.dialSensitivity
+            sensitivity: config.dialSensitivity,
+            zone: g.zone
           });
         }
+        
+        // Enhanced haptic feedback for subcategory rotation
+        subcategoryRotationHaptic();
+        
         actions.rotateSub(steps);
       }
       
@@ -316,8 +387,12 @@ export default function useDialGestures(actions, options = {}) {
     g.isActive = false;
     g.gestureType = null;
     g.area = null;
+    g.zone = null;
     setHoverSubIndex(null);
     setDragDeltaX(0);  // REAL-TIME ROTATION: Reset visual feedback
+    setActiveZone(null); // Clear zone visual hints
+    setActiveGestureType(null); // Clear gesture feedback
+    setGestureDirection(null); // Clear direction feedback
   }, [
     actions,
     config.minSwipeVelocity,
@@ -335,8 +410,12 @@ export default function useDialGestures(actions, options = {}) {
     g.isActive = false;
     g.gestureType = null;
     g.area = null;
+    g.zone = null;
     setHoverSubIndex(null);
     setDragDeltaX(0);  // REAL-TIME ROTATION: Reset visual feedback
+    setActiveZone(null); // Clear zone visual hints
+    setActiveGestureType(null); // Clear gesture feedback
+    setGestureDirection(null); // Clear direction feedback
     
     // Cancel inertia on gesture interrupt
     if (inertiaRAF.current) {
@@ -490,7 +569,39 @@ export default function useDialGestures(actions, options = {}) {
      * 
      * @type {number}
      */
-    dragDeltaX
+    dragDeltaX,
+
+    /**
+     * ZONE-AWARE: Current touch zone (CENTER | PERIMETER | null).
+     * Used for showing zone-specific visual hints.
+     * 
+     * @type {string|null}
+     */
+    activeZone,
+
+    /**
+     * GESTURE FEEDBACK: Current active gesture type ('primarySwipe' | 'subcategoryRotation' | null).
+     * Used for showing gesture-specific visual feedback.
+     * 
+     * @type {string|null}
+     */
+    activeGestureType,
+
+    /**
+     * GESTURE FEEDBACK: Direction of primary swipe ('north' | 'east' | 'south' | 'west' | null).
+     * Used for showing directional arrows during swipe.
+     * 
+     * @type {string|null}
+     */
+    gestureDirection,
+
+    /**
+     * ZONE DETECTION: Ref to dial element for zone calculations.
+     * Must be attached to the dial container element.
+     * 
+     * @type {React.RefObject}
+     */
+    dialRef
   };
 }
 
