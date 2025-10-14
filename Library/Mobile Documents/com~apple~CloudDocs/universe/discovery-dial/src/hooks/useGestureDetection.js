@@ -162,6 +162,36 @@ const useGestureDetection = () => {
     // Prevent default browser behaviors that interfere with dial gestures
     e.preventDefault();
     e.stopPropagation();
+    e.stopImmediatePropagation();
+    
+    // Prevent text selection and scrolling during touch
+    if (e.touches.length > 1) {
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      return;
+    }
+    
+    // Prevent momentum scrolling
+    if (e.touches.length > 1) {
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      return;
+    }
+    
+    // Additional scroll prevention
+    e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+    
+    // Safari-specific scroll prevention
+    if (navigator.userAgent.includes('Safari') && !navigator.userAgent.includes('Chrome')) {
+      // Force scroll position to top for Safari
+      window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    }
     
     const touch = e.touches[0];
     const startPos = { x: touch.clientX, y: touch.clientY };
@@ -197,6 +227,36 @@ const useGestureDetection = () => {
     // Prevent default browser behaviors that interfere with dial gestures
     e.preventDefault();
     e.stopPropagation();
+    e.stopImmediatePropagation();
+    
+    // Prevent text selection and scrolling during gesture
+    if (e.touches.length > 1) {
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      return;
+    }
+    
+    // Prevent scroll during gesture
+    if (e.touches.length > 1) {
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      return;
+    }
+    
+    // Additional scroll prevention
+    e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+    
+    // Safari-specific scroll prevention
+    if (navigator.userAgent.includes('Safari') && !navigator.userAgent.includes('Chrome')) {
+      // Force scroll position to top for Safari
+      window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    }
 
     const touch = e.touches[0];
     const currentPos = { x: touch.clientX, y: touch.clientY };
@@ -229,11 +289,33 @@ const useGestureDetection = () => {
     }
   }, [gestureState, detectGesture]);
 
-  // Handle touch end
+  // Handle touch end with position locking
   const handleTouchEnd = useCallback((e, onGestureComplete) => {
     // Prevent default browser behaviors that interfere with dial gestures
     e.preventDefault();
     e.stopPropagation();
+    e.stopImmediatePropagation();
+    
+    // Prevent text selection and scrolling on touch end
+    if (e.touches.length > 1) {
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      return;
+    }
+    
+    // Additional scroll prevention
+    e.preventDefault();
+    e.stopPropagation();
+    e.stopImmediatePropagation();
+    
+    // Safari-specific scroll prevention
+    if (navigator.userAgent.includes('Safari') && !navigator.userAgent.includes('Chrome')) {
+      // Force scroll position to top for Safari
+      window.scrollTo(0, 0);
+      document.documentElement.scrollTop = 0;
+      document.body.scrollTop = 0;
+    }
     
     if (gestureState.activeGesture) {
       onGestureComplete?.(gestureState.activeGesture);
@@ -245,14 +327,15 @@ const useGestureDetection = () => {
       gestureTimeoutRef.current = null;
     }
 
-    // Reset gesture state
+    // Reset gesture state without affecting position
     setGestureState(prev => ({
       ...prev,
       activeGesture: null,
       isProcessing: false,
       startPos: null,
       startTime: null,
-      currentPos: null
+      currentPos: null,
+      positionLocked: true // Lock position after gesture completion
     }));
   }, [gestureState.activeGesture]);
 

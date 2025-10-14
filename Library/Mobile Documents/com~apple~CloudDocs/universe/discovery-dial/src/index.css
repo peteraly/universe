@@ -13,6 +13,9 @@
   color: #ffffff;
   background-color: #000000;
 
+  /* Responsive base font sizing */
+  font-size: clamp(14px, 2.5vw, 18px);
+
   /* Font rendering optimization for crisp text */
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -29,14 +32,24 @@
 html {
   width: 100%;
   max-width: 100vw;
-  overflow: hidden;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  overscroll-behavior: none;
-  -webkit-overflow-scrolling: touch;
+  height: 100vh;
+  overflow: hidden !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  overscroll-behavior: none !important;
+  -webkit-overflow-scrolling: touch !important;
+  touch-action: none !important;
+  scroll-behavior: auto !important;
+  /* Enhanced scroll prevention */
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+html::-webkit-scrollbar {
+  display: none !important;
 }
 
 html,
@@ -46,8 +59,11 @@ body,
   height: 100%;
   margin: 0;
   padding: 0;
-  overflow: hidden;
-  overscroll-behavior: none;
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+  -webkit-overflow-scrolling: touch !important;
+  touch-action: none !important;
+  scroll-behavior: auto !important;
 }
 
 body {
@@ -56,20 +72,23 @@ body {
   height: 100vh;
   background-color: #000000 !important;
   color: #ffffff;
-  overflow: hidden;
-  overscroll-behavior: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
   /* Mobile Safari safe area insets */
   padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
   /* Prevent iOS bounce/overscroll */
-  overscroll-behavior: none;
+  overscroll-behavior: none !important;
+  touch-action: none !important;
+  -webkit-overflow-scrolling: touch !important;
+  scroll-behavior: auto !important;
   /* Disable pull-to-refresh on mobile */
-  touch-action: none;
-  -webkit-overflow-scrolling: touch;
+  touch-action: none !important;
+  -webkit-overflow-scrolling: touch !important;
 }
 
 #root {
@@ -78,26 +97,34 @@ body {
   height: 100vh;
   background-color: #000000 !important;
   color: #ffffff;
-  overflow: hidden;
-  overscroll-behavior: none;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  bottom: 0 !important;
+  touch-action: none !important;
+  -webkit-overflow-scrolling: touch !important;
+  scroll-behavior: auto !important;
 }
 
 * {
   box-sizing: border-box;
 }
 
-/* Disable text selection globally */
+/* Disable text selection globally and prevent all scrolling */
 * {
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-  -webkit-touch-callout: none;
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+  -webkit-touch-callout: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+  overscroll-behavior: none !important;
+  -webkit-overflow-scrolling: touch !important;
+  touch-action: none !important;
+  scroll-behavior: auto !important;
 }
 
 /* Performance: GPU acceleration for transforms */
@@ -207,41 +234,41 @@ body {
   color: #00ff00;
 }
 
-/* Compass direction labels */
+/* Compass direction labels with responsive sizing */
 .compass-label {
   position: absolute;
   font-weight: bold;
-  font-size: 1.2em;
+  font-size: clamp(0.7rem, 1.8vw, 1rem);
   color: #ffffff;
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
   z-index: 20;
 }
 
 .compass-label-north {
-  top: 10px;
+  top: clamp(5px, 2vw, 15px);
   left: 50%;
   transform: translateX(-50%);
   color: #00ff00; /* Green for North */
-  font-size: 1.4em;
+  font-size: clamp(0.8rem, 2vw, 1.2rem);
   font-weight: 900;
 }
 
 .compass-label-east {
-  right: 10px;
+  right: clamp(5px, 2vw, 15px);
   top: 50%;
   transform: translateY(-50%);
   color: #ffffff;
 }
 
 .compass-label-south {
-  bottom: 10px;
+  bottom: clamp(5px, 2vw, 15px);
   left: 50%;
   transform: translateX(-50%);
   color: #ffffff;
 }
 
 .compass-label-west {
-  left: 10px;
+  left: clamp(5px, 2vw, 15px);
   top: 50%;
   transform: translateY(-50%);
   color: #ffffff;
@@ -302,4 +329,747 @@ body {
   bottom: 0;
   width: 1px;
   transform: translateX(-50%);
+}
+
+/* Position stability fixes - prevent dial bouncing */
+.dial-container {
+  transition: transform 0.1s ease-out;
+  will-change: transform;
+}
+
+/* Disable conflicting animations during gesture completion */
+.dial-container.gesture-completing {
+  transition: none;
+  transform: translateZ(0);
+}
+
+/* Stable position locking */
+.dial-container.position-locked {
+  transition: none;
+  transform: translateZ(0);
+  will-change: auto;
+}
+
+/* Prevent unwanted position resets */
+.dial-container * {
+  transition: none;
+}
+
+/* Enhanced dial stability */
+.enhanced-dial {
+  transition: transform 0.05s ease-out;
+  will-change: transform;
+}
+
+.enhanced-dial.position-locked {
+  transition: none;
+  will-change: auto;
+}
+
+/* Prevent motion value conflicts */
+.motion-value-stable {
+  transition: none;
+  will-change: auto;
+}
+
+/* Layout separation between dial and event areas */
+.dial-container {
+  position: relative;
+  /* Responsive sizing with clamp functions */
+  width: clamp(300px, 70vmin, 80vmin);
+  height: clamp(300px, 70vmin, 80vmin);
+  max-width: 80vmin;
+  max-height: 80vmin;
+  min-width: 300px;
+  min-height: 300px;
+  
+  /* Use flexbox for centering */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  margin: 0 auto 2rem auto;
+  z-index: 10;
+  overflow: hidden; /* Prevent dial text from extending beyond boundaries */
+}
+
+.event-information-area {
+  position: relative;
+  width: 100%;
+  height: 40vh; /* Event area gets 40% of viewport height */
+  padding: 1rem;
+  z-index: 20; /* Higher than dial */
+  background-color: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(10px);
+  overflow-y: auto;
+}
+
+/* Prevent dial text from extending into event area */
+.dial-text-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Southern dial text positioning with collision avoidance */
+.dial-south-text {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 80%;
+  text-align: center;
+  z-index: 15;
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  font-size: 0.9em;
+}
+
+/* Subcategory text positioning to avoid event area */
+.subcategory-text {
+  position: absolute;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 85%;
+  text-align: center;
+  z-index: 12;
+  background-color: rgba(0, 0, 0, 0.6);
+  padding: 0.3rem 0.5rem;
+  border-radius: 0.3rem;
+  font-size: 0.8em;
+}
+
+/* Event information styling with responsive sizing */
+.event-title {
+  font-size: clamp(1rem, 3vw, 1.8rem);
+  font-weight: bold;
+  color: #ffffff;
+  margin-bottom: 0.5rem;
+  line-height: 1.3;
+}
+
+.event-description {
+  font-size: clamp(0.8rem, 2vw, 1.1rem);
+  color: #cccccc;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+.event-details {
+  font-size: clamp(0.7rem, 1.5vw, 0.9rem);
+  color: #aaaaaa;
+  line-height: 1.4;
+}
+
+/* Event information component styling */
+.event-content {
+  padding: 1rem;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.event-address {
+  margin-bottom: 0.5rem;
+  color: #cccccc;
+}
+
+.event-time-distance {
+  color: #aaaaaa;
+  font-size: 0.9rem;
+}
+
+.event-count-indicator {
+  margin-top: 1rem;
+  padding: 0.5rem;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 0.5rem;
+  font-size: 0.8rem;
+  color: #ffffff;
+  text-align: center;
+}
+
+/* Browser-specific scroll prevention */
+/* Safari momentum scrolling prevention */
+@supports (-webkit-touch-callout: none) {
+  html, body, #root, .App {
+    -webkit-overflow-scrolling: touch !important;
+    overflow: hidden !important;
+    overscroll-behavior: none !important;
+    touch-action: none !important;
+  }
+}
+
+/* Chrome overscroll prevention */
+@supports (overscroll-behavior: none) {
+  html, body, #root, .App {
+    overscroll-behavior: none !important;
+    touch-action: none !important;
+  }
+}
+
+/* Firefox smooth scrolling prevention */
+@-moz-document url-prefix() {
+  html, body, #root, .App {
+    scroll-behavior: auto !important;
+    overflow: hidden !important;
+    touch-action: none !important;
+  }
+}
+
+/* Prevent scroll on all interactive elements */
+button, input, select, textarea, a {
+  touch-action: none !important;
+  overscroll-behavior: none !important;
+}
+
+/* Mobile-first responsive design */
+@media (max-width: 768px) {
+  html, body, #root, .App {
+    position: fixed !important;
+    overflow: hidden !important;
+    overscroll-behavior: none !important;
+    -webkit-overflow-scrolling: touch !important;
+    touch-action: none !important;
+  }
+  
+  .dial-container {
+    height: 50vh; /* Smaller dial on mobile */
+  }
+  
+  .event-information-area {
+    height: 50vh; /* Larger event area on mobile */
+  }
+  
+  .dial-south-text {
+    font-size: 0.8em;
+    padding: 0.3rem;
+    bottom: 5px;
+  }
+  
+  .subcategory-text {
+    font-size: 0.7em;
+    padding: 0.2rem 0.4rem;
+    bottom: 25px;
+  }
+  
+  .event-title {
+    font-size: 1.3rem;
+  }
+  
+  .event-description {
+    font-size: 0.9rem;
+  }
+}
+
+@media (min-width: 769px) {
+  .dial-container {
+    height: 60vh;
+  }
+  
+  .event-information-area {
+    height: 40vh;
+  }
+}
+
+/* Landscape orientation adjustments */
+@media (orientation: landscape) and (max-height: 600px) {
+  html, body, #root, .App {
+    overflow: hidden !important;
+    overscroll-behavior: none !important;
+    touch-action: none !important;
+  }
+  
+  .dial-container {
+    height: 70vh;
+  }
+  
+  .event-information-area {
+    height: 30vh;
+  }
+  
+  .dial-south-text {
+    display: none; /* Hide southern text in landscape to avoid overlap */
+  }
+  
+  .subcategory-text {
+    display: none; /* Hide subcategory text in landscape */
+  }
+}
+
+/* Large screens */
+@media (min-width: 1024px) {
+  .dial-container {
+    height: 65vh;
+  }
+  
+  .event-information-area {
+    height: 35vh;
+  }
+  
+  .event-title {
+    font-size: 1.8rem;
+  }
+  
+  .event-description {
+    font-size: 1.1rem;
+  }
+}
+
+/* Zoom and orientation resilience */
+/* Prevent zoom-related layout issues */
+@media screen and (max-zoom: 0.5) {
+  .dial-container, .event-information-area {
+    font-size: 0.8em;
+  }
+  
+  .dial-south-text, .subcategory-text {
+    font-size: 0.7em;
+  }
+  
+  .event-title {
+    font-size: 1.2rem;
+  }
+  
+  .event-description {
+    font-size: 0.8rem;
+  }
+}
+
+@media screen and (min-zoom: 2) {
+  .dial-container, .event-information-area {
+    font-size: 1.2em;
+  }
+  
+  .dial-south-text, .subcategory-text {
+    font-size: 1.1em;
+  }
+  
+  .event-title {
+    font-size: 1.8rem;
+  }
+  
+  .event-description {
+    font-size: 1.2rem;
+  }
+}
+
+/* Enhanced zoom resilience for extreme zoom levels */
+@media screen and (min-zoom: 3) {
+  .dial-container {
+    height: 50vh; /* Reduce dial size at extreme zoom */
+  }
+  
+  .event-information-area {
+    height: 50vh; /* Increase event area at extreme zoom */
+  }
+  
+  .dial-south-text, .subcategory-text {
+    display: none; /* Hide dial text at extreme zoom to prevent overlap */
+  }
+}
+
+/* Ultra-wide screens and extreme orientations */
+@media (min-width: 1920px) {
+  .dial-container {
+    height: 70vh;
+  }
+  
+  .event-information-area {
+    height: 30vh;
+  }
+  
+  .event-title {
+    font-size: 2rem;
+  }
+  
+  .event-description {
+    font-size: 1.3rem;
+  }
+}
+
+/* Ultra-tall screens */
+@media (min-height: 1200px) {
+  .dial-container {
+    height: 50vh;
+  }
+  
+  .event-information-area {
+    height: 50vh;
+  }
+}
+
+/* Enhanced touch action controls for gesture areas */
+.dial-container, .enhanced-dial {
+  touch-action: none !important;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Enhanced dial component sizing */
+.enhanced-dial {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  
+  /* Ensure circular shape */
+  border-radius: 50%;
+  aspect-ratio: 1;
+}
+
+.subcategory-item {
+  touch-action: manipulation !important;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Event information area with scroll prevention */
+.event-information-area, .event-content {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: none !important;
+  overflow-y: auto;
+  overscroll-behavior: none !important;
+}
+
+/* Time picker anchoring - fixed positioning to prevent overlap */
+.time-picker-container {
+  position: fixed;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 1000;
+  width: clamp(60px, 8vw, 100px);
+  height: auto;
+  padding: clamp(10px, 2vw, 20px);
+  background-color: rgba(0, 0, 0, 0.8);
+  border-radius: 10px 0 0 10px;
+  backdrop-filter: blur(10px);
+}
+
+.time-picker-button {
+  display: block;
+  width: 100%;
+  padding: clamp(8px, 1.5vw, 12px);
+  margin: clamp(4px, 1vw, 8px) 0;
+  font-size: clamp(0.7rem, 1.5vw, 0.9rem);
+  text-align: center;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 5px;
+  color: #ffffff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+.time-picker-button:hover,
+.time-picker-button.active {
+  background-color: rgba(255, 255, 255, 0.2);
+  border-color: #ffffff;
+  transform: scale(1.05);
+}
+
+/* Primary category labels with responsive sizing */
+.primary-category-label {
+  font-size: clamp(0.8rem, 2vw, 1.2rem);
+  font-weight: bold;
+  text-align: center;
+  max-width: 80%;
+  word-wrap: break-word;
+}
+
+/* Subcategory labels with responsive sizing */
+.subcategory-label {
+  font-size: clamp(0.6rem, 1.5vw, 0.9rem);
+  max-width: 80%;
+  text-align: center;
+  word-wrap: break-word;
+}
+
+/* Complete text selection prevention for all elements */
+html, body, #root, .App {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+  -webkit-touch-callout: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+/* Dial and gesture areas - prevent text selection */
+.dial-container, .enhanced-dial, .subcategory-item {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+  -webkit-touch-callout: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+/* Event information area - prevent text selection */
+.event-information-area, .event-content {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+  -webkit-touch-callout: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+/* Time picker and all interactive elements - prevent text selection */
+.time-picker-container, .time-picker-button, button, input, select, textarea, a {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+  -webkit-touch-callout: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+/* Compass labels and all text elements - prevent text selection */
+.compass-label, .primary-category-label, .subcategory-label, .event-title, .event-description {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+  -webkit-touch-callout: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+/* Primary category items - prevent text selection */
+.primary-category-item, .primary-category-selected, .primary-category-north {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+  -webkit-touch-callout: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+/* Subcategory items - prevent text selection */
+.subcategory-selected, .subcategory-active-indicator {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+  -webkit-touch-callout: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+/* Event details and content - prevent text selection */
+.event-details, .event-address, .event-time-distance, .event-count-indicator {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+  -webkit-touch-callout: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+/* Dial text containers - prevent text selection */
+.dial-text-container, .dial-south-text, .subcategory-text {
+  -webkit-user-select: none !important;
+  -moz-user-select: none !important;
+  -ms-user-select: none !important;
+  user-select: none !important;
+  -webkit-touch-callout: none !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+/* Complete scroll prevention for all elements */
+* {
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+  -webkit-overflow-scrolling: touch !important;
+  touch-action: none !important;
+  scroll-behavior: auto !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+*::-webkit-scrollbar {
+  display: none !important;
+}
+
+/* Enhanced scroll prevention for specific elements */
+.dial-container, .enhanced-dial, .subcategory-item {
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+  touch-action: none !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.dial-container::-webkit-scrollbar,
+.enhanced-dial::-webkit-scrollbar,
+.subcategory-item::-webkit-scrollbar {
+  display: none !important;
+}
+
+/* Event information area - prevent scrolling */
+.event-information-area, .event-content {
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+  touch-action: none !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.event-information-area::-webkit-scrollbar,
+.event-content::-webkit-scrollbar {
+  display: none !important;
+}
+
+/* Time picker and all interactive elements - prevent scrolling */
+.time-picker-container, .time-picker-button, button, input, select, textarea, a {
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+  touch-action: none !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.time-picker-container::-webkit-scrollbar,
+.time-picker-button::-webkit-scrollbar,
+button::-webkit-scrollbar,
+input::-webkit-scrollbar,
+select::-webkit-scrollbar,
+textarea::-webkit-scrollbar,
+a::-webkit-scrollbar {
+  display: none !important;
+}
+
+/* Primary category items - prevent scrolling */
+.primary-category-item, .primary-category-selected, .primary-category-north {
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+  touch-action: none !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.primary-category-item::-webkit-scrollbar,
+.primary-category-selected::-webkit-scrollbar,
+.primary-category-north::-webkit-scrollbar {
+  display: none !important;
+}
+
+/* Subcategory items - prevent scrolling */
+.subcategory-selected, .subcategory-active-indicator {
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+  touch-action: none !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.subcategory-selected::-webkit-scrollbar,
+.subcategory-active-indicator::-webkit-scrollbar {
+  display: none !important;
+}
+
+/* Event details and content - prevent scrolling */
+.event-details, .event-address, .event-time-distance, .event-count-indicator {
+  overflow: hidden !important;
+  overscroll-behavior: none !important;
+  touch-action: none !important;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.event-details::-webkit-scrollbar,
+.event-address::-webkit-scrollbar,
+.event-time-distance::-webkit-scrollbar,
+.event-count-indicator::-webkit-scrollbar {
+  display: none !important;
+}
+
+/* Safari-specific scroll prevention */
+@supports (-webkit-touch-callout: none) {
+  html, body, #root, .App {
+    overflow: hidden !important;
+    overscroll-behavior: none !important;
+    -webkit-overflow-scrolling: auto !important; /* Disable momentum scrolling */
+    touch-action: none !important;
+    position: fixed !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100vw !important;
+    height: 100vh !important;
+    /* Safari-specific properties */
+    -webkit-transform: translateZ(0) !important;
+    -webkit-backface-visibility: hidden !important;
+    -webkit-perspective: 1000 !important;
+  }
+  
+  /* Disable Safari's rubber band scrolling */
+  body {
+    overscroll-behavior-y: none !important;
+    -webkit-overflow-scrolling: auto !important;
+  }
+  
+  /* Safari-specific touch prevention */
+  * {
+    -webkit-touch-callout: none !important;
+    -webkit-user-select: none !important;
+    -webkit-tap-highlight-color: transparent !important;
+    touch-action: none !important;
+  }
+  
+  /* Hide Safari's scroll indicators */
+  ::-webkit-scrollbar {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+  }
+  
+  /* Safari-specific dial and gesture areas */
+  .dial-container, .enhanced-dial, .subcategory-item {
+    overflow: hidden !important;
+    overscroll-behavior: none !important;
+    -webkit-overflow-scrolling: auto !important;
+    touch-action: none !important;
+    -webkit-transform: translateZ(0) !important;
+    -webkit-backface-visibility: hidden !important;
+  }
+  
+  /* Safari-specific event information area */
+  .event-information-area, .event-content {
+    overflow: hidden !important;
+    overscroll-behavior: none !important;
+    -webkit-overflow-scrolling: auto !important;
+    touch-action: none !important;
+  }
+  
+  /* Safari-specific time picker and interactive elements */
+  .time-picker-container, .time-picker-button, button, input, select, textarea, a {
+    overflow: hidden !important;
+    overscroll-behavior: none !important;
+    -webkit-overflow-scrolling: auto !important;
+    touch-action: none !important;
+  }
 }

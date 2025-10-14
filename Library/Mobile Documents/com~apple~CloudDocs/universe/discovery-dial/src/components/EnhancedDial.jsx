@@ -2,6 +2,7 @@ import { useState, useCallback, useRef, useEffect, memo } from 'react';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
 import useGestureDetection from '../hooks/useGestureDetection';
 import useDirectionalSwipeDetection from '../hooks/useDirectionalSwipeDetection';
+import useResponsiveDesign from '../hooks/useResponsiveDesign';
 import { CATEGORIES, CATEGORY_ORDER, CATEGORY_ICONS } from '../data/categories';
 import { TIMEFRAMES, formatTime } from '../utils/formatters';
 import { COMPASS_PROPORTIONS } from '../constants/compassProportions';
@@ -17,6 +18,11 @@ const EnhancedDial = ({
   const dialRef = useRef(null);
   const eventAreaRef = useRef(null);
   
+  // Position locking state to prevent bouncing
+  const [positionLocked, setPositionLocked] = useState(false);
+  const [lockedPosition, setLockedPosition] = useState(0);
+  const positionUpdateTimeout = useRef(null);
+  
   // Motion values for dial rotation
   const rotate = useMotionValue(0);
   const snapped = useTransform(rotate, (r) => {
@@ -24,6 +30,48 @@ const EnhancedDial = ({
     const snap = Math.round(deg / 90) * 90;
     return snap;
   });
+
+  // Prevent position overrides during gesture
+  const handleMotionValueChange = useCallback((latest) => {
+    if (!gestureState.isProcessing && !positionLocked) {
+      // Only update position if not locked and not processing gesture
+      setLockedPosition(latest);
+    }
+  }, [gestureState.isProcessing, positionLocked]);
+
+  // Monitor motion value changes
+  useEffect(() => {
+    const unsubscribe = rotate.onChange(handleMotionValueChange);
+    return unsubscribe;
+  }, [rotate, handleMotionValueChange]);
+
+  // Dynamic text positioning based on event information presence
+  const getDialTextPosition = useCallback((textType, hasEventInfo) => {
+    const basePositions = {
+      south: { bottom: '10px', left: '50%', transform: 'translateX(-50%)' },
+      subcategory: { bottom: '30px', left: '50%', transform: 'translateX(-50%)' }
+    };
+    
+    // Adjust positioning if event information is present
+    if (hasEventInfo) {
+      return {
+        ...basePositions[textType],
+        bottom: '5px', // Move closer to dial center
+        fontSize: '0.9em' // Slightly smaller text
+      };
+    }
+    
+    return basePositions[textType];
+  }, []);
+
+  // Smart text visibility management
+  const shouldShowDialText = useCallback((textType, eventInfoHeight) => {
+    const availableSpace = window.innerHeight * 0.6; // Dial area height
+    const eventAreaHeight = eventInfoHeight || 0;
+    const requiredSpace = availableSpace - eventAreaHeight;
+    
+    return requiredSpace > 100; // Show text only if enough space
+  }, []);
 
   // Gesture detection hook
   const {
@@ -34,6 +82,16 @@ const EnhancedDial = ({
     handleTouchEnd,
     handleKeyDown
   } = useGestureDetection();
+
+  // Responsive design hook
+  const {
+    dialRadius,
+    viewportSize,
+    calculateDialRadius,
+    updateTextPositions,
+    updateTouchTargets,
+    handleResponsiveChanges
+  } = useResponsiveDesign();
 
   // Get current category info
   const activeKey = CATEGORY_ORDER[currentPrimaryIndex];
@@ -167,11 +225,35 @@ const EnhancedDial = ({
     }
   }, [handlePrimaryCategoryChange, handleSubcategoryChange, handleEventChange]);
 
-  // Gesture completion callback
-  const onGestureComplete = useCallback((gestureType) => {
-    // Additional feedback on gesture completion
-    console.log(`Gesture completed: ${gestureType}`);
+  // Position validation to prevent unwanted resets
+  const validatePosition = useCallback((newPosition) => {
+    if (positionLocked) {
+      return lockedPosition; // Don't change if locked
+    }
+    return newPosition;
+  }, [positionLocked, lockedPosition]);
+
+  // Clear position timeouts to prevent unwanted updates
+  const clearPositionTimeouts = useCallback(() => {
+    if (positionUpdateTimeout.current) {
+      clearTimeout(positionUpdateTimeout.current);
+      positionUpdateTimeout.current = null;
+    }
   }, []);
+
+  // Enhanced gesture completion with position locking
+  const onGestureComplete = useCallback((gestureType) => {
+    // Get current position and lock it
+    const currentPosition = rotate.get();
+    setLockedPosition(currentPosition);
+    setPositionLocked(true);
+    
+    // Clear any pending position updates
+    clearPositionTimeouts();
+    
+    // Additional feedback on gesture completion
+    console.log(`Gesture completed: ${gestureType} at position: ${currentPosition}`);
+  }, [rotate, clearPositionTimeouts]);
 
   // Keyboard gesture handler
   const onKeyboardGesture = useCallback((gesture) => {
@@ -194,18 +276,22 @@ const EnhancedDial = ({
     }
   }, [handlePrimaryCategoryChange, handleSubcategoryChange, handleEventChange]);
 
-  // Touch event handlers with proper event prevention
+  // Touch event handlers with proper event prevention and position locking
   const onTouchStart = useCallback((e) => {
     // Prevent default browser behaviors that interfere with dial gestures
     e.preventDefault();
     e.stopPropagation();
+    
+    // Unlock position for new gesture
+    setPositionLocked(false);
+    clearPositionTimeouts();
     
     const dialBounds = getDialBounds();
     const eventBounds = getEventAreaBounds();
     const dialCenter = dialBounds ? { x: dialBounds.centerX, y: dialBounds.centerY } : null;
     
     handleTouchStart(e, dialBounds, eventBounds, dialCenter);
-  }, [handleTouchStart, getDialBounds, getEventAreaBounds]);
+  }, [handleTouchStart, getDialBounds, getEventAreaBounds, clearPositionTimeouts]);
 
   const onTouchMove = useCallback((e) => {
     // Prevent default browser behaviors that interfere with dial gestures
@@ -224,8 +310,16 @@ const EnhancedDial = ({
     e.preventDefault();
     e.stopPropagation();
     
+    // Get final position and lock it immediately
+    const finalPosition = rotate.get();
+    setLockedPosition(finalPosition);
+    setPositionLocked(true);
+    
+    // Clear any pending position updates
+    clearPositionTimeouts();
+    
     handleTouchEnd(e, onGestureComplete);
-  }, [handleTouchEnd, onGestureComplete]);
+  }, [handleTouchEnd, onGestureComplete, rotate, clearPositionTimeouts]);
 
   // Keyboard event listener
   useEffect(() => {
@@ -253,7 +347,9 @@ const EnhancedDial = ({
       {/* Main dial cluster - VISUAL DOMINANCE MANDATE (70% of vertical space) */}
       <div 
         ref={dialRef}
-        className="compass-dial enhanced-dial relative mx-auto"
+        className={`compass-dial enhanced-dial relative mx-auto ${
+          positionLocked ? 'position-locked' : ''
+        } ${gestureState.isProcessing ? 'gesture-completing' : ''}`}
         style={{
           width: COMPASS_PROPORTIONS.DIAL_SIZE,
           height: COMPASS_PROPORTIONS.DIAL_SIZE,
@@ -387,7 +483,7 @@ const EnhancedDial = ({
           {/* Subcategory Label */}
           {hasSelectedPrimary && activeCategory?.sub && (
             <div 
-              className="mb-2"
+              className="mb-2 subcategory-text"
               style={{
                 fontSize: COMPASS_PROPORTIONS.LABEL_FONT_SIZE - 2,
                 color: `${COMPASS_PROPORTIONS.LABEL_COLOR}80`
@@ -404,7 +500,7 @@ const EnhancedDial = ({
         {/* Compass direction labels */}
         <div className="compass-label compass-label-north">N</div>
         <div className="compass-label compass-label-east">E</div>
-        <div className="compass-label compass-label-south">S</div>
+        <div className="compass-label compass-label-south dial-south-text">S</div>
         <div className="compass-label compass-label-west">W</div>
 
         {/* FIXED: Primary categories permanently anchored at cardinal points */}
@@ -515,6 +611,40 @@ const EnhancedDial = ({
           {gestureState.activeGesture?.replace(/_/g, ' ').toLowerCase()}
         </motion.div>
       )}
+
+      {/* Time Picker - Fixed positioning to prevent overlap */}
+      <div className="time-picker-container">
+        <div className="time-picker">
+          <button 
+            className="time-picker-button active"
+            onClick={() => onEventChange?.('12AM')}
+            aria-label="Select 12 AM time"
+          >
+            12AM
+          </button>
+          <button 
+            className="time-picker-button"
+            onClick={() => onEventChange?.('6AM')}
+            aria-label="Select 6 AM time"
+          >
+            6AM
+          </button>
+          <button 
+            className="time-picker-button"
+            onClick={() => onEventChange?.('12PM')}
+            aria-label="Select 12 PM time"
+          >
+            12PM
+          </button>
+          <button 
+            className="time-picker-button"
+            onClick={() => onEventChange?.('6PM')}
+            aria-label="Select 6 PM time"
+          >
+            6PM
+          </button>
+        </div>
+      </div>
     </div>
   );
 };
