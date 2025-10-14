@@ -10,10 +10,8 @@ import {
   parseEventTime, 
   getTodayDate,
   shouldShowEvent,
-  formatTime,
   getDateRangeBounds,
-  isDateInRange,
-  getDateRangeLabel
+  isDateInRange
 } from '../utils/timeHelpers';
 
 /**
@@ -665,52 +663,7 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
         onRangeChange={setDateRange}
       />
 
-      {/* TIME & DATE FILTER BADGE - Shows current selected time and date range */}
-      <motion.div
-        key={`${selectedTime.hours}-${selectedTime.minutes}-${dateRange}`}
-        initial={{ opacity: 0, scale: 0.95 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 0.2 }}
-        style={{
-          marginTop: 'clamp(16px, 5vw, 24px)',
-          marginBottom: 'clamp(14px, 4vw, 20px)', // Increased spacing to event readout
-          padding: 'clamp(6px, 2vw, 10px) clamp(12px, 4vw, 20px)',
-          background: 'rgba(100, 150, 255, 0.15)',
-          border: '1px solid rgba(100, 150, 255, 0.3)',
-          borderRadius: '20px',
-          fontSize: 'clamp(12px, 3.5vw, 16px)',
-          textAlign: 'center',
-          opacity: 0.9,
-          display: 'inline-flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: 'clamp(6px, 2vw, 10px)',
-          alignSelf: 'center',
-          maxWidth: 'calc(100vw - 40px)', // Prevent overflow at high zoom
-          whiteSpace: 'normal', // Allow wrapping if needed
-          lineHeight: 1.4,
-          flexWrap: 'wrap', // Allow content to wrap gracefully
-          zIndex: 30 // Above dial, below buttons
-        }}
-      >
-        <span style={{ opacity: 0.8 }}>🕐</span>
-        <span style={{ fontWeight: '500' }}>
-          After {formatTime(selectedTime.hours, selectedTime.minutes)}
-        </span>
-        <span style={{ opacity: 0.6 }}>·</span>
-        <span style={{ fontWeight: '500' }}>
-          {getDateRangeLabel(dateRange)}
-        </span>
-        {filteredEvents.length > 0 && (
-          <span style={{ 
-            opacity: 0.7,
-            fontSize: '13px',
-            marginLeft: '4px'
-          }}>
-            ({filteredEvents.length})
-          </span>
-        )}
-      </motion.div>
+      {/* TIME BADGE REMOVED - Info already shown on right side controls (time picker + date button) */}
 
       {/* EVENT READOUT (with slide transition) */}
       <AnimatePresence mode="wait">
@@ -722,11 +675,11 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
           transition={{ duration: 0.3 }}
           {...bindLowerAreaProps}
           style={{
-            marginTop: 'clamp(24px, 6vw, 32px)', // Increased spacing from time badge
+            marginTop: 'clamp(32px, 8vw, 48px)', // Increased spacing from dial (badge removed)
             textAlign: 'center',
             maxWidth: '90vw',
             width: '100%',
-            zIndex: 35 // Above time badge, below buttons
+            zIndex: 35 // Above dial, below buttons
           }}
         >
           {displayedEvent ? (
