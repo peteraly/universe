@@ -244,3 +244,4 @@ class RBACMiddleware {
 }
 
 module.exports = RBACMiddleware
+

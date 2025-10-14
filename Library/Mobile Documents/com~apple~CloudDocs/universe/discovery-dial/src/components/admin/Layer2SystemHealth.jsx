@@ -119,3 +119,4 @@ const Layer2SystemHealth = ({ healthData = {} }) => {
 }
 
 export default Layer2SystemHealth
+

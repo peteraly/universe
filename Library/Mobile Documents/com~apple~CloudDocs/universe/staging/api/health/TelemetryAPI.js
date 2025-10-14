@@ -304,3 +304,4 @@ class TelemetryAPI {
 }
 
 module.exports = TelemetryAPI
+

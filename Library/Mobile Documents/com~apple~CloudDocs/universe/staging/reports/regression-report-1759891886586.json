@@ -1,0 +1,95 @@
+{
+  "timestamp": "2025-10-08T02:51:26.586Z",
+  "freezeFlag": false,
+  "summary": {
+    "total": 8,
+    "passed": 8,
+    "failed": 0,
+    "skipped": 0,
+    "successRate": 100,
+    "duration": 3749
+  },
+  "analysis": {
+    "overallStatus": "PASS",
+    "criticalStatus": "PASS",
+    "nonCriticalStatus": "PASS",
+    "criticalFailures": 0,
+    "nonCriticalFailures": 0
+  },
+  "testResults": [
+    {
+      "name": "system-health",
+      "passed": 1,
+      "failed": 0,
+      "total": 1,
+      "skipped": 0,
+      "critical": true,
+      "duration": 27
+    },
+    {
+      "name": "governance-compliance",
+      "passed": 1,
+      "failed": 0,
+      "total": 1,
+      "skipped": 0,
+      "critical": true,
+      "duration": 27
+    },
+    {
+      "name": "agent-management",
+      "passed": 1,
+      "failed": 0,
+      "total": 1,
+      "skipped": 0,
+      "critical": true,
+      "duration": 28
+    },
+    {
+      "name": "event-curation",
+      "passed": 1,
+      "failed": 0,
+      "total": 1,
+      "skipped": 0,
+      "critical": true,
+      "duration": 27
+    },
+    {
+      "name": "rbac-security",
+      "passed": 1,
+      "failed": 0,
+      "total": 1,
+      "skipped": 0,
+      "critical": true,
+      "duration": 27
+    },
+    {
+      "name": "recovery-protocols",
+      "passed": 1,
+      "failed": 0,
+      "total": 1,
+      "skipped": 0,
+      "critical": true,
+      "duration": 3537
+    },
+    {
+      "name": "api-endpoints",
+      "passed": 1,
+      "failed": 0,
+      "total": 1,
+      "skipped": 0,
+      "critical": false,
+      "duration": 42
+    },
+    {
+      "name": "ui-components",
+      "passed": 1,
+      "failed": 0,
+      "total": 1,
+      "skipped": 0,
+      "critical": false,
+      "duration": 32
+    }
+  ],
+  "recommendations": [],
+  "status": "PASS"
+}

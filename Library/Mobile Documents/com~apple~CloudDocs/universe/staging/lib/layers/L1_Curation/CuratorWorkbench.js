@@ -356,3 +356,4 @@ class CuratorWorkbench {
 }
 
 module.exports = CuratorWorkbench;
+

@@ -267,3 +267,4 @@ class AdminRoutes {
 }
 
 module.exports = AdminRoutes
+

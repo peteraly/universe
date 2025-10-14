@@ -63,7 +63,7 @@ class TestRunner {
     
     try {
       const startTime = Date.now()
-      const result = execSync(`node ${testFile}`, { 
+      const result = execSync(`node "${testFile}"`, { 
         encoding: 'utf8',
         cwd: path.join(__dirname, '..'),
         timeout: 30000 // 30 second timeout per test suite

@@ -401,3 +401,4 @@ class IntelligenceAPI {
 }
 
 module.exports = IntelligenceAPI
+

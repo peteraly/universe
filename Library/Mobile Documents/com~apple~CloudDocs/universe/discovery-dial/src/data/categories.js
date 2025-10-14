@@ -39,3 +39,4 @@ export const CATEGORY_ICONS = {
   recreation: '🎵',
   professional: '💼'
 };
+

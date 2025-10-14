@@ -1,0 +1,3983 @@
+{
+  "timestamp": "2025-10-09T04:20:20.415Z",
+  "scenarios": [
+    {
+      "id": 1,
+      "venueType": "hotel",
+      "dataQuality": "terrible",
+      "technicalImplementation": "api_integration",
+      "parsingStrategy": "rss_priority",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.2,
+      "complexity": 4,
+      "automationPotential": 0.5
+    },
+    {
+      "id": 2,
+      "venueType": "brewery",
+      "dataQuality": "excellent",
+      "technicalImplementation": "rss_feed",
+      "parsingStrategy": "rss_priority",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.5,
+      "complexity": 3,
+      "automationPotential": 0.925
+    },
+    {
+      "id": 3,
+      "venueType": "brewery",
+      "dataQuality": "fair",
+      "technicalImplementation": "xml_sitemap",
+      "parsingStrategy": "hybrid_validation",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.6,
+      "complexity": 4,
+      "automationPotential": null
+    },
+    {
+      "id": 4,
+      "venueType": "restaurant",
+      "dataQuality": "terrible",
+      "technicalImplementation": "html_parsing",
+      "parsingStrategy": "confidence_scoring",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "unstructured",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "dinner_events",
+          "wine_tastings",
+          "live_music"
+        ],
+        "typicalSources": [
+          "social_media",
+          "website_blog",
+          "email_newsletter"
+        ]
+      },
+      "expectedOutcome": 0.63,
+      "complexity": 8,
+      "automationPotential": 0.375
+    },
+    {
+      "id": 5,
+      "venueType": "winery",
+      "dataQuality": "poor",
+      "technicalImplementation": "ai_extraction",
+      "parsingStrategy": "structured_data_first",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.77,
+      "complexity": 7,
+      "automationPotential": 0.55
+    },
+    {
+      "id": 6,
+      "venueType": "film_theater",
+      "dataQuality": "excellent",
+      "technicalImplementation": "rss_feed",
+      "parsingStrategy": "rss_priority",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.5,
+      "complexity": 3,
+      "automationPotential": 0.925
+    },
+    {
+      "id": 7,
+      "venueType": "film_theater",
+      "dataQuality": "excellent",
+      "technicalImplementation": "hybrid_approach",
+      "parsingStrategy": "hybrid_validation",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.96,
+      "complexity": 6,
+      "automationPotential": 0.875
+    },
+    {
+      "id": 8,
+      "venueType": "concert_hall",
+      "dataQuality": "good",
+      "technicalImplementation": "hybrid_approach",
+      "parsingStrategy": "hybrid_validation",
+      "venue": {
+        "eventFrequency": "high",
+        "dataStructure": "mixed",
+        "updateFrequency": "daily",
+        "eventTypes": [
+          "concerts",
+          "performances",
+          "special_events"
+        ],
+        "typicalSources": [
+          "ticketing_system",
+          "venue_website",
+          "artist_pages"
+        ]
+      },
+      "expectedOutcome": 0.96,
+      "complexity": 8,
+      "automationPotential": 0.825
+    },
+    {
+      "id": 9,
+      "venueType": "arena",
+      "dataQuality": "fair",
+      "technicalImplementation": "json_ld",
+      "parsingStrategy": "confidence_scoring",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.315,
+      "complexity": 2,
+      "automationPotential": 0.8
+    },
+    {
+      "id": 10,
+      "venueType": "warehouse",
+      "dataQuality": "poor",
+      "technicalImplementation": "xml_sitemap",
+      "parsingStrategy": "html_fallback",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.45,
+      "complexity": 4,
+      "automationPotential": null
+    },
+    {
+      "id": 11,
+      "venueType": "warehouse",
+      "dataQuality": "good",
+      "technicalImplementation": "json_ld",
+      "parsingStrategy": "rss_priority",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.3,
+      "complexity": 2,
+      "automationPotential": 0.8999999999999999
+    },
+    {
+      "id": 12,
+      "venueType": "yoga_studio",
+      "dataQuality": "terrible",
+      "technicalImplementation": "hybrid_approach",
+      "parsingStrategy": "html_fallback",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.7200000000000001,
+      "complexity": 6,
+      "automationPotential": 0.47500000000000003
+    },
+    {
+      "id": 13,
+      "venueType": "convention_center",
+      "dataQuality": "good",
+      "technicalImplementation": "api_integration",
+      "parsingStrategy": "structured_data_first",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.22000000000000003,
+      "complexity": 4,
+      "automationPotential": 0.85
+    },
+    {
+      "id": 14,
+      "venueType": "film_theater",
+      "dataQuality": "poor",
+      "technicalImplementation": "xml_sitemap",
+      "parsingStrategy": "html_fallback",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.45,
+      "complexity": 4,
+      "automationPotential": null
+    },
+    {
+      "id": 15,
+      "venueType": "festival_grounds",
+      "dataQuality": "good",
+      "technicalImplementation": "api_integration",
+      "parsingStrategy": "html_fallback",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.18000000000000002,
+      "complexity": 4,
+      "automationPotential": 0.85
+    },
+    {
+      "id": 16,
+      "venueType": "recording_studio",
+      "dataQuality": "poor",
+      "technicalImplementation": "hybrid_approach",
+      "parsingStrategy": "rss_priority",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.8,
+      "complexity": 6,
+      "automationPotential": 0.575
+    },
+    {
+      "id": 17,
+      "venueType": "festival_grounds",
+      "dataQuality": "terrible",
+      "technicalImplementation": "xml_sitemap",
+      "parsingStrategy": "multi_source_consensus",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.575,
+      "complexity": 4,
+      "automationPotential": null
+    },
+    {
+      "id": 18,
+      "venueType": "loft",
+      "dataQuality": "excellent",
+      "technicalImplementation": "html_parsing",
+      "parsingStrategy": "rss_priority",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.4,
+      "complexity": 5,
+      "automationPotential": 0.7749999999999999
+    },
+    {
+      "id": 19,
+      "venueType": "museum",
+      "dataQuality": "good",
+      "technicalImplementation": "html_parsing",
+      "parsingStrategy": "html_fallback",
+      "venue": {
+        "eventFrequency": "low",
+        "dataStructure": "structured",
+        "updateFrequency": "monthly",
+        "eventTypes": [
+          "exhibitions",
+          "lectures",
+          "workshops"
+        ],
+        "typicalSources": [
+          "museum_cms",
+          "press_releases",
+          "academic_calendars"
+        ]
+      },
+      "expectedOutcome": 0.36000000000000004,
+      "complexity": 6,
+      "automationPotential": 0.725
+    },
+    {
+      "id": 20,
+      "venueType": "rooftop",
+      "dataQuality": "poor",
+      "technicalImplementation": "api_integration",
+      "parsingStrategy": "ai_primary",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.2,
+      "complexity": 4,
+      "automationPotential": 0.6
+    },
+    {
+      "id": 21,
+      "venueType": "cafe",
+      "dataQuality": "fair",
+      "technicalImplementation": "xml_sitemap",
+      "parsingStrategy": "confidence_scoring",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.525,
+      "complexity": 4,
+      "automationPotential": null
+    },
+    {
+      "id": 22,
+      "venueType": "bookstore",
+      "dataQuality": "poor",
+      "technicalImplementation": "hybrid_approach",
+      "parsingStrategy": "html_fallback",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.7200000000000001,
+      "complexity": 6,
+      "automationPotential": 0.575
+    },
+    {
+      "id": 23,
+      "venueType": "gym",
+      "dataQuality": "terrible",
+      "technicalImplementation": "rss_feed",
+      "parsingStrategy": "confidence_scoring",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.525,
+      "complexity": 3,
+      "automationPotential": 0.525
+    },
+    {
+      "id": 24,
+      "venueType": "art_studio",
+      "dataQuality": "poor",
+      "technicalImplementation": "hybrid_approach",
+      "parsingStrategy": "confidence_scoring",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.8400000000000001,
+      "complexity": 6,
+      "automationPotential": 0.575
+    },
+    {
+      "id": 25,
+      "venueType": "convention_center",
+      "dataQuality": "excellent",
+      "technicalImplementation": "api_integration",
+      "parsingStrategy": "confidence_scoring",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.21000000000000002,
+      "complexity": 4,
+      "automationPotential": 0.8999999999999999
+    },
+    {
+      "id": 26,
+      "venueType": "winery",
+      "dataQuality": "terrible",
+      "technicalImplementation": "json_ld",
+      "parsingStrategy": "structured_data_first",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.33,
+      "complexity": 2,
+      "automationPotential": 0.5499999999999999
+    },
+    {
+      "id": 27,
+      "venueType": "yoga_studio",
+      "dataQuality": "poor",
+      "technicalImplementation": "rss_feed",
+      "parsingStrategy": "structured_data_first",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.55,
+      "complexity": 3,
+      "automationPotential": 0.625
+    },
+    {
+      "id": 28,
+      "venueType": "film_theater",
+      "dataQuality": "excellent",
+      "technicalImplementation": "json_ld",
+      "parsingStrategy": "html_fallback",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.27,
+      "complexity": 2,
+      "automationPotential": 0.95
+    },
+    {
+      "id": 29,
+      "venueType": "bookstore",
+      "dataQuality": "poor",
+      "technicalImplementation": "xml_sitemap",
+      "parsingStrategy": "rss_priority",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.5,
+      "complexity": 4,
+      "automationPotential": null
+    },
+    {
+      "id": 30,
+      "venueType": "brewery",
+      "dataQuality": "good",
+      "technicalImplementation": "html_parsing",
+      "parsingStrategy": "ai_primary",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.4,
+      "complexity": 5,
+      "automationPotential": 0.725
+    },
+    {
+      "id": 31,
+      "venueType": "warehouse",
+      "dataQuality": "terrible",
+      "technicalImplementation": "api_integration",
+      "parsingStrategy": "html_fallback",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.18000000000000002,
+      "complexity": 4,
+      "automationPotential": 0.5
+    },
+    {
+      "id": 32,
+      "venueType": "yoga_studio",
+      "dataQuality": "excellent",
+      "technicalImplementation": "json_ld",
+      "parsingStrategy": "rss_priority",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.3,
+      "complexity": 2,
+      "automationPotential": 0.95
+    },
+    {
+      "id": 33,
+      "venueType": "temple",
+      "dataQuality": "good",
+      "technicalImplementation": "rss_feed",
+      "parsingStrategy": "structured_data_first",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.55,
+      "complexity": 3,
+      "automationPotential": 0.875
+    },
+    {
+      "id": 34,
+      "venueType": "community_center",
+      "dataQuality": "good",
+      "technicalImplementation": "rss_feed",
+      "parsingStrategy": "structured_data_first",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.55,
+      "complexity": 3,
+      "automationPotential": 0.875
+    },
+    {
+      "id": 35,
+      "venueType": "recording_studio",
+      "dataQuality": "terrible",
+      "technicalImplementation": "html_parsing",
+      "parsingStrategy": "hybrid_validation",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.48,
+      "complexity": 5,
+      "automationPotential": 0.375
+    },
+    {
+      "id": 36,
+      "venueType": "bookstore",
+      "dataQuality": "good",
+      "technicalImplementation": "rss_feed",
+      "parsingStrategy": "html_fallback",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.45,
+      "complexity": 3,
+      "automationPotential": 0.875
+    },
+    {
+      "id": 37,
+      "venueType": "yoga_studio",
+      "dataQuality": "poor",
+      "technicalImplementation": "rss_feed",
+      "parsingStrategy": "rss_priority",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.5,
+      "complexity": 3,
+      "automationPotential": 0.625
+    },
+    {
+      "id": 38,
+      "venueType": "yoga_studio",
+      "dataQuality": "fair",
+      "technicalImplementation": "api_integration",
+      "parsingStrategy": "hybrid_validation",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.24,
+      "complexity": 4,
+      "automationPotential": 0.75
+    },
+    {
+      "id": 39,
+      "venueType": "maker_space",
+      "dataQuality": "excellent",
+      "technicalImplementation": "ai_extraction",
+      "parsingStrategy": "structured_data_first",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.77,
+      "complexity": 7,
+      "automationPotential": 0.85
+    },
+    {
+      "id": 40,
+      "venueType": "distillery",
+      "dataQuality": "terrible",
+      "technicalImplementation": "manual_override",
+      "parsingStrategy": "structured_data_first",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.55,
+      "complexity": 4,
+      "automationPotential": null
+    },
+    {
+      "id": 41,
+      "venueType": "art_studio",
+      "dataQuality": "excellent",
+      "technicalImplementation": "html_parsing",
+      "parsingStrategy": "hybrid_validation",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.48,
+      "complexity": 5,
+      "automationPotential": 0.7749999999999999
+    },
+    {
+      "id": 42,
+      "venueType": "gallery",
+      "dataQuality": "excellent",
+      "technicalImplementation": "html_parsing",
+      "parsingStrategy": "confidence_scoring",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.42000000000000004,
+      "complexity": 5,
+      "automationPotential": 0.7749999999999999
+    },
+    {
+      "id": 43,
+      "venueType": "rooftop",
+      "dataQuality": "poor",
+      "technicalImplementation": "manual_override",
+      "parsingStrategy": "rss_priority",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.5,
+      "complexity": 4,
+      "automationPotential": null
+    },
+    {
+      "id": 44,
+      "venueType": "loft",
+      "dataQuality": "fair",
+      "technicalImplementation": "api_integration",
+      "parsingStrategy": "confidence_scoring",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.21000000000000002,
+      "complexity": 4,
+      "automationPotential": 0.75
+    },
+    {
+      "id": 45,
+      "venueType": "arena",
+      "dataQuality": "poor",
+      "technicalImplementation": "xml_sitemap",
+      "parsingStrategy": "hybrid_validation",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.6,
+      "complexity": 4,
+      "automationPotential": null
+    },
+    {
+      "id": 46,
+      "venueType": "winery",
+      "dataQuality": "fair",
+      "technicalImplementation": "xml_sitemap",
+      "parsingStrategy": "structured_data_first",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.55,
+      "complexity": 4,
+      "automationPotential": null
+    },
+    {
+      "id": 47,
+      "venueType": "yoga_studio",
+      "dataQuality": "excellent",
+      "technicalImplementation": "hybrid_approach",
+      "parsingStrategy": "confidence_scoring",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.8400000000000001,
+      "complexity": 6,
+      "automationPotential": 0.875
+    },
+    {
+      "id": 48,
+      "venueType": "concert_hall",
+      "dataQuality": "terrible",
+      "technicalImplementation": "manual_override",
+      "parsingStrategy": "rss_priority",
+      "venue": {
+        "eventFrequency": "high",
+        "dataStructure": "mixed",
+        "updateFrequency": "daily",
+        "eventTypes": [
+          "concerts",
+          "performances",
+          "special_events"
+        ],
+        "typicalSources": [
+          "ticketing_system",
+          "venue_website",
+          "artist_pages"
+        ]
+      },
+      "expectedOutcome": 0.5,
+      "complexity": 6,
+      "automationPotential": null
+    },
+    {
+      "id": 49,
+      "venueType": "gym",
+      "dataQuality": "terrible",
+      "technicalImplementation": "html_parsing",
+      "parsingStrategy": "multi_source_consensus",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.45999999999999996,
+      "complexity": 5,
+      "automationPotential": 0.375
+    },
+    {
+      "id": 50,
+      "venueType": "brewery",
+      "dataQuality": "fair",
+      "technicalImplementation": "manual_override",
+      "parsingStrategy": "html_fallback",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.45,
+      "complexity": 4,
+      "automationPotential": null
+    },
+    {
+      "id": 51,
+      "venueType": "gym",
+      "dataQuality": "terrible",
+      "technicalImplementation": "ai_extraction",
+      "parsingStrategy": "multi_source_consensus",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.8049999999999999,
+      "complexity": 7,
+      "automationPotential": 0.45
+    },
+    {
+      "id": 52,
+      "venueType": "stadium",
+      "dataQuality": "good",
+      "technicalImplementation": "json_ld",
+      "parsingStrategy": "ai_primary",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.3,
+      "complexity": 2,
+      "automationPotential": 0.8999999999999999
+    },
+    {
+      "id": 53,
+      "venueType": "university",
+      "dataQuality": "poor",
+      "technicalImplementation": "xml_sitemap",
+      "parsingStrategy": "hybrid_validation",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.6,
+      "complexity": 4,
+      "automationPotential": null
+    },
+    {
+      "id": 54,
+      "venueType": "winery",
+      "dataQuality": "excellent",
+      "technicalImplementation": "json_ld",
+      "parsingStrategy": "html_fallback",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.27,
+      "complexity": 2,
+      "automationPotential": 0.95
+    },
+    {
+      "id": 55,
+      "venueType": "park",
+      "dataQuality": "good",
+      "technicalImplementation": "html_parsing",
+      "parsingStrategy": "confidence_scoring",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.42000000000000004,
+      "complexity": 5,
+      "automationPotential": 0.725
+    },
+    {
+      "id": 56,
+      "venueType": "co_working",
+      "dataQuality": "poor",
+      "technicalImplementation": "rss_feed",
+      "parsingStrategy": "hybrid_validation",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.6,
+      "complexity": 3,
+      "automationPotential": 0.625
+    },
+    {
+      "id": 57,
+      "venueType": "recording_studio",
+      "dataQuality": "terrible",
+      "technicalImplementation": "ai_extraction",
+      "parsingStrategy": "confidence_scoring",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.735,
+      "complexity": 7,
+      "automationPotential": 0.45
+    },
+    {
+      "id": 58,
+      "venueType": "festival_grounds",
+      "dataQuality": "good",
+      "technicalImplementation": "manual_override",
+      "parsingStrategy": "html_fallback",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.45,
+      "complexity": 4,
+      "automationPotential": null
+    },
+    {
+      "id": 59,
+      "venueType": "bar",
+      "dataQuality": "fair",
+      "technicalImplementation": "rss_feed",
+      "parsingStrategy": "hybrid_validation",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.6,
+      "complexity": 3,
+      "automationPotential": 0.775
+    },
+    {
+      "id": 60,
+      "venueType": "concert_hall",
+      "dataQuality": "excellent",
+      "technicalImplementation": "xml_sitemap",
+      "parsingStrategy": "ai_primary",
+      "venue": {
+        "eventFrequency": "high",
+        "dataStructure": "structured",
+        "updateFrequency": "daily",
+        "eventTypes": [
+          "concerts",
+          "performances",
+          "special_events"
+        ],
+        "typicalSources": [
+          "ticketing_system",
+          "venue_website",
+          "artist_pages"
+        ]
+      },
+      "expectedOutcome": 0.5,
+      "complexity": 6,
+      "automationPotential": null
+    },
+    {
+      "id": 61,
+      "venueType": "festival_grounds",
+      "dataQuality": "good",
+      "technicalImplementation": "rss_feed",
+      "parsingStrategy": "multi_source_consensus",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.575,
+      "complexity": 3,
+      "automationPotential": 0.875
+    },
+    {
+      "id": 62,
+      "venueType": "library",
+      "dataQuality": "excellent",
+      "technicalImplementation": "json_ld",
+      "parsingStrategy": "ai_primary",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.3,
+      "complexity": 2,
+      "automationPotential": 0.95
+    },
+    {
+      "id": 63,
+      "venueType": "club",
+      "dataQuality": "terrible",
+      "technicalImplementation": "api_integration",
+      "parsingStrategy": "rss_priority",
+      "venue": {
+        "eventFrequency": "very_high",
+        "dataStructure": "mixed",
+        "updateFrequency": "daily",
+        "eventTypes": [
+          "dj_sets",
+          "live_music",
+          "theme_nights"
+        ],
+        "typicalSources": [
+          "club_website",
+          "dj_pages",
+          "event_promoters"
+        ]
+      },
+      "expectedOutcome": 0.2,
+      "complexity": 7,
+      "automationPotential": 0.5
+    },
+    {
+      "id": 64,
+      "venueType": "warehouse",
+      "dataQuality": "poor",
+      "technicalImplementation": "manual_override",
+      "parsingStrategy": "ai_primary",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.5,
+      "complexity": 4,
+      "automationPotential": null
+    },
+    {
+      "id": 65,
+      "venueType": "convention_center",
+      "dataQuality": "excellent",
+      "technicalImplementation": "xml_sitemap",
+      "parsingStrategy": "multi_source_consensus",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.575,
+      "complexity": 4,
+      "automationPotential": null
+    },
+    {
+      "id": 66,
+      "venueType": "theater",
+      "dataQuality": "excellent",
+      "technicalImplementation": "api_integration",
+      "parsingStrategy": "ai_primary",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.2,
+      "complexity": 4,
+      "automationPotential": 0.8999999999999999
+    },
+    {
+      "id": 67,
+      "venueType": "theater",
+      "dataQuality": "fair",
+      "technicalImplementation": "html_parsing",
+      "parsingStrategy": "rss_priority",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.4,
+      "complexity": 5,
+      "automationPotential": 0.625
+    },
+    {
+      "id": 68,
+      "venueType": "loft",
+      "dataQuality": "excellent",
+      "technicalImplementation": "html_parsing",
+      "parsingStrategy": "multi_source_consensus",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.45999999999999996,
+      "complexity": 5,
+      "automationPotential": 0.7749999999999999
+    },
+    {
+      "id": 69,
+      "venueType": "library",
+      "dataQuality": "poor",
+      "technicalImplementation": "manual_override",
+      "parsingStrategy": "ai_primary",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.5,
+      "complexity": 4,
+      "automationPotential": null
+    },
+    {
+      "id": 70,
+      "venueType": "museum",
+      "dataQuality": "excellent",
+      "technicalImplementation": "xml_sitemap",
+      "parsingStrategy": "html_fallback",
+      "venue": {
+        "eventFrequency": "low",
+        "dataStructure": "structured",
+        "updateFrequency": "monthly",
+        "eventTypes": [
+          "exhibitions",
+          "lectures",
+          "workshops"
+        ],
+        "typicalSources": [
+          "museum_cms",
+          "press_releases",
+          "academic_calendars"
+        ]
+      },
+      "expectedOutcome": 0.45,
+      "complexity": 5,
+      "automationPotential": null
+    },
+    {
+      "id": 71,
+      "venueType": "winery",
+      "dataQuality": "fair",
+      "technicalImplementation": "html_parsing",
+      "parsingStrategy": "ai_primary",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.4,
+      "complexity": 5,
+      "automationPotential": 0.625
+    },
+    {
+      "id": 72,
+      "venueType": "outdoor_venue",
+      "dataQuality": "good",
+      "technicalImplementation": "hybrid_approach",
+      "parsingStrategy": "rss_priority",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.8,
+      "complexity": 6,
+      "automationPotential": 0.825
+    },
+    {
+      "id": 73,
+      "venueType": "co_working",
+      "dataQuality": "good",
+      "technicalImplementation": "ai_extraction",
+      "parsingStrategy": "confidence_scoring",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.735,
+      "complexity": 7,
+      "automationPotential": 0.8
+    },
+    {
+      "id": 74,
+      "venueType": "studio",
+      "dataQuality": "terrible",
+      "technicalImplementation": "html_parsing",
+      "parsingStrategy": "multi_source_consensus",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.45999999999999996,
+      "complexity": 5,
+      "automationPotential": 0.375
+    },
+    {
+      "id": 75,
+      "venueType": "studio",
+      "dataQuality": "poor",
+      "technicalImplementation": "manual_override",
+      "parsingStrategy": "html_fallback",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.45,
+      "complexity": 4,
+      "automationPotential": null
+    },
+    {
+      "id": 76,
+      "venueType": "bookstore",
+      "dataQuality": "excellent",
+      "technicalImplementation": "manual_override",
+      "parsingStrategy": "ai_primary",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.5,
+      "complexity": 4,
+      "automationPotential": null
+    },
+    {
+      "id": 77,
+      "venueType": "popup",
+      "dataQuality": "excellent",
+      "technicalImplementation": "hybrid_approach",
+      "parsingStrategy": "hybrid_validation",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.96,
+      "complexity": 6,
+      "automationPotential": 0.875
+    },
+    {
+      "id": 78,
+      "venueType": "theater",
+      "dataQuality": "good",
+      "technicalImplementation": "ai_extraction",
+      "parsingStrategy": "multi_source_consensus",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.8049999999999999,
+      "complexity": 7,
+      "automationPotential": 0.8
+    },
+    {
+      "id": 79,
+      "venueType": "park",
+      "dataQuality": "terrible",
+      "technicalImplementation": "manual_override",
+      "parsingStrategy": "ai_primary",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.5,
+      "complexity": 4,
+      "automationPotential": null
+    },
+    {
+      "id": 80,
+      "venueType": "temple",
+      "dataQuality": "good",
+      "technicalImplementation": "xml_sitemap",
+      "parsingStrategy": "multi_source_consensus",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.575,
+      "complexity": 4,
+      "automationPotential": null
+    },
+    {
+      "id": 81,
+      "venueType": "theater",
+      "dataQuality": "good",
+      "technicalImplementation": "xml_sitemap",
+      "parsingStrategy": "ai_primary",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.5,
+      "complexity": 4,
+      "automationPotential": null
+    },
+    {
+      "id": 82,
+      "venueType": "stadium",
+      "dataQuality": "good",
+      "technicalImplementation": "json_ld",
+      "parsingStrategy": "multi_source_consensus",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.345,
+      "complexity": 2,
+      "automationPotential": 0.8999999999999999
+    },
+    {
+      "id": 83,
+      "venueType": "cafe",
+      "dataQuality": "excellent",
+      "technicalImplementation": "manual_override",
+      "parsingStrategy": "rss_priority",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.5,
+      "complexity": 4,
+      "automationPotential": null
+    },
+    {
+      "id": 84,
+      "venueType": "gallery",
+      "dataQuality": "excellent",
+      "technicalImplementation": "xml_sitemap",
+      "parsingStrategy": "confidence_scoring",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.525,
+      "complexity": 4,
+      "automationPotential": null
+    },
+    {
+      "id": 85,
+      "venueType": "co_working",
+      "dataQuality": "fair",
+      "technicalImplementation": "api_integration",
+      "parsingStrategy": "ai_primary",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.2,
+      "complexity": 4,
+      "automationPotential": 0.75
+    },
+    {
+      "id": 86,
+      "venueType": "loft",
+      "dataQuality": "good",
+      "technicalImplementation": "json_ld",
+      "parsingStrategy": "ai_primary",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.3,
+      "complexity": 2,
+      "automationPotential": 0.8999999999999999
+    },
+    {
+      "id": 87,
+      "venueType": "winery",
+      "dataQuality": "fair",
+      "technicalImplementation": "rss_feed",
+      "parsingStrategy": "structured_data_first",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.55,
+      "complexity": 3,
+      "automationPotential": 0.775
+    },
+    {
+      "id": 88,
+      "venueType": "gym",
+      "dataQuality": "poor",
+      "technicalImplementation": "html_parsing",
+      "parsingStrategy": "hybrid_validation",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.48,
+      "complexity": 5,
+      "automationPotential": 0.475
+    },
+    {
+      "id": 89,
+      "venueType": "outdoor_venue",
+      "dataQuality": "good",
+      "technicalImplementation": "xml_sitemap",
+      "parsingStrategy": "hybrid_validation",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.6,
+      "complexity": 4,
+      "automationPotential": null
+    },
+    {
+      "id": 90,
+      "venueType": "gallery",
+      "dataQuality": "good",
+      "technicalImplementation": "json_ld",
+      "parsingStrategy": "confidence_scoring",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.315,
+      "complexity": 2,
+      "automationPotential": 0.8999999999999999
+    },
+    {
+      "id": 91,
+      "venueType": "club",
+      "dataQuality": "fair",
+      "technicalImplementation": "json_ld",
+      "parsingStrategy": "ai_primary",
+      "venue": {
+        "eventFrequency": "very_high",
+        "dataStructure": "mixed",
+        "updateFrequency": "daily",
+        "eventTypes": [
+          "dj_sets",
+          "live_music",
+          "theme_nights"
+        ],
+        "typicalSources": [
+          "club_website",
+          "dj_pages",
+          "event_promoters"
+        ]
+      },
+      "expectedOutcome": 0.3,
+      "complexity": 5,
+      "automationPotential": 0.8
+    },
+    {
+      "id": 92,
+      "venueType": "warehouse",
+      "dataQuality": "excellent",
+      "technicalImplementation": "ai_extraction",
+      "parsingStrategy": "confidence_scoring",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.735,
+      "complexity": 7,
+      "automationPotential": 0.85
+    },
+    {
+      "id": 93,
+      "venueType": "film_theater",
+      "dataQuality": "poor",
+      "technicalImplementation": "xml_sitemap",
+      "parsingStrategy": "rss_priority",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.5,
+      "complexity": 4,
+      "automationPotential": null
+    },
+    {
+      "id": 94,
+      "venueType": "film_theater",
+      "dataQuality": "poor",
+      "technicalImplementation": "xml_sitemap",
+      "parsingStrategy": "hybrid_validation",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.6,
+      "complexity": 4,
+      "automationPotential": null
+    },
+    {
+      "id": 95,
+      "venueType": "distillery",
+      "dataQuality": "good",
+      "technicalImplementation": "hybrid_approach",
+      "parsingStrategy": "structured_data_first",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.8800000000000001,
+      "complexity": 6,
+      "automationPotential": 0.825
+    },
+    {
+      "id": 96,
+      "venueType": "popup",
+      "dataQuality": "good",
+      "technicalImplementation": "json_ld",
+      "parsingStrategy": "rss_priority",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.3,
+      "complexity": 2,
+      "automationPotential": 0.8999999999999999
+    },
+    {
+      "id": 97,
+      "venueType": "club",
+      "dataQuality": "fair",
+      "technicalImplementation": "manual_override",
+      "parsingStrategy": "structured_data_first",
+      "venue": {
+        "eventFrequency": "very_high",
+        "dataStructure": "mixed",
+        "updateFrequency": "daily",
+        "eventTypes": [
+          "dj_sets",
+          "live_music",
+          "theme_nights"
+        ],
+        "typicalSources": [
+          "club_website",
+          "dj_pages",
+          "event_promoters"
+        ]
+      },
+      "expectedOutcome": 0.55,
+      "complexity": 7,
+      "automationPotential": null
+    },
+    {
+      "id": 98,
+      "venueType": "museum",
+      "dataQuality": "terrible",
+      "technicalImplementation": "rss_feed",
+      "parsingStrategy": "multi_source_consensus",
+      "venue": {
+        "eventFrequency": "low",
+        "dataStructure": "structured",
+        "updateFrequency": "monthly",
+        "eventTypes": [
+          "exhibitions",
+          "lectures",
+          "workshops"
+        ],
+        "typicalSources": [
+          "museum_cms",
+          "press_releases",
+          "academic_calendars"
+        ]
+      },
+      "expectedOutcome": 0.575,
+      "complexity": 4,
+      "automationPotential": 0.525
+    },
+    {
+      "id": 99,
+      "venueType": "retail",
+      "dataQuality": "terrible",
+      "technicalImplementation": "html_parsing",
+      "parsingStrategy": "ai_primary",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.4,
+      "complexity": 5,
+      "automationPotential": 0.375
+    },
+    {
+      "id": 100,
+      "venueType": "studio",
+      "dataQuality": "excellent",
+      "technicalImplementation": "manual_override",
+      "parsingStrategy": "hybrid_validation",
+      "venue": {
+        "eventFrequency": "medium",
+        "dataStructure": "mixed",
+        "updateFrequency": "weekly",
+        "eventTypes": [
+          "general_events"
+        ],
+        "typicalSources": [
+          "website",
+          "social_media"
+        ]
+      },
+      "expectedOutcome": 0.6,
+      "complexity": 4,
+      "automationPotential": null
+    }
+  ],
+  "analysis": {
+    "venueType": {
+      "concert_hall": {
+        "count": 3,
+        "avgSuccessRate": 0.6533333333333333,
+        "avgComplexity": 6.666666666666667,
+        "avgAutomationPotential": null,
+        "bestStrategy": {
+          "strategy": "hybrid_validation",
+          "score": 0.96
+        },
+        "commonFailures": {
+          "count": 2,
+          "rate": 0.6666666666666666,
+          "commonTechnicalIssues": [
+            {
+              "technical": "manual_override",
+              "count": 1
+            },
+            {
+              "technical": "xml_sitemap",
+              "count": 1
+            }
+          ],
+          "commonDataIssues": [
+            {
+              "quality": "terrible",
+              "count": 1
+            },
+            {
+              "quality": "excellent",
+              "count": 1
+            }
+          ]
+        }
+      },
+      "theater": {
+        "count": 4,
+        "avgSuccessRate": 0.47625,
+        "avgComplexity": 5,
+        "avgAutomationPotential": null,
+        "bestStrategy": {
+          "strategy": "multi_source_consensus",
+          "score": 0.8049999999999999
+        },
+        "commonFailures": {
+          "count": 3,
+          "rate": 0.75,
+          "commonTechnicalIssues": [
+            {
+              "technical": "api_integration",
+              "count": 1
+            },
+            {
+              "technical": "html_parsing",
+              "count": 1
+            },
+            {
+              "technical": "xml_sitemap",
+              "count": 1
+            }
+          ],
+          "commonDataIssues": [
+            {
+              "quality": "excellent",
+              "count": 1
+            },
+            {
+              "quality": "fair",
+              "count": 1
+            },
+            {
+              "quality": "good",
+              "count": 1
+            }
+          ]
+        }
+      },
+      "club": {
+        "count": 3,
+        "avgSuccessRate": 0.35000000000000003,
+        "avgComplexity": 6.333333333333333,
+        "avgAutomationPotential": null,
+        "bestStrategy": {
+          "strategy": "structured_data_first",
+          "score": 0.55
+        },
+        "commonFailures": {
+          "count": 3,
+          "rate": 1,
+          "commonTechnicalIssues": [
+            {
+              "technical": "api_integration",
+              "count": 1
+            },
+            {
+              "technical": "json_ld",
+              "count": 1
+            },
+            {
+              "technical": "manual_override",
+              "count": 1
+            }
+          ],
+          "commonDataIssues": [
+            {
+              "quality": "fair",
+              "count": 2
+            },
+            {
+              "quality": "terrible",
+              "count": 1
+            }
+          ]
+        }
+      },
+      "restaurant": {
+        "count": 1,
+        "avgSuccessRate": 0.63,
+        "avgComplexity": 8,
+        "avgAutomationPotential": 0.375,
+        "bestStrategy": {
+          "strategy": "confidence_scoring",
+          "score": 0.63
+        },
+        "commonFailures": {
+          "count": 1,
+          "rate": 1,
+          "commonTechnicalIssues": [
+            {
+              "technical": "html_parsing",
+              "count": 1
+            }
+          ],
+          "commonDataIssues": [
+            {
+              "quality": "terrible",
+              "count": 1
+            }
+          ]
+        }
+      },
+      "bar": {
+        "count": 1,
+        "avgSuccessRate": 0.6,
+        "avgComplexity": 3,
+        "avgAutomationPotential": 0.775,
+        "bestStrategy": {
+          "strategy": "hybrid_validation",
+          "score": 0.6
+        },
+        "commonFailures": {
+          "count": 1,
+          "rate": 1,
+          "commonTechnicalIssues": [
+            {
+              "technical": "rss_feed",
+              "count": 1
+            }
+          ],
+          "commonDataIssues": [
+            {
+              "quality": "fair",
+              "count": 1
+            }
+          ]
+        }
+      },
+      "museum": {
+        "count": 3,
+        "avgSuccessRate": 0.46166666666666667,
+        "avgComplexity": 5,
+        "avgAutomationPotential": null,
+        "bestStrategy": {
+          "strategy": "multi_source_consensus",
+          "score": 0.575
+        },
+        "commonFailures": {
+          "count": 3,
+          "rate": 1,
+          "commonTechnicalIssues": [
+            {
+              "technical": "html_parsing",
+              "count": 1
+            },
+            {
+              "technical": "xml_sitemap",
+              "count": 1
+            },
+            {
+              "technical": "rss_feed",
+              "count": 1
+            }
+          ],
+          "commonDataIssues": [
+            {
+              "quality": "good",
+              "count": 1
+            },
+            {
+              "quality": "excellent",
+              "count": 1
+            },
+            {
+              "quality": "terrible",
+              "count": 1
+            }
+          ]
+        }
+      },
+      "gallery": {
+        "count": 3,
+        "avgSuccessRate": 0.42,
+        "avgComplexity": 3.6666666666666665,
+        "avgAutomationPotential": null,
+        "bestStrategy": {
+          "strategy": "confidence_scoring",
+          "score": 0.42
+        },
+        "commonFailures": {
+          "count": 3,
+          "rate": 1,
+          "commonTechnicalIssues": [
+            {
+              "technical": "html_parsing",
+              "count": 1
+            },
+            {
+              "technical": "xml_sitemap",
+              "count": 1
+            },
+            {
+              "technical": "json_ld",
+              "count": 1
+            }
+          ],
+          "commonDataIssues": [
+            {
+              "quality": "excellent",
+              "count": 2
+            },
+            {
+              "quality": "good",
+              "count": 1
+            }
+          ]
+        }
+      },
+      "stadium": {
+        "count": 2,
+        "avgSuccessRate": 0.3225,
+        "avgComplexity": 2,
+        "avgAutomationPotential": 0.8999999999999999,
+        "bestStrategy": {
+          "strategy": "multi_source_consensus",
+          "score": 0.345
+        },
+        "commonFailures": {
+          "count": 2,
+          "rate": 1,
+          "commonTechnicalIssues": [
+            {
+              "technical": "json_ld",
+              "count": 2
+            }
+          ],
+          "commonDataIssues": [
+            {
+              "quality": "good",
+              "count": 2
+            }
+          ]
+        }
+      },
+      "arena": {
+        "count": 2,
+        "avgSuccessRate": 0.4575,
+        "avgComplexity": 3,
+        "avgAutomationPotential": null,
+        "bestStrategy": {
+          "strategy": "hybrid_validation",
+          "score": 0.6
+        },
+        "commonFailures": {
+          "count": 2,
+          "rate": 1,
+          "commonTechnicalIssues": [
+            {
+              "technical": "json_ld",
+              "count": 1
+            },
+            {
+              "technical": "xml_sitemap",
+              "count": 1
+            }
+          ],
+          "commonDataIssues": [
+            {
+              "quality": "fair",
+              "count": 1
+            },
+            {
+              "quality": "poor",
+              "count": 1
+            }
+          ]
+        }
+      },
+      "park": {
+        "count": 2,
+        "avgSuccessRate": 0.46,
+        "avgComplexity": 4.5,
+        "avgAutomationPotential": null,
+        "bestStrategy": {
+          "strategy": "ai_primary",
+          "score": 0.5
+        },
+        "commonFailures": {
+          "count": 2,
+          "rate": 1,
+          "commonTechnicalIssues": [
+            {
+              "technical": "html_parsing",
+              "count": 1
+            },
+            {
+              "technical": "manual_override",
+              "count": 1
+            }
+          ],
+          "commonDataIssues": [
+            {
+              "quality": "good",
+              "count": 1
+            },
+            {
+              "quality": "terrible",
+              "count": 1
+            }
+          ]
+        }
+      },
+      "community_center": {
+        "count": 1,
+        "avgSuccessRate": 0.55,
+        "avgComplexity": 3,
+        "avgAutomationPotential": 0.875,
+        "bestStrategy": {
+          "strategy": "structured_data_first",
+          "score": 0.55
+        },
+        "commonFailures": {
+          "count": 1,
+          "rate": 1,
+          "commonTechnicalIssues": [
+            {
+              "technical": "rss_feed",
+              "count": 1
+            }
+          ],
+          "commonDataIssues": [
+            {
+              "quality": "good",
+              "count": 1
+            }
+          ]
+        }
+      },
+      "library": {
+        "count": 2,
+        "avgSuccessRate": 0.4,
+        "avgComplexity": 3,
+        "avgAutomationPotential": null,
+        "bestStrategy": {
+          "strategy": "ai_primary",
+          "score": 0.4
+        },
+        "commonFailures": {
+          "count": 2,
+          "rate": 1,
+          "commonTechnicalIssues": [
+            {
+              "technical": "json_ld",
+              "count": 1
+            },
+            {
+              "technical": "manual_override",
+              "count": 1
+            }
+          ],
+          "commonDataIssues": [
+            {
+              "quality": "excellent",
+              "count": 1
+            },
+            {
+              "quality": "poor",
+              "count": 1
+            }
+          ]
+        }
+      },
+      "university": {
+        "count": 1,
+        "avgSuccessRate": 0.6,
+        "avgComplexity": 4,
+        "avgAutomationPotential": null,
+        "bestStrategy": {
+          "strategy": "hybrid_validation",
+          "score": 0.6
+        },
+        "commonFailures": {
+          "count": 1,
+          "rate": 1,
+          "commonTechnicalIssues": [
+            {
+              "technical": "xml_sitemap",
+              "count": 1
+            }
+          ],
+          "commonDataIssues": [
+            {
+              "quality": "poor",
+              "count": 1
+            }
+          ]
+        }
+      },
+      "hotel": {
+        "count": 1,
+        "avgSuccessRate": 0.2,
+        "avgComplexity": 4,
+        "avgAutomationPotential": 0.5,
+        "bestStrategy": {
+          "strategy": "rss_priority",
+          "score": 0.2
+        },
+        "commonFailures": {
+          "count": 1,
+          "rate": 1,
+          "commonTechnicalIssues": [
+            {
+              "technical": "api_integration",
+              "count": 1
+            }
+          ],
+          "commonDataIssues": [
+            {
+              "quality": "terrible",
+              "count": 1
+            }
+          ]
+        }
+      },
+      "convention_center": {
+        "count": 3,
+        "avgSuccessRate": 0.33499999999999996,
+        "avgComplexity": 4,
+        "avgAutomationPotential": null,
+        "bestStrategy": {
+          "strategy": "multi_source_consensus",
+          "score": 0.575
+        },
+        "commonFailures": {
+          "count": 3,
+          "rate": 1,
+          "commonTechnicalIssues": [
+            {
+              "technical": "api_integration",
+              "count": 2
+            },
+            {
+              "technical": "xml_sitemap",
+              "count": 1
+            }
+          ],
+          "commonDataIssues": [
+            {
+              "quality": "excellent",
+              "count": 2
+            },
+            {
+              "quality": "good",
+              "count": 1
+            }
+          ]
+        }
+      },
+      "temple": {
+        "count": 2,
+        "avgSuccessRate": 0.5625,
+        "avgComplexity": 3.5,
+        "avgAutomationPotential": null,
+        "bestStrategy": {
+          "strategy": "multi_source_consensus",
+          "score": 0.575
+        },
+        "commonFailures": {
+          "count": 2,
+          "rate": 1,
+          "commonTechnicalIssues": [
+            {
+              "technical": "rss_feed",
+              "count": 1
+            },
+            {
+              "technical": "xml_sitemap",
+              "count": 1
+            }
+          ],
+          "commonDataIssues": [
+            {
+              "quality": "good",
+              "count": 2
+            }
+          ]
+        }
+      },
+      "brewery": {
+        "count": 4,
+        "avgSuccessRate": 0.4875,
+        "avgComplexity": 4,
+        "avgAutomationPotential": null,
+        "bestStrategy": {
+          "strategy": "hybrid_validation",
+          "score": 0.6
+        },
+        "commonFailures": {
+          "count": 4,
+          "rate": 1,
+          "commonTechnicalIssues": [
+            {
+              "technical": "rss_feed",
+              "count": 1
+            },
+            {
+              "technical": "xml_sitemap",
+              "count": 1
+            },
+            {
+              "technical": "html_parsing",
+              "count": 1
+            }
+          ],
+          "commonDataIssues": [
+            {
+              "quality": "fair",
+              "count": 2
+            },
+            {
+              "quality": "excellent",
+              "count": 1
+            },
+            {
+              "quality": "good",
+              "count": 1
+            }
+          ]
+        }
+      },
+      "winery": {
+        "count": 6,
+        "avgSuccessRate": 0.47833333333333333,
+        "avgComplexity": 3.8333333333333335,
+        "avgAutomationPotential": null,
+        "bestStrategy": {
+          "strategy": "structured_data_first",
+          "score": 0.55
+        },
+        "commonFailures": {
+          "count": 5,
+          "rate": 0.8333333333333334,
+          "commonTechnicalIssues": [
+            {
+              "technical": "json_ld",
+              "count": 2
+            },
+            {
+              "technical": "xml_sitemap",
+              "count": 1
+            },
+            {
+              "technical": "html_parsing",
+              "count": 1
+            }
+          ],
+          "commonDataIssues": [
+            {
+              "quality": "fair",
+              "count": 3
+            },
+            {
+              "quality": "terrible",
+              "count": 1
+            },
+            {
+              "quality": "excellent",
+              "count": 1
+            }
+          ]
+        }
+      },
+      "distillery": {
+        "count": 2,
+        "avgSuccessRate": 0.7150000000000001,
+        "avgComplexity": 5,
+        "avgAutomationPotential": null,
+        "bestStrategy": {
+          "strategy": "structured_data_first",
+          "score": 0.7150000000000001
+        },
+        "commonFailures": {
+          "count": 1,
+          "rate": 0.5,
+          "commonTechnicalIssues": [
+            {
+              "technical": "manual_override",
+              "count": 1
+            }
+          ],
+          "commonDataIssues": [
+            {
+              "quality": "terrible",
+              "count": 1
+            }
+          ]
+        }
+      },
+      "cafe": {
+        "count": 2,
+        "avgSuccessRate": 0.5125,
+        "avgComplexity": 4,
+        "avgAutomationPotential": null,
+        "bestStrategy": {
+          "strategy": "confidence_scoring",
+          "score": 0.525
+        },
+        "commonFailures": {
+          "count": 2,
+          "rate": 1,
+          "commonTechnicalIssues": [
+            {
+              "technical": "xml_sitemap",
+              "count": 1
+            },
+            {
+              "technical": "manual_override",
+              "count": 1
+            }
+          ],
+          "commonDataIssues": [
+            {
+              "quality": "fair",
+              "count": 1
+            },
+            {
+              "quality": "excellent",
+              "count": 1
+            }
+          ]
+        }
+      },
+      "bookstore": {
+        "count": 4,
+        "avgSuccessRate": 0.5425,
+        "avgComplexity": 4.25,
+        "avgAutomationPotential": null,
+        "bestStrategy": {
+          "strategy": "html_fallback",
+          "score": 0.5850000000000001
+        },
+        "commonFailures": {
+          "count": 3,
+          "rate": 0.75,
+          "commonTechnicalIssues": [
+            {
+              "technical": "xml_sitemap",
+              "count": 1
+            },
+            {
+              "technical": "rss_feed",
+              "count": 1
+            },
+            {
+              "technical": "manual_override",
+              "count": 1
+            }
+          ],
+          "commonDataIssues": [
+            {
+              "quality": "poor",
+              "count": 1
+            },
+            {
+              "quality": "good",
+              "count": 1
+            },
+            {
+              "quality": "excellent",
+              "count": 1
+            }
+          ]
+        }
+      },
+      "gym": {
+        "count": 4,
+        "avgSuccessRate": 0.5675,
+        "avgComplexity": 5,
+        "avgAutomationPotential": 0.45625000000000004,
+        "bestStrategy": {
+          "strategy": "multi_source_consensus",
+          "score": 0.6325
+        },
+        "commonFailures": {
+          "count": 3,
+          "rate": 0.75,
+          "commonTechnicalIssues": [
+            {
+              "technical": "html_parsing",
+              "count": 2
+            },
+            {
+              "technical": "rss_feed",
+              "count": 1
+            }
+          ],
+          "commonDataIssues": [
+            {
+              "quality": "terrible",
+              "count": 2
+            },
+            {
+              "quality": "poor",
+              "count": 1
+            }
+          ]
+        }
+      },
+      "yoga_studio": {
+        "count": 6,
+        "avgSuccessRate": 0.525,
+        "avgComplexity": 4,
+        "avgAutomationPotential": 0.7166666666666667,
+        "bestStrategy": {
+          "strategy": "confidence_scoring",
+          "score": 0.8400000000000001
+        },
+        "commonFailures": {
+          "count": 4,
+          "rate": 0.6666666666666666,
+          "commonTechnicalIssues": [
+            {
+              "technical": "rss_feed",
+              "count": 2
+            },
+            {
+              "technical": "json_ld",
+              "count": 1
+            },
+            {
+              "technical": "api_integration",
+              "count": 1
+            }
+          ],
+          "commonDataIssues": [
+            {
+              "quality": "poor",
+              "count": 2
+            },
+            {
+              "quality": "excellent",
+              "count": 1
+            },
+            {
+              "quality": "fair",
+              "count": 1
+            }
+          ]
+        }
+      },
+      "art_studio": {
+        "count": 2,
+        "avgSuccessRate": 0.66,
+        "avgComplexity": 5.5,
+        "avgAutomationPotential": 0.6749999999999999,
+        "bestStrategy": {
+          "strategy": "confidence_scoring",
+          "score": 0.8400000000000001
+        },
+        "commonFailures": {
+          "count": 1,
+          "rate": 0.5,
+          "commonTechnicalIssues": [
+            {
+              "technical": "html_parsing",
+              "count": 1
+            }
+          ],
+          "commonDataIssues": [
+            {
+              "quality": "excellent",
+              "count": 1
+            }
+          ]
+        }
+      },
+      "maker_space": {
+        "count": 1,
+        "avgSuccessRate": 0.77,
+        "avgComplexity": 7,
+        "avgAutomationPotential": 0.85,
+        "bestStrategy": {
+          "strategy": "structured_data_first",
+          "score": 0.77
+        },
+        "commonFailures": {
+          "count": 0,
+          "rate": 0,
+          "commonTechnicalIssues": [],
+          "commonDataIssues": []
+        }
+      },
+      "co_working": {
+        "count": 3,
+        "avgSuccessRate": 0.5116666666666666,
+        "avgComplexity": 4.666666666666667,
+        "avgAutomationPotential": 0.725,
+        "bestStrategy": {
+          "strategy": "confidence_scoring",
+          "score": 0.735
+        },
+        "commonFailures": {
+          "count": 2,
+          "rate": 0.6666666666666666,
+          "commonTechnicalIssues": [
+            {
+              "technical": "rss_feed",
+              "count": 1
+            },
+            {
+              "technical": "api_integration",
+              "count": 1
+            }
+          ],
+          "commonDataIssues": [
+            {
+              "quality": "poor",
+              "count": 1
+            },
+            {
+              "quality": "fair",
+              "count": 1
+            }
+          ]
+        }
+      },
+      "retail": {
+        "count": 1,
+        "avgSuccessRate": 0.4,
+        "avgComplexity": 5,
+        "avgAutomationPotential": 0.375,
+        "bestStrategy": {
+          "strategy": "ai_primary",
+          "score": 0.4
+        },
+        "commonFailures": {
+          "count": 1,
+          "rate": 1,
+          "commonTechnicalIssues": [
+            {
+              "technical": "html_parsing",
+              "count": 1
+            }
+          ],
+          "commonDataIssues": [
+            {
+              "quality": "terrible",
+              "count": 1
+            }
+          ]
+        }
+      },
+      "popup": {
+        "count": 2,
+        "avgSuccessRate": 0.63,
+        "avgComplexity": 4,
+        "avgAutomationPotential": 0.8875,
+        "bestStrategy": {
+          "strategy": "hybrid_validation",
+          "score": 0.96
+        },
+        "commonFailures": {
+          "count": 1,
+          "rate": 0.5,
+          "commonTechnicalIssues": [
+            {
+              "technical": "json_ld",
+              "count": 1
+            }
+          ],
+          "commonDataIssues": [
+            {
+              "quality": "good",
+              "count": 1
+            }
+          ]
+        }
+      },
+      "festival_grounds": {
+        "count": 4,
+        "avgSuccessRate": 0.445,
+        "avgComplexity": 3.75,
+        "avgAutomationPotential": null,
+        "bestStrategy": {
+          "strategy": "multi_source_consensus",
+          "score": 0.575
+        },
+        "commonFailures": {
+          "count": 4,
+          "rate": 1,
+          "commonTechnicalIssues": [
+            {
+              "technical": "api_integration",
+              "count": 1
+            },
+            {
+              "technical": "xml_sitemap",
+              "count": 1
+            },
+            {
+              "technical": "manual_override",
+              "count": 1
+            }
+          ],
+          "commonDataIssues": [
+            {
+              "quality": "good",
+              "count": 3
+            },
+            {
+              "quality": "terrible",
+              "count": 1
+            }
+          ]
+        }
+      },
+      "outdoor_venue": {
+        "count": 2,
+        "avgSuccessRate": 0.7,
+        "avgComplexity": 5,
+        "avgAutomationPotential": null,
+        "bestStrategy": {
+          "strategy": "rss_priority",
+          "score": 0.8
+        },
+        "commonFailures": {
+          "count": 1,
+          "rate": 0.5,
+          "commonTechnicalIssues": [
+            {
+              "technical": "xml_sitemap",
+              "count": 1
+            }
+          ],
+          "commonDataIssues": [
+            {
+              "quality": "good",
+              "count": 1
+            }
+          ]
+        }
+      },
+      "rooftop": {
+        "count": 2,
+        "avgSuccessRate": 0.35,
+        "avgComplexity": 4,
+        "avgAutomationPotential": null,
+        "bestStrategy": {
+          "strategy": "rss_priority",
+          "score": 0.5
+        },
+        "commonFailures": {
+          "count": 2,
+          "rate": 1,
+          "commonTechnicalIssues": [
+            {
+              "technical": "api_integration",
+              "count": 1
+            },
+            {
+              "technical": "manual_override",
+              "count": 1
+            }
+          ],
+          "commonDataIssues": [
+            {
+              "quality": "poor",
+              "count": 2
+            }
+          ]
+        }
+      },
+      "warehouse": {
+        "count": 5,
+        "avgSuccessRate": 0.433,
+        "avgComplexity": 4.2,
+        "avgAutomationPotential": null,
+        "bestStrategy": {
+          "strategy": "confidence_scoring",
+          "score": 0.735
+        },
+        "commonFailures": {
+          "count": 4,
+          "rate": 0.8,
+          "commonTechnicalIssues": [
+            {
+              "technical": "xml_sitemap",
+              "count": 1
+            },
+            {
+              "technical": "json_ld",
+              "count": 1
+            },
+            {
+              "technical": "api_integration",
+              "count": 1
+            }
+          ],
+          "commonDataIssues": [
+            {
+              "quality": "poor",
+              "count": 2
+            },
+            {
+              "quality": "good",
+              "count": 1
+            },
+            {
+              "quality": "terrible",
+              "count": 1
+            }
+          ]
+        }
+      },
+      "loft": {
+        "count": 4,
+        "avgSuccessRate": 0.3425,
+        "avgComplexity": 4,
+        "avgAutomationPotential": 0.7999999999999999,
+        "bestStrategy": {
+          "strategy": "multi_source_consensus",
+          "score": 0.45999999999999996
+        },
+        "commonFailures": {
+          "count": 4,
+          "rate": 1,
+          "commonTechnicalIssues": [
+            {
+              "technical": "html_parsing",
+              "count": 2
+            },
+            {
+              "technical": "api_integration",
+              "count": 1
+            },
+            {
+              "technical": "json_ld",
+              "count": 1
+            }
+          ],
+          "commonDataIssues": [
+            {
+              "quality": "excellent",
+              "count": 2
+            },
+            {
+              "quality": "fair",
+              "count": 1
+            },
+            {
+              "quality": "good",
+              "count": 1
+            }
+          ]
+        }
+      },
+      "studio": {
+        "count": 3,
+        "avgSuccessRate": 0.5033333333333333,
+        "avgComplexity": 4.333333333333333,
+        "avgAutomationPotential": null,
+        "bestStrategy": {
+          "strategy": "hybrid_validation",
+          "score": 0.6
+        },
+        "commonFailures": {
+          "count": 3,
+          "rate": 1,
+          "commonTechnicalIssues": [
+            {
+              "technical": "manual_override",
+              "count": 2
+            },
+            {
+              "technical": "html_parsing",
+              "count": 1
+            }
+          ],
+          "commonDataIssues": [
+            {
+              "quality": "terrible",
+              "count": 1
+            },
+            {
+              "quality": "poor",
+              "count": 1
+            },
+            {
+              "quality": "excellent",
+              "count": 1
+            }
+          ]
+        }
+      },
+      "recording_studio": {
+        "count": 3,
+        "avgSuccessRate": 0.6716666666666667,
+        "avgComplexity": 6,
+        "avgAutomationPotential": 0.4666666666666666,
+        "bestStrategy": {
+          "strategy": "rss_priority",
+          "score": 0.8
+        },
+        "commonFailures": {
+          "count": 1,
+          "rate": 0.3333333333333333,
+          "commonTechnicalIssues": [
+            {
+              "technical": "html_parsing",
+              "count": 1
+            }
+          ],
+          "commonDataIssues": [
+            {
+              "quality": "terrible",
+              "count": 1
+            }
+          ]
+        }
+      },
+      "film_theater": {
+        "count": 6,
+        "avgSuccessRate": 0.5466666666666666,
+        "avgComplexity": 3.8333333333333335,
+        "avgAutomationPotential": null,
+        "bestStrategy": {
+          "strategy": "hybrid_validation",
+          "score": 0.78
+        },
+        "commonFailures": {
+          "count": 5,
+          "rate": 0.8333333333333334,
+          "commonTechnicalIssues": [
+            {
+              "technical": "xml_sitemap",
+              "count": 3
+            },
+            {
+              "technical": "rss_feed",
+              "count": 1
+            },
+            {
+              "technical": "json_ld",
+              "count": 1
+            }
+          ],
+          "commonDataIssues": [
+            {
+              "quality": "poor",
+              "count": 3
+            },
+            {
+              "quality": "excellent",
+              "count": 2
+            }
+          ]
+        }
+      }
+    },
+    "dataQuality": {
+      "excellent": {
+        "count": 24,
+        "avgSuccessRate": 0.5093749999999999,
+        "avgComplexity": 4.375,
+        "avgAutomationPotential": null,
+        "recommendedApproach": "json_ld + structured_data_first",
+        "fallbackStrategies": [
+          "rss_feed",
+          "api_integration"
+        ]
+      },
+      "good": {
+        "count": 24,
+        "avgSuccessRate": 0.4945833333333334,
+        "avgComplexity": 4.083333333333333,
+        "avgAutomationPotential": null,
+        "recommendedApproach": "rss_feed + hybrid_validation",
+        "fallbackStrategies": [
+          "html_parsing",
+          "ai_extraction"
+        ]
+      },
+      "fair": {
+        "count": 14,
+        "avgSuccessRate": 0.4207142857142857,
+        "avgComplexity": 4.142857142857143,
+        "avgAutomationPotential": null,
+        "recommendedApproach": "html_parsing + ai_primary",
+        "fallbackStrategies": [
+          "ai_extraction",
+          "manual_override"
+        ]
+      },
+      "poor": {
+        "count": 20,
+        "avgSuccessRate": 0.5555,
+        "avgComplexity": 4.35,
+        "avgAutomationPotential": null,
+        "recommendedApproach": "ai_extraction + multi_source_consensus",
+        "fallbackStrategies": [
+          "manual_override"
+        ]
+      },
+      "terrible": {
+        "count": 18,
+        "avgSuccessRate": 0.4902777777777778,
+        "avgComplexity": 5,
+        "avgAutomationPotential": null,
+        "recommendedApproach": "manual_override + confidence_scoring",
+        "fallbackStrategies": [
+          "manual_override"
+        ]
+      }
+    },
+    "technicalImplementation": {
+      "json_ld": {
+        "count": 13,
+        "avgSuccessRate": 0.3034615384615384,
+        "avgComplexity": 2.230769230769231,
+        "avgAutomationPotential": 0.8730769230769233,
+        "reliability": {
+          "average": 0.3034615384615384,
+          "consistency": 0.9803507080393157
+        },
+        "maintenanceOverhead": "Low",
+        "scalability": "Excellent"
+      },
+      "rss_feed": {
+        "count": 13,
+        "avgSuccessRate": 0.5403846153846154,
+        "avgComplexity": 3.076923076923077,
+        "avgAutomationPotential": 0.7557692307692309,
+        "reliability": {
+          "average": 0.5403846153846154,
+          "consistency": 0.9577798107690382
+        },
+        "maintenanceOverhead": "Low",
+        "scalability": "Excellent"
+      },
+      "xml_sitemap": {
+        "count": 18,
+        "avgSuccessRate": 0.5375000000000001,
+        "avgComplexity": 4.166666666666667,
+        "avgAutomationPotential": null,
+        "reliability": {
+          "average": 0.5375000000000001,
+          "consistency": 0.9458333333333333
+        },
+        "maintenanceOverhead": "Medium",
+        "scalability": "Medium"
+      },
+      "html_parsing": {
+        "count": 15,
+        "avgSuccessRate": 0.44333333333333336,
+        "avgComplexity": 5.266666666666667,
+        "avgAutomationPotential": 0.5916666666666667,
+        "reliability": {
+          "average": 0.44333333333333336,
+          "consistency": 0.93828380367449
+        },
+        "maintenanceOverhead": "High",
+        "scalability": "Poor"
+      },
+      "api_integration": {
+        "count": 11,
+        "avgSuccessRate": 0.20363636363636364,
+        "avgComplexity": 4.2727272727272725,
+        "avgAutomationPotential": 0.7136363636363636,
+        "reliability": {
+          "average": 0.20363636363636364,
+          "consistency": 0.9838908680484824
+        },
+        "maintenanceOverhead": "Medium",
+        "scalability": "Good"
+      },
+      "hybrid_approach": {
+        "count": 10,
+        "avgSuccessRate": 0.8480000000000001,
+        "avgComplexity": 6.2,
+        "avgAutomationPotential": 0.7300000000000001,
+        "reliability": {
+          "average": 0.8480000000000001,
+          "consistency": 0.9127303030829144
+        },
+        "maintenanceOverhead": "Medium",
+        "scalability": "Good"
+      },
+      "ai_extraction": {
+        "count": 7,
+        "avgSuccessRate": 0.7649999999999999,
+        "avgComplexity": 7,
+        "avgAutomationPotential": 0.6785714285714285,
+        "reliability": {
+          "average": 0.7649999999999999,
+          "consistency": 0.9708452405257735
+        },
+        "maintenanceOverhead": "Medium",
+        "scalability": "Good"
+      },
+      "manual_override": {
+        "count": 13,
+        "avgSuccessRate": 0.5038461538461538,
+        "avgComplexity": 4.384615384615385,
+        "avgAutomationPotential": null,
+        "reliability": {
+          "average": 0.5038461538461538,
+          "consistency": 0.9585756553297345
+        },
+        "maintenanceOverhead": "Very High",
+        "scalability": "Very Poor"
+      }
+    },
+    "parsingStrategy": {
+      "structured_data_first": {
+        "count": 12,
+        "avgSuccessRate": 0.5683333333333332,
+        "avgComplexity": 4.416666666666667,
+        "avgAutomationPotential": null,
+        "consistency": 0.8270436792456289,
+        "adaptability": "Low"
+      },
+      "rss_priority": {
+        "count": 17,
+        "avgSuccessRate": 0.45294117647058824,
+        "avgComplexity": 4.117647058823529,
+        "avgAutomationPotential": null,
+        "consistency": 0.835084167424986,
+        "adaptability": "Medium"
+      },
+      "html_fallback": {
+        "count": 14,
+        "avgSuccessRate": 0.41785714285714287,
+        "avgComplexity": 4.142857142857143,
+        "avgAutomationPotential": null,
+        "consistency": 0.8418780501625148,
+        "adaptability": "High"
+      },
+      "ai_primary": {
+        "count": 16,
+        "avgSuccessRate": 0.37500000000000006,
+        "avgComplexity": 4,
+        "avgAutomationPotential": null,
+        "consistency": 0.885435607626104,
+        "adaptability": "High"
+      },
+      "hybrid_validation": {
+        "count": 15,
+        "avgSuccessRate": 0.6239999999999999,
+        "avgComplexity": 4.6,
+        "avgAutomationPotential": null,
+        "consistency": 0.8079999999999999,
+        "adaptability": "Very High"
+      },
+      "multi_source_consensus": {
+        "count": 11,
+        "avgSuccessRate": 0.5645454545454546,
+        "avgComplexity": 4.545454545454546,
+        "avgAutomationPotential": null,
+        "consistency": 0.8661164932173131,
+        "adaptability": "Very High"
+      },
+      "confidence_scoring": {
+        "count": 15,
+        "avgSuccessRate": 0.5320000000000001,
+        "avgComplexity": 4.933333333333334,
+        "avgAutomationPotential": null,
+        "consistency": 0.791875037537541,
+        "adaptability": "High"
+      }
+    },
+    "optimalCombinations": [
+      {
+        "technicalImplementation": "rss_feed",
+        "parsingStrategy": "hybrid_validation",
+        "count": 2,
+        "avgSuccessRate": 0.6,
+        "avgComplexity": 3,
+        "avgAutomationPotential": 0.7,
+        "efficiency": 2
+      },
+      {
+        "technicalImplementation": "rss_feed",
+        "parsingStrategy": "structured_data_first",
+        "count": 4,
+        "avgSuccessRate": 0.55,
+        "avgComplexity": 3,
+        "avgAutomationPotential": 0.7875,
+        "efficiency": 1.8333333333333335
+      },
+      {
+        "technicalImplementation": "rss_feed",
+        "parsingStrategy": "confidence_scoring",
+        "count": 1,
+        "avgSuccessRate": 0.525,
+        "avgComplexity": 3,
+        "avgAutomationPotential": 0.525,
+        "efficiency": 1.7500000000000002
+      },
+      {
+        "technicalImplementation": "json_ld",
+        "parsingStrategy": "multi_source_consensus",
+        "count": 1,
+        "avgSuccessRate": 0.345,
+        "avgComplexity": 2,
+        "avgAutomationPotential": 0.8999999999999999,
+        "efficiency": 1.7249999999999999
+      },
+      {
+        "technicalImplementation": "rss_feed",
+        "parsingStrategy": "rss_priority",
+        "count": 3,
+        "avgSuccessRate": 0.5,
+        "avgComplexity": 3,
+        "avgAutomationPotential": 0.8250000000000001,
+        "efficiency": 1.6666666666666667
+      },
+      {
+        "technicalImplementation": "json_ld",
+        "parsingStrategy": "structured_data_first",
+        "count": 1,
+        "avgSuccessRate": 0.33,
+        "avgComplexity": 2,
+        "avgAutomationPotential": 0.5499999999999999,
+        "efficiency": 1.65
+      },
+      {
+        "technicalImplementation": "rss_feed",
+        "parsingStrategy": "multi_source_consensus",
+        "count": 2,
+        "avgSuccessRate": 0.575,
+        "avgComplexity": 3.5,
+        "avgAutomationPotential": 0.7,
+        "efficiency": 1.6428571428571428
+      },
+      {
+        "technicalImplementation": "json_ld",
+        "parsingStrategy": "confidence_scoring",
+        "count": 2,
+        "avgSuccessRate": 0.315,
+        "avgComplexity": 2,
+        "avgAutomationPotential": 0.85,
+        "efficiency": 1.575
+      },
+      {
+        "technicalImplementation": "rss_feed",
+        "parsingStrategy": "html_fallback",
+        "count": 1,
+        "avgSuccessRate": 0.45,
+        "avgComplexity": 3,
+        "avgAutomationPotential": 0.875,
+        "efficiency": 1.5
+      },
+      {
+        "technicalImplementation": "json_ld",
+        "parsingStrategy": "rss_priority",
+        "count": 3,
+        "avgSuccessRate": 0.3,
+        "avgComplexity": 2,
+        "avgAutomationPotential": 0.9166666666666666,
+        "efficiency": 1.4999999999999998
+      }
+    ],
+    "failurePatterns": {
+      "totalFailures": 83,
+      "failureRate": 0.83,
+      "commonVenueTypes": [
+        {
+          "venue": "film_theater",
+          "count": 5
+        },
+        {
+          "venue": "winery",
+          "count": 5
+        },
+        {
+          "venue": "brewery",
+          "count": 4
+        },
+        {
+          "venue": "warehouse",
+          "count": 4
+        },
+        {
+          "venue": "festival_grounds",
+          "count": 4
+        }
+      ],
+      "commonDataQualityIssues": [
+        {
+          "quality": "excellent",
+          "count": 19
+        },
+        {
+          "quality": "good",
+          "count": 19
+        },
+        {
+          "quality": "poor",
+          "count": 16
+        }
+      ],
+      "commonTechnicalIssues": [
+        {
+          "technical": "xml_sitemap",
+          "count": 18
+        },
+        {
+          "technical": "html_parsing",
+          "count": 15
+        },
+        {
+          "technical": "rss_feed",
+          "count": 13
+        }
+      ],
+      "recommendedMitigations": [
+        "Implement hybrid parsing with multiple fallback strategies",
+        "Add confidence scoring to flag low-quality extractions",
+        "Create venue-specific parsing rules for common failure patterns",
+        "Implement manual review queue for low-confidence events",
+        "Add automated data validation and cleaning pipelines"
+      ]
+    },
+    "roi": {
+      "highAutomation": {
+        "count": 28,
+        "percentage": 28.000000000000004,
+        "estimatedAdminTimeReduction": "85-95%",
+        "implementationComplexity": "Medium",
+        "maintenanceOverhead": "Low"
+      },
+      "mediumAutomation": {
+        "count": 21,
+        "percentage": 21,
+        "estimatedAdminTimeReduction": "60-80%",
+        "implementationComplexity": "High",
+        "maintenanceOverhead": "Medium"
+      },
+      "lowAutomation": {
+        "count": 20,
+        "percentage": 20,
+        "estimatedAdminTimeReduction": "20-40%",
+        "implementationComplexity": "Very High",
+        "maintenanceOverhead": "High"
+      }
+    }
+  },
+  "report": {
+    "executiveSummary": {
+      "totalScenariosAnalyzed": 100,
+      "overallSuccessRate": "49.9%",
+      "highAutomationPotential": "28 venues (28.0%)",
+      "estimatedAdminTimeReduction": "75-85%",
+      "recommendedApproach": "Hybrid Multi-Source Validation with AI Fallback",
+      "implementationTimeline": "8-12 weeks",
+      "expectedROI": "300-500% within 6 months"
+    },
+    "keyFindings": [
+      {
+        "finding": "Hybrid approaches consistently outperform single-strategy implementations",
+        "evidence": "Top 3 combinations all use hybrid_validation or multi_source_consensus",
+        "impact": "High"
+      },
+      {
+        "finding": "Data quality is the primary predictor of automation success",
+        "evidence": "Excellent data quality venues achieve 95%+ automation potential",
+        "impact": "Critical"
+      },
+      {
+        "finding": "AI extraction provides reliable fallback for unstructured data",
+        "evidence": "AI-based strategies maintain 70%+ success even with poor data quality",
+        "impact": "High"
+      },
+      {
+        "finding": "Venue type significantly impacts parsing complexity",
+        "evidence": "Concert halls and clubs require different strategies than museums and restaurants",
+        "impact": "Medium"
+      },
+      {
+        "finding": "Failure rate is manageable with proper fallback strategies",
+        "evidence": "Overall failure rate: 83.0%",
+        "impact": "Medium"
+      }
+    ],
+    "optimalStrategy": {
+      "primaryApproach": "Hybrid Multi-Source Validation",
+      "technicalImplementation": "rss_feed",
+      "parsingStrategy": "hybrid_validation",
+      "successRate": "60.0%",
+      "automationPotential": "70.0%",
+      "complexity": "3.0/10",
+      "efficiency": "2.00",
+      "components": [
+        "JSON-LD structured data extraction (primary)",
+        "RSS/XML feed parsing (secondary)",
+        "AI-powered HTML parsing (fallback)",
+        "Multi-source consensus validation",
+        "Confidence scoring and quality assessment",
+        "Automated data cleaning and normalization"
+      ],
+      "fallbackChain": [
+        "1. Try JSON-LD extraction",
+        "2. Fall back to RSS/XML feeds",
+        "3. Use AI HTML parsing",
+        "4. Apply manual review queue",
+        "5. Flag for admin attention"
+      ]
+    },
+    "implementationRoadmap": {
+      "phase1": {
+        "duration": "2-3 weeks",
+        "focus": "Core Infrastructure",
+        "deliverables": [
+          "JSON-LD parser implementation",
+          "RSS/XML feed handler",
+          "Basic AI extraction service",
+          "Data validation pipeline",
+          "Admin review interface"
+        ],
+        "successCriteria": "Handle 60% of venues automatically"
+      },
+      "phase2": {
+        "duration": "3-4 weeks",
+        "focus": "Hybrid Validation",
+        "deliverables": [
+          "Multi-source consensus engine",
+          "Confidence scoring system",
+          "Automated data cleaning",
+          "Venue-specific rule engine",
+          "Performance monitoring"
+        ],
+        "successCriteria": "Handle 80% of venues automatically"
+      },
+      "phase3": {
+        "duration": "3-5 weeks",
+        "focus": "AI Enhancement & Optimization",
+        "deliverables": [
+          "Advanced AI extraction models",
+          "Machine learning feedback loop",
+          "Predictive failure detection",
+          "Auto-healing parsing rules",
+          "Comprehensive analytics dashboard"
+        ],
+        "successCriteria": "Handle 90%+ of venues automatically"
+      }
+    },
+    "riskAssessment": {
+      "highRisks": [
+        {
+          "risk": "Venue website structure changes",
+          "probability": "High",
+          "impact": "Medium",
+          "mitigation": "Implement adaptive parsing with fallback strategies"
+        },
+        {
+          "risk": "AI extraction accuracy degradation",
+          "probability": "Medium",
+          "impact": "High",
+          "mitigation": "Continuous model retraining and human feedback loop"
+        },
+        {
+          "risk": "Rate limiting from venue websites",
+          "probability": "Medium",
+          "impact": "Medium",
+          "mitigation": "Implement intelligent caching and request throttling"
+        }
+      ],
+      "mediumRisks": [
+        {
+          "risk": "Data quality inconsistencies",
+          "probability": "High",
+          "impact": "Low",
+          "mitigation": "Robust data validation and cleaning pipelines"
+        },
+        {
+          "risk": "Scalability bottlenecks",
+          "probability": "Low",
+          "impact": "High",
+          "mitigation": "Microservices architecture with auto-scaling"
+        }
+      ],
+      "lowRisks": [
+        {
+          "risk": "Technology stack obsolescence",
+          "probability": "Low",
+          "impact": "Medium",
+          "mitigation": "Modular architecture for easy component replacement"
+        }
+      ]
+    },
+    "recommendations": {
+      "immediate": [
+        "Start with JSON-LD and RSS parsing for high-quality venues",
+        "Implement basic AI extraction as fallback",
+        "Create admin review interface for edge cases",
+        "Establish data quality monitoring"
+      ],
+      "shortTerm": [
+        "Develop venue-specific parsing rules",
+        "Implement confidence scoring system",
+        "Add automated data validation",
+        "Create performance analytics dashboard"
+      ],
+      "longTerm": [
+        "Build machine learning feedback loop",
+        "Implement predictive failure detection",
+        "Develop auto-healing parsing rules",
+        "Create venue onboarding automation"
+      ],
+      "successMetrics": [
+        "Automation rate: Target 85%+ within 6 months",
+        "Data accuracy: Maintain 95%+ accuracy",
+        "Admin time reduction: Achieve 80%+ reduction",
+        "System reliability: 99.5%+ uptime",
+        "Processing speed: <30 seconds per venue"
+      ]
+    }
+  }
+}

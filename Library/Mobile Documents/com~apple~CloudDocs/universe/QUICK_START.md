@@ -238,3 +238,4 @@ Once you've completed the setup and testing:
 **Happy Building! 🎉📱**
 
 The Discovery Dial app is designed to provide an intuitive, gesture-based way to explore events. With proper setup and testing, it will deliver a smooth, mobile-optimized experience for your users.
+

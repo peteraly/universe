@@ -72,3 +72,4 @@ Step 4: Wait for human approval before applying edits.
 Cursor will then understand exactly which part of the hierarchy to build.
 
 #End of directive
+

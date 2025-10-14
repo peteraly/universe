@@ -226,3 +226,4 @@ const EmergencyFixConfiguration = ({ config, onConfigUpdate }) => {
 }
 
 export default EmergencyFixConfiguration
+

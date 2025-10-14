@@ -462,3 +462,4 @@ class QualityAssurance {
 }
 
 module.exports = QualityAssurance;
+

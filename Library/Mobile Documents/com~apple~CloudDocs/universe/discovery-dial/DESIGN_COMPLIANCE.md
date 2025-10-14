@@ -498,3 +498,4 @@ The Event Compass application fully complies with all design requirements:
 
 🎉 **READY TO SHIP** 🎉
 
+

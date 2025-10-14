@@ -770,3 +770,4 @@ const AgentConsole = () => {
 }
 
 export default AgentConsole
+

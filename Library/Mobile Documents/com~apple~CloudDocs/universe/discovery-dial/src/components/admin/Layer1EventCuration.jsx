@@ -185,3 +185,4 @@ const Layer1EventCuration = ({ events, onEventsUpdate, onEdit, onDelete, onBulkA
 }
 
 export default Layer1EventCuration
+

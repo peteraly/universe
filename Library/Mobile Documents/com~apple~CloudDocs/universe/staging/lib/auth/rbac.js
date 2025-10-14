@@ -258,3 +258,4 @@ class RBAC {
 }
 
 module.exports = RBAC
+

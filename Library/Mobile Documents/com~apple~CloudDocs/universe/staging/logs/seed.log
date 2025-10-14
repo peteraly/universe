@@ -1,0 +1,3 @@
+{"timestamp":"2025-10-08T02:25:42.709Z","action":"SEED","user":"cli","reason":"Manual seed via CLI","dataCounts":{"events":5,"agents":3,"policies":2,"decisions":1}}
+{"timestamp":"2025-10-08T02:25:49.752Z","action":"UNSEED","user":"cli","reason":"Manual unseed via CLI","dataCounts":null}
+{"timestamp":"2025-10-08T02:25:54.898Z","action":"SEED","user":"cli","reason":"Manual seed via CLI","dataCounts":{"events":5,"agents":3,"policies":2,"decisions":1}}

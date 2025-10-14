@@ -556,3 +556,4 @@ const subcategoryPositions = useMemo(() => {
 
 **This implementation provides a clean, intuitive subcategory selection system that maintains visual hierarchy while keeping all options visible but appropriately faded.**
 
+

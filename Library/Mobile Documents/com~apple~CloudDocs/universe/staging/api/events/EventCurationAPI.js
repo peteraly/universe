@@ -291,3 +291,4 @@ class EventCurationAPI {
 }
 
 module.exports = EventCurationAPI
+

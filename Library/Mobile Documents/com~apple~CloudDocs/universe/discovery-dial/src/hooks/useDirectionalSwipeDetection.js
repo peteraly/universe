@@ -58,3 +58,4 @@ const useDirectionalSwipeDetection = (onSwipe) => {
 };
 
 export default useDirectionalSwipeDetection;
+

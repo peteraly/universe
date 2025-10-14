@@ -224,3 +224,4 @@ const IntelligenceCenter = ({ userRole }) => {
 }
 
 export default IntelligenceCenter
+

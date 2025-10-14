@@ -402,3 +402,4 @@ class KnowledgeAPI {
 }
 
 module.exports = KnowledgeAPI
+

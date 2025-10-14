@@ -244,3 +244,4 @@ const RBACManager = ({ data, onUpdate, canEdit }) => {
 }
 
 export default RBACManager
+

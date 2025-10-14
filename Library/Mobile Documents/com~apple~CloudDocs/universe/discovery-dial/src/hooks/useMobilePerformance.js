@@ -117,3 +117,4 @@ const useMobilePerformance = () => {
 };
 
 export default useMobilePerformance;
+

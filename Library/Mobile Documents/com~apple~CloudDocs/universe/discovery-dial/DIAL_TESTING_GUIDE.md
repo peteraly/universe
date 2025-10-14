@@ -205,3 +205,4 @@ If you encounter any issues:
 4. Compare with iPhone Compass app for reference
 
 **The Discovery Dial should now look and feel exactly like the iPhone Compass app with advanced gesture functionality!** 🎯
+

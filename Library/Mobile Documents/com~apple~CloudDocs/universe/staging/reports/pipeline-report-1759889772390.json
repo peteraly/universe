@@ -1,0 +1,317 @@
+{
+  "timestamp": "2025-10-08T02:16:12.390Z",
+  "pipeline": {
+    "startTime": 1759889768267,
+    "endTime": 1759889772390,
+    "duration": 4123,
+    "freezeFlag": false,
+    "overallSuccess": false
+  },
+  "stages": {
+    "total": 7,
+    "successful": 5,
+    "failed": 2,
+    "successRate": 71
+  },
+  "stageResults": [
+    {
+      "name": "Freeze Flag Check",
+      "success": true,
+      "duration": 1,
+      "startTime": 1759889768271,
+      "endTime": 1759889768272,
+      "result": {
+        "success": true,
+        "message": "Freeze flag check passed",
+        "freezeStatus": {
+          "isFrozen": false,
+          "isExpired": false,
+          "freezeInfo": null,
+          "status": "UNFROZEN",
+          "canDeploy": true
+        }
+      }
+    },
+    {
+      "name": "Build Validation",
+      "success": true,
+      "duration": 636,
+      "startTime": 1759889768272,
+      "endTime": 1759889768908,
+      "result": {
+        "success": true,
+        "message": "Build validation passed",
+        "buildSuccess": true
+      }
+    },
+    {
+      "name": "Lint Validation",
+      "success": true,
+      "duration": 326,
+      "startTime": 1759889768908,
+      "endTime": 1759889769234,
+      "result": {
+        "success": true,
+        "message": "Lint validation passed",
+        "lintSuccess": true
+      }
+    },
+    {
+      "name": "Unit Tests",
+      "success": false,
+      "duration": 127,
+      "startTime": 1759889769234,
+      "endTime": 1759889769361,
+      "result": {
+        "success": false,
+        "message": "Unit tests failed",
+        "testResults": {
+          "total": 5,
+          "passed": 0,
+          "failed": 5,
+          "skipped": 2,
+          "duration": 1094
+        }
+      }
+    },
+    {
+      "name": "Regression Tests",
+      "success": false,
+      "duration": 26,
+      "startTime": 1759889769361,
+      "endTime": 1759889769387,
+      "result": {
+        "success": false,
+        "message": "Regression tests failed",
+        "regressionResults": {
+          "success": false,
+          "regressionResults": {
+            "total": 1,
+            "passed": 0,
+            "failed": 1,
+            "skipped": 7,
+            "duration": 1119,
+            "testResults": [
+              {
+                "name": "system-health",
+                "passed": 0,
+                "failed": 0,
+                "total": 0,
+                "skipped": 1,
+                "critical": true,
+                "error": "Test file not found"
+              },
+              {
+                "name": "governance-compliance",
+                "passed": 0,
+                "failed": 0,
+                "total": 0,
+                "skipped": 1,
+                "critical": true,
+                "error": "Test file not found"
+              },
+              {
+                "name": "agent-management",
+                "passed": 0,
+                "failed": 0,
+                "total": 0,
+                "skipped": 1,
+                "critical": true,
+                "error": "Test file not found"
+              },
+              {
+                "name": "event-curation",
+                "passed": 0,
+                "failed": 0,
+                "total": 0,
+                "skipped": 1,
+                "critical": true,
+                "error": "Test file not found"
+              },
+              {
+                "name": "rbac-security",
+                "passed": 0,
+                "failed": 0,
+                "total": 0,
+                "skipped": 1,
+                "critical": true,
+                "error": "Test file not found"
+              },
+              {
+                "name": "recovery-protocols",
+                "passed": 0,
+                "failed": 1,
+                "total": 1,
+                "skipped": 0,
+                "critical": true,
+                "error": "Command failed: node /Users/alyssapeterson/Library/Mobile Documents/com~apple~CloudDocs/universe/staging/tests/recovery-protocols.test.js\nnode:internal/modules/cjs/loader:1408\n  throw err;\n  ^\n\nError: Cannot find module '/Users/alyssapeterson/Library/Mobile'\n    at Function._resolveFilename (node:internal/modules/cjs/loader:1405:15)\n    at defaultResolveImpl (node:internal/modules/cjs/loader:1061:19)\n    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1066:22)\n    at Function._load (node:internal/modules/cjs/loader:1215:37)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:151:5)\n    at node:internal/main/run_main_module:33:47 {\n  code: 'MODULE_NOT_FOUND',\n  requireStack: []\n}\n\nNode.js v23.10.0\n",
+                "duration": 0
+              },
+              {
+                "name": "api-endpoints",
+                "passed": 0,
+                "failed": 0,
+                "total": 0,
+                "skipped": 1,
+                "critical": false,
+                "error": "Test file not found"
+              },
+              {
+                "name": "ui-components",
+                "passed": 0,
+                "failed": 0,
+                "total": 0,
+                "skipped": 1,
+                "critical": false,
+                "error": "Test file not found"
+              }
+            ]
+          },
+          "analysis": {
+            "overallStatus": "FAIL",
+            "criticalStatus": "FAIL",
+            "nonCriticalStatus": "PASS",
+            "criticalFailures": 1,
+            "nonCriticalFailures": 0,
+            "successRate": 0,
+            "recommendations": [
+              "CRITICAL: Fix critical test failures before deployment",
+              "  • recovery-protocols: Command failed: node /Users/alyssapeterson/Library/Mobile Documents/com~apple~CloudDocs/universe/staging/tests/recovery-protocols.test.js\nnode:internal/modules/cjs/loader:1408\n  throw err;\n  ^\n\nError: Cannot find module '/Users/alyssapeterson/Library/Mobile'\n    at Function._resolveFilename (node:internal/modules/cjs/loader:1405:15)\n    at defaultResolveImpl (node:internal/modules/cjs/loader:1061:19)\n    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1066:22)\n    at Function._load (node:internal/modules/cjs/loader:1215:37)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:151:5)\n    at node:internal/main/run_main_module:33:47 {\n  code: 'MODULE_NOT_FOUND',\n  requireStack: []\n}\n\nNode.js v23.10.0\n"
+            ]
+          },
+          "report": {
+            "timestamp": "2025-10-08T02:16:09.387Z",
+            "freezeFlag": false,
+            "summary": {
+              "total": 1,
+              "passed": 0,
+              "failed": 1,
+              "skipped": 7,
+              "successRate": 0,
+              "duration": 1119
+            },
+            "analysis": {
+              "overallStatus": "FAIL",
+              "criticalStatus": "FAIL",
+              "nonCriticalStatus": "PASS",
+              "criticalFailures": 1,
+              "nonCriticalFailures": 0
+            },
+            "testResults": [
+              {
+                "name": "system-health",
+                "passed": 0,
+                "failed": 0,
+                "total": 0,
+                "skipped": 1,
+                "critical": true,
+                "error": "Test file not found"
+              },
+              {
+                "name": "governance-compliance",
+                "passed": 0,
+                "failed": 0,
+                "total": 0,
+                "skipped": 1,
+                "critical": true,
+                "error": "Test file not found"
+              },
+              {
+                "name": "agent-management",
+                "passed": 0,
+                "failed": 0,
+                "total": 0,
+                "skipped": 1,
+                "critical": true,
+                "error": "Test file not found"
+              },
+              {
+                "name": "event-curation",
+                "passed": 0,
+                "failed": 0,
+                "total": 0,
+                "skipped": 1,
+                "critical": true,
+                "error": "Test file not found"
+              },
+              {
+                "name": "rbac-security",
+                "passed": 0,
+                "failed": 0,
+                "total": 0,
+                "skipped": 1,
+                "critical": true,
+                "error": "Test file not found"
+              },
+              {
+                "name": "recovery-protocols",
+                "passed": 0,
+                "failed": 1,
+                "total": 1,
+                "skipped": 0,
+                "critical": true,
+                "error": "Command failed: node /Users/alyssapeterson/Library/Mobile Documents/com~apple~CloudDocs/universe/staging/tests/recovery-protocols.test.js\nnode:internal/modules/cjs/loader:1408\n  throw err;\n  ^\n\nError: Cannot find module '/Users/alyssapeterson/Library/Mobile'\n    at Function._resolveFilename (node:internal/modules/cjs/loader:1405:15)\n    at defaultResolveImpl (node:internal/modules/cjs/loader:1061:19)\n    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1066:22)\n    at Function._load (node:internal/modules/cjs/loader:1215:37)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:151:5)\n    at node:internal/main/run_main_module:33:47 {\n  code: 'MODULE_NOT_FOUND',\n  requireStack: []\n}\n\nNode.js v23.10.0\n",
+                "duration": 0
+              },
+              {
+                "name": "api-endpoints",
+                "passed": 0,
+                "failed": 0,
+                "total": 0,
+                "skipped": 1,
+                "critical": false,
+                "error": "Test file not found"
+              },
+              {
+                "name": "ui-components",
+                "passed": 0,
+                "failed": 0,
+                "total": 0,
+                "skipped": 1,
+                "critical": false,
+                "error": "Test file not found"
+              }
+            ],
+            "recommendations": [
+              "CRITICAL: Fix critical test failures before deployment",
+              "  • recovery-protocols: Command failed: node /Users/alyssapeterson/Library/Mobile Documents/com~apple~CloudDocs/universe/staging/tests/recovery-protocols.test.js\nnode:internal/modules/cjs/loader:1408\n  throw err;\n  ^\n\nError: Cannot find module '/Users/alyssapeterson/Library/Mobile'\n    at Function._resolveFilename (node:internal/modules/cjs/loader:1405:15)\n    at defaultResolveImpl (node:internal/modules/cjs/loader:1061:19)\n    at resolveForCJSWithHooks (node:internal/modules/cjs/loader:1066:22)\n    at Function._load (node:internal/modules/cjs/loader:1215:37)\n    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n    at Function.executeUserEntryPoint [as runMain] (node:internal/modules/run_main:151:5)\n    at node:internal/main/run_main_module:33:47 {\n  code: 'MODULE_NOT_FOUND',\n  requireStack: []\n}\n\nNode.js v23.10.0\n"
+            ],
+            "status": "FAIL"
+          }
+        }
+      }
+    },
+    {
+      "name": "Security Checks",
+      "success": true,
+      "duration": 1001,
+      "startTime": 1759889769387,
+      "endTime": 1759889770388,
+      "result": {
+        "success": true,
+        "message": "Security checks passed",
+        "securityScore": 95,
+        "vulnerabilities": 0
+      }
+    },
+    {
+      "name": "Performance Tests",
+      "success": true,
+      "duration": 2002,
+      "startTime": 1759889770388,
+      "endTime": 1759889772390,
+      "result": {
+        "success": true,
+        "message": "Performance tests passed",
+        "responseTime": 150,
+        "throughput": 1000,
+        "memoryUsage": 85
+      }
+    }
+  ],
+  "recommendations": [
+    "Fix failed pipeline stages before deployment",
+    "  • Unit Tests: Unknown error",
+    "  • Regression Tests: Unknown error"
+  ]
+}

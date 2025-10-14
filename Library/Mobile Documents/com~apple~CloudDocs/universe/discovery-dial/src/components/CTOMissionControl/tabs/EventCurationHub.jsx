@@ -223,3 +223,4 @@ const EventCurationHub = ({ userRole }) => {
 }
 
 export default EventCurationHub
+

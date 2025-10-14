@@ -69,3 +69,4 @@ export function getTransition(prefersReducedMotion, normalConfig) {
   return prefersReducedMotion ? { duration: 0 } : normalConfig;
 }
 
+

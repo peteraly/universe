@@ -626,3 +626,4 @@ const IntelligenceCenter = () => {
 }
 
 export default IntelligenceCenter
+

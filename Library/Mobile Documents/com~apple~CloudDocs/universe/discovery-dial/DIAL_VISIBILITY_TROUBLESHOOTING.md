@@ -95,3 +95,4 @@ Once you confirm you can see the dial with the bright colors, I'll:
 - ❌ **If not, what do you see instead?**
 
 **This will help me identify exactly what's happening!** 🔍
+

@@ -70,3 +70,4 @@ if (require.main === module) {
     process.exit(results.failed > 0 ? 1 : 0)
   })
 }
+

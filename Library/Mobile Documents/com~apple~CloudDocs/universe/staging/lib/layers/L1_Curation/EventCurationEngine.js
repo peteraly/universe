@@ -292,3 +292,4 @@ class EventCurationEngine {
 }
 
 module.exports = EventCurationEngine;
+

@@ -337,3 +337,4 @@ class EventClassification {
 }
 
 module.exports = EventClassification;
+

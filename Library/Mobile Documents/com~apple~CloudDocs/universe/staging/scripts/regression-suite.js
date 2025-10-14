@@ -99,7 +99,7 @@ class RegressionSuite {
     
     try {
       const startTime = Date.now()
-      const result = execSync(`node ${testFile}`, { 
+      const result = execSync(`node "${testFile}"`, { 
         encoding: 'utf8',
         cwd: path.join(__dirname, '..'),
         timeout: 45000 // 45 second timeout per regression test

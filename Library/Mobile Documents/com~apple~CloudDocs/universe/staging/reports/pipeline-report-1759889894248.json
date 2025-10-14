@@ -1,0 +1,308 @@
+{
+  "timestamp": "2025-10-08T02:18:14.248Z",
+  "pipeline": {
+    "startTime": 1759889852875,
+    "endTime": 1759889894248,
+    "duration": 41373,
+    "freezeFlag": false,
+    "overallSuccess": false
+  },
+  "stages": {
+    "total": 7,
+    "successful": 6,
+    "failed": 1,
+    "successRate": 86
+  },
+  "stageResults": [
+    {
+      "name": "Freeze Flag Check",
+      "success": true,
+      "duration": 0,
+      "startTime": 1759889852876,
+      "endTime": 1759889852876,
+      "result": {
+        "success": true,
+        "message": "Freeze flag check passed",
+        "freezeStatus": {
+          "isFrozen": false,
+          "isExpired": false,
+          "freezeInfo": null,
+          "status": "UNFROZEN",
+          "canDeploy": true
+        }
+      }
+    },
+    {
+      "name": "Build Validation",
+      "success": true,
+      "duration": 590,
+      "startTime": 1759889852877,
+      "endTime": 1759889853467,
+      "result": {
+        "success": true,
+        "message": "Build validation passed",
+        "buildSuccess": true
+      }
+    },
+    {
+      "name": "Lint Validation",
+      "success": true,
+      "duration": 390,
+      "startTime": 1759889853467,
+      "endTime": 1759889853857,
+      "result": {
+        "success": true,
+        "message": "Lint validation passed",
+        "lintSuccess": true
+      }
+    },
+    {
+      "name": "Unit Tests",
+      "success": false,
+      "duration": 33822,
+      "startTime": 1759889853857,
+      "endTime": 1759889887679,
+      "result": {
+        "success": false,
+        "message": "Unit tests failed",
+        "testResults": {
+          "total": 7,
+          "passed": 5,
+          "failed": 2,
+          "skipped": 0,
+          "duration": 34804
+        }
+      }
+    },
+    {
+      "name": "Regression Tests",
+      "success": true,
+      "duration": 3566,
+      "startTime": 1759889887679,
+      "endTime": 1759889891245,
+      "result": {
+        "success": true,
+        "message": "Regression tests passed",
+        "regressionResults": {
+          "success": true,
+          "regressionResults": {
+            "total": 2,
+            "passed": 2,
+            "failed": 0,
+            "skipped": 6,
+            "duration": 38368,
+            "testResults": [
+              {
+                "name": "system-health",
+                "passed": 1,
+                "failed": 0,
+                "total": 1,
+                "skipped": 0,
+                "critical": true,
+                "duration": 25
+              },
+              {
+                "name": "governance-compliance",
+                "passed": 0,
+                "failed": 0,
+                "total": 0,
+                "skipped": 1,
+                "critical": true,
+                "error": "Test file not found"
+              },
+              {
+                "name": "agent-management",
+                "passed": 0,
+                "failed": 0,
+                "total": 0,
+                "skipped": 1,
+                "critical": true,
+                "error": "Test file not found"
+              },
+              {
+                "name": "event-curation",
+                "passed": 0,
+                "failed": 0,
+                "total": 0,
+                "skipped": 1,
+                "critical": true,
+                "error": "Test file not found"
+              },
+              {
+                "name": "rbac-security",
+                "passed": 0,
+                "failed": 0,
+                "total": 0,
+                "skipped": 1,
+                "critical": true,
+                "error": "Test file not found"
+              },
+              {
+                "name": "recovery-protocols",
+                "passed": 1,
+                "failed": 0,
+                "total": 1,
+                "skipped": 0,
+                "critical": true,
+                "duration": 3538
+              },
+              {
+                "name": "api-endpoints",
+                "passed": 0,
+                "failed": 0,
+                "total": 0,
+                "skipped": 1,
+                "critical": false,
+                "error": "Test file not found"
+              },
+              {
+                "name": "ui-components",
+                "passed": 0,
+                "failed": 0,
+                "total": 0,
+                "skipped": 1,
+                "critical": false,
+                "error": "Test file not found"
+              }
+            ]
+          },
+          "analysis": {
+            "overallStatus": "PASS",
+            "criticalStatus": "PASS",
+            "nonCriticalStatus": "PASS",
+            "criticalFailures": 0,
+            "nonCriticalFailures": 0,
+            "successRate": 100,
+            "recommendations": []
+          },
+          "report": {
+            "timestamp": "2025-10-08T02:18:11.244Z",
+            "freezeFlag": false,
+            "summary": {
+              "total": 2,
+              "passed": 2,
+              "failed": 0,
+              "skipped": 6,
+              "successRate": 100,
+              "duration": 38368
+            },
+            "analysis": {
+              "overallStatus": "PASS",
+              "criticalStatus": "PASS",
+              "nonCriticalStatus": "PASS",
+              "criticalFailures": 0,
+              "nonCriticalFailures": 0
+            },
+            "testResults": [
+              {
+                "name": "system-health",
+                "passed": 1,
+                "failed": 0,
+                "total": 1,
+                "skipped": 0,
+                "critical": true,
+                "duration": 25
+              },
+              {
+                "name": "governance-compliance",
+                "passed": 0,
+                "failed": 0,
+                "total": 0,
+                "skipped": 1,
+                "critical": true,
+                "error": "Test file not found"
+              },
+              {
+                "name": "agent-management",
+                "passed": 0,
+                "failed": 0,
+                "total": 0,
+                "skipped": 1,
+                "critical": true,
+                "error": "Test file not found"
+              },
+              {
+                "name": "event-curation",
+                "passed": 0,
+                "failed": 0,
+                "total": 0,
+                "skipped": 1,
+                "critical": true,
+                "error": "Test file not found"
+              },
+              {
+                "name": "rbac-security",
+                "passed": 0,
+                "failed": 0,
+                "total": 0,
+                "skipped": 1,
+                "critical": true,
+                "error": "Test file not found"
+              },
+              {
+                "name": "recovery-protocols",
+                "passed": 1,
+                "failed": 0,
+                "total": 1,
+                "skipped": 0,
+                "critical": true,
+                "duration": 3538
+              },
+              {
+                "name": "api-endpoints",
+                "passed": 0,
+                "failed": 0,
+                "total": 0,
+                "skipped": 1,
+                "critical": false,
+                "error": "Test file not found"
+              },
+              {
+                "name": "ui-components",
+                "passed": 0,
+                "failed": 0,
+                "total": 0,
+                "skipped": 1,
+                "critical": false,
+                "error": "Test file not found"
+              }
+            ],
+            "recommendations": [],
+            "status": "PASS"
+          }
+        }
+      }
+    },
+    {
+      "name": "Security Checks",
+      "success": true,
+      "duration": 1002,
+      "startTime": 1759889891245,
+      "endTime": 1759889892247,
+      "result": {
+        "success": true,
+        "message": "Security checks passed",
+        "securityScore": 95,
+        "vulnerabilities": 0
+      }
+    },
+    {
+      "name": "Performance Tests",
+      "success": true,
+      "duration": 2001,
+      "startTime": 1759889892247,
+      "endTime": 1759889894248,
+      "result": {
+        "success": true,
+        "message": "Performance tests passed",
+        "responseTime": 150,
+        "throughput": 1000,
+        "memoryUsage": 85
+      }
+    }
+  ],
+  "recommendations": [
+    "Fix failed pipeline stages before deployment",
+    "  • Unit Tests: Unknown error"
+  ]
+}

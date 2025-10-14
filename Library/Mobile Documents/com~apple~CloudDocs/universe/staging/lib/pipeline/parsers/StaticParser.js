@@ -417,3 +417,4 @@ class StaticParser {
 }
 
 module.exports = StaticParser
+

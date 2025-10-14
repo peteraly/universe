@@ -194,3 +194,4 @@ const HealthReport = ({ healthData }) => {
 }
 
 export default HealthReport
+

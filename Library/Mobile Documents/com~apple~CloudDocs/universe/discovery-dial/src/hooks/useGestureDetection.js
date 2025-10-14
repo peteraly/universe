@@ -266,3 +266,4 @@ const useGestureDetection = () => {
 };
 
 export default useGestureDetection;
+

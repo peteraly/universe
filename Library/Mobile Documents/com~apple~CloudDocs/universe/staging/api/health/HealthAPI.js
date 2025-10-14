@@ -25,3 +25,4 @@ class HealthAPI {
 }
 
 module.exports = HealthAPI
+

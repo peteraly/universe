@@ -410,3 +410,4 @@ class RssParser {
 }
 
 module.exports = RssParser
+

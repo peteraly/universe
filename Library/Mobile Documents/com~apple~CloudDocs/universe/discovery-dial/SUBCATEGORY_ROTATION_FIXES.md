@@ -287,3 +287,4 @@ Previous issues (now resolved):
 
 **Subcategories now rotate smoothly in a continuous circle! 🎯**
 
+

@@ -259,3 +259,4 @@ const GlobalConfig = ({ userRole }) => {
 }
 
 export default GlobalConfig
+

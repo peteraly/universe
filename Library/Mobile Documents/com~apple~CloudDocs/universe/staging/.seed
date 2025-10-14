@@ -1,0 +1,12 @@
+{
+  "seeded": true,
+  "seededAt": "2025-10-08T02:25:54.897Z",
+  "seededBy": "cli",
+  "reason": "Manual seed via CLI",
+  "dataCounts": {
+    "events": 5,
+    "agents": 3,
+    "policies": 2,
+    "decisions": 1
+  }
+}

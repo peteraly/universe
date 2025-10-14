@@ -314,3 +314,4 @@ class VectorStore {
 }
 
 module.exports = VectorStore
+

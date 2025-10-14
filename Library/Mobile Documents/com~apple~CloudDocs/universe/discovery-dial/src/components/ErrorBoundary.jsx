@@ -157,3 +157,4 @@ export const FunctionalErrorBoundary = ({ children, fallback, onError }) => {
 };
 
 export default ErrorBoundary;
+

@@ -368,3 +368,4 @@ class SecureLedgerAccess {
 }
 
 module.exports = SecureLedgerAccess
+

@@ -266,3 +266,4 @@ const AlgorithmicPreview = ({ event, onEventUpdate, userRole }) => {
 }
 
 export default AlgorithmicPreview
+

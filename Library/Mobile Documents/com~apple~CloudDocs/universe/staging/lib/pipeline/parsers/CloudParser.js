@@ -596,3 +596,4 @@ class CloudParser {
 }
 
 module.exports = CloudParser
+

@@ -369,3 +369,4 @@ class PuppeteerParser {
 }
 
 module.exports = PuppeteerParser
+

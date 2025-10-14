@@ -176,3 +176,4 @@ const EmergencyFixIntelligence = ({ intelligenceData = {} }) => {
 }
 
 export default EmergencyFixIntelligence
+
