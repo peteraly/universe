@@ -25,11 +25,18 @@
   font-kerning: normal;
 }
 
+/* Complete screen lock - prevent all scrolling */
 html {
   width: 100%;
   max-width: 100vw;
-  overflow-x: hidden;
-  position: relative;
+  overflow: hidden;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
 }
 
 html,
@@ -39,6 +46,8 @@ body,
   height: 100%;
   margin: 0;
   padding: 0;
+  overflow: hidden;
+  overscroll-behavior: none;
 }
 
 body {
@@ -48,13 +57,19 @@ body {
   background-color: #000000 !important;
   color: #ffffff;
   overflow: hidden;
-  overflow-x: hidden;
+  overscroll-behavior: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
   /* Mobile Safari safe area insets */
   padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
   /* Prevent iOS bounce/overscroll */
   overscroll-behavior: none;
   /* Disable pull-to-refresh on mobile */
-  touch-action: pan-x pan-y;
+  touch-action: none;
+  -webkit-overflow-scrolling: touch;
 }
 
 #root {
@@ -63,7 +78,13 @@ body {
   height: 100vh;
   background-color: #000000 !important;
   color: #ffffff;
-  overflow-x: hidden;
+  overflow: hidden;
+  overscroll-behavior: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 }
 
 * {
@@ -112,14 +133,21 @@ body {
   pointer-events: auto;
 }
 
-/* Scrollable content areas (outside dial) */
+/* Event area - no scrolling for complete screen lock */
 .scrollable-content, .main-content, .event-area {
-  touch-action: pan-y; /* Allow only vertical scrolling */
+  touch-action: none; /* Prevent all scrolling for complete screen lock */
 }
 
-/* Prevent any touch interference on parent containers */
+/* Lock main app container completely */
 .app-container, .main-app, .App {
-  touch-action: auto; /* Let child elements control their own touch behavior */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  overscroll-behavior: none;
+  touch-action: none; /* Prevent all touch-based scrolling */
 }
 
 /* Ensure transforms are used for animations, never layout properties */
@@ -160,4 +188,118 @@ body {
 *:focus-visible {
   outline: 2px solid #ffffff;
   outline-offset: 2px;
+}
+
+/* Primary category visual indicators */
+.primary-category-selected {
+  background-color: rgba(255, 255, 255, 0.2);
+  border: 2px solid #ffffff;
+  font-weight: bold;
+  transform: scale(1.1);
+  transition: all 0.3s ease;
+}
+
+/* North position special styling */
+.primary-category-north {
+  background-color: rgba(0, 255, 0, 0.3);
+  border: 3px solid #00ff00;
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+  color: #00ff00;
+}
+
+/* Compass direction labels */
+.compass-label {
+  position: absolute;
+  font-weight: bold;
+  font-size: 1.2em;
+  color: #ffffff;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+  z-index: 20;
+}
+
+.compass-label-north {
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #00ff00; /* Green for North */
+  font-size: 1.4em;
+  font-weight: 900;
+}
+
+.compass-label-east {
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #ffffff;
+}
+
+.compass-label-south {
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #ffffff;
+}
+
+.compass-label-west {
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #ffffff;
+}
+
+/* Subcategory visual indicators */
+.subcategory-selected {
+  background-color: rgba(255, 255, 255, 0.3);
+  border: 2px solid #ffffff;
+  font-weight: bold;
+  transform: scale(1.05);
+  transition: all 0.3s ease;
+}
+
+/* Active subcategory indicator */
+.subcategory-active-indicator {
+  position: absolute;
+  top: -10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 8px;
+  background-color: #00ff00;
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(0, 255, 0, 0.8);
+  z-index: 15;
+}
+
+/* Compass crosshairs for orientation */
+.compass-crosshairs {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.compass-crosshairs::before,
+.compass-crosshairs::after {
+  content: '';
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.3);
+}
+
+.compass-crosshairs::before {
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 1px;
+  transform: translateY(-50%);
+}
+
+.compass-crosshairs::after {
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  transform: translateX(-50%);
 }

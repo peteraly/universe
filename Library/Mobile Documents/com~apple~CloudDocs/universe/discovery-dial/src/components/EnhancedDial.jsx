@@ -398,14 +398,26 @@ const EnhancedDial = ({
           )}
         </div>
 
+        {/* Compass crosshairs for orientation */}
+        <div className="compass-crosshairs" />
+
+        {/* Compass direction labels */}
+        <div className="compass-label compass-label-north">N</div>
+        <div className="compass-label compass-label-east">E</div>
+        <div className="compass-label compass-label-south">S</div>
+        <div className="compass-label compass-label-west">W</div>
+
         {/* FIXED: Primary categories permanently anchored at cardinal points */}
         <div className="primary-categories-perimeter">
           {getFixedCategoryPositions().map((category, index) => {
             const pos = getPrimaryCategoryPosition(category.position);
+            const isNorth = index === 0; // North is first category (Social)
             return (
               <div 
                 key={category.key}
-                className={`primary-category-perimeter ${category.isActive ? 'active' : 'faded'} touch-target no-select`}
+                className={`primary-category-perimeter ${category.isActive ? 'active primary-category-selected' : 'faded'} touch-target no-select ${
+                  category.isActive && isNorth ? 'primary-category-north' : ''
+                }`}
                 style={{
                   left: `calc(50% + ${pos.x}px)`,
                   top: `calc(50% + ${pos.y}px)`,
@@ -432,7 +444,9 @@ const EnhancedDial = ({
             return (
               <motion.div 
                 key={`subcategory-${sub}`}
-                className="subcategory-item-perimeter touch-target no-select hardware-accelerated"
+                className={`subcategory-item-perimeter touch-target no-select hardware-accelerated ${
+                  index === currentSubIndex ? 'subcategory-selected' : ''
+                }`}
                 style={{
                   left: `calc(50% + ${pos.x}px)`,
                   top: `calc(50% + ${pos.y}px)`,
@@ -460,6 +474,10 @@ const EnhancedDial = ({
                 transition={{ type: 'spring', stiffness: 400, damping: 17 }}
               >
                 {sub}
+                {/* Active subcategory indicator */}
+                {index === currentSubIndex && (
+                  <div className="subcategory-active-indicator" />
+                )}
               </motion.div>
             );
           })}
@@ -477,7 +495,7 @@ const EnhancedDial = ({
         ref={eventAreaRef}
         className="absolute inset-x-0 bottom-20 h-32 event-area"
         style={{
-          touchAction: 'pan-y' // Allow only vertical scrolling in event area
+          touchAction: 'none' // Prevent all scrolling for complete screen lock
         }}
         onTouchStart={onTouchStart}
         onTouchMove={onTouchMove}

@@ -25,12 +25,19 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Prevent text selection during gestures */
+/* Prevent text selection during gestures and lock screen */
 .App {
   user-select: none;
   -webkit-user-select: none;
   -webkit-touch-callout: none;
-  touch-action: auto; /* Let child elements control their own touch behavior */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  overscroll-behavior: none;
+  touch-action: none; /* Prevent all touch-based scrolling */
 }
 
 /* Ensure full height */
