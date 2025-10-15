@@ -41,21 +41,17 @@ export default function EventCompassFinal({
   // DATE RANGE STATE (NEW - ADDITIVE)
   const [dateRange, setDateRange] = useState('TODAY');
   
-  // Debug date range changes
-  useEffect(() => {
-    console.log('🚨 EventCompassFinal: Date range changed to:', dateRange);
-  }, [dateRange]);
 
   // Enhanced date range change handler
   const handleDateRangeChange = useCallback((newRange) => {
-    console.log('🚨 EventCompassFinal: Date range changing to:', newRange);
     setDateRange(newRange);
-  }, []);
+    
+    // Notify parent component if callback provided
+    if (onTimeframeChange) {
+      onTimeframeChange(newRange);
+    }
+  }, [onTimeframeChange]);
 
-  // Timeframe context for debugging
-  useEffect(() => {
-    console.log('🚨 EventCompassFinal: Current timeframe context:', dateRange);
-  }, [dateRange]);
   
   // Calculate responsive dial size (handles resize AND orientation change)
   useEffect(() => {
@@ -514,40 +510,7 @@ export default function EventCompassFinal({
         onRangeChange={handleDateRangeChange}
       />
       
-      {/* DEBUG: Fallback button to test rendering */}
-      <div style={{
-        position: 'fixed',
-        top: '100px',
-        right: '20px',
-        background: 'lime',
-        color: 'black',
-        padding: '10px',
-        borderRadius: '5px',
-        zIndex: 9999,
-        fontSize: '12px'
-      }}>
-        DEBUG: Button should be below
-      </div>
 
-      {/* TIMEFRAME INDICATOR - Enhanced Debug Display */}
-      <div style={{
-        position: 'fixed',
-        top: '20px',
-        left: '50%',
-        transform: 'translateX(-50%)',
-        background: 'rgba(0, 0, 0, 0.9)',
-        color: 'white',
-        padding: '10px 20px',
-        borderRadius: '25px',
-        fontSize: '16px',
-        fontWeight: 'bold',
-        zIndex: 50,
-        pointerEvents: 'none',
-        border: '2px solid #007bff',
-        boxShadow: '0 4px 12px rgba(0,0,0,0.3)'
-      }}>
-        📅 Current Timeframe: {dateRange}
-      </div>
 
       {/* EVENT READOUT (with slide transition) */}
       <AnimatePresence mode="wait">
