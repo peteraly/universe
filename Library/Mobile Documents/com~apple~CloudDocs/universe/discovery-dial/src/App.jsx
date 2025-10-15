@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import EventCompassFinal from './components/EventCompassFinal';
 import ErrorBoundary from './components/ErrorBoundary';
+import AddButton from './components/AddButton';
 import categoriesData from './data/categories.json';
 import useScrollPrevention from './hooks/useScrollPrevention';
 import useTextSelectionPrevention from './hooks/useTextSelectionPrevention';
@@ -494,6 +495,13 @@ function App() {
     runFunctionalityVerification();
   }, []);
 
+  // Handle add button click
+  const handleAddClick = useCallback((e) => {
+    console.log('Add button clicked');
+    // Add your add functionality here
+    // For now, just log the click
+  }, []);
+
   return (
     <ErrorBoundary name="App">
       <EventCompassFinal
@@ -506,6 +514,7 @@ function App() {
         currentTimeframe={currentTimeframe}
         onTimeframeChange={handleTimeframeChange}
       />
+      <AddButton onClick={handleAddClick} />
     </ErrorBoundary>
   );
 }

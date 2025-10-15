@@ -423,20 +423,25 @@ export default function EventCompassFinal({
           const viewportHeight = window.innerHeight;
           const isMobile = viewportWidth <= 768;
           
-          // Use much smaller radius on mobile to keep labels visible
-          const baseRadius = isMobile ? 0.35 : 0.50; // 35% on mobile, 50% on desktop (reduced from 58%)
-          const radius = dialSize * baseRadius;
+          // Dynamic radius calculation based on text length
+          const maxTextLength = Math.max(...subcategories.map(sub => sub.label.length));
+          const textLengthMultiplier = Math.max(1, maxTextLength / 12); // Adjust based on text length
+          const baseRadius = isMobile ? 0.30 : 0.45; // Reduced base radius for better visibility
+          const adjustedRadius = baseRadius * textLengthMultiplier;
+          const radius = dialSize * Math.min(adjustedRadius, 0.7); // Cap at 70% to prevent overflow
           
           const centerX = dialSize / 2;
           const centerY = dialSize / 2;
           const pos = polarToCartesian(centerX, centerY, radius, angle);
           
-          // BOUNDS CHECKING: Ensure labels stay within viewport
-          const labelWidth = sub.label.length * 8 + 20; // Dynamic width based on text length
-          const labelHeight = 20; // Approximate label height
-          const margin = isMobile ? 50 : 40; // Larger margin on mobile
+          // ENHANCED BOUNDS CHECKING: Ensure labels stay within viewport
+          const fontSize = isMobile ? 14 : 16;
+          const charWidth = fontSize * 0.6; // Approximate character width
+          const labelWidth = sub.label.length * charWidth + 24; // Dynamic width with padding
+          const labelHeight = fontSize + 12; // Dynamic height with padding
+          const margin = isMobile ? 60 : 50; // Increased margin for better visibility
           
-          // Calculate bounds with padding
+          // Calculate bounds with generous padding
           const minX = margin + labelWidth/2;
           const maxX = viewportWidth - margin - labelWidth/2;
           const minY = margin + labelHeight/2;
@@ -448,9 +453,9 @@ export default function EventCompassFinal({
             y: Math.max(minY, Math.min(maxY, pos.y))
           };
           
-          // If position was adjusted, reduce opacity to indicate it's constrained
+          // If position was adjusted, reduce opacity slightly to indicate it's constrained
           const wasAdjusted = (adjustedPos.x !== pos.x) || (adjustedPos.y !== pos.y);
-          const constraintOpacity = wasAdjusted ? 0.7 : 1;
+          const constraintOpacity = wasAdjusted ? 0.85 : 1; // Less aggressive opacity reduction
           
           const isActive = i === state.subIndex;
           const isHovered = hoverSubIndex !== null && i === hoverSubIndex;

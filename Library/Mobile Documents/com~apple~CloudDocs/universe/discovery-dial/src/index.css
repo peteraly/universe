@@ -806,12 +806,26 @@ button, input, select, textarea, a {
   word-wrap: break-word;
 }
 
-/* Subcategory labels with responsive sizing */
+/* Enhanced subcategory labels with better visibility */
 .subcategory-label {
-  font-size: clamp(0.6rem, 1.5vw, 0.9rem);
-  max-width: 80%;
+  font-size: clamp(0.7rem, 2vw, 1rem);
+  max-width: 90%;
   text-align: center;
   word-wrap: break-word;
+  /* Enhanced visibility */
+  background-color: rgba(0, 0, 0, 0.8);
+  color: #ffffff;
+  padding: 4px 8px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  /* Prevent text overflow */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  /* Ensure visibility */
+  z-index: 100;
+  pointer-events: none;
 }
 
 /* Complete text selection prevention for all elements */
@@ -1191,10 +1205,13 @@ a::-webkit-scrollbar {
     max-width: 85% !important;
   }
   
-  /* Mobile subcategory labels */
+  /* Enhanced mobile subcategory labels */
   .subcategory-label {
-    font-size: 0.7rem !important;
-    max-width: 85% !important;
+    font-size: clamp(0.6rem, 3vw, 0.8rem) !important;
+    max-width: 90% !important;
+    padding: 3px 6px !important;
+    background-color: rgba(0, 0, 0, 0.9) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
   }
   
   /* Mobile touch action prevention */
@@ -1269,6 +1286,28 @@ a::-webkit-scrollbar {
     color: white !important;
     /* Add shadow for better visibility */
     box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4) !important;
+  }
+  
+  /* Mobile AddButton positioning */
+  .add-button {
+    position: fixed !important;
+    bottom: 20px !important;
+    right: 20px !important;
+    width: 56px !important;
+    height: 56px !important;
+    z-index: 1000 !important;
+    /* Ensure button is always visible */
+    display: flex !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    /* Mobile touch optimization */
+    min-width: 44px !important;
+    min-height: 44px !important;
+    touch-action: manipulation !important;
+    -webkit-tap-highlight-color: transparent !important;
+    -webkit-touch-callout: none !important;
+    -webkit-user-select: none !important;
+    user-select: none !important;
   }
   
   /* Mobile viewport optimization */
