@@ -46,6 +46,12 @@ html {
   /* Enhanced scroll prevention */
   scrollbar-width: none !important;
   -ms-overflow-style: none !important;
+  /* Mobile Safari specific fixes */
+  -webkit-text-size-adjust: 100% !important;
+  -ms-text-size-adjust: 100% !important;
+  -webkit-transform: translateZ(0) !important;
+  backface-visibility: hidden !important;
+  perspective: 1000px !important;
 }
 
 html::-webkit-scrollbar {
