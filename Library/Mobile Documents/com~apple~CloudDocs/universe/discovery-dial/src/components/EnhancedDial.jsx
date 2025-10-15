@@ -2,6 +2,7 @@ import { useState, useCallback, useRef, useEffect, memo } from 'react';
 import { motion, useMotionValue, useTransform } from 'framer-motion';
 import useGestureDetection from '../hooks/useGestureDetection';
 import useDirectionalSwipeDetection from '../hooks/useDirectionalSwipeDetection';
+import { useEnhancedGestureDetection, detectPrimaryCategorySwipe, detectSubcategoryRotation, isInDialArea, triggerHapticFeedback } from '../utils/enhancedGestureDetection';
 import useResponsiveDesign from '../hooks/useResponsiveDesign';
 import { safeGetElement, isWindowAvailable, safeAddEventListener, safeRemoveEventListener } from '../utils/safeDOM';
 import { CATEGORIES, CATEGORY_ORDER, CATEGORY_ICONS } from '../data/categories';
@@ -77,7 +78,15 @@ const EnhancedDial = ({
     return requiredSpace > 100; // Show text only if enough space
   }, []);
 
-  // Gesture detection hook
+  // Enhanced gesture detection hook
+  const {
+    gestureState: enhancedGestureState,
+    handleTouchStart: enhancedTouchStart,
+    handleTouchMove: enhancedTouchMove,
+    handleTouchEnd: enhancedTouchEnd
+  } = useEnhancedGestureDetection();
+
+  // Original gesture detection hook (for compatibility)
   const {
     gestureState,
     triggerHaptic,
@@ -224,7 +233,35 @@ const EnhancedDial = ({
     triggerHaptic('light');
   }, [onEventChange, triggerHaptic]);
 
-  // Gesture detection callback
+  // Enhanced gesture detection callback
+  const onEnhancedGestureDetected = useCallback((gesture) => {
+    console.log('🎯 Enhanced gesture detected:', gesture);
+    
+    switch (gesture.type) {
+      case 'PRIMARY_CATEGORY_SWIPE':
+        if (gesture.direction === 'up') {
+          handlePreviousCategory();
+          triggerHapticFeedback('medium');
+        } else if (gesture.direction === 'down') {
+          handleNextCategory();
+          triggerHapticFeedback('medium');
+        }
+        break;
+      case 'SUBCATEGORY_ROTATION':
+        if (gesture.direction === 'clockwise') {
+          handleNextSubcategory();
+          triggerHapticFeedback('light');
+        } else if (gesture.direction === 'counterclockwise') {
+          handlePreviousSubcategory();
+          triggerHapticFeedback('light');
+        }
+        break;
+      default:
+        console.log('Unknown enhanced gesture type:', gesture.type);
+    }
+  }, [handlePreviousCategory, handleNextCategory, handleNextSubcategory, handlePreviousSubcategory]);
+
+  // Gesture detection callback (original)
   const onGestureDetected = useCallback((gesture) => {
     switch (gesture.type) {
       case 'DIAL_VERTICAL_SWIPE':
@@ -290,7 +327,7 @@ const EnhancedDial = ({
     }
   }, [handlePrimaryCategoryChange, handleSubcategoryChange, handleEventChange]);
 
-  // Touch event handlers with proper event prevention and position locking
+  // Touch event handlers with enhanced gesture detection
   const onTouchStart = useCallback((e) => {
     // Prevent default browser behaviors that interfere with dial gestures
     e.preventDefault();
@@ -301,15 +338,19 @@ const EnhancedDial = ({
     setPositionLocked(false);
     clearPositionTimeouts();
     
-    const dialBounds = getDialBounds();
-    const eventBounds = getEventAreaBounds();
-    const dialCenter = dialBounds ? { x: dialBounds.centerX, y: dialBounds.centerY } : null;
-    
     // Mobile-specific optimizations
     if (e.touches.length === 1) {
+      // Use enhanced gesture detection
+      enhancedTouchStart(e);
+      
+      // Also use original for compatibility
+      const dialBounds = getDialBounds();
+      const eventBounds = getEventAreaBounds();
+      const dialCenter = dialBounds ? { x: dialBounds.centerX, y: dialBounds.centerY } : null;
+      
       handleTouchStart(e, dialBounds, eventBounds, dialCenter);
     }
-  }, [handleTouchStart, getDialBounds, getEventAreaBounds, clearPositionTimeouts]);
+  }, [enhancedTouchStart, handleTouchStart, getDialBounds, getEventAreaBounds, clearPositionTimeouts]);
 
   const onTouchMove = useCallback((e) => {
     // Prevent default browser behaviors that interfere with dial gestures
@@ -319,13 +360,18 @@ const EnhancedDial = ({
     
     // Mobile-specific optimizations
     if (e.touches.length === 1) {
+      // Use enhanced gesture detection
       const dialBounds = getDialBounds();
-      const eventBounds = getEventAreaBounds();
+      const subcategoryBounds = getDialBounds(); // Use same bounds for now
       const dialCenter = dialBounds ? { x: dialBounds.centerX, y: dialBounds.centerY } : null;
       
+      enhancedTouchMove(e, dialBounds, subcategoryBounds, dialCenter, onEnhancedGestureDetected);
+      
+      // Also use original for compatibility
+      const eventBounds = getEventAreaBounds();
       handleTouchMove(e, dialBounds, eventBounds, dialCenter, onGestureDetected);
     }
-  }, [handleTouchMove, getDialBounds, getEventAreaBounds, onGestureDetected]);
+  }, [enhancedTouchMove, handleTouchMove, getDialBounds, getEventAreaBounds, onEnhancedGestureDetected, onGestureDetected]);
 
   const onTouchEnd = useCallback((e) => {
     // Prevent default browser behaviors that interfere with dial gestures
@@ -343,9 +389,13 @@ const EnhancedDial = ({
     
     // Mobile-specific optimizations
     if (e.changedTouches.length === 1) {
+      // Use enhanced gesture detection
+      enhancedTouchEnd(e);
+      
+      // Also use original for compatibility
       handleTouchEnd(e, onGestureComplete);
     }
-  }, [handleTouchEnd, onGestureComplete, rotate, clearPositionTimeouts]);
+  }, [enhancedTouchEnd, handleTouchEnd, onGestureComplete, rotate, clearPositionTimeouts]);
 
   // Keyboard event listener
   useEffect(() => {

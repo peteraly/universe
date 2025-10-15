@@ -6,7 +6,7 @@ import EventInformationDisplay from './components/EventInformationDisplay';
 import ErrorBoundary from './components/ErrorBoundary';
 import categoriesData from './data/categories.json';
 import { MOCK_EVENTS } from './data/mockEvents';
-// import { ENHANCED_SAMPLE_EVENTS } from './data/enhancedSampleEvents';
+import { ENHANCED_SAMPLE_EVENTS } from './data/enhancedSampleEvents';
 import useScrollPrevention from './hooks/useScrollPrevention';
 import useTextSelectionPrevention from './hooks/useTextSelectionPrevention';
 import useSafariScrollPrevention from './hooks/useSafariScrollPrevention';
@@ -43,7 +43,7 @@ function App() {
   // Unified state management for map background integration
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedSubcategory, setSelectedSubcategory] = useState(null);
-  const [filteredEvents, setFilteredEvents] = useState(MOCK_EVENTS);
+  const [filteredEvents, setFilteredEvents] = useState(ENHANCED_SAMPLE_EVENTS);
   const [activeFilters, setActiveFilters] = useState({
     time: 'All',
     day: 'All',
@@ -510,7 +510,7 @@ function App() {
          // Update filtered events when selections change
          useEffect(() => {
            const filtered = filterEventsByDialSelection(
-             MOCK_EVENTS, 
+             ENHANCED_SAMPLE_EVENTS, 
              selectedCategory, 
              selectedSubcategory, 
              activeFilters

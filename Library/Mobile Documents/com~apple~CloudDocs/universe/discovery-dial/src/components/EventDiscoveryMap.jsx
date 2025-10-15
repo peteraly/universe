@@ -1,64 +1,88 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useEffect, useState, useCallback } from 'react';
 import mapboxgl from 'mapbox-gl';
-import { getCategoryColor } from '../data/mockEvents';
+
+// Mapbox token - replace with your actual token
+const MAPBOX_TOKEN = 'pk.eyJ1IjoiaHl5cGVyIiwiYSI6ImNsd2V6d2V6d2V6d2V6In0.example';
+
+// Set Mapbox token
+mapboxgl.accessToken = MAPBOX_TOKEN;
 
 const EventDiscoveryMap = ({ 
-  events, 
+  events = [], 
   selectedCategory, 
   selectedSubcategory, 
   onEventSelect 
 }) => {
   const mapContainer = useRef(null);
   const map = useRef(null);
-  const markers = useRef([]);
   const [mapLoaded, setMapLoaded] = useState(false);
+  const [pins, setPins] = useState([]);
 
-  // Set Mapbox access token
-  mapboxgl.accessToken = 'pk.eyJ1IjoicGV0ZXJhbHkiLCJhIjoiY21lNXpuNDhwMTBqZTJwb2RicWw5YWcxaSJ9.IiIfhu1oA2ua_oUDcjlIbQ';
+  // Create map pins from events
+  const createMapPins = useCallback((events) => {
+    return events.map(event => ({
+      id: event.id,
+      position: [event.longitude, event.latitude],
+      popup: {
+        title: event.name,
+        description: event.description,
+        venue: event.venue,
+        time: event.time,
+        day: event.day,
+        price: event.price,
+        attendees: event.attendees
+      },
+      category: event.categoryPrimary,
+      subcategory: event.categorySecondary,
+      time: event.time,
+      day: event.day,
+      color: getCategoryColor(event.categoryPrimary),
+      size: getEventSize(event.attendees),
+      visible: true,
+      event: event
+    }));
+  }, []);
 
+  // Get category color
+  const getCategoryColor = (category) => {
+    const colors = {
+      'Music': '#e63946',
+      'Food': '#f77f00',
+      'Sports': '#2a9d8f',
+      'Art': '#7209b7',
+      'Tech': '#3a86ff',
+      'Outdoor': '#06d6a0',
+      'Nightlife': '#f72585',
+      'Family': '#ffbe0b'
+    };
+    return colors[category] || '#6c757d';
+  };
+
+  // Get event size based on attendees
+  const getEventSize = (attendees) => {
+    const count = parseInt(attendees.replace(/\D/g, ''));
+    if (count > 1000) return 'large';
+    if (count > 100) return 'medium';
+    return 'small';
+  };
+
+  // Initialize map
   useEffect(() => {
-    if (map.current) return; // Initialize map only once
+    if (!mapContainer.current || map.current) return;
 
-    try {
-      map.current = new mapboxgl.Map({
-        container: mapContainer.current,
-        style: 'mapbox://styles/mapbox/dark-v11', // Dark theme to match app
-        center: [-74.0060, 40.7128], // Default center (NYC)
-        zoom: 12,
-        attributionControl: false, // Hide attribution for cleaner look
-        // Mobile optimizations
-        touchZoomRotate: true,
-        dragPan: true,
-        scrollZoom: true,
-        boxZoom: false,
-        doubleClickZoom: true,
-        keyboard: false, // Disable keyboard controls on mobile
-        maxZoom: 18,
-        minZoom: 10
-      });
+    map.current = new mapboxgl.Map({
+      container: mapContainer.current,
+      style: 'mapbox://styles/mapbox/streets-v11',
+      center: [-122.4194, 37.7749], // San Francisco
+      zoom: 12,
+      attributionControl: false
+    });
 
-      // Add navigation controls
-      map.current.addControl(new mapboxgl.NavigationControl(), 'top-right');
+    map.current.on('load', () => {
+      setMapLoaded(true);
+      console.log('🗺️ Map loaded successfully');
+    });
 
-      // Add fullscreen control
-      map.current.addControl(new mapboxgl.FullscreenControl(), 'top-right');
-
-      // Wait for map to load
-      map.current.on('load', () => {
-        setMapLoaded(true);
-        console.log('🗺️ Mapbox map loaded successfully');
-      });
-
-      // Handle map errors
-      map.current.on('error', (e) => {
-        console.error('🗺️ Mapbox error:', e);
-      });
-
-    } catch (error) {
-      console.error('🗺️ Failed to initialize Mapbox:', error);
-    }
-
-    // Cleanup function
     return () => {
       if (map.current) {
         map.current.remove();
@@ -67,79 +91,89 @@ const EventDiscoveryMap = ({
     };
   }, []);
 
-  // Update markers when events change
+  // Update pins when events change
   useEffect(() => {
-    if (!map.current || !mapLoaded) return;
+    if (!map.current || !mapLoaded || !events.length) return;
 
-    try {
-      // Clear existing markers
-      markers.current.forEach(marker => marker.remove());
-      markers.current = [];
+    console.log('📍 Updating map pins:', events.length, 'events');
 
-      // Add new markers with enhanced styling
-      events.forEach(event => {
-        const isSelected = selectedCategory && 
-          event.categoryPrimary === selectedCategory.name;
-        
-        const marker = new mapboxgl.Marker({
-          color: getCategoryColor(event.categoryPrimary),
-          scale: isSelected ? 1.5 : (window.innerWidth <= 768 ? 1.0 : 1.2), // Larger for selected
-          opacity: isSelected ? 1.0 : 0.7 // More opaque for selected
+    // Clear existing markers
+    const existingMarkers = document.querySelectorAll('.mapboxgl-marker');
+    existingMarkers.forEach(marker => marker.remove());
+
+    // Create new pins
+    const newPins = createMapPins(events);
+    setPins(newPins);
+
+    // Add markers to map
+    newPins.forEach(pin => {
+      if (pin.visible) {
+        const marker = new mapboxgl.Marker({ 
+          color: pin.color,
+          scale: pin.size === 'large' ? 1.2 : pin.size === 'medium' ? 1.0 : 0.8
         })
-        .setLngLat(event.coordinates)
-        .setPopup(
-          new mapboxgl.Popup({ 
-            offset: 25,
-            className: 'event-popup'
-          })
-          .setHTML(`
-            <div class="event-popup-content">
-              <h3 class="event-popup-title">${event.name}</h3>
-              <p class="event-popup-category">${event.categoryPrimary} • ${event.time}</p>
-              <p class="event-popup-venue">📍 ${event.venue}</p>
-              <p class="event-popup-price">💰 ${event.price}</p>
-              <p class="event-popup-attendees">👥 ${event.attendees} attending</p>
+          .setLngLat(pin.position)
+          .setPopup(new mapboxgl.Popup().setHTML(`
+            <div class="event-popup">
+              <h3>${pin.popup.title}</h3>
+              <p>${pin.popup.description}</p>
+              <p><strong>Venue:</strong> ${pin.popup.venue}</p>
+              <p><strong>Time:</strong> ${pin.popup.time} on ${pin.popup.day}</p>
+              <p><strong>Price:</strong> ${pin.popup.price}</p>
+              <p><strong>Attendees:</strong> ${pin.popup.attendees}</p>
             </div>
-          `)
-        )
-        .addTo(map.current);
+          `))
+          .addTo(map.current);
 
-        // Add click handler to marker
+        // Add click handler
         marker.getElement().addEventListener('click', () => {
-          if (onEventSelect) {
-            onEventSelect(event);
-          }
-        });
-
-        markers.current.push(marker);
-      });
-
-      // Fit map to show all markers if there are events
-      if (events.length > 0) {
-        const bounds = new mapboxgl.LngLatBounds();
-        events.forEach(event => bounds.extend(event.coordinates));
-        
-        // Add more padding for dial overlay
-        map.current.fitBounds(bounds, { 
-          padding: 150, // More padding for dial overlay
-          maxZoom: 13, // Don't zoom in too much
-          duration: 1000
+          console.log('🎯 Event selected:', pin.event);
+          onEventSelect?.(pin.event);
         });
       }
+    });
 
-      console.log(`🗺️ Updated map with ${events.length} event markers`);
+    console.log('📍 Map pins updated:', newPins.length, 'visible pins');
+  }, [mapLoaded, events, createMapPins, onEventSelect]);
 
-    } catch (error) {
-      console.error('🗺️ Error updating map markers:', error);
-    }
-  }, [events, selectedCategory, selectedSubcategory, mapLoaded, onEventSelect]);
+  // Filter pins based on selections
+  useEffect(() => {
+    if (!pins.length) return;
+
+    const filteredPins = pins.map(pin => {
+      let visible = true;
+
+      // Filter by selected category
+      if (selectedCategory && pin.category !== selectedCategory.name) {
+        visible = false;
+      }
+
+      // Filter by selected subcategory
+      if (selectedSubcategory && pin.subcategory !== selectedSubcategory.label) {
+        visible = false;
+      }
+
+      return { ...pin, visible };
+    });
+
+    // Update marker visibility
+    const markers = document.querySelectorAll('.mapboxgl-marker');
+    markers.forEach((marker, index) => {
+      const pin = filteredPins[index];
+      if (pin) {
+        marker.style.display = pin.visible ? 'block' : 'none';
+      }
+    });
+
+    console.log('🔍 Pins filtered:', filteredPins.filter(p => p.visible).length, 'visible');
+  }, [pins, selectedCategory, selectedSubcategory]);
 
   return (
-    <div className="map-background-container">
+    <div className="event-discovery-map">
       <div ref={mapContainer} className="map-container" />
       {!mapLoaded && (
         <div className="map-loading">
-          <div className="loading-spinner"></div>
+          <div className="loading-spinner" />
           <p>Loading map...</p>
         </div>
       )}
