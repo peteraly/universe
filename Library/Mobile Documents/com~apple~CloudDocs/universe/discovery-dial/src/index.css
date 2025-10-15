@@ -806,10 +806,10 @@ button, input, select, textarea, a {
   word-wrap: break-word;
 }
 
-/* Enhanced subcategory labels with better visibility */
+/* Enhanced subcategory labels with extended visibility */
 .subcategory-label {
   font-size: clamp(0.7rem, 2vw, 1rem);
-  max-width: 90%;
+  max-width: 95%; /* Increased from 90% to allow more text extension */
   text-align: center;
   word-wrap: break-word;
   /* Enhanced visibility */
@@ -819,13 +819,15 @@ button, input, select, textarea, a {
   border-radius: 4px;
   border: 1px solid rgba(255, 255, 255, 0.2);
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
-  /* Prevent text overflow */
-  overflow: hidden;
-  text-overflow: ellipsis;
+  /* Allow text to extend further */
+  overflow: visible; /* Changed from hidden to visible */
+  text-overflow: clip; /* Changed from ellipsis to clip */
   white-space: nowrap;
   /* Ensure visibility */
   z-index: 100;
   pointer-events: none;
+  /* Allow positioning beyond normal bounds */
+  position: absolute;
 }
 
 /* Complete text selection prevention for all elements */
@@ -1226,33 +1228,36 @@ a::-webkit-scrollbar {
 /* Mobile landscape orientation */
 /* Mobile UI Visibility Fixes */
 @media screen and (max-width: 768px) {
-  /* Fix subcategory dial positioning */
+  /* Extended subcategory dial positioning - allow text to extend beyond dial */
   .subcategory-dial {
     position: relative !important;
     max-width: 100vw !important;
     max-height: 100vh !important;
     overflow: visible !important;
+    /* Allow dial to extend beyond normal bounds */
+    width: 100vw !important;
+    height: 100vh !important;
   }
   
   .subcategory-items {
     position: absolute !important;
     transform: translate(-50%, -50%) !important;
-    /* Ensure items are within screen bounds */
-    left: clamp(10%, 50%, 90%) !important;
-    top: clamp(10%, 50%, 90%) !important;
+    /* Allow items to extend further to the edges */
+    left: clamp(5%, 50%, 95%) !important;
+    top: clamp(5%, 50%, 95%) !important;
   }
   
-  /* Ensure subcategory labels stay within viewport bounds */
+  /* Extended subcategory labels - allow full viewport usage */
   [data-dial-root] > div {
-    max-width: calc(100vw - 40px) !important;
-    max-height: calc(100vh - 40px) !important;
+    max-width: 100vw !important;
+    max-height: 100vh !important;
     overflow: visible !important;
   }
   
-  /* Subcategory label positioning constraints */
+  /* Extended subcategory label positioning - minimal constraints */
   [data-dial-root] > div[style*="position: absolute"] {
-    left: clamp(20px, var(--label-x, 50%), calc(100vw - 20px)) !important;
-    top: clamp(20px, var(--label-y, 50%), calc(100vh - 20px)) !important;
+    left: clamp(10px, var(--label-x, 50%), calc(100vw - 10px)) !important;
+    top: clamp(10px, var(--label-y, 50%), calc(100vh - 10px)) !important;
   }
   
   /* Fix day toggle button visibility - position below time selector */

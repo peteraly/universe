@@ -423,25 +423,25 @@ export default function EventCompassFinal({
           const viewportHeight = window.innerHeight;
           const isMobile = viewportWidth <= 768;
           
-          // Dynamic radius calculation based on text length
+          // Dynamic radius calculation based on text length - allow more extension
           const maxTextLength = Math.max(...subcategories.map(sub => sub.label.length));
-          const textLengthMultiplier = Math.max(1, maxTextLength / 12); // Adjust based on text length
-          const baseRadius = isMobile ? 0.30 : 0.45; // Reduced base radius for better visibility
+          const textLengthMultiplier = Math.max(1, maxTextLength / 10); // More aggressive multiplier
+          const baseRadius = isMobile ? 0.35 : 0.50; // Increased base radius for more space
           const adjustedRadius = baseRadius * textLengthMultiplier;
-          const radius = dialSize * Math.min(adjustedRadius, 0.7); // Cap at 70% to prevent overflow
+          const radius = dialSize * Math.min(adjustedRadius, 0.8); // Increased cap to 80% for more extension
           
           const centerX = dialSize / 2;
           const centerY = dialSize / 2;
           const pos = polarToCartesian(centerX, centerY, radius, angle);
           
-          // ENHANCED BOUNDS CHECKING: Ensure labels stay within viewport
+          // EXTENDED BOUNDS CHECKING: Allow text to extend beyond dial for full visibility
           const fontSize = isMobile ? 14 : 16;
           const charWidth = fontSize * 0.6; // Approximate character width
           const labelWidth = sub.label.length * charWidth + 24; // Dynamic width with padding
           const labelHeight = fontSize + 12; // Dynamic height with padding
-          const margin = isMobile ? 60 : 50; // Increased margin for better visibility
+          const margin = isMobile ? 20 : 15; // Reduced margin to allow text to extend further
           
-          // Calculate bounds with generous padding
+          // Calculate bounds with minimal padding to allow text extension
           const minX = margin + labelWidth/2;
           const maxX = viewportWidth - margin - labelWidth/2;
           const minY = margin + labelHeight/2;
