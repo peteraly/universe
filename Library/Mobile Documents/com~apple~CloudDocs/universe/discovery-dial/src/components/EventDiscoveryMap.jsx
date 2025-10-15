@@ -1,8 +1,9 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import mapboxgl from 'mapbox-gl';
+import SimpleEventMap from './SimpleEventMap';
 
-// Mapbox token - replace with your actual token
-const MAPBOX_TOKEN = 'pk.eyJ1IjoiaHl5cGVyIiwiYSI6ImNsd2V6d2V6d2V6d2V6In0.example';
+// Mapbox token - using environment variable or fallback
+const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN || 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw';
 
 // Set Mapbox token
 mapboxgl.accessToken = MAPBOX_TOKEN;
@@ -16,6 +17,7 @@ const EventDiscoveryMap = ({
   const mapContainer = useRef(null);
   const map = useRef(null);
   const [mapLoaded, setMapLoaded] = useState(false);
+  const [mapError, setMapError] = useState(null);
   const [pins, setPins] = useState([]);
 
   // Create map pins from events
@@ -70,18 +72,32 @@ const EventDiscoveryMap = ({
   useEffect(() => {
     if (!mapContainer.current || map.current) return;
 
-    map.current = new mapboxgl.Map({
-      container: mapContainer.current,
-      style: 'mapbox://styles/mapbox/streets-v11',
-      center: [-122.4194, 37.7749], // San Francisco
-      zoom: 12,
-      attributionControl: false
-    });
+    try {
+      map.current = new mapboxgl.Map({
+        container: mapContainer.current,
+        style: 'mapbox://styles/mapbox/streets-v11',
+        center: [-122.4194, 37.7749], // San Francisco
+        zoom: 12,
+        attributionControl: false
+      });
 
-    map.current.on('load', () => {
-      setMapLoaded(true);
-      console.log('🗺️ Map loaded successfully');
-    });
+      map.current.on('load', () => {
+        setMapLoaded(true);
+        setMapError(null);
+        console.log('🗺️ Map loaded successfully');
+      });
+
+      map.current.on('error', (e) => {
+        console.error('🗺️ Map error:', e);
+        setMapError('Failed to load map');
+        setMapLoaded(false);
+      });
+
+    } catch (error) {
+      console.error('🗺️ Map initialization error:', error);
+      setMapError('Failed to initialize map');
+      setMapLoaded(false);
+    }
 
     return () => {
       if (map.current) {
@@ -168,10 +184,22 @@ const EventDiscoveryMap = ({
     console.log('🔍 Pins filtered:', filteredPins.filter(p => p.visible).length, 'visible');
   }, [pins, selectedCategory, selectedSubcategory]);
 
+  // If map failed to load, show simple event map fallback
+  if (mapError) {
+    return (
+      <SimpleEventMap
+        events={events}
+        selectedCategory={selectedCategory}
+        selectedSubcategory={selectedSubcategory}
+        onEventSelect={onEventSelect}
+      />
+    );
+  }
+
   return (
     <div className="event-discovery-map">
       <div ref={mapContainer} className="map-container" />
-      {!mapLoaded && (
+      {!mapLoaded && !mapError && (
         <div className="map-loading">
           <div className="loading-spinner" />
           <p>Loading map...</p>
