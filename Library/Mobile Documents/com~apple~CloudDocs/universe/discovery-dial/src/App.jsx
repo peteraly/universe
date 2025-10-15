@@ -18,6 +18,7 @@ import {
 } from './utils/safeDOM';
 import './utils/testWordPress'; // Import test utilities
 import './utils/testWordPressCom'; // Import WordPress.com test utilities
+import './utils/qaTesting'; // Import QA testing utilities
 
 /**
  * Main application component.
