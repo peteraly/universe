@@ -19,6 +19,7 @@ const EventDiscoveryMap = ({
   const [mapLoaded, setMapLoaded] = useState(false);
   const [mapError, setMapError] = useState(null);
   const [pins, setPins] = useState([]);
+  const [useSimpleMap, setUseSimpleMap] = useState(true); // Default to simple map for now
 
   // Create map pins from events
   const createMapPins = useCallback((events) => {
@@ -68,9 +69,18 @@ const EventDiscoveryMap = ({
     return 'small';
   };
 
-  // Initialize map
+  // Initialize map with timeout fallback
   useEffect(() => {
     if (!mapContainer.current || map.current) return;
+
+    // Set a timeout to fallback to simple map if Mapbox takes too long
+    const mapTimeout = setTimeout(() => {
+      if (!mapLoaded) {
+        console.log('🗺️ Map loading timeout - falling back to simple map');
+        setMapError('Map loading timeout');
+        setMapLoaded(false);
+      }
+    }, 5000); // 5 second timeout
 
     try {
       map.current = new mapboxgl.Map({
@@ -82,30 +92,41 @@ const EventDiscoveryMap = ({
       });
 
       map.current.on('load', () => {
+        clearTimeout(mapTimeout);
         setMapLoaded(true);
         setMapError(null);
         console.log('🗺️ Map loaded successfully');
       });
 
       map.current.on('error', (e) => {
+        clearTimeout(mapTimeout);
         console.error('🗺️ Map error:', e);
         setMapError('Failed to load map');
         setMapLoaded(false);
       });
 
+      map.current.on('style.load', () => {
+        clearTimeout(mapTimeout);
+        setMapLoaded(true);
+        setMapError(null);
+        console.log('🗺️ Map style loaded successfully');
+      });
+
     } catch (error) {
+      clearTimeout(mapTimeout);
       console.error('🗺️ Map initialization error:', error);
       setMapError('Failed to initialize map');
       setMapLoaded(false);
     }
 
     return () => {
+      clearTimeout(mapTimeout);
       if (map.current) {
         map.current.remove();
         map.current = null;
       }
     };
-  }, []);
+  }, [mapLoaded]);
 
   // Update pins when events change
   useEffect(() => {
@@ -184,8 +205,8 @@ const EventDiscoveryMap = ({
     console.log('🔍 Pins filtered:', filteredPins.filter(p => p.visible).length, 'visible');
   }, [pins, selectedCategory, selectedSubcategory]);
 
-  // If map failed to load, show simple event map fallback
-  if (mapError) {
+  // If map failed to load or we're using simple map, show simple event map fallback
+  if (mapError || useSimpleMap) {
     return (
       <SimpleEventMap
         events={events}
@@ -203,6 +224,12 @@ const EventDiscoveryMap = ({
         <div className="map-loading">
           <div className="loading-spinner" />
           <p>Loading map...</p>
+          <button 
+            className="fallback-button"
+            onClick={() => setUseSimpleMap(true)}
+          >
+            Switch to Event Grid
+          </button>
         </div>
       )}
     </div>
