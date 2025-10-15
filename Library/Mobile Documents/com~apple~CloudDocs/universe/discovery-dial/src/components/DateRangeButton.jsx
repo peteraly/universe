@@ -43,22 +43,51 @@ export default function DateRangeButton({ selectedRange = 'TODAY', onRangeChange
     setCurrentRange(selectedRange);
   }, [selectedRange]);
   
-  // Force button visibility on mobile
+  // Force button visibility and functionality on all devices
   useEffect(() => {
-    if (isMobile) {
-      const button = document.querySelector('.date-range-button');
-      if (button) {
-        button.style.position = 'fixed';
-        button.style.bottom = '60px';
-        button.style.right = '16px';
-        button.style.zIndex = '9999';
-        button.style.display = 'block';
-        button.style.visibility = 'visible';
-        button.style.opacity = '1';
-        console.log('Forced button visibility on mobile');
-      }
+    const button = document.querySelector('.date-range-button');
+    if (button) {
+      // Ensure button is always visible and clickable
+      button.style.position = 'fixed';
+      button.style.bottom = isMobile ? '80px' : '20px';
+      button.style.right = '20px';
+      button.style.zIndex = '9999';
+      button.style.display = 'block';
+      button.style.visibility = 'visible';
+      button.style.opacity = '1';
+      button.style.pointerEvents = 'auto';
+      button.style.minWidth = '120px';
+      button.style.minHeight = '44px';
+      button.style.backgroundColor = '#000000';
+      button.style.color = '#ffffff';
+      button.style.border = '1px solid #ffffff';
+      button.style.borderRadius = '8px';
+      button.style.padding = '12px 16px';
+      button.style.fontSize = '14px';
+      button.style.fontWeight = '600';
+      button.style.cursor = 'pointer';
+      button.style.transition = 'all 0.2s ease';
+      button.style.userSelect = 'none';
+      button.style.webkitUserSelect = 'none';
+      
+      // Add click event listener as backup
+      const handleButtonClick = (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        handleClick(e);
+      };
+      
+      button.addEventListener('click', handleButtonClick);
+      button.addEventListener('touchstart', handleButtonClick);
+      
+      console.log('Button visibility and functionality forced');
+      
+      return () => {
+        button.removeEventListener('click', handleButtonClick);
+        button.removeEventListener('touchstart', handleButtonClick);
+      };
     }
-  }, [isMobile]);
+  }, [isMobile, handleClick]);
   
   const handleClick = useCallback((e) => {
     console.log('DateRangeButton clicked:', { currentRange, isMobile, isTouch });

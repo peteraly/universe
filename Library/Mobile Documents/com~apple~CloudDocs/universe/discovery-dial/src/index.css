@@ -2153,6 +2153,70 @@ a::-webkit-scrollbar {
   margin-top: 5px;
 }
 
+/* Fallback map styles */
+.fallback-map {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 5;
+}
+
+.fallback-map-content {
+  text-align: center;
+  color: white;
+  padding: 20px;
+  max-width: 400px;
+}
+
+.fallback-map-content h3 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: #ffffff;
+}
+
+.fallback-map-content p {
+  margin-bottom: 15px;
+  opacity: 0.8;
+}
+
+.fallback-events {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.fallback-event {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.fallback-event:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.fallback-event h4 {
+  font-size: 16px;
+  margin-bottom: 5px;
+  color: #ffffff;
+}
+
+.fallback-event p {
+  font-size: 14px;
+  margin: 2px 0;
+  opacity: 0.8;
+}
+
 /* Map Popup Styles */
 .event-popup-content {
   padding: 0.75rem;

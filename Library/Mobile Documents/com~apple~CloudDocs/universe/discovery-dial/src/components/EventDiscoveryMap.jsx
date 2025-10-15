@@ -1,11 +1,16 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
 import mapboxgl from 'mapbox-gl';
 
-// Mapbox token - using public token for development
-const MAPBOX_TOKEN = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw';
+// Mapbox configuration with fallback
+const MAPBOX_CONFIG = {
+  // Use environment variable or fallback to public token
+  token: import.meta.env.VITE_MAPBOX_TOKEN || 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw',
+  style: 'mapbox://styles/mapbox/streets-v11',
+  fallbackStyle: 'mapbox://styles/mapbox/light-v10'
+};
 
 // Set Mapbox token
-mapboxgl.accessToken = MAPBOX_TOKEN;
+mapboxgl.accessToken = MAPBOX_CONFIG.token;
 
 const EventDiscoveryMap = ({ 
   events = [], 
@@ -18,6 +23,7 @@ const EventDiscoveryMap = ({
   const [mapLoaded, setMapLoaded] = useState(false);
   const [mapError, setMapError] = useState(null);
   const [pins, setPins] = useState([]);
+  const [useFallback, setUseFallback] = useState(false);
 
   // Create map pins from events
   const createMapPins = useCallback((events) => {
@@ -67,36 +73,50 @@ const EventDiscoveryMap = ({
     return 'small';
   };
 
-  // Initialize map
+  // Initialize map with enhanced error handling
   useEffect(() => {
     if (!mapContainer.current || map.current) return;
 
-    try {
-      map.current = new mapboxgl.Map({
-        container: mapContainer.current,
-        style: 'mapbox://styles/mapbox/streets-v11',
-        center: [-122.4194, 37.7749], // San Francisco
-        zoom: 12,
-        attributionControl: false
-      });
+    const initializeMap = async () => {
+      try {
+        // Test token validity first
+        const response = await fetch(`https://api.mapbox.com/styles/v1/mapbox/streets-v11?access_token=${MAPBOX_CONFIG.token}`);
+        
+        if (!response.ok) {
+          throw new Error(`Mapbox API error: ${response.status}`);
+        }
 
-      map.current.on('load', () => {
-        setMapLoaded(true);
-        setMapError(null);
-        console.log('🗺️ Map loaded successfully');
-      });
+        map.current = new mapboxgl.Map({
+          container: mapContainer.current,
+          style: MAPBOX_CONFIG.style,
+          center: [-122.4194, 37.7749], // San Francisco
+          zoom: 12,
+          attributionControl: false
+        });
 
-      map.current.on('error', (e) => {
-        console.error('🗺️ Map error:', e);
-        setMapError('Failed to load map');
+        map.current.on('load', () => {
+          setMapLoaded(true);
+          setMapError(null);
+          setUseFallback(false);
+          console.log('🗺️ Map loaded successfully');
+        });
+
+        map.current.on('error', (e) => {
+          console.error('🗺️ Map error:', e);
+          setMapError('Failed to load map');
+          setMapLoaded(false);
+          setUseFallback(true);
+        });
+
+      } catch (error) {
+        console.error('🗺️ Map initialization error:', error);
+        setMapError('Map temporarily unavailable');
         setMapLoaded(false);
-      });
+        setUseFallback(true);
+      }
+    };
 
-    } catch (error) {
-      console.error('🗺️ Map initialization error:', error);
-      setMapError('Failed to initialize map');
-      setMapLoaded(false);
-    }
+    initializeMap();
 
     return () => {
       if (map.current) {
@@ -183,21 +203,47 @@ const EventDiscoveryMap = ({
     console.log('🔍 Pins filtered:', filteredPins.filter(p => p.visible).length, 'visible');
   }, [pins, selectedCategory, selectedSubcategory]);
 
+  // Fallback map component
+  const FallbackMap = () => (
+    <div className="fallback-map">
+      <div className="fallback-map-content">
+        <h3>🗺️ Interactive Map</h3>
+        <p>Map functionality is temporarily unavailable</p>
+        <p>Event discovery is still fully functional</p>
+        <div className="fallback-events">
+          {events.slice(0, 3).map(event => (
+            <div key={event.id} className="fallback-event" onClick={() => onEventSelect?.(event)}>
+              <h4>{event.name}</h4>
+              <p>{event.venue}</p>
+              <p>{event.time} on {event.day}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+
   return (
     <div className="event-discovery-map">
-      <div ref={mapContainer} className="map-container" />
-      {mapError ? (
-        <div className="map-error">
-          <div className="error-icon">⚠️</div>
-          <p>{mapError}</p>
-          <p className="error-detail">Map functionality unavailable</p>
-        </div>
-      ) : !mapLoaded ? (
-        <div className="map-loading">
-          <div className="loading-spinner" />
-          <p>Loading map...</p>
-        </div>
-      ) : null}
+      {useFallback ? (
+        <FallbackMap />
+      ) : (
+        <>
+          <div ref={mapContainer} className="map-container" />
+          {mapError ? (
+            <div className="map-error">
+              <div className="error-icon">⚠️</div>
+              <p>{mapError}</p>
+              <p className="error-detail">Map functionality unavailable</p>
+            </div>
+          ) : !mapLoaded ? (
+            <div className="map-loading">
+              <div className="loading-spinner" />
+              <p>Loading map...</p>
+            </div>
+          ) : null}
+        </>
+      )}
     </div>
   );
 };
