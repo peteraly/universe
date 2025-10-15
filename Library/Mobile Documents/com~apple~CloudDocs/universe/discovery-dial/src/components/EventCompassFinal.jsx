@@ -514,22 +514,24 @@ export default function EventCompassFinal({
         onRangeChange={handleDateRangeChange}
       />
 
-      {/* TIMEFRAME INDICATOR */}
+      {/* TIMEFRAME INDICATOR - Enhanced Debug Display */}
       <div style={{
         position: 'fixed',
         top: '20px',
         left: '50%',
         transform: 'translateX(-50%)',
-        background: 'rgba(0, 0, 0, 0.8)',
+        background: 'rgba(0, 0, 0, 0.9)',
         color: 'white',
-        padding: '8px 16px',
-        borderRadius: '20px',
-        fontSize: '14px',
+        padding: '10px 20px',
+        borderRadius: '25px',
+        fontSize: '16px',
         fontWeight: 'bold',
         zIndex: 50,
-        pointerEvents: 'none'
+        pointerEvents: 'none',
+        border: '2px solid #007bff',
+        boxShadow: '0 4px 12px rgba(0,0,0,0.3)'
       }}>
-        Showing: {dateRange}
+        📅 Current Timeframe: {dateRange}
       </div>
 
       {/* EVENT READOUT (with slide transition) */}
