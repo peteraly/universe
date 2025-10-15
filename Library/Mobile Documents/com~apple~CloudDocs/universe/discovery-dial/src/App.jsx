@@ -1,10 +1,21 @@
 import React, { useEffect } from 'react';
 import EventCompassFinal from './components/EventCompassFinal';
+import ErrorBoundary from './components/ErrorBoundary';
 import categoriesData from './data/categories.json';
 import useScrollPrevention from './hooks/useScrollPrevention';
 import useTextSelectionPrevention from './hooks/useTextSelectionPrevention';
 import useSafariScrollPrevention from './hooks/useSafariScrollPrevention';
 import { useWordPressComEvents } from './hooks/useWordPressComEvents';
+import { 
+  safeDocumentBody, 
+  safeDocumentElement, 
+  isDocumentAvailable, 
+  isWindowAvailable,
+  safeAddEventListener,
+  safeRemoveEventListener,
+  safeSetStyle,
+  safeSetStyles
+} from './utils/safeDOM';
 import './utils/testWordPress'; // Import test utilities
 import './utils/testWordPressCom'; // Import WordPress.com test utilities
 
@@ -38,27 +49,29 @@ function App() {
       return false;
     };
 
-    // Global event listeners for text selection
-    document.addEventListener('selectstart', preventSelectionAndScrolling, { passive: false });
-    document.addEventListener('dragstart', preventSelectionAndScrolling, { passive: false });
-    document.addEventListener('contextmenu', preventSelectionAndScrolling, { passive: false });
-    
-    // Additional text selection prevention events
-    document.addEventListener('mousedown', preventSelectionAndScrolling, { passive: false });
-    document.addEventListener('mouseup', preventSelectionAndScrolling, { passive: false });
-    document.addEventListener('mousemove', preventSelectionAndScrolling, { passive: false });
+    // Global event listeners for text selection (only if document is available)
+    if (isDocumentAvailable()) {
+      safeAddEventListener(document, 'selectstart', preventSelectionAndScrolling, { passive: false });
+      safeAddEventListener(document, 'dragstart', preventSelectionAndScrolling, { passive: false });
+      safeAddEventListener(document, 'contextmenu', preventSelectionAndScrolling, { passive: false });
+      
+      // Additional text selection prevention events
+      safeAddEventListener(document, 'mousedown', preventSelectionAndScrolling, { passive: false });
+      safeAddEventListener(document, 'mouseup', preventSelectionAndScrolling, { passive: false });
+      safeAddEventListener(document, 'mousemove', preventSelectionAndScrolling, { passive: false });
 
-    // Global event listeners for scrolling
-    document.addEventListener('wheel', preventScrolling, { passive: false });
-    document.addEventListener('touchmove', preventScrolling, { passive: false });
-    document.addEventListener('touchstart', preventScrolling, { passive: false });
-    document.addEventListener('touchend', preventScrolling, { passive: false });
-    document.addEventListener('scroll', preventScrolling, { passive: false });
-    
-    // Additional scroll prevention events
-    document.addEventListener('DOMMouseScroll', preventScrolling, { passive: false }); // Firefox
-    document.addEventListener('mousewheel', preventScrolling, { passive: false }); // Older browsers
-    document.addEventListener('MozMousePixelScroll', preventScrolling, { passive: false }); // Firefox
+      // Global event listeners for scrolling
+      safeAddEventListener(document, 'wheel', preventScrolling, { passive: false });
+      safeAddEventListener(document, 'touchmove', preventScrolling, { passive: false });
+      safeAddEventListener(document, 'touchstart', preventScrolling, { passive: false });
+      safeAddEventListener(document, 'touchend', preventScrolling, { passive: false });
+      safeAddEventListener(document, 'scroll', preventScrolling, { passive: false });
+      
+      // Additional scroll prevention events
+      safeAddEventListener(document, 'DOMMouseScroll', preventScrolling, { passive: false }); // Firefox
+      safeAddEventListener(document, 'mousewheel', preventScrolling, { passive: false }); // Older browsers
+      safeAddEventListener(document, 'MozMousePixelScroll', preventScrolling, { passive: false }); // Firefox
+    }
 
     // Prevent keyboard scrolling
     const handleKeyDown = (e) => {
@@ -66,51 +79,102 @@ function App() {
         preventScrolling(e);
       }
     };
-    document.addEventListener('keydown', handleKeyDown);
+    if (isDocumentAvailable()) {
+      safeAddEventListener(document, 'keydown', handleKeyDown);
+    }
 
-    // Apply styles to prevent scrolling
-    const targets = [document, window, document.documentElement, document.body, document.getElementById('root')];
-    targets.forEach(target => {
-      if (target) {
-        target.style.overflow = 'hidden';
-        target.style.overscrollBehavior = 'none';
-        target.style.touchAction = 'none';
-        target.style.position = 'fixed';
-        target.style.top = '0';
-        target.style.left = '0';
-        target.style.right = '0';
-        target.style.bottom = '0';
-        target.style.scrollbarWidth = 'none';
-        target.style.msOverflowStyle = 'none';
+    // Apply styles to prevent scrolling (only if document is available)
+    if (isDocumentAvailable()) {
+      const documentElement = safeDocumentElement();
+      const body = safeDocumentBody();
+      const root = document.getElementById('root');
+      
+      // Apply styles to document element
+      if (documentElement) {
+        safeSetStyles(documentElement, {
+          overflow: 'hidden',
+          overscrollBehavior: 'none',
+          touchAction: 'none',
+          position: 'fixed',
+          top: '0',
+          left: '0',
+          right: '0',
+          bottom: '0',
+          scrollbarWidth: 'none',
+          msOverflowStyle: 'none'
+        });
       }
-    });
+      
+      // Apply styles to body
+      if (body) {
+        safeSetStyles(body, {
+          overflow: 'hidden',
+          overscrollBehavior: 'none',
+          touchAction: 'none',
+          position: 'fixed',
+          top: '0',
+          left: '0',
+          right: '0',
+          bottom: '0',
+          scrollbarWidth: 'none',
+          msOverflowStyle: 'none'
+        });
+      }
+      
+      // Apply styles to root element
+      if (root) {
+        safeSetStyles(root, {
+          overflow: 'hidden',
+          overscrollBehavior: 'none',
+          touchAction: 'none',
+          position: 'fixed',
+          top: '0',
+          left: '0',
+          right: '0',
+          bottom: '0',
+          scrollbarWidth: 'none',
+          msOverflowStyle: 'none'
+        });
+      }
+    }
 
-    // Hide scrollbars for all elements
+    // Hide scrollbars for all elements (only if document is available)
     const hideScrollbars = () => {
-      const style = document.createElement('style');
-      style.textContent = `
-        *::-webkit-scrollbar {
-          display: none !important;
+      if (!isDocumentAvailable()) return;
+      
+      try {
+        const style = document.createElement('style');
+        style.textContent = `
+          *::-webkit-scrollbar {
+            display: none !important;
+          }
+          * {
+            scrollbar-width: none !important;
+            -ms-overflow-style: none !important;
+          }
+        `;
+        if (document.head) {
+          document.head.appendChild(style);
         }
-        * {
-          scrollbar-width: none !important;
-          -ms-overflow-style: none !important;
-        }
-      `;
-      document.head.appendChild(style);
+      } catch (error) {
+        console.warn('App: Failed to hide scrollbars', error);
+      }
     };
     hideScrollbars();
 
-    // Prevent programmatic scrolling
-    const originalScrollTo = window.scrollTo;
-    const originalScrollBy = window.scrollBy;
-    const originalScroll = window.scroll;
+    // Prevent programmatic scrolling (only if window is available)
+    let originalScrollTo, originalScrollBy, originalScroll;
+    if (isWindowAvailable()) {
+      originalScrollTo = window.scrollTo;
+      originalScrollBy = window.scrollBy;
+      originalScroll = window.scroll;
+      
+      window.scrollTo = () => {};
+      window.scrollBy = () => {};
+      window.scroll = () => {};
+    }
     
-    window.scrollTo = () => {};
-    window.scrollBy = () => {};
-    window.scroll = () => {};
-    
-    // Prevent element scrolling
+    // Prevent element scrolling (only if document is available)
     const preventElementScroll = (element) => {
       if (element && typeof element.scrollTo === 'function') {
         element.scrollTo = () => {};
@@ -123,8 +187,14 @@ function App() {
       }
     };
     
-    // Apply to all existing elements
-    document.querySelectorAll('*').forEach(preventElementScroll);
+    // Apply to all existing elements (only if document is available)
+    if (isDocumentAvailable()) {
+      try {
+        document.querySelectorAll('*').forEach(preventElementScroll);
+      } catch (error) {
+        console.warn('App: Failed to prevent element scrolling', error);
+      }
+    }
 
     // Safari-specific scroll prevention
     let preventSafariScroll = null;
@@ -137,97 +207,125 @@ function App() {
         return false;
       };
 
-      // Safari-specific event listeners
-      document.addEventListener('gesturestart', preventSafariScroll, { passive: false });
-      document.addEventListener('gesturechange', preventSafariScroll, { passive: false });
-      document.addEventListener('gestureend', preventSafariScroll, { passive: false });
+      // Safari-specific event listeners (only if document is available)
+      if (isDocumentAvailable()) {
+        safeAddEventListener(document, 'gesturestart', preventSafariScroll, { passive: false });
+        safeAddEventListener(document, 'gesturechange', preventSafariScroll, { passive: false });
+        safeAddEventListener(document, 'gestureend', preventSafariScroll, { passive: false });
+      }
 
       // Prevent Safari's scroll restoration
-      if ('scrollRestoration' in history) {
+      if (isWindowAvailable() && 'scrollRestoration' in history) {
         history.scrollRestoration = 'manual';
       }
 
       // Force scroll position to top for Safari
       const safariScrollInterval = setInterval(() => {
-        window.scrollTo(0, 0);
-        document.documentElement.scrollTop = 0;
-        document.body.scrollTop = 0;
+        if (isWindowAvailable()) {
+          window.scrollTo(0, 0);
+        }
+        if (isDocumentAvailable()) {
+          const documentElement = safeDocumentElement();
+          const body = safeDocumentBody();
+          
+          if (documentElement) {
+            documentElement.scrollTop = 0;
+          }
+          if (body) {
+            body.scrollTop = 0;
+          }
+        }
       }, 100);
 
-      // Safari-specific CSS injection
-      const safariStyle = document.createElement('style');
-      safariStyle.textContent = `
-        /* Safari-specific scroll prevention */
-        html, body, #root, .App {
-          overflow: hidden !important;
-          overscroll-behavior: none !important;
-          -webkit-overflow-scrolling: auto !important;
-          touch-action: none !important;
-          position: fixed !important;
-          top: 0 !important;
-          left: 0 !important;
-          right: 0 !important;
-          bottom: 0 !important;
-          width: 100vw !important;
-          height: 100vh !important;
-          -webkit-transform: translateZ(0) !important;
-          -webkit-backface-visibility: hidden !important;
-          -webkit-perspective: 1000 !important;
+      // Safari-specific CSS injection (only if document is available)
+      let safariStyle = null;
+      if (isDocumentAvailable()) {
+        try {
+          safariStyle = document.createElement('style');
+          safariStyle.textContent = `
+            /* Safari-specific scroll prevention */
+            html, body, #root, .App {
+              overflow: hidden !important;
+              overscroll-behavior: none !important;
+              -webkit-overflow-scrolling: auto !important;
+              touch-action: none !important;
+              position: fixed !important;
+              top: 0 !important;
+              left: 0 !important;
+              right: 0 !important;
+              bottom: 0 !important;
+              width: 100vw !important;
+              height: 100vh !important;
+              -webkit-transform: translateZ(0) !important;
+              -webkit-backface-visibility: hidden !important;
+              -webkit-perspective: 1000 !important;
+            }
+            
+            /* Disable Safari's rubber band scrolling */
+            body {
+              overscroll-behavior-y: none !important;
+              -webkit-overflow-scrolling: auto !important;
+            }
+          `;
+          if (document.head) {
+            document.head.appendChild(safariStyle);
+          }
+        } catch (error) {
+          console.warn('App: Failed to inject Safari CSS', error);
         }
-        
-        /* Disable Safari's rubber band scrolling */
-        body {
-          overscroll-behavior-y: none !important;
-          -webkit-overflow-scrolling: auto !important;
-        }
-      `;
-      document.head.appendChild(safariStyle);
+      }
 
       // Store references for cleanup
-      window.safariScrollInterval = safariScrollInterval;
-      window.safariStyle = safariStyle;
+      if (isWindowAvailable()) {
+        window.safariScrollInterval = safariScrollInterval;
+        window.safariStyle = safariStyle;
+      }
     }
 
     // Cleanup
     return () => {
-      document.removeEventListener('selectstart', preventSelectionAndScrolling);
-      document.removeEventListener('dragstart', preventSelectionAndScrolling);
-      document.removeEventListener('contextmenu', preventSelectionAndScrolling);
-      document.removeEventListener('mousedown', preventSelectionAndScrolling);
-      document.removeEventListener('mouseup', preventSelectionAndScrolling);
-      document.removeEventListener('mousemove', preventSelectionAndScrolling);
-      document.removeEventListener('wheel', preventScrolling);
-      document.removeEventListener('touchmove', preventScrolling);
-      document.removeEventListener('touchstart', preventScrolling);
-      document.removeEventListener('touchend', preventScrolling);
-      document.removeEventListener('scroll', preventScrolling);
-      document.removeEventListener('DOMMouseScroll', preventScrolling);
-      document.removeEventListener('mousewheel', preventScrolling);
-      document.removeEventListener('MozMousePixelScroll', preventScrolling);
-      document.removeEventListener('keydown', handleKeyDown);
+      if (isDocumentAvailable()) {
+        safeRemoveEventListener(document, 'selectstart', preventSelectionAndScrolling);
+        safeRemoveEventListener(document, 'dragstart', preventSelectionAndScrolling);
+        safeRemoveEventListener(document, 'contextmenu', preventSelectionAndScrolling);
+        safeRemoveEventListener(document, 'mousedown', preventSelectionAndScrolling);
+        safeRemoveEventListener(document, 'mouseup', preventSelectionAndScrolling);
+        safeRemoveEventListener(document, 'mousemove', preventSelectionAndScrolling);
+        safeRemoveEventListener(document, 'wheel', preventScrolling);
+        safeRemoveEventListener(document, 'touchmove', preventScrolling);
+        safeRemoveEventListener(document, 'touchstart', preventScrolling);
+        safeRemoveEventListener(document, 'touchend', preventScrolling);
+        safeRemoveEventListener(document, 'scroll', preventScrolling);
+        safeRemoveEventListener(document, 'DOMMouseScroll', preventScrolling);
+        safeRemoveEventListener(document, 'mousewheel', preventScrolling);
+        safeRemoveEventListener(document, 'MozMousePixelScroll', preventScrolling);
+        safeRemoveEventListener(document, 'keydown', handleKeyDown);
+      }
       
-      // Restore original scroll methods
-      window.scrollTo = originalScrollTo;
-      window.scrollBy = originalScrollBy;
-      window.scroll = originalScroll;
+      // Restore original scroll methods (only if window is available)
+      if (isWindowAvailable()) {
+        window.scrollTo = originalScrollTo;
+        window.scrollBy = originalScrollBy;
+        window.scroll = originalScroll;
+      }
       
       // Safari-specific cleanup
       if (isSafari || isIOS) {
         // Clear Safari scroll interval
-        if (window.safariScrollInterval) {
+        if (isWindowAvailable() && window.safariScrollInterval) {
           clearInterval(window.safariScrollInterval);
         }
         
         // Remove Safari-specific styles
-        if (window.safariStyle && window.safariStyle.parentNode) {
+        if (isWindowAvailable() && window.safariStyle && window.safariStyle.parentNode) {
           window.safariStyle.parentNode.removeChild(window.safariStyle);
         }
         
         // Remove Safari-specific event listeners
-        if (preventSafariScroll) {
-          document.removeEventListener('gesturestart', preventSafariScroll);
-          document.removeEventListener('gesturechange', preventSafariScroll);
-          document.removeEventListener('gestureend', preventSafariScroll);
+        if (preventSafariScroll && isDocumentAvailable()) {
+          safeRemoveEventListener(document, 'gesturestart', preventSafariScroll);
+          safeRemoveEventListener(document, 'gesturechange', preventSafariScroll);
+          safeRemoveEventListener(document, 'gestureend', preventSafariScroll);
         }
       }
     };
@@ -237,14 +335,16 @@ function App() {
   const { events: wordPressComEvents, loading, error, categories, stats } = useWordPressComEvents();
 
   return (
-    <EventCompassFinal 
-      categories={categoriesData.categories} 
-      wordPressEvents={wordPressComEvents}
-      wordPressLoading={loading}
-      wordPressError={error}
-      wordPressCategories={categories}
-      wordPressStats={stats}
-    />
+    <ErrorBoundary name="App">
+      <EventCompassFinal
+        categories={categoriesData.categories}
+        wordPressEvents={wordPressComEvents}
+        wordPressLoading={loading}
+        wordPressError={error}
+        wordPressCategories={categories}
+        wordPressStats={stats}
+      />
+    </ErrorBoundary>
   );
 }
 

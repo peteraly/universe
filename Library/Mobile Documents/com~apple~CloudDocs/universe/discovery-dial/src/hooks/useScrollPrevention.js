@@ -1,4 +1,14 @@
 import { useEffect, useCallback } from 'react';
+import { 
+  safeDocumentBody, 
+  safeDocumentElement, 
+  isDocumentAvailable, 
+  isWindowAvailable,
+  safeAddEventListener,
+  safeRemoveEventListener,
+  safeSetStyle,
+  safeSetStyles
+} from '../utils/safeDOM';
 
 /**
  * Custom hook for complete scroll prevention
@@ -37,105 +47,132 @@ const useScrollPrevention = () => {
       return false;
     };
 
-    // Add event listeners to all possible scroll triggers
-    document.addEventListener('wheel', preventWheel, { passive: false });
-    document.addEventListener('touchstart', preventTouchScroll, { passive: false });
-    document.addEventListener('touchmove', preventTouchScroll, { passive: false });
-    document.addEventListener('touchend', preventTouchScroll, { passive: false });
-    document.addEventListener('keydown', preventKeyboardScroll, { passive: false });
-    document.addEventListener('scroll', preventScroll, { passive: false });
+    // Add event listeners to all possible scroll triggers (only if document is available)
+    if (isDocumentAvailable()) {
+      safeAddEventListener(document, 'wheel', preventWheel, { passive: false });
+      safeAddEventListener(document, 'touchstart', preventTouchScroll, { passive: false });
+      safeAddEventListener(document, 'touchmove', preventTouchScroll, { passive: false });
+      safeAddEventListener(document, 'touchend', preventTouchScroll, { passive: false });
+      safeAddEventListener(document, 'keydown', preventKeyboardScroll, { passive: false });
+      safeAddEventListener(document, 'scroll', preventScroll, { passive: false });
+    }
     
     // Safari-specific event listeners
-    if (navigator.userAgent.includes('Safari') && !navigator.userAgent.includes('Chrome')) {
-      document.addEventListener('gesturestart', preventTouchScroll, { passive: false });
-      document.addEventListener('gesturechange', preventTouchScroll, { passive: false });
-      document.addEventListener('gestureend', preventTouchScroll, { passive: false });
+    if (isDocumentAvailable() && isWindowAvailable() && navigator.userAgent.includes('Safari') && !navigator.userAgent.includes('Chrome')) {
+      safeAddEventListener(document, 'gesturestart', preventTouchScroll, { passive: false });
+      safeAddEventListener(document, 'gesturechange', preventTouchScroll, { passive: false });
+      safeAddEventListener(document, 'gestureend', preventTouchScroll, { passive: false });
     }
     
     // iOS Safari specific event listeners
-    if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
-      document.addEventListener('gesturestart', preventTouchScroll, { passive: false });
-      document.addEventListener('gesturechange', preventTouchScroll, { passive: false });
-      document.addEventListener('gestureend', preventTouchScroll, { passive: false });
+    if (isDocumentAvailable() && isWindowAvailable() && /iPad|iPhone|iPod/.test(navigator.userAgent)) {
+      safeAddEventListener(document, 'gesturestart', preventTouchScroll, { passive: false });
+      safeAddEventListener(document, 'gesturechange', preventTouchScroll, { passive: false });
+      safeAddEventListener(document, 'gestureend', preventTouchScroll, { passive: false });
     }
     
     // Prevent scroll on window
-    window.addEventListener('scroll', preventScroll, { passive: false });
-    window.addEventListener('wheel', preventWheel, { passive: false });
+    if (isWindowAvailable()) {
+      safeAddEventListener(window, 'scroll', preventScroll, { passive: false });
+      safeAddEventListener(window, 'wheel', preventWheel, { passive: false });
+    }
     
-    // Prevent scroll on document
-    document.addEventListener('scroll', preventScroll, { passive: false });
-    document.addEventListener('wheel', preventWheel, { passive: false });
+    // Prevent scroll on document (additional safety)
+    if (isDocumentAvailable()) {
+      safeAddEventListener(document, 'scroll', preventScroll, { passive: false });
+      safeAddEventListener(document, 'wheel', preventWheel, { passive: false });
+    }
 
     // Return cleanup function
     return () => {
-      document.removeEventListener('wheel', preventWheel);
-      document.removeEventListener('touchstart', preventTouchScroll);
-      document.removeEventListener('touchmove', preventTouchScroll);
-      document.removeEventListener('touchend', preventTouchScroll);
-      document.removeEventListener('keydown', preventKeyboardScroll);
-      document.removeEventListener('scroll', preventScroll);
-      window.removeEventListener('scroll', preventScroll);
-      window.removeEventListener('wheel', preventWheel);
-      
-      // Safari-specific cleanup
-      if (navigator.userAgent.includes('Safari') && !navigator.userAgent.includes('Chrome')) {
-        document.removeEventListener('gesturestart', preventTouchScroll);
-        document.removeEventListener('gesturechange', preventTouchScroll);
-        document.removeEventListener('gestureend', preventTouchScroll);
+      if (isDocumentAvailable()) {
+        safeRemoveEventListener(document, 'wheel', preventWheel);
+        safeRemoveEventListener(document, 'touchstart', preventTouchScroll);
+        safeRemoveEventListener(document, 'touchmove', preventTouchScroll);
+        safeRemoveEventListener(document, 'touchend', preventTouchScroll);
+        safeRemoveEventListener(document, 'keydown', preventKeyboardScroll);
+        safeRemoveEventListener(document, 'scroll', preventScroll);
+        
+        // Safari-specific cleanup
+        if (isWindowAvailable() && navigator.userAgent.includes('Safari') && !navigator.userAgent.includes('Chrome')) {
+          safeRemoveEventListener(document, 'gesturestart', preventTouchScroll);
+          safeRemoveEventListener(document, 'gesturechange', preventTouchScroll);
+          safeRemoveEventListener(document, 'gestureend', preventTouchScroll);
+        }
+        
+        // iOS Safari specific cleanup
+        if (isWindowAvailable() && /iPad|iPhone|iPod/.test(navigator.userAgent)) {
+          safeRemoveEventListener(document, 'gesturestart', preventTouchScroll);
+          safeRemoveEventListener(document, 'gesturechange', preventTouchScroll);
+          safeRemoveEventListener(document, 'gestureend', preventTouchScroll);
+        }
       }
       
-      // iOS Safari specific cleanup
-      if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
-        document.removeEventListener('gesturestart', preventTouchScroll);
-        document.removeEventListener('gesturechange', preventTouchScroll);
-        document.removeEventListener('gestureend', preventTouchScroll);
+      // Window cleanup
+      if (isWindowAvailable()) {
+        safeRemoveEventListener(window, 'scroll', preventScroll);
+        safeRemoveEventListener(window, 'wheel', preventWheel);
       }
     };
   }, []);
 
   const preventBrowserSpecificScrolling = useCallback(() => {
     // Safari momentum scrolling prevention
-    if (navigator.userAgent.includes('Safari') && !navigator.userAgent.includes('Chrome')) {
-      document.body.style.webkitOverflowScrolling = 'auto'; // Disable momentum scrolling
-      document.body.style.overflow = 'hidden';
-      document.body.style.overscrollBehavior = 'none';
-      document.body.style.touchAction = 'none';
-      document.body.style.position = 'fixed';
-      document.body.style.top = '0';
-      document.body.style.left = '0';
-      document.body.style.right = '0';
-      document.body.style.bottom = '0';
-      document.body.style.width = '100vw';
-      document.body.style.height = '100vh';
-      // Safari-specific properties
-      document.body.style.webkitTransform = 'translateZ(0)';
-      document.body.style.webkitBackfaceVisibility = 'hidden';
-      document.body.style.webkitPerspective = '1000';
+    if (isWindowAvailable() && isDocumentAvailable() && navigator.userAgent.includes('Safari') && !navigator.userAgent.includes('Chrome')) {
+      const body = safeDocumentBody();
+      if (body) {
+        safeSetStyles(body, {
+          webkitOverflowScrolling: 'auto', // Disable momentum scrolling
+          overflow: 'hidden',
+          overscrollBehavior: 'none',
+          touchAction: 'none',
+          position: 'fixed',
+          top: '0',
+          left: '0',
+          right: '0',
+          bottom: '0',
+          width: '100vw',
+          height: '100vh',
+          webkitTransform: 'translateZ(0)',
+          webkitBackfaceVisibility: 'hidden',
+          webkitPerspective: '1000'
+        });
+      }
     }
     
     // iOS Safari specific prevention
-    if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
-      document.body.style.webkitOverflowScrolling = 'auto';
-      document.body.style.overscrollBehavior = 'none';
-      document.body.style.touchAction = 'none';
-      document.body.style.position = 'fixed';
-      document.body.style.top = '0';
-      document.body.style.left = '0';
-      document.body.style.right = '0';
-      document.body.style.bottom = '0';
-      document.body.style.width = '100vw';
-      document.body.style.height = '100vh';
+    if (isWindowAvailable() && isDocumentAvailable() && /iPad|iPhone|iPod/.test(navigator.userAgent)) {
+      const body = safeDocumentBody();
+      if (body) {
+        safeSetStyles(body, {
+          webkitOverflowScrolling: 'auto',
+          overscrollBehavior: 'none',
+          touchAction: 'none',
+          position: 'fixed',
+          top: '0',
+          left: '0',
+          right: '0',
+          bottom: '0',
+          width: '100vw',
+          height: '100vh'
+        });
+      }
     }
     
     // Chrome overscroll prevention
-    if (navigator.userAgent.includes('Chrome')) {
-      document.body.style.overscrollBehavior = 'none';
+    if (isWindowAvailable() && isDocumentAvailable() && navigator.userAgent.includes('Chrome')) {
+      const body = safeDocumentBody();
+      if (body) {
+        safeSetStyle(body, 'overscrollBehavior', 'none');
+      }
     }
     
     // Firefox smooth scrolling prevention
-    if (navigator.userAgent.includes('Firefox')) {
-      document.documentElement.style.scrollBehavior = 'auto';
+    if (isWindowAvailable() && isDocumentAvailable() && navigator.userAgent.includes('Firefox')) {
+      const documentElement = safeDocumentElement();
+      if (documentElement) {
+        safeSetStyle(documentElement, 'scrollBehavior', 'auto');
+      }
     }
   }, []);
 
@@ -147,33 +184,46 @@ const useScrollPrevention = () => {
     
     // Apply scroll prevention regardless of zoom
     const applyZoomIndependentPrevention = () => {
+      if (!isDocumentAvailable()) return;
+      
       const zoomLevel = getZoomLevel();
+      const body = safeDocumentBody();
       
-      // Force scroll prevention at any zoom level
-      document.body.style.overflow = 'hidden';
-      document.body.style.position = 'fixed';
-      document.body.style.width = '100vw';
-      document.body.style.height = '100vh';
-      document.body.style.touchAction = 'none';
-      document.body.style.overscrollBehavior = 'none';
-      
-      // Adjust for zoom level
-      if (zoomLevel !== 1) {
-        document.body.style.transform = `scale(${1/zoomLevel})`;
-        document.body.style.transformOrigin = 'top left';
+      if (body) {
+        // Force scroll prevention at any zoom level
+        safeSetStyles(body, {
+          overflow: 'hidden',
+          position: 'fixed',
+          width: '100vw',
+          height: '100vh',
+          touchAction: 'none',
+          overscrollBehavior: 'none'
+        });
+        
+        // Adjust for zoom level
+        if (zoomLevel !== 1) {
+          safeSetStyle(body, 'transform', `scale(${1/zoomLevel})`);
+          safeSetStyle(body, 'transformOrigin', 'top left');
+        }
       }
     };
     
     // Apply on load and zoom change
     applyZoomIndependentPrevention();
-    window.addEventListener('resize', applyZoomIndependentPrevention);
+    if (isWindowAvailable()) {
+      safeAddEventListener(window, 'resize', applyZoomIndependentPrevention);
+    }
     
     return () => {
-      window.removeEventListener('resize', applyZoomIndependentPrevention);
+      if (isWindowAvailable()) {
+        safeRemoveEventListener(window, 'resize', applyZoomIndependentPrevention);
+      }
     };
   }, []);
 
   const preventProgrammaticScrolling = useCallback(() => {
+    if (!isWindowAvailable()) return;
+    
     // Override window scroll methods
     const originalScrollTo = window.scrollTo;
     const originalScrollBy = window.scrollBy;
@@ -196,30 +246,50 @@ const useScrollPrevention = () => {
       }
     };
     
-    // Apply to all existing elements
-    document.querySelectorAll('*').forEach(preventElementScroll);
+    // Apply to all existing elements (only if document is available)
+    if (isDocumentAvailable()) {
+      try {
+        document.querySelectorAll('*').forEach(preventElementScroll);
+      } catch (error) {
+        console.warn('useScrollPrevention: Failed to prevent element scrolling', error);
+      }
+    }
     
-    // Apply to dynamically added elements
-    const observer = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        mutation.addedNodes.forEach((node) => {
-          if (node.nodeType === Node.ELEMENT_NODE) {
-            preventElementScroll(node);
-            node.querySelectorAll('*').forEach(preventElementScroll);
-          }
+    // Apply to dynamically added elements (only if document is available)
+    let observer = null;
+    if (isDocumentAvailable()) {
+      try {
+        observer = new MutationObserver((mutations) => {
+          mutations.forEach((mutation) => {
+            mutation.addedNodes.forEach((node) => {
+              if (node.nodeType === Node.ELEMENT_NODE) {
+                preventElementScroll(node);
+                node.querySelectorAll('*').forEach(preventElementScroll);
+              }
+            });
+          });
         });
-      });
-    });
-    
-    observer.observe(document.body, { childList: true, subtree: true });
+        
+        const body = safeDocumentBody();
+        if (body) {
+          observer.observe(body, { childList: true, subtree: true });
+        }
+      } catch (error) {
+        console.warn('useScrollPrevention: Failed to set up MutationObserver', error);
+      }
+    }
     
     // Return cleanup function
     return () => {
-      // Restore original methods
-      window.scrollTo = originalScrollTo;
-      window.scrollBy = originalScrollBy;
-      window.scroll = originalScroll;
-      observer.disconnect();
+      if (isWindowAvailable()) {
+        // Restore original methods
+        window.scrollTo = originalScrollTo;
+        window.scrollBy = originalScrollBy;
+        window.scroll = originalScroll;
+      }
+      if (observer) {
+        observer.disconnect();
+      }
     };
   }, []);
 

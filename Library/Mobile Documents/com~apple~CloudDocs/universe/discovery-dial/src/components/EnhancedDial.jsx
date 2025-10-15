@@ -3,6 +3,7 @@ import { motion, useMotionValue, useTransform } from 'framer-motion';
 import useGestureDetection from '../hooks/useGestureDetection';
 import useDirectionalSwipeDetection from '../hooks/useDirectionalSwipeDetection';
 import useResponsiveDesign from '../hooks/useResponsiveDesign';
+import { safeGetElement, isWindowAvailable, safeAddEventListener, safeRemoveEventListener } from '../utils/safeDOM';
 import { CATEGORIES, CATEGORY_ORDER, CATEGORY_ICONS } from '../data/categories';
 import { TIMEFRAMES, formatTime } from '../utils/formatters';
 import { COMPASS_PROPORTIONS } from '../constants/compassProportions';
@@ -66,7 +67,7 @@ const EnhancedDial = ({
 
   // Smart text visibility management
   const shouldShowDialText = useCallback((textType, eventInfoHeight) => {
-    const availableSpace = window.innerHeight * 0.6; // Dial area height
+    const availableSpace = isWindowAvailable() ? window.innerHeight * 0.6 : 600; // Dial area height
     const eventAreaHeight = eventInfoHeight || 0;
     const requiredSpace = availableSpace - eventAreaHeight;
     
@@ -155,27 +156,37 @@ const EnhancedDial = ({
   // Get dial bounds for gesture detection
   const getDialBounds = useCallback(() => {
     if (!dialRef.current) return null;
-    const rect = dialRef.current.getBoundingClientRect();
-    return {
-      left: rect.left,
-      right: rect.right,
-      top: rect.top,
-      bottom: rect.bottom,
-      centerX: rect.left + rect.width / 2,
-      centerY: rect.top + rect.height / 2
-    };
+    try {
+      const rect = dialRef.current.getBoundingClientRect();
+      return {
+        left: rect.left,
+        right: rect.right,
+        top: rect.top,
+        bottom: rect.bottom,
+        centerX: rect.left + rect.width / 2,
+        centerY: rect.top + rect.height / 2
+      };
+    } catch (error) {
+      console.warn('EnhancedDial: Failed to get dial bounds', error);
+      return null;
+    }
   }, []);
 
   // Get event area bounds
   const getEventAreaBounds = useCallback(() => {
     if (!eventAreaRef.current) return null;
-    const rect = eventAreaRef.current.getBoundingClientRect();
-    return {
-      left: rect.left,
-      right: rect.right,
-      top: rect.top,
-      bottom: rect.bottom
-    };
+    try {
+      const rect = eventAreaRef.current.getBoundingClientRect();
+      return {
+        left: rect.left,
+        right: rect.right,
+        top: rect.top,
+        bottom: rect.bottom
+      };
+    } catch (error) {
+      console.warn('EnhancedDial: Failed to get event area bounds', error);
+      return null;
+    }
   }, []);
 
   // Handle primary category change (vertical swipe)
@@ -326,9 +337,11 @@ const EnhancedDial = ({
     const handleKeyDown = (e) => {
       handleKeyDown(e, onKeyboardGesture);
     };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+    
+    if (isWindowAvailable()) {
+      safeAddEventListener(window, 'keydown', handleKeyDown);
+      return () => safeRemoveEventListener(window, 'keydown', handleKeyDown);
+    }
   }, [handleKeyDown, onKeyboardGesture]);
 
   // Generate outer ring labels

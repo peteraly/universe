@@ -2,18 +2,33 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
+import { isDocumentAvailable, isWindowAvailable } from './utils/safeDOM'
 
 // Debug: Log that main.jsx is loading
 console.log('🔵 main.jsx loading...');
 
-// Catch any top-level errors
-window.addEventListener('error', (e) => {
-  console.error('🔴 Global error:', e.error);
-});
+// Catch any top-level errors (only if window is available)
+if (isWindowAvailable()) {
+  window.addEventListener('error', (e) => {
+    console.error('🔴 Global error:', e.error);
+    // Send to error reporting service if available
+    if (window.errorReporting) {
+      window.errorReporting.captureException(e.error, {
+        tags: { source: 'global_error' }
+      });
+    }
+  });
 
-window.addEventListener('unhandledrejection', (e) => {
-  console.error('🔴 Unhandled promise rejection:', e.reason);
-});
+  window.addEventListener('unhandledrejection', (e) => {
+    console.error('🔴 Unhandled promise rejection:', e.reason);
+    // Send to error reporting service if available
+    if (window.errorReporting) {
+      window.errorReporting.captureException(e.reason, {
+        tags: { source: 'unhandled_rejection' }
+      });
+    }
+  });
+}
 
 // Simple error boundary
 class ErrorBoundary extends React.Component {
@@ -82,12 +97,15 @@ class ErrorBoundary extends React.Component {
 // Debug: Confirm we're about to render
 console.log('🔵 Attempting to render React app...');
 
-const rootElement = document.getElementById('root');
+// Get root element safely
+const rootElement = isDocumentAvailable() ? document.getElementById('root') : null;
 console.log('🔵 Root element:', rootElement);
 
 if (!rootElement) {
   console.error('🔴 CRITICAL: Root element not found!');
-  document.body.innerHTML = '<div style="background:black;color:white;padding:20px;font-family:monospace;">🔴 ERROR: Root element not found. Check index.html</div>';
+  if (isDocumentAvailable() && document.body) {
+    document.body.innerHTML = '<div style="background:black;color:white;padding:20px;font-family:monospace;">🔴 ERROR: Root element not found. Check index.html</div>';
+  }
 } else {
   try {
     const root = ReactDOM.createRoot(rootElement);
@@ -102,11 +120,13 @@ if (!rootElement) {
     console.log('✅ React render called successfully');
   } catch (error) {
     console.error('🔴 CRITICAL ERROR during render:', error);
-    document.body.innerHTML = `
-      <div style="background:black;color:white;padding:20px;font-family:monospace;">
-        <h1 style="color:#FF3B30">🔴 React Render Failed</h1>
-        <pre>${error.toString()}\n\n${error.stack}</pre>
-      </div>
-    `;
+    if (isDocumentAvailable() && document.body) {
+      document.body.innerHTML = `
+        <div style="background:black;color:white;padding:20px;font-family:monospace;">
+          <h1 style="color:#FF3B30">🔴 React Render Failed</h1>
+          <pre>${error.toString()}\n\n${error.stack}</pre>
+        </div>
+      `;
+    }
   }
 }

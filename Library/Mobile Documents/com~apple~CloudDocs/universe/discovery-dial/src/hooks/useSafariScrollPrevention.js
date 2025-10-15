@@ -1,4 +1,13 @@
 import { useEffect, useCallback, useRef } from 'react';
+import { 
+  safeDocumentBody, 
+  isDocumentAvailable, 
+  isWindowAvailable,
+  safeAddEventListener,
+  safeRemoveEventListener,
+  safeSetStyle,
+  safeSetStyles
+} from '../utils/safeDOM';
 
 /**
  * Custom hook for Safari-specific scroll prevention
@@ -21,6 +30,7 @@ const useSafariScrollPrevention = () => {
   // Safari-specific scroll prevention
   const preventSafariScrolling = useCallback(() => {
     if (!isSafari() && !isIOS()) return;
+    if (!isDocumentAvailable() || !isWindowAvailable()) return;
 
     // Safari-specific scroll prevention
     const preventSafariScroll = (e) => {
@@ -31,45 +41,60 @@ const useSafariScrollPrevention = () => {
     };
 
     // Safari-specific event listeners
-    document.addEventListener('touchstart', preventSafariScroll, { passive: false });
-    document.addEventListener('touchmove', preventSafariScroll, { passive: false });
-    document.addEventListener('touchend', preventSafariScroll, { passive: false });
-    document.addEventListener('gesturestart', preventSafariScroll, { passive: false });
-    document.addEventListener('gesturechange', preventSafariScroll, { passive: false });
-    document.addEventListener('gestureend', preventSafariScroll, { passive: false });
+    safeAddEventListener(document, 'touchstart', preventSafariScroll, { passive: false });
+    safeAddEventListener(document, 'touchmove', preventSafariScroll, { passive: false });
+    safeAddEventListener(document, 'touchend', preventSafariScroll, { passive: false });
+    safeAddEventListener(document, 'gesturestart', preventSafariScroll, { passive: false });
+    safeAddEventListener(document, 'gesturechange', preventSafariScroll, { passive: false });
+    safeAddEventListener(document, 'gestureend', preventSafariScroll, { passive: false });
 
     // Prevent Safari's momentum scrolling
-    document.addEventListener('scroll', (e) => {
+    safeAddEventListener(document, 'scroll', (e) => {
       e.preventDefault();
       e.stopPropagation();
-      window.scrollTo(0, 0);
+      if (isWindowAvailable()) {
+        window.scrollTo(0, 0);
+      }
       return false;
     }, { passive: false });
 
     // Override Safari's scroll methods
-    window.scrollTo = () => {};
-    window.scrollBy = () => {};
-    window.scroll = () => {};
+    if (isWindowAvailable()) {
+      window.scrollTo = () => {};
+      window.scrollBy = () => {};
+      window.scroll = () => {};
+    }
 
     // Prevent Safari's scroll restoration
-    if ('scrollRestoration' in history) {
+    if (isWindowAvailable() && 'scrollRestoration' in history) {
       history.scrollRestoration = 'manual';
     }
 
     // Force scroll position to top
     intervalRef.current = setInterval(() => {
-      window.scrollTo(0, 0);
-      document.documentElement.scrollTop = 0;
-      document.body.scrollTop = 0;
+      if (isWindowAvailable()) {
+        window.scrollTo(0, 0);
+      }
+      if (isDocumentAvailable()) {
+        const documentElement = document.documentElement;
+        const body = safeDocumentBody();
+        
+        if (documentElement) {
+          documentElement.scrollTop = 0;
+        }
+        if (body) {
+          body.scrollTop = 0;
+        }
+      }
     }, 100);
 
     return () => {
-      document.removeEventListener('touchstart', preventSafariScroll);
-      document.removeEventListener('touchmove', preventSafariScroll);
-      document.removeEventListener('touchend', preventSafariScroll);
-      document.removeEventListener('gesturestart', preventSafariScroll);
-      document.removeEventListener('gesturechange', preventSafariScroll);
-      document.removeEventListener('gestureend', preventSafariScroll);
+      safeRemoveEventListener(document, 'touchstart', preventSafariScroll);
+      safeRemoveEventListener(document, 'touchmove', preventSafariScroll);
+      safeRemoveEventListener(document, 'touchend', preventSafariScroll);
+      safeRemoveEventListener(document, 'gesturestart', preventSafariScroll);
+      safeRemoveEventListener(document, 'gesturechange', preventSafariScroll);
+      safeRemoveEventListener(document, 'gestureend', preventSafariScroll);
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
       }
@@ -79,6 +104,7 @@ const useSafariScrollPrevention = () => {
   // Safari-specific touch event handling
   const handleSafariTouchEvents = useCallback(() => {
     if (!isSafari() && !isIOS()) return;
+    if (!isDocumentAvailable()) return;
 
     // Safari-specific touch prevention
     const preventSafariTouch = (e) => {
@@ -98,33 +124,35 @@ const useSafariScrollPrevention = () => {
     };
 
     // Apply to all touch events
-    document.addEventListener('touchstart', preventSafariTouch, { passive: false });
-    document.addEventListener('touchmove', preventSafariTouch, { passive: false });
-    document.addEventListener('touchend', preventSafariTouch, { passive: false });
-    document.addEventListener('touchcancel', preventSafariTouch, { passive: false });
+    safeAddEventListener(document, 'touchstart', preventSafariTouch, { passive: false });
+    safeAddEventListener(document, 'touchmove', preventSafariTouch, { passive: false });
+    safeAddEventListener(document, 'touchend', preventSafariTouch, { passive: false });
+    safeAddEventListener(document, 'touchcancel', preventSafariTouch, { passive: false });
 
     // Prevent Safari's gesture events
-    document.addEventListener('gesturestart', preventSafariTouch, { passive: false });
-    document.addEventListener('gesturechange', preventSafariTouch, { passive: false });
-    document.addEventListener('gestureend', preventSafariTouch, { passive: false });
+    safeAddEventListener(document, 'gesturestart', preventSafariTouch, { passive: false });
+    safeAddEventListener(document, 'gesturechange', preventSafariTouch, { passive: false });
+    safeAddEventListener(document, 'gestureend', preventSafariTouch, { passive: false });
 
     return () => {
-      document.removeEventListener('touchstart', preventSafariTouch);
-      document.removeEventListener('touchmove', preventSafariTouch);
-      document.removeEventListener('touchend', preventSafariTouch);
-      document.removeEventListener('touchcancel', preventSafariTouch);
-      document.removeEventListener('gesturestart', preventSafariTouch);
-      document.removeEventListener('gesturechange', preventSafariTouch);
-      document.removeEventListener('gestureend', preventSafariTouch);
+      safeRemoveEventListener(document, 'touchstart', preventSafariTouch);
+      safeRemoveEventListener(document, 'touchmove', preventSafariTouch);
+      safeRemoveEventListener(document, 'touchend', preventSafariTouch);
+      safeRemoveEventListener(document, 'touchcancel', preventSafariTouch);
+      safeRemoveEventListener(document, 'gesturestart', preventSafariTouch);
+      safeRemoveEventListener(document, 'gesturechange', preventSafariTouch);
+      safeRemoveEventListener(document, 'gestureend', preventSafariTouch);
     };
   }, [isSafari, isIOS]);
 
   // Safari-specific CSS injection
   const injectSafariCSS = useCallback(() => {
     if (!isSafari() && !isIOS()) return;
+    if (!isDocumentAvailable()) return;
 
-    const style = document.createElement('style');
-    style.textContent = `
+    try {
+      const style = document.createElement('style');
+      style.textContent = `
       /* Safari-specific scroll prevention */
       html, body, #root, .App {
         overflow: hidden !important;
@@ -164,45 +192,60 @@ const useSafariScrollPrevention = () => {
         height: 0 !important;
       }
     `;
-    document.head.appendChild(style);
-
-    return () => {
-      if (style.parentNode) {
-        style.parentNode.removeChild(style);
+      if (document.head) {
+        document.head.appendChild(style);
       }
-    };
+
+      return () => {
+        if (style.parentNode) {
+          style.parentNode.removeChild(style);
+        }
+      };
+    } catch (error) {
+      console.warn('useSafariScrollPrevention: Failed to inject CSS', error);
+      return () => {};
+    }
   }, [isSafari, isIOS]);
 
   // Safari-specific mutation observer
   const setupSafariMutationObserver = useCallback(() => {
     if (!isSafari() && !isIOS()) return;
+    if (!isDocumentAvailable()) return;
 
-    observerRef.current = new MutationObserver((mutations) => {
-      mutations.forEach((mutation) => {
-        mutation.addedNodes.forEach((node) => {
-          if (node.nodeType === Node.ELEMENT_NODE) {
-            // Apply Safari-specific styles to new elements
-            node.style.overflow = 'hidden';
-            node.style.overscrollBehavior = 'none';
-            node.style.touchAction = 'none';
-            node.style.webkitOverflowScrolling = 'auto';
-          }
+    try {
+      observerRef.current = new MutationObserver((mutations) => {
+        mutations.forEach((mutation) => {
+          mutation.addedNodes.forEach((node) => {
+            if (node.nodeType === Node.ELEMENT_NODE) {
+              // Apply Safari-specific styles to new elements
+              safeSetStyle(node, 'overflow', 'hidden');
+              safeSetStyle(node, 'overscrollBehavior', 'none');
+              safeSetStyle(node, 'touchAction', 'none');
+              safeSetStyle(node, 'webkitOverflowScrolling', 'auto');
+            }
+          });
         });
       });
-    });
 
-    observerRef.current.observe(document.body, {
-      childList: true,
-      subtree: true,
-      attributes: true,
-      attributeFilter: ['style', 'class']
-    });
-
-    return () => {
-      if (observerRef.current) {
-        observerRef.current.disconnect();
+      const body = safeDocumentBody();
+      if (body) {
+        observerRef.current.observe(body, {
+          childList: true,
+          subtree: true,
+          attributes: true,
+          attributeFilter: ['style', 'class']
+        });
       }
-    };
+
+      return () => {
+        if (observerRef.current) {
+          observerRef.current.disconnect();
+        }
+      };
+    } catch (error) {
+      console.warn('useSafariScrollPrevention: Failed to set up MutationObserver', error);
+      return () => {};
+    }
   }, [isSafari, isIOS]);
 
   // Initialize Safari-specific scroll prevention
