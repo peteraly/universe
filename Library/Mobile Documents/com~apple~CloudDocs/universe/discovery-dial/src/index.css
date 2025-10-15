@@ -1245,6 +1245,14 @@ a::-webkit-scrollbar {
     /* Ensure button is within viewport */
     max-width: calc(100vw - 40px) !important;
     max-height: calc(100vh - 40px) !important;
+    /* Mobile Safari touch improvements */
+    -webkit-tap-highlight-color: transparent !important;
+    -webkit-touch-callout: none !important;
+    -webkit-user-select: none !important;
+    touch-action: manipulation !important;
+    /* Ensure button is clickable on mobile Safari */
+    pointer-events: auto !important;
+    cursor: pointer !important;
   }
   
   /* Mobile viewport optimization */

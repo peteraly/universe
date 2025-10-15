@@ -24,10 +24,13 @@ export default function DateRangeButton({ selectedRange = 'TODAY', onRangeChange
       const userAgent = navigator.userAgent;
       const isMobileDevice = /Mobile|Android|iPhone|iPad/.test(userAgent);
       const isTouchDevice = 'ontouchstart' in window;
+      const isMobileSafari = /iPhone|iPad/.test(userAgent) && /Safari/.test(userAgent) && !/Chrome/.test(userAgent);
       
       setIsMobile(isMobileDevice);
       setIsTouch(isTouchDevice);
       
+      // Log for debugging
+      console.log('Device detection:', { isMobileDevice, isTouchDevice, isMobileSafari, userAgent });
     };
     
     checkDevice();
@@ -41,9 +44,13 @@ export default function DateRangeButton({ selectedRange = 'TODAY', onRangeChange
   }, [selectedRange]);
   
   const handleClick = useCallback((e) => {
+    console.log('DateRangeButton clicked:', { currentRange, isMobile, isTouch });
+    
     const currentIndex = DATE_RANGES.indexOf(currentRange);
     const nextIndex = (currentIndex + 1) % DATE_RANGES.length;
     const nextRange = DATE_RANGES[nextIndex];
+    
+    console.log('Changing from', currentRange, 'to', nextRange);
     
     // Update local state immediately for visual feedback
     setCurrentRange(nextRange);
@@ -52,7 +59,7 @@ export default function DateRangeButton({ selectedRange = 'TODAY', onRangeChange
     if (onRangeChange) {
       onRangeChange(nextRange);
     }
-  }, [currentRange, onRangeChange]);
+  }, [currentRange, onRangeChange, isMobile, isTouch]);
 
   // Cross-platform responsive button styles
   const buttonStyle = {
@@ -94,10 +101,24 @@ export default function DateRangeButton({ selectedRange = 'TODAY', onRangeChange
     <button
       onClick={handleClick}
       onTouchStart={(e) => {
-        e.preventDefault(); // Prevent default touch behavior
+        // Don't prevent default on touch start - let the click event fire
+        e.target.style.transform = 'scale(0.95)';
+        e.target.style.backgroundColor = '#0056b3';
       }}
       onTouchEnd={(e) => {
-        e.preventDefault();
+        e.target.style.transform = 'scale(1)';
+        e.target.style.backgroundColor = '#007bff';
+        // Trigger click manually for mobile Safari
+        if (isMobile || isTouch) {
+          e.preventDefault();
+          e.stopPropagation();
+          console.log('Touch end - triggering click manually');
+          handleClick(e);
+        }
+      }}
+      onTouchCancel={(e) => {
+        e.target.style.transform = 'scale(1)';
+        e.target.style.backgroundColor = '#007bff';
       }}
       onMouseDown={(e) => {
         e.target.style.transform = 'scale(0.95)';
