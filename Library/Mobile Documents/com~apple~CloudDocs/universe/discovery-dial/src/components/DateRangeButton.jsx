@@ -19,12 +19,18 @@ export default function DateRangeButton({ selectedRange, onRangeChange }) {
    * Handle button click - cycle to next date range
    */
   const handleClick = useCallback(() => {
+    console.log('DateRangeButton: Click detected, current range:', selectedRange);
+    
     const currentIndex = DATE_RANGES.indexOf(selectedRange);
     const nextIndex = (currentIndex + 1) % DATE_RANGES.length;
     const nextRange = DATE_RANGES[nextIndex];
     
+    console.log('DateRangeButton: Changing from', selectedRange, 'to', nextRange);
+    
     softTick(); // Haptic feedback
     onRangeChange(nextRange);
+    
+    console.log('DateRangeButton: onRangeChange called with', nextRange);
   }, [selectedRange, onRangeChange]);
 
   return (

@@ -7,6 +7,7 @@ import { safeGetElement, isWindowAvailable, safeAddEventListener, safeRemoveEven
 import { CATEGORIES, CATEGORY_ORDER, CATEGORY_ICONS } from '../data/categories';
 import { TIMEFRAMES, formatTime } from '../utils/formatters';
 import { COMPASS_PROPORTIONS } from '../constants/compassProportions';
+import TimeframeToggle from './TimeframeToggle';
 
 const EnhancedDial = ({ 
   onPrimaryCategoryChange, 
@@ -14,7 +15,9 @@ const EnhancedDial = ({
   onEventChange,
   currentPrimaryIndex = 0,
   currentSubIndex = 0,
-  hasSelectedPrimary = false
+  hasSelectedPrimary = false,
+  currentTimeframe = TIMEFRAMES[0],
+  onTimeframeChange
 }) => {
   const dialRef = useRef(null);
   const eventAreaRef = useRef(null);
@@ -625,38 +628,12 @@ const EnhancedDial = ({
         </motion.div>
       )}
 
-      {/* Time Picker - Fixed positioning to prevent overlap */}
+      {/* Timeframe Toggle - Fixed positioning to prevent overlap */}
       <div className="time-picker-container">
-        <div className="time-picker">
-          <button 
-            className="time-picker-button active"
-            onClick={() => onEventChange?.('12AM')}
-            aria-label="Select 12 AM time"
-          >
-            12AM
-          </button>
-          <button 
-            className="time-picker-button"
-            onClick={() => onEventChange?.('6AM')}
-            aria-label="Select 6 AM time"
-          >
-            6AM
-          </button>
-          <button 
-            className="time-picker-button"
-            onClick={() => onEventChange?.('12PM')}
-            aria-label="Select 12 PM time"
-          >
-            12PM
-          </button>
-          <button 
-            className="time-picker-button"
-            onClick={() => onEventChange?.('6PM')}
-            aria-label="Select 6 PM time"
-          >
-            6PM
-          </button>
-        </div>
+        <TimeframeToggle
+          currentTimeframe={currentTimeframe}
+          onTimeframeChange={onTimeframeChange}
+        />
       </div>
     </div>
   );

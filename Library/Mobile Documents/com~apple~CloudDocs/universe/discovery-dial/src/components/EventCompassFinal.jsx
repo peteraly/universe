@@ -20,7 +20,12 @@ import {
  * - Primary swipe: Directional arrows, blue tint, strong double-pulse
  * - Subcategory rotation: Rotation symbol, circle glow, soft triple-tick
  */
-export default function EventCompassFinal({ categories = [], config = {} }) {
+export default function EventCompassFinal({ 
+  categories = [], 
+  config = {},
+  currentTimeframe,
+  onTimeframeChange
+}) {
   const [dialSize, setDialSize] = useState(400);
   
   // TIME PICKER STATE (NEW - ADDITIVE ONLY)
@@ -35,6 +40,11 @@ export default function EventCompassFinal({ categories = [], config = {} }) {
   
   // DATE RANGE STATE (NEW - ADDITIVE)
   const [dateRange, setDateRange] = useState('TODAY');
+  
+  // Debug date range changes
+  useEffect(() => {
+    console.log('EventCompassFinal: Date range changed to:', dateRange);
+  }, [dateRange]);
   
   // Calculate responsive dial size (handles resize AND orientation change)
   useEffect(() => {

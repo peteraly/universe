@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import EventCompassFinal from './components/EventCompassFinal';
 import ErrorBoundary from './components/ErrorBoundary';
 import categoriesData from './data/categories.json';
@@ -6,6 +6,7 @@ import useScrollPrevention from './hooks/useScrollPrevention';
 import useTextSelectionPrevention from './hooks/useTextSelectionPrevention';
 import useSafariScrollPrevention from './hooks/useSafariScrollPrevention';
 import { useWordPressComEvents } from './hooks/useWordPressComEvents';
+import { TIMEFRAMES } from './utils/formatters';
 import { 
   safeDocumentBody, 
   safeDocumentElement, 
@@ -354,6 +355,15 @@ function App() {
   // Initialize WordPress.com events (with fallback to local data)
   const { events: wordPressComEvents, loading, error, categories, stats } = useWordPressComEvents();
 
+  // Timeframe state management
+  const [currentTimeframe, setCurrentTimeframe] = useState(TIMEFRAMES[0]);
+
+  // Handle timeframe change
+  const handleTimeframeChange = useCallback((newTimeframe) => {
+    console.log('App: Timeframe changed to', newTimeframe);
+    setCurrentTimeframe(newTimeframe);
+  }, []);
+
   return (
     <ErrorBoundary name="App">
       <EventCompassFinal
@@ -363,6 +373,8 @@ function App() {
         wordPressError={error}
         wordPressCategories={categories}
         wordPressStats={stats}
+        currentTimeframe={currentTimeframe}
+        onTimeframeChange={handleTimeframeChange}
       />
     </ErrorBoundary>
   );

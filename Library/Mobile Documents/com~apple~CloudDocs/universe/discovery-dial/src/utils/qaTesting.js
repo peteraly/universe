@@ -107,6 +107,40 @@ export const testTimePicker = () => {
 };
 
 /**
+ * Test date range button functionality
+ */
+export const testDateRangeButton = () => {
+  console.log('🧪 Testing date range button...');
+  
+  // Look for the date range button (it's a motion.button with specific styling)
+  const dateRangeButton = document.querySelector('button[aria-label*="Date range"]');
+  if (!dateRangeButton) {
+    console.error('❌ Date range button not found');
+    return false;
+  }
+  
+  // Test if button is clickable
+  const isClickable = dateRangeButton.style.pointerEvents !== 'none' && !dateRangeButton.disabled;
+  if (!isClickable) {
+    console.error('❌ Date range button is not clickable');
+    return false;
+  }
+  
+  // Test click functionality
+  try {
+    console.log('Testing date range button click...');
+    dateRangeButton.click();
+    console.log('✅ Date range button click test passed');
+  } catch (error) {
+    console.error('❌ Date range button click failed:', error);
+    return false;
+  }
+  
+  console.log('✅ Date range button test passed');
+  return true;
+};
+
+/**
  * Test mobile responsiveness
  */
 export const testMobileResponsiveness = () => {
@@ -264,6 +298,7 @@ export const runAllQATests = async () => {
     { name: 'Compass Labels', fn: testCompassLabels },
     { name: 'Event Information', fn: testEventInformation },
     { name: 'Time Picker', fn: testTimePicker },
+    { name: 'Date Range Button', fn: testDateRangeButton },
     { name: 'Mobile Responsiveness', fn: testMobileResponsiveness },
     { name: 'Touch Events', fn: testTouchEvents },
     { name: 'WordPress API', fn: testWordPressAPI },
@@ -341,6 +376,7 @@ if (typeof window !== 'undefined') {
     testCompassLabels,
     testEventInformation,
     testTimePicker,
+    testDateRangeButton,
     testMobileResponsiveness,
     testTouchEvents,
     testWordPressAPI,
@@ -352,4 +388,5 @@ if (typeof window !== 'undefined') {
   };
   
   console.log('🔧 QA Testing utilities loaded. Use window.qaTesting.runAllQATests() to run all tests.');
+  console.log('🔧 Test date range button: window.qaTesting.testDateRangeButton()');
 }
