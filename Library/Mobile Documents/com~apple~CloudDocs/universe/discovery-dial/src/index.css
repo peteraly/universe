@@ -1235,16 +1235,16 @@ a::-webkit-scrollbar {
   /* Fix day toggle button visibility - position below time selector */
   .date-range-button {
     position: fixed !important;
-    bottom: 80px !important; /* Position below time selector */
-    right: 20px !important;
-    z-index: 1000 !important;
+    bottom: 60px !important; /* Position below time selector - reduced from 80px */
+    right: 16px !important;
+    z-index: 9999 !important; /* Higher z-index to ensure visibility */
     /* Make button larger for mobile touch */
     min-width: 120px !important;
     min-height: 44px !important;
     font-size: 16px !important;
     /* Ensure button is within viewport */
-    max-width: calc(100vw - 40px) !important;
-    max-height: calc(100vh - 40px) !important;
+    max-width: calc(100vw - 32px) !important;
+    max-height: calc(100vh - 32px) !important;
     /* Mobile Safari touch improvements */
     -webkit-tap-highlight-color: transparent !important;
     -webkit-touch-callout: none !important;
@@ -1253,6 +1253,16 @@ a::-webkit-scrollbar {
     /* Ensure button is clickable on mobile Safari */
     pointer-events: auto !important;
     cursor: pointer !important;
+    /* Ensure button is always visible */
+    display: block !important;
+    visibility: visible !important;
+    opacity: 1 !important;
+    /* Add background to ensure visibility */
+    background-color: #007bff !important;
+    border: 2px solid #007bff !important;
+    color: white !important;
+    /* Add shadow for better visibility */
+    box-shadow: 0 4px 12px rgba(0, 123, 255, 0.4) !important;
   }
   
   /* Mobile viewport optimization */

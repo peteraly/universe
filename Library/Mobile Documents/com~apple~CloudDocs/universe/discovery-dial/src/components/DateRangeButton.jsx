@@ -43,6 +43,23 @@ export default function DateRangeButton({ selectedRange = 'TODAY', onRangeChange
     setCurrentRange(selectedRange);
   }, [selectedRange]);
   
+  // Force button visibility on mobile
+  useEffect(() => {
+    if (isMobile) {
+      const button = document.querySelector('.date-range-button');
+      if (button) {
+        button.style.position = 'fixed';
+        button.style.bottom = '60px';
+        button.style.right = '16px';
+        button.style.zIndex = '9999';
+        button.style.display = 'block';
+        button.style.visibility = 'visible';
+        button.style.opacity = '1';
+        console.log('Forced button visibility on mobile');
+      }
+    }
+  }, [isMobile]);
+  
   const handleClick = useCallback((e) => {
     console.log('DateRangeButton clicked:', { currentRange, isMobile, isTouch });
     
@@ -65,7 +82,7 @@ export default function DateRangeButton({ selectedRange = 'TODAY', onRangeChange
   const buttonStyle = {
     position: 'fixed',
     right: isMobile ? '16px' : '20px',
-    bottom: isMobile ? '16px' : '20px',
+    bottom: isMobile ? '60px' : '20px', // Match CSS positioning
     border: '2px solid #007bff',
     backgroundColor: '#007bff',
     padding: isMobile ? '16px 24px' : '12px 20px', // Larger touch targets on mobile
@@ -74,7 +91,7 @@ export default function DateRangeButton({ selectedRange = 'TODAY', onRangeChange
     fontSize: isMobile ? '16px' : '14px', // Larger text on mobile
     fontWeight: 'bold',
     cursor: 'pointer',
-    zIndex: 1000,
+    zIndex: 9999, // Higher z-index to ensure visibility
     minWidth: isMobile ? '120px' : '100px', // Larger minimum width on mobile
     minHeight: '44px', // WCAG minimum touch target
     textAlign: 'center',
