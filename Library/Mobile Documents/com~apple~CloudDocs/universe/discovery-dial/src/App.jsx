@@ -20,6 +20,7 @@ import {
 import './utils/testWordPress'; // Import test utilities
 import './utils/testWordPressCom'; // Import WordPress.com test utilities
 import './utils/qaTesting'; // Import QA testing utilities
+import './utils/mobileUIDebug'; // Import mobile UI debug utilities
 
 /**
  * Main application component.
@@ -35,6 +36,31 @@ function App() {
   // Initialize Safari-specific scroll prevention
   const { isSafari, isIOS } = useSafariScrollPrevention();
 
+  // Mobile UI visibility functions
+  const updateSubcategoryPosition = useCallback(() => {
+    if (window.innerWidth <= 768) {
+      // Mobile-specific positioning
+      const subcategoryDial = document.querySelector('.subcategory-dial');
+      if (subcategoryDial) {
+        subcategoryDial.style.position = 'relative';
+        subcategoryDial.style.maxWidth = '100vw';
+        subcategoryDial.style.maxHeight = '100vh';
+      }
+    }
+  }, []);
+
+  const ensureButtonVisibility = useCallback(() => {
+    const button = document.querySelector('.date-range-button');
+    if (button && window.innerWidth <= 768) {
+      button.style.position = 'fixed';
+      button.style.bottom = '20px';
+      button.style.right = '20px';
+      button.style.zIndex = '1000';
+      button.style.minWidth = '120px';
+      button.style.minHeight = '44px';
+    }
+  }, []);
+
   // Mobile detection and initialization
   useEffect(() => {
     const isMobile = () => {
@@ -49,10 +75,39 @@ function App() {
         document.body.classList.add('mobile-device');
       }
       
+      // Apply mobile UI fixes
+      updateSubcategoryPosition();
+      ensureButtonVisibility();
+      
       // Mobile-specific initialization
       console.log('Mobile device detected - applying mobile optimizations');
     }
-  }, []);
+  }, [updateSubcategoryPosition, ensureButtonVisibility]);
+
+  // Handle window resize for mobile UI adjustments
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 768) {
+        // Apply mobile-specific styles
+        if (isDocumentAvailable() && document.body) {
+          document.body.classList.add('mobile-viewport');
+        }
+        updateSubcategoryPosition();
+        ensureButtonVisibility();
+      } else {
+        if (isDocumentAvailable() && document.body) {
+          document.body.classList.remove('mobile-viewport');
+        }
+      }
+    };
+    
+    if (isWindowAvailable()) {
+      window.addEventListener('resize', handleResize);
+      handleResize(); // Run on mount
+      
+      return () => window.removeEventListener('resize', handleResize);
+    }
+  }, [updateSubcategoryPosition, ensureButtonVisibility]);
 
   // Enhanced text selection and scroll prevention
   useEffect(() => {

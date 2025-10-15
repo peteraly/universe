@@ -1201,6 +1201,57 @@ a::-webkit-scrollbar {
 }
 
 /* Mobile landscape orientation */
+/* Mobile UI Visibility Fixes */
+@media screen and (max-width: 768px) {
+  /* Fix subcategory dial positioning */
+  .subcategory-dial {
+    position: relative !important;
+    max-width: 100vw !important;
+    max-height: 100vh !important;
+    overflow: visible !important;
+  }
+  
+  .subcategory-items {
+    position: absolute !important;
+    transform: translate(-50%, -50%) !important;
+    /* Ensure items are within screen bounds */
+    left: clamp(10%, 50%, 90%) !important;
+    top: clamp(10%, 50%, 90%) !important;
+  }
+  
+  /* Fix day toggle button visibility */
+  .date-range-button {
+    position: fixed !important;
+    bottom: 20px !important;
+    right: 20px !important;
+    z-index: 1000 !important;
+    /* Make button larger for mobile touch */
+    min-width: 120px !important;
+    min-height: 44px !important;
+    font-size: 16px !important;
+    /* Ensure button is within viewport */
+    max-width: calc(100vw - 40px) !important;
+    max-height: calc(100vh - 40px) !important;
+  }
+  
+  /* Mobile viewport optimization */
+  .dial-container {
+    width: 100vw !important;
+    height: 100vh !important;
+    max-width: 100vw !important;
+    max-height: 100vh !important;
+    overflow: hidden !important;
+  }
+  
+  .compass-labels {
+    position: absolute !important;
+    font-size: clamp(12px, 4vw, 16px) !important;
+    /* Ensure labels are within viewport */
+    left: clamp(5%, 50%, 95%) !important;
+    top: clamp(5%, 50%, 95%) !important;
+  }
+}
+
 @media screen and (max-width: 768px) and (orientation: landscape) {
   .dial-container {
     width: 60vh !important;
