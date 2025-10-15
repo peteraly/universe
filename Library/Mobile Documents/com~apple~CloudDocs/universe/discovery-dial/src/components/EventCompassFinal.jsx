@@ -417,10 +417,40 @@ export default function EventCompassFinal({
             : 0;
           
           const angle = (i * 360) / subCount - dragRotation;  // Subtract to rotate with drag
-          const radius = dialSize * 0.58; // 58% from center (OUTSIDE the circle)
+          
+          // RESPONSIVE RADIUS: Adjust based on screen size to keep labels in viewport
+          const viewportWidth = window.innerWidth;
+          const viewportHeight = window.innerHeight;
+          const isMobile = viewportWidth <= 768;
+          
+          // Use smaller radius on mobile to keep labels visible
+          const baseRadius = isMobile ? 0.45 : 0.58; // 45% on mobile, 58% on desktop
+          const radius = dialSize * baseRadius;
+          
           const centerX = dialSize / 2;
           const centerY = dialSize / 2;
           const pos = polarToCartesian(centerX, centerY, radius, angle);
+          
+          // BOUNDS CHECKING: Ensure labels stay within viewport
+          const labelWidth = sub.label.length * 8 + 20; // Dynamic width based on text length
+          const labelHeight = 20; // Approximate label height
+          const margin = 30; // Safety margin from viewport edge
+          
+          // Calculate bounds with padding
+          const minX = margin + labelWidth/2;
+          const maxX = viewportWidth - margin - labelWidth/2;
+          const minY = margin + labelHeight/2;
+          const maxY = viewportHeight - margin - labelHeight/2;
+          
+          // Clamp position to viewport bounds
+          const adjustedPos = {
+            x: Math.max(minX, Math.min(maxX, pos.x)),
+            y: Math.max(minY, Math.min(maxY, pos.y))
+          };
+          
+          // If position was adjusted, reduce opacity to indicate it's constrained
+          const wasAdjusted = (adjustedPos.x !== pos.x) || (adjustedPos.y !== pos.y);
+          const constraintOpacity = wasAdjusted ? 0.6 : 1;
           
           const isActive = i === state.subIndex;
           const isHovered = hoverSubIndex !== null && i === hoverSubIndex;
@@ -452,6 +482,9 @@ export default function EventCompassFinal({
             opacity = 0.8;  // Enhanced: brighter adjacent
           }
           
+          // Apply constraint opacity if position was adjusted
+          opacity *= constraintOpacity;
+          
           return (
             <motion.div
               key={sub.id}
@@ -462,8 +495,8 @@ export default function EventCompassFinal({
               transition={{ duration: 0.3 }}
               style={{
                 position: 'absolute',
-                left: `${pos.x}px`,
-                top: `${pos.y}px`,
+                left: `${adjustedPos.x}px`,
+                top: `${adjustedPos.y}px`,
                 transform: 'translate(-50%, -50%)',
                 fontSize,
                 fontWeight,

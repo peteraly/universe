@@ -1219,6 +1219,19 @@ a::-webkit-scrollbar {
     top: clamp(10%, 50%, 90%) !important;
   }
   
+  /* Ensure subcategory labels stay within viewport bounds */
+  [data-dial-root] > div {
+    max-width: calc(100vw - 40px) !important;
+    max-height: calc(100vh - 40px) !important;
+    overflow: visible !important;
+  }
+  
+  /* Subcategory label positioning constraints */
+  [data-dial-root] > div[style*="position: absolute"] {
+    left: clamp(20px, var(--label-x, 50%), calc(100vw - 20px)) !important;
+    top: clamp(20px, var(--label-y, 50%), calc(100vh - 20px)) !important;
+  }
+  
   /* Fix day toggle button visibility - position below time selector */
   .date-range-button {
     position: fixed !important;
