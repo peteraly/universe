@@ -509,8 +509,6 @@ export default function EventCompassFinal({
         selectedRange={dateRange}
         onRangeChange={handleDateRangeChange}
       />
-      
-
 
       {/* EVENT READOUT (with slide transition) */}
       <AnimatePresence mode="wait">
