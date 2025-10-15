@@ -25,6 +25,7 @@ import './utils/qaTesting'; // Import QA testing utilities
 import './utils/mobileUIDebug'; // Import mobile UI debug utilities
 import './utils/comprehensiveQATesting'; // Import comprehensive QA testing utilities
 import './utils/completeFunctionalityVerification'; // Import complete functionality verification utilities
+import './utils/eventDiscoveryTesting'; // Import Event Discovery testing utilities
 
 /**
  * Main application component.
