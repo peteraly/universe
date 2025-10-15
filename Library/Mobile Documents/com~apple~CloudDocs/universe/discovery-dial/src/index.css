@@ -1219,10 +1219,10 @@ a::-webkit-scrollbar {
     top: clamp(10%, 50%, 90%) !important;
   }
   
-  /* Fix day toggle button visibility */
+  /* Fix day toggle button visibility - position below time selector */
   .date-range-button {
     position: fixed !important;
-    bottom: 20px !important;
+    bottom: 80px !important; /* Position below time selector */
     right: 20px !important;
     z-index: 1000 !important;
     /* Make button larger for mobile touch */

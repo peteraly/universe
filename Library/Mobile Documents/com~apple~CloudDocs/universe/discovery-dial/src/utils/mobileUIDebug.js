@@ -90,7 +90,7 @@ export const forceMobileUIFixes = () => {
   const button = document.querySelector('.date-range-button');
   if (button) {
     button.style.position = 'fixed';
-    button.style.bottom = '20px';
+    button.style.bottom = '80px'; // Position below time selector
     button.style.right = '20px';
     button.style.zIndex = '1000';
     button.style.minWidth = '120px';
