@@ -33,6 +33,7 @@ import './utils/gestureAndFilterTesting'; // Import gesture and filter testing u
 import './utils/testingDashboard'; // Import testing dashboard
 import './utils/mapPinSynchronization'; // Import map pin synchronization utilities
 import './utils/gestureDebug'; // Import gesture debug utilities
+import './utils/mobileGestureTest'; // Import mobile gesture test utilities
 
 /**
  * Main application component.
@@ -639,6 +640,18 @@ function App() {
       console.log('  window.gestureDebug.testGestureDetection() - Test touch event capture');
       console.log('  window.gestureDebug.testDialElements() - Test dial element detection');
       console.log('  window.gestureDebug.testGestureState() - Test gesture state');
+    }
+  }, []);
+
+  // Initialize mobile gesture test utilities
+  useEffect(() => {
+    if (isWindowAvailable() && window.mobileGestureTest) {
+      console.log('📱 Mobile Gesture Test utilities initialized');
+      console.log('Available commands:');
+      console.log('  window.mobileGestureTest.runMobileGestureTests() - Run all mobile gesture tests');
+      console.log('  window.mobileGestureTest.testMobileGestures() - Test device and touch support');
+      console.log('  window.mobileGestureTest.testTouchEvents() - Test touch event capture');
+      console.log('  window.mobileGestureTest.testGestureDetection() - Test gesture detection');
     }
   }, []);
 
