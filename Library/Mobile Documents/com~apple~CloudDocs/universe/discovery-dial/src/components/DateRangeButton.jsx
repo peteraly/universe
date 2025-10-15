@@ -76,10 +76,11 @@ export default function DateRangeButton({ selectedRange = 'TODAY', onRangeChange
     position: 'fixed',
     right: isMobile ? '16px' : '20px',
     bottom: isMobile ? '16px' : '20px',
+    // DEBUG: Make button more visible
+    border: '3px solid red',
+    backgroundColor: '#ff0000',
     padding: isMobile ? '16px 24px' : '12px 20px', // Larger touch targets on mobile
-    backgroundColor: '#007bff',
     color: 'white',
-    border: 'none',
     borderRadius: '8px',
     fontSize: isMobile ? '16px' : '14px', // Larger text on mobile
     fontWeight: 'bold',
