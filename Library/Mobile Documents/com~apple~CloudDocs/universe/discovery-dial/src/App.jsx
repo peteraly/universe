@@ -33,6 +33,25 @@ function App() {
   // Initialize Safari-specific scroll prevention
   const { isSafari, isIOS } = useSafariScrollPrevention();
 
+  // Mobile detection and initialization
+  useEffect(() => {
+    const isMobile = () => {
+      return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+             (window.innerWidth <= 768) ||
+             ('ontouchstart' in window);
+    };
+
+    if (isMobile()) {
+      // Add mobile device class
+      if (isDocumentAvailable() && document.body) {
+        document.body.classList.add('mobile-device');
+      }
+      
+      // Mobile-specific initialization
+      console.log('Mobile device detected - applying mobile optimizations');
+    }
+  }, []);
+
   // Enhanced text selection and scroll prevention
   useEffect(() => {
     const preventSelectionAndScrolling = (e) => {
