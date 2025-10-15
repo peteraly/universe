@@ -2,7 +2,12 @@ import React, { useEffect, useRef, useState } from 'react';
 import mapboxgl from 'mapbox-gl';
 import { getCategoryColor } from '../data/mockEvents';
 
-const EventDiscoveryMap = ({ events, onEventSelect }) => {
+const EventDiscoveryMap = ({ 
+  events, 
+  selectedCategory, 
+  selectedSubcategory, 
+  onEventSelect 
+}) => {
   const mapContainer = useRef(null);
   const map = useRef(null);
   const markers = useRef([]);
@@ -71,11 +76,15 @@ const EventDiscoveryMap = ({ events, onEventSelect }) => {
       markers.current.forEach(marker => marker.remove());
       markers.current = [];
 
-      // Add new markers
+      // Add new markers with enhanced styling
       events.forEach(event => {
+        const isSelected = selectedCategory && 
+          event.categoryPrimary === selectedCategory.name;
+        
         const marker = new mapboxgl.Marker({
           color: getCategoryColor(event.categoryPrimary),
-          scale: window.innerWidth <= 768 ? 1.0 : 1.2 // Smaller markers on mobile
+          scale: isSelected ? 1.5 : (window.innerWidth <= 768 ? 1.0 : 1.2), // Larger for selected
+          opacity: isSelected ? 1.0 : 0.7 // More opaque for selected
         })
         .setLngLat(event.coordinates)
         .setPopup(
@@ -110,10 +119,11 @@ const EventDiscoveryMap = ({ events, onEventSelect }) => {
         const bounds = new mapboxgl.LngLatBounds();
         events.forEach(event => bounds.extend(event.coordinates));
         
-        // Add some padding around the bounds
+        // Add more padding for dial overlay
         map.current.fitBounds(bounds, { 
-          padding: 50,
-          maxZoom: 15 // Don't zoom in too much
+          padding: 150, // More padding for dial overlay
+          maxZoom: 13, // Don't zoom in too much
+          duration: 1000
         });
       }
 
@@ -122,10 +132,10 @@ const EventDiscoveryMap = ({ events, onEventSelect }) => {
     } catch (error) {
       console.error('🗺️ Error updating map markers:', error);
     }
-  }, [events, mapLoaded, onEventSelect]);
+  }, [events, selectedCategory, selectedSubcategory, mapLoaded, onEventSelect]);
 
   return (
-    <div className="event-discovery-map">
+    <div className="map-background-container">
       <div ref={mapContainer} className="map-container" />
       {!mapLoaded && (
         <div className="map-loading">

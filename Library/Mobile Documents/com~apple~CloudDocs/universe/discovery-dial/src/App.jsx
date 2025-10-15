@@ -1,9 +1,11 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import EventCompassFinal from './components/EventCompassFinal';
-import EventDiscovery from './components/EventDiscovery';
+import EventDiscoveryMap from './components/EventDiscoveryMap';
+import EventDiscoveryFilters from './components/EventDiscoveryFilters';
+import EventInformationDisplay from './components/EventInformationDisplay';
 import ErrorBoundary from './components/ErrorBoundary';
-import AddButton from './components/AddButton';
 import categoriesData from './data/categories.json';
+import { MOCK_EVENTS } from './data/mockEvents';
 import useScrollPrevention from './hooks/useScrollPrevention';
 import useTextSelectionPrevention from './hooks/useTextSelectionPrevention';
 import useSafariScrollPrevention from './hooks/useSafariScrollPrevention';
@@ -26,14 +28,24 @@ import './utils/mobileUIDebug'; // Import mobile UI debug utilities
 import './utils/comprehensiveQATesting'; // Import comprehensive QA testing utilities
 import './utils/completeFunctionalityVerification'; // Import complete functionality verification utilities
 import './utils/eventDiscoveryTesting'; // Import Event Discovery testing utilities
+import './utils/gestureAndFilterTesting'; // Import gesture and filter testing utilities
+import './utils/testingDashboard'; // Import testing dashboard
 
 /**
  * Main application component.
  * FINAL PRODUCTION VERSION - Clean compass dial with WordPress.com integration and complete scroll prevention
  */
 function App() {
-  // View state management
-  const [currentView, setCurrentView] = useState('compass'); // 'compass' or 'discovery'
+  // Unified state management for map background integration
+  const [selectedCategory, setSelectedCategory] = useState(null);
+  const [selectedSubcategory, setSelectedSubcategory] = useState(null);
+  const [filteredEvents, setFilteredEvents] = useState(MOCK_EVENTS);
+  const [activeFilters, setActiveFilters] = useState({
+    time: 'All',
+    day: 'All',
+    category: 'All'
+  });
+  const [highlightedEvent, setHighlightedEvent] = useState(null);
 
   // Initialize complete scroll prevention
   useScrollPrevention();
@@ -458,6 +470,74 @@ function App() {
     setCurrentTimeframe(newTimeframe);
   }, []);
 
+  // Dynamic event filtering based on dial selection and filters
+  const filterEventsByDialSelection = useCallback((events, category, subcategory, filters) => {
+    let filtered = events;
+    
+    // Filter by dial selection
+    if (category) {
+      filtered = filtered.filter(event => 
+        event.categoryPrimary === category.name
+      );
+    }
+    
+    if (subcategory) {
+      filtered = filtered.filter(event => 
+        event.categorySecondary === subcategory.label
+      );
+    }
+    
+    // Apply additional filters
+    if (filters.time !== 'All') {
+      filtered = filtered.filter(event => event.time === filters.time);
+    }
+    
+    if (filters.day !== 'All') {
+      filtered = filtered.filter(event => event.day === filters.day);
+    }
+    
+    if (filters.category !== 'All') {
+      filtered = filtered.filter(event => event.categoryPrimary === filters.category);
+    }
+    
+    return filtered;
+  }, []);
+
+  // Update filtered events when selections change
+  useEffect(() => {
+    const filtered = filterEventsByDialSelection(
+      MOCK_EVENTS, 
+      selectedCategory, 
+      selectedSubcategory, 
+      activeFilters
+    );
+    setFilteredEvents(filtered);
+  }, [selectedCategory, selectedSubcategory, activeFilters, filterEventsByDialSelection]);
+
+  // Handle category selection from dial
+  const handleCategorySelect = useCallback((category) => {
+    setSelectedCategory(category);
+    setSelectedSubcategory(null); // Reset subcategory when category changes
+  }, []);
+
+  // Handle subcategory selection from dial
+  const handleSubcategorySelect = useCallback((subcategory) => {
+    setSelectedSubcategory(subcategory);
+  }, []);
+
+  // Handle filter changes
+  const handleFilterChange = useCallback((filterType, value) => {
+    setActiveFilters(prevFilters => ({
+      ...prevFilters,
+      [filterType]: value,
+    }));
+  }, []);
+
+  // Handle event selection from map
+  const handleEventSelect = useCallback((event) => {
+    setHighlightedEvent(event);
+  }, []);
+
   // Run comprehensive QA tests after app loads
   useEffect(() => {
     const runQATests = async () => {
@@ -500,43 +580,93 @@ function App() {
     runFunctionalityVerification();
   }, []);
 
-  // Handle add button click - toggle between compass and map views
-  const handleAddClick = useCallback((e) => {
-    e.preventDefault();
-    e.stopPropagation();
-    
-    const newView = currentView === 'compass' ? 'discovery' : 'compass';
-    setCurrentView(newView);
-    
-    console.log(`🔄 View switched to: ${newView}`);
-    
-    // Update document body class for view-specific styling
-    if (isDocumentAvailable() && document.body) {
-      document.body.classList.toggle('compass-view', newView === 'compass');
-      document.body.classList.toggle('discovery-view', newView === 'discovery');
+  // Run gesture and filter testing after app loads
+  useEffect(() => {
+    const runGestureAndFilterTests = async () => {
+      // Wait for app to fully load and other tests to complete
+      await new Promise(resolve => setTimeout(resolve, 4000));
+      
+      console.log('🧪 Starting gesture and filter testing...');
+      try {
+        if (isWindowAvailable() && window.gestureAndFilterTesting) {
+          await window.gestureAndFilterTesting.runComprehensiveTests();
+        } else {
+          console.warn('Gesture and filter testing not available');
+        }
+      } catch (error) {
+        console.error('Gesture and filter testing failed:', error);
+      }
+    };
+
+    runGestureAndFilterTests();
+  }, []);
+
+  // Initialize testing dashboard
+  useEffect(() => {
+    if (isWindowAvailable() && window.testingDashboard) {
+      console.log('🧪 Testing Dashboard initialized');
+      console.log('Available commands:');
+      console.log('  window.testingDashboard.runAllTests() - Run comprehensive tests');
+      console.log('  window.testingDashboard.quickGestureTest() - Quick gesture test');
+      console.log('  window.testingDashboard.quickFilterTest() - Quick filter test');
+      console.log('  window.testingDashboard.quickMobileTest() - Quick mobile test');
+      console.log('  window.testingDashboard.exportResults() - Export test results');
     }
-  }, [currentView]);
+  }, []);
 
   return (
     <ErrorBoundary name="App">
-      {currentView === 'compass' ? (
-        <EventCompassFinal
-          categories={categoriesData.categories}
-          wordPressEvents={wordPressComEvents}
-          wordPressLoading={loading}
-          wordPressError={error}
-          wordPressCategories={categories}
-          wordPressStats={stats}
-          currentTimeframe={currentTimeframe}
-          onTimeframeChange={handleTimeframeChange}
-        />
-      ) : (
-        <EventDiscovery />
-      )}
-      <AddButton 
-        onClick={handleAddClick} 
-        currentView={currentView}
-      />
+      <div className="unified-app-container">
+        {/* Full-screen Map Background */}
+        <div className="map-background-layer">
+          <EventDiscoveryMap 
+            events={filteredEvents}
+            selectedCategory={selectedCategory}
+            selectedSubcategory={selectedSubcategory}
+            onEventSelect={handleEventSelect}
+          />
+        </div>
+        
+        {/* Event Information Panel - Above Dial */}
+        <div className="event-info-panel">
+          <EventInformationDisplay 
+            event={highlightedEvent}
+            selectedCategory={selectedCategory}
+            selectedSubcategory={selectedSubcategory}
+          />
+        </div>
+        
+        {/* Repositioned Dial Interface - Bottom */}
+        <div className="dial-foreground-layer">
+          <EventCompassFinal
+            categories={categoriesData.categories}
+            wordPressEvents={wordPressComEvents}
+            wordPressLoading={loading}
+            wordPressError={error}
+            wordPressCategories={categories}
+            wordPressStats={stats}
+            currentTimeframe={currentTimeframe}
+            onTimeframeChange={handleTimeframeChange}
+            onCategorySelect={handleCategorySelect}
+            onSubcategorySelect={handleSubcategorySelect}
+            highlightedEvent={highlightedEvent}
+          />
+        </div>
+        
+        {/* Time Controls - Right Side (Unchanged) */}
+        <div className="time-controls-overlay">
+          {/* Time picker and day toggle will be added here */}
+        </div>
+        
+        {/* Filter Controls - Top (Unchanged) */}
+        <div className="controls-overlay">
+          <EventDiscoveryFilters 
+            filters={activeFilters}
+            onFilterChange={handleFilterChange}
+            compact={true}
+          />
+        </div>
+      </div>
     </ErrorBoundary>
   );
 }

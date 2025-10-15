@@ -24,7 +24,10 @@ export default function EventCompassFinal({
   categories = [], 
   config = {},
   currentTimeframe,
-  onTimeframeChange
+  onTimeframeChange,
+  onCategorySelect,
+  onSubcategorySelect,
+  highlightedEvent
 }) {
   const [dialSize, setDialSize] = useState(400);
   
@@ -117,6 +120,20 @@ export default function EventCompassFinal({
   useEffect(() => {
     setFilteredEventIndex(0);
   }, [state.subIndex, selectedTime, dateRange]);
+
+  // Notify parent component when category selection changes
+  useEffect(() => {
+    if (onCategorySelect && state.activePrimary) {
+      onCategorySelect(state.activePrimary);
+    }
+  }, [state.activePrimary, onCategorySelect]);
+
+  // Notify parent component when subcategory selection changes
+  useEffect(() => {
+    if (onSubcategorySelect && state.activeSub) {
+      onSubcategorySelect(state.activeSub);
+    }
+  }, [state.activeSub, onSubcategorySelect]);
   
   // Get the currently displayed event from filtered list
   const displayedEvent = useMemo(() => {

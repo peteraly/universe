@@ -1,79 +1,54 @@
-import { motion, AnimatePresence } from 'framer-motion';
-import { memo } from 'react';
+import React from 'react';
 
-const EventInformationDisplay = ({ event, isVisible = true }) => {
-  if (!isVisible || !event) return null;
+/**
+ * Event Information Display Component
+ * Shows event details, category information, or placeholder text
+ * Positioned above the dial in the repositioned layout
+ */
+const EventInformationDisplay = ({ 
+  event, 
+  selectedCategory, 
+  selectedSubcategory 
+}) => {
+  // Show placeholder when nothing is selected
+  if (!event && !selectedCategory) {
+    return (
+      <div className="event-info-placeholder">
+        <h3 className="info-title">Select a category to discover events</h3>
+        <p className="info-subtitle">Rotate the dial to explore different event categories</p>
+      </div>
+    );
+  }
 
+  // Show category information when category is selected but no event
+  if (!event && selectedCategory) {
+    return (
+      <div className="event-info-category">
+        <h3 className="info-title">{selectedCategory.name}</h3>
+        {selectedSubcategory && (
+          <p className="info-subtitle">{selectedSubcategory.label}</p>
+        )}
+        <p className="info-description">Select a subcategory to see specific events</p>
+      </div>
+    );
+  }
+
+  // Show detailed event information
   return (
-    <AnimatePresence mode="wait">
-      <motion.div
-        key={event.id || 'no-event'}
-        className="event-information-area"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -20 }}
-        transition={{ duration: 0.3 }}
-      >
-        <div className="event-content">
-          <motion.h2
-            className="event-title"
-            initial={{ scale: 0.9 }}
-            animate={{ scale: 1 }}
-            transition={{ delay: 0.1, type: 'spring', stiffness: 300 }}
-            style={{ 
-              display: '-webkit-box',
-              WebkitLineClamp: 2,
-              WebkitBoxOrient: 'vertical',
-              overflow: 'hidden'
-            }}
-          >
-            {event.name || 'No Event Selected'}
-          </motion.h2>
-          
-          <motion.div
-            className="event-description"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.2 }}
-          >
-            {event.tags?.join(' · ')}
-            {event.tags?.length > 0 && ' · '}
-            {event.category}
-          </motion.div>
-          
-          <motion.div
-            className="event-details"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.3 }}
-          >
-            {event.address && (
-              <div className="event-address">
-                {event.address}
-              </div>
-            )}
-            
-            <div className="event-time-distance">
-              {event.time}
-              {event.distance && ` · ${event.distance}`}
-            </div>
-          </motion.div>
-
-          {/* Event count indicator */}
-          {event.totalEvents > 1 && (
-            <motion.div
-              className="event-count-indicator"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.4 }}
-            >
-              {event.currentIndex + 1} of {event.totalEvents} events
-            </motion.div>
-          )}
-        </div>
-      </motion.div>
-    </AnimatePresence>
+    <div className="event-info-details">
+      <div className="event-header">
+        <h3 className="event-title">{event.name}</h3>
+        <span className="event-category">{event.categoryPrimary}</span>
+      </div>
+      <div className="event-meta">
+        <p className="event-time">🕐 {event.time}</p>
+        <p className="event-venue">📍 {event.venue}</p>
+        <p className="event-price">💰 {event.price}</p>
+        <p className="event-attendees">👥 {event.attendees} attending</p>
+      </div>
+      <p className="event-description">{event.description}</p>
+    </div>
   );
 };
 
-export default memo(EventInformationDisplay);
+export default EventInformationDisplay;
