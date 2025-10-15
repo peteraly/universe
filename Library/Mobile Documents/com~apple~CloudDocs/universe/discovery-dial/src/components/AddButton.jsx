@@ -1,10 +1,11 @@
 import React from 'react';
 
 /**
- * Simple + icon button component
+ * View toggle button component
+ * Switches between compass and map views
  * Clean, minimal design matching the app's black/white theme
  */
-const AddButton = ({ onClick, className = '' }) => {
+const AddButton = ({ onClick, currentView = 'compass', className = '' }) => {
   const handleClick = (e) => {
     e.preventDefault();
     e.stopPropagation();
@@ -17,7 +18,7 @@ const AddButton = ({ onClick, className = '' }) => {
     <button
       onClick={handleClick}
       className={`add-button ${className}`}
-      aria-label="Add new item"
+      aria-label={currentView === 'compass' ? 'Switch to Map View' : 'Switch to Compass View'}
       style={{
         position: 'fixed',
         bottom: '20px',
@@ -68,7 +69,7 @@ const AddButton = ({ onClick, className = '' }) => {
         e.target.style.color = '#000000';
       }}
     >
-      +
+      {currentView === 'compass' ? '🗺️' : '🧭'}
     </button>
   );
 };

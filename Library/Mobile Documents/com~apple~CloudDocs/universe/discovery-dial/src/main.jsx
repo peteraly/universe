@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App.jsx'
 import './index.css'
+import 'mapbox-gl/dist/mapbox-gl.css'
 import { isDocumentAvailable, isWindowAvailable } from './utils/safeDOM'
 
 // Debug: Log that main.jsx is loading

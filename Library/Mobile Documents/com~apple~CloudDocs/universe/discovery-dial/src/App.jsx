@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import EventCompassFinal from './components/EventCompassFinal';
+import EventDiscovery from './components/EventDiscovery';
 import ErrorBoundary from './components/ErrorBoundary';
 import AddButton from './components/AddButton';
 import categoriesData from './data/categories.json';
@@ -30,6 +31,9 @@ import './utils/completeFunctionalityVerification'; // Import complete functiona
  * FINAL PRODUCTION VERSION - Clean compass dial with WordPress.com integration and complete scroll prevention
  */
 function App() {
+  // View state management
+  const [currentView, setCurrentView] = useState('compass'); // 'compass' or 'discovery'
+
   // Initialize complete scroll prevention
   useScrollPrevention();
 
@@ -495,26 +499,43 @@ function App() {
     runFunctionalityVerification();
   }, []);
 
-  // Handle add button click
+  // Handle add button click - toggle between compass and map views
   const handleAddClick = useCallback((e) => {
-    console.log('Add button clicked');
-    // Add your add functionality here
-    // For now, just log the click
-  }, []);
+    e.preventDefault();
+    e.stopPropagation();
+    
+    const newView = currentView === 'compass' ? 'discovery' : 'compass';
+    setCurrentView(newView);
+    
+    console.log(`🔄 View switched to: ${newView}`);
+    
+    // Update document body class for view-specific styling
+    if (isDocumentAvailable() && document.body) {
+      document.body.classList.toggle('compass-view', newView === 'compass');
+      document.body.classList.toggle('discovery-view', newView === 'discovery');
+    }
+  }, [currentView]);
 
   return (
     <ErrorBoundary name="App">
-      <EventCompassFinal
-        categories={categoriesData.categories}
-        wordPressEvents={wordPressComEvents}
-        wordPressLoading={loading}
-        wordPressError={error}
-        wordPressCategories={categories}
-        wordPressStats={stats}
-        currentTimeframe={currentTimeframe}
-        onTimeframeChange={handleTimeframeChange}
+      {currentView === 'compass' ? (
+        <EventCompassFinal
+          categories={categoriesData.categories}
+          wordPressEvents={wordPressComEvents}
+          wordPressLoading={loading}
+          wordPressError={error}
+          wordPressCategories={categories}
+          wordPressStats={stats}
+          currentTimeframe={currentTimeframe}
+          onTimeframeChange={handleTimeframeChange}
+        />
+      ) : (
+        <EventDiscovery />
+      )}
+      <AddButton 
+        onClick={handleAddClick} 
+        currentView={currentView}
       />
-      <AddButton onClick={handleAddClick} />
     </ErrorBoundary>
   );
 }
