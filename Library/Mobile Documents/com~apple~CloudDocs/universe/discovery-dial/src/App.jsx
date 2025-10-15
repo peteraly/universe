@@ -658,8 +658,8 @@ function App() {
           {/* Time picker and day toggle will be added here */}
         </div>
         
-        {/* Filter Controls - Top (Unchanged) */}
-        <div className="controls-overlay">
+        {/* Filter Controls - Hidden (using today toggle below time filter instead) */}
+        <div className="controls-overlay" style={{ display: 'none' }}>
           <EventDiscoveryFilters 
             filters={activeFilters}
             onFilterChange={handleFilterChange}
