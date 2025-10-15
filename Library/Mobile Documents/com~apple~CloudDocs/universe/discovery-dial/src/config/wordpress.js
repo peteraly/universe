@@ -5,13 +5,13 @@
 
 export const WORDPRESS_CONFIG = {
   // API endpoints
-  API_URL: process.env.WORDPRESS_API_URL || 'https://hyyper.co/graphql',
-  REST_API_URL: process.env.WORDPRESS_REST_API_URL || 'https://hyyper.co/wp-json/wp/v2',
+  API_URL: import.meta.env.VITE_WORDPRESS_API_URL || 'https://hyyper.co/graphql',
+  REST_API_URL: import.meta.env.VITE_WORDPRESS_REST_API_URL || 'https://hyyper.co/wp-json/wp/v2',
   
   // Authentication
-  PREVIEW_SECRET: process.env.WORDPRESS_PREVIEW_SECRET,
-  USERNAME: process.env.WORDPRESS_USERNAME,
-  PASSWORD: process.env.WORDPRESS_PASSWORD,
+  PREVIEW_SECRET: import.meta.env.VITE_WORDPRESS_PREVIEW_SECRET,
+  USERNAME: import.meta.env.VITE_WORDPRESS_USERNAME,
+  PASSWORD: import.meta.env.VITE_WORDPRESS_PASSWORD,
   
   // Cache settings
   CACHE_DURATION: 5 * 60 * 1000, // 5 minutes

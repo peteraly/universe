@@ -3,7 +3,7 @@
  * This file handles integration with WordPress.com (hosted WordPress)
  */
 
-const WORDPRESS_COM_API_URL = process.env.WORDPRESS_API_URL || 'https://hyyper.co/wp-json/wp/v2';
+const WORDPRESS_COM_API_URL = import.meta.env.VITE_WORDPRESS_API_URL || 'https://hyyper.co/wp-json/wp/v2';
 
 // Cache configuration
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
