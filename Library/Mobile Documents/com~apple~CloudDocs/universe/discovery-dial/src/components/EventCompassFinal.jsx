@@ -43,7 +43,18 @@ export default function EventCompassFinal({
   
   // Debug date range changes
   useEffect(() => {
-    console.log('EventCompassFinal: Date range changed to:', dateRange);
+    console.log('🚨 EventCompassFinal: Date range changed to:', dateRange);
+  }, [dateRange]);
+
+  // Enhanced date range change handler
+  const handleDateRangeChange = useCallback((newRange) => {
+    console.log('🚨 EventCompassFinal: Date range changing to:', newRange);
+    setDateRange(newRange);
+  }, []);
+
+  // Timeframe context for debugging
+  useEffect(() => {
+    console.log('🚨 EventCompassFinal: Current timeframe context:', dateRange);
   }, [dateRange]);
   
   // Calculate responsive dial size (handles resize AND orientation change)
@@ -500,10 +511,26 @@ export default function EventCompassFinal({
       {/* DATE RANGE BUTTON (NEW - ADDITIVE) */}
       <DateRangeButton 
         selectedRange={dateRange}
-        onRangeChange={setDateRange}
+        onRangeChange={handleDateRangeChange}
       />
 
-      {/* TIME BADGE REMOVED - Info already shown on right side controls (time picker + date button) */}
+      {/* TIMEFRAME INDICATOR */}
+      <div style={{
+        position: 'fixed',
+        top: '20px',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        background: 'rgba(0, 0, 0, 0.8)',
+        color: 'white',
+        padding: '8px 16px',
+        borderRadius: '20px',
+        fontSize: '14px',
+        fontWeight: 'bold',
+        zIndex: 50,
+        pointerEvents: 'none'
+      }}>
+        Showing: {dateRange}
+      </div>
 
       {/* EVENT READOUT (with slide transition) */}
       <AnimatePresence mode="wait">

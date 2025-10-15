@@ -129,7 +129,23 @@ export const testDateRangeButton = () => {
   // Test click functionality
   try {
     console.log('Testing date range button click...');
+    const initialText = dateRangeButton.textContent.trim();
+    console.log('Initial button text:', initialText);
+    
     dateRangeButton.click();
+    
+    // Wait a bit for the state to update
+    setTimeout(() => {
+      const newText = dateRangeButton.textContent.trim();
+      console.log('New button text:', newText);
+      
+      if (newText !== initialText) {
+        console.log('✅ Date range button text changed successfully');
+      } else {
+        console.log('⚠️ Date range button text did not change');
+      }
+    }, 200);
+    
     console.log('✅ Date range button click test passed');
   } catch (error) {
     console.error('❌ Date range button click failed:', error);

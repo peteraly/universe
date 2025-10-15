@@ -18,8 +18,10 @@ export default function DateRangeButton({ selectedRange, onRangeChange }) {
   /**
    * Handle button click - cycle to next date range
    */
-  const handleClick = useCallback(() => {
-    console.log('DateRangeButton: Click detected, current range:', selectedRange);
+  const handleClick = useCallback((e) => {
+    console.log('🚨 DateRangeButton: CLICK DETECTED!', selectedRange);
+    e.preventDefault();
+    e.stopPropagation();
     
     const currentIndex = DATE_RANGES.indexOf(selectedRange);
     const nextIndex = (currentIndex + 1) % DATE_RANGES.length;
@@ -27,8 +29,18 @@ export default function DateRangeButton({ selectedRange, onRangeChange }) {
     
     console.log('DateRangeButton: Changing from', selectedRange, 'to', nextRange);
     
-    softTick(); // Haptic feedback
-    onRangeChange(nextRange);
+    // Haptic feedback
+    if (navigator.vibrate) {
+      navigator.vibrate(10);
+    }
+    
+    // Call parent callback
+    if (onRangeChange) {
+      console.log('DateRangeButton: Calling onRangeChange with:', nextRange);
+      onRangeChange(nextRange);
+    } else {
+      console.error('❌ DateRangeButton: onRangeChange callback is missing!');
+    }
     
     console.log('DateRangeButton: onRangeChange called with', nextRange);
   }, [selectedRange, onRangeChange]);
@@ -66,7 +78,8 @@ export default function DateRangeButton({ selectedRange, onRangeChange }) {
         userSelect: 'none',
         WebkitTapHighlightColor: 'transparent',
         outline: 'none',
-        overflow: 'hidden'
+        overflow: 'hidden',
+        pointerEvents: 'auto' // CRITICAL: Ensure button is clickable
       }}
       aria-label={`Date range: ${selectedRange}. Click to change.`}
       role="button"
