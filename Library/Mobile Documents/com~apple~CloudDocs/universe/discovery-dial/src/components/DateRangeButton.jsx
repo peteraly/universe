@@ -165,15 +165,15 @@ export default function DateRangeButton({ selectedRange = 'TODAY', onRangeChange
       }}
       onMouseDown={(e) => {
         console.log('🖱️ MOUSE DOWN detected');
+        e.target.style.transform = 'scale(0.95)';
       }}
       onMouseUp={(e) => {
         console.log('🖱️ MOUSE UP detected');
+        e.target.style.transform = 'scale(1)';
       }}
       style={buttonStyle}
       onMouseOver={(e) => e.target.style.backgroundColor = '#0056b3'}
       onMouseOut={(e) => e.target.style.backgroundColor = '#007bff'}
-      onMouseDown={(e) => e.target.style.transform = 'scale(0.95)'}
-      onMouseUp={(e) => e.target.style.transform = 'scale(1)'}
       aria-label={`Current timeframe: ${currentRange}. Click to change.`}
       role="button"
       tabIndex={0}
