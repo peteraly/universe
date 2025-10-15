@@ -20,7 +20,16 @@ const EventDiscoveryMap = ({ events, onEventSelect }) => {
         style: 'mapbox://styles/mapbox/dark-v11', // Dark theme to match app
         center: [-74.0060, 40.7128], // Default center (NYC)
         zoom: 12,
-        attributionControl: false // Hide attribution for cleaner look
+        attributionControl: false, // Hide attribution for cleaner look
+        // Mobile optimizations
+        touchZoomRotate: true,
+        dragPan: true,
+        scrollZoom: true,
+        boxZoom: false,
+        doubleClickZoom: true,
+        keyboard: false, // Disable keyboard controls on mobile
+        maxZoom: 18,
+        minZoom: 10
       });
 
       // Add navigation controls
@@ -66,7 +75,7 @@ const EventDiscoveryMap = ({ events, onEventSelect }) => {
       events.forEach(event => {
         const marker = new mapboxgl.Marker({
           color: getCategoryColor(event.categoryPrimary),
-          scale: 1.2
+          scale: window.innerWidth <= 768 ? 1.0 : 1.2 // Smaller markers on mobile
         })
         .setLngLat(event.coordinates)
         .setPopup(
