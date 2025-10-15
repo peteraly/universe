@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import EventCompassFinal from './components/EventCompassFinal';
 import ErrorBoundary from './components/ErrorBoundary';
+import PlaylistPanel from './components/PlaylistPanel';
+import PlaylistBuilder from './components/PlaylistBuilder';
 import categoriesData from './data/categories.json';
 import useScrollPrevention from './hooks/useScrollPrevention';
 import useTextSelectionPrevention from './hooks/useTextSelectionPrevention';
@@ -23,6 +25,7 @@ import './utils/qaTesting'; // Import QA testing utilities
 import './utils/mobileUIDebug'; // Import mobile UI debug utilities
 import './utils/comprehensiveQATesting'; // Import comprehensive QA testing utilities
 import './utils/completeFunctionalityVerification'; // Import complete functionality verification utilities
+import './utils/socialSharingTesting'; // Import social sharing testing utilities
 
 /**
  * Main application component.
@@ -421,6 +424,37 @@ function App() {
     setCurrentTimeframe(newTimeframe);
   }, []);
 
+  // Playlist state management
+  const [showPlaylistPanel, setShowPlaylistPanel] = useState(false);
+  const [showPlaylistBuilder, setShowPlaylistBuilder] = useState(false);
+  const [currentPlaylist, setCurrentPlaylist] = useState(null);
+  const [selectedEvents, setSelectedEvents] = useState([]);
+
+  // Handle playlist panel toggle
+  const handlePlaylistPanelToggle = useCallback(() => {
+    setShowPlaylistPanel(prev => !prev);
+  }, []);
+
+  // Handle playlist builder toggle
+  const handlePlaylistBuilderToggle = useCallback((playlist = null) => {
+    setCurrentPlaylist(playlist);
+    setShowPlaylistBuilder(prev => !prev);
+  }, []);
+
+  // Handle playlist save
+  const handlePlaylistSave = useCallback((playlistData) => {
+    console.log('App: Playlist saved', playlistData);
+    // This would typically save to backend
+    setShowPlaylistBuilder(false);
+    setCurrentPlaylist(null);
+  }, []);
+
+  // Handle event selection from playlist
+  const handleEventSelection = useCallback((eventIds) => {
+    console.log('App: Events selected from playlist', eventIds);
+    setSelectedEvents(eventIds);
+  }, []);
+
   // Run comprehensive QA tests after app loads
   useEffect(() => {
     const runQATests = async () => {
@@ -463,8 +497,66 @@ function App() {
     runFunctionalityVerification();
   }, []);
 
+  // Run social sharing tests after app loads
+  useEffect(() => {
+    const runSocialSharingTests = async () => {
+      // Wait for app to fully load
+      await new Promise(resolve => setTimeout(resolve, 4000));
+      
+      console.log('🚀 Starting social sharing tests...');
+      try {
+        if (isWindowAvailable() && window.socialSharingTesting) {
+          await window.socialSharingTesting.runAllSocialSharingTests();
+        } else {
+          console.warn('Social sharing testing not available');
+        }
+      } catch (error) {
+        console.error('Social sharing tests failed:', error);
+      }
+    };
+
+    runSocialSharingTests();
+  }, []);
+
   return (
     <ErrorBoundary name="App">
+      {/* Playlist Button */}
+      <button
+        className="playlist-button"
+        onClick={handlePlaylistPanelToggle}
+        style={{
+          position: 'fixed',
+          top: window.innerWidth <= 768 ? '15px' : '20px',
+          right: window.innerWidth <= 768 ? '15px' : '20px',
+          zIndex: 1000,
+          background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+          border: 'none',
+          color: 'white',
+          padding: window.innerWidth <= 768 ? '10px 14px' : '12px 16px',
+          borderRadius: '25px',
+          fontSize: window.innerWidth <= 768 ? '12px' : '14px',
+          fontWeight: '600',
+          cursor: 'pointer',
+          boxShadow: '0 4px 15px rgba(102, 126, 234, 0.4)',
+          transition: 'all 0.3s ease',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '6px',
+          minWidth: window.innerWidth <= 768 ? '100px' : '120px',
+          minHeight: window.innerWidth <= 768 ? '40px' : '44px'
+        }}
+        onMouseEnter={(e) => {
+          e.target.style.transform = 'translateY(-2px)';
+          e.target.style.boxShadow = '0 6px 20px rgba(102, 126, 234, 0.6)';
+        }}
+        onMouseLeave={(e) => {
+          e.target.style.transform = 'translateY(0)';
+          e.target.style.boxShadow = '0 4px 15px rgba(102, 126, 234, 0.4)';
+        }}
+      >
+        🎵 {window.innerWidth <= 768 ? 'Lists' : 'Playlists'}
+      </button>
+
       <EventCompassFinal
         categories={categoriesData.categories}
         wordPressEvents={wordPressComEvents}
@@ -474,6 +566,27 @@ function App() {
         wordPressStats={stats}
         currentTimeframe={currentTimeframe}
         onTimeframeChange={handleTimeframeChange}
+      />
+
+      {/* Playlist Panel */}
+      <PlaylistPanel
+        isOpen={showPlaylistPanel}
+        onClose={() => setShowPlaylistPanel(false)}
+        onEventSelect={handleEventSelection}
+        selectedEvents={selectedEvents}
+        onOpenBuilder={() => {
+          setShowPlaylistPanel(false);
+          setShowPlaylistBuilder(true);
+        }}
+      />
+
+      {/* Playlist Builder */}
+      <PlaylistBuilder
+        isOpen={showPlaylistBuilder}
+        onClose={() => setShowPlaylistBuilder(false)}
+        playlist={currentPlaylist}
+        availableEvents={wordPressComEvents}
+        onPlaylistSave={handlePlaylistSave}
       />
     </ErrorBoundary>
   );
