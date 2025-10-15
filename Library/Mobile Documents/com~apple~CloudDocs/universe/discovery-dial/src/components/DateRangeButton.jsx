@@ -30,10 +30,9 @@ export default function DateRangeButton({ selectedRange, onRangeChange }) {
     console.log('🚨 DateRangeButton: Event type:', e.type);
     console.log('🚨 DateRangeButton: Event target:', e.target);
     
-    // Safari-specific event handling
+    // Prevent default browser behaviors
     e.preventDefault();
     e.stopPropagation();
-    e.stopImmediatePropagation();
     
     const currentIndex = DATE_RANGES.indexOf(selectedRange);
     const nextIndex = (currentIndex + 1) % DATE_RANGES.length;
@@ -47,14 +46,11 @@ export default function DateRangeButton({ selectedRange, onRangeChange }) {
       navigator.vibrate(10);
     }
     
-    // Call parent callback with timeout for Safari
+    // Call parent callback
     if (onRangeChange) {
       console.log('DateRangeButton: Calling onRangeChange with:', nextRange);
-      // Use setTimeout to ensure Safari processes the event
-      setTimeout(() => {
-        onRangeChange(nextRange);
-        console.log('DateRangeButton: onRangeChange executed with timeout');
-      }, 0);
+      onRangeChange(nextRange);
+      console.log('DateRangeButton: onRangeChange executed');
     } else {
       console.error('❌ DateRangeButton: onRangeChange callback is missing!');
     }
@@ -118,26 +114,12 @@ export default function DateRangeButton({ selectedRange, onRangeChange }) {
         onClick={handleClick}
         onMouseDown={(e) => {
           console.log('🚨 DateRangeButton: MOUSE DOWN detected!');
-          e.preventDefault();
-          e.stopPropagation();
         }}
         onTouchStart={(e) => {
           console.log('🚨 DateRangeButton: TOUCH START detected!');
-          e.preventDefault();
-          e.stopPropagation();
-        }}
-        onTouchEnd={(e) => {
-          console.log('🚨 DateRangeButton: TOUCH END detected!');
-          e.preventDefault();
-          e.stopPropagation();
-        }}
-        onMouseUp={(e) => {
-          console.log('🚨 DateRangeButton: MOUSE UP detected!');
-          e.preventDefault();
-          e.stopPropagation();
         }}
         style={buttonStyle}
-        aria-label={`Date range: {selectedRange}. Click to change.`}
+        aria-label={`Date range: ${selectedRange}. Click to change.`}
         role="button"
         tabIndex={0}
       >
@@ -156,23 +138,9 @@ export default function DateRangeButton({ selectedRange, onRangeChange }) {
       onClick={handleClick}
       onMouseDown={(e) => {
         console.log('🚨 DateRangeButton: MOUSE DOWN detected!');
-        e.preventDefault();
-        e.stopPropagation();
       }}
       onTouchStart={(e) => {
         console.log('🚨 DateRangeButton: TOUCH START detected!');
-        e.preventDefault();
-        e.stopPropagation();
-      }}
-      onTouchEnd={(e) => {
-        console.log('🚨 DateRangeButton: TOUCH END detected!');
-        e.preventDefault();
-        e.stopPropagation();
-      }}
-      onMouseUp={(e) => {
-        console.log('🚨 DateRangeButton: MOUSE UP detected!');
-        e.preventDefault();
-        e.stopPropagation();
       }}
       whileTap={{ scale: 0.95 }}
       transition={{ type: 'spring', stiffness: 400, damping: 25 }}
