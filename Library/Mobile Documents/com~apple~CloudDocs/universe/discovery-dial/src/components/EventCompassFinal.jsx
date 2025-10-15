@@ -423,25 +423,25 @@ export default function EventCompassFinal({
           const viewportHeight = window.innerHeight;
           const isMobile = viewportWidth <= 768;
           
-          // Dynamic radius calculation based on text length - allow more extension
+          // MAXIMUM radius calculation - allow text to extend to absolute maximum
           const maxTextLength = Math.max(...subcategories.map(sub => sub.label.length));
-          const textLengthMultiplier = Math.max(1, maxTextLength / 10); // More aggressive multiplier
-          const baseRadius = isMobile ? 0.35 : 0.50; // Increased base radius for more space
+          const textLengthMultiplier = Math.max(1, maxTextLength / 8); // Even more aggressive multiplier
+          const baseRadius = isMobile ? 0.40 : 0.55; // Maximum base radius for maximum space
           const adjustedRadius = baseRadius * textLengthMultiplier;
-          const radius = dialSize * Math.min(adjustedRadius, 0.8); // Increased cap to 80% for more extension
+          const radius = dialSize * Math.min(adjustedRadius, 0.9); // Maximum cap at 90% for absolute extension
           
           const centerX = dialSize / 2;
           const centerY = dialSize / 2;
           const pos = polarToCartesian(centerX, centerY, radius, angle);
           
-          // EXTENDED BOUNDS CHECKING: Allow text to extend beyond dial for full visibility
+          // MAXIMUM BOUNDS CHECKING: Allow text to extend to absolute edges
           const fontSize = isMobile ? 14 : 16;
           const charWidth = fontSize * 0.6; // Approximate character width
           const labelWidth = sub.label.length * charWidth + 24; // Dynamic width with padding
           const labelHeight = fontSize + 12; // Dynamic height with padding
-          const margin = isMobile ? 20 : 15; // Reduced margin to allow text to extend further
+          const margin = isMobile ? 5 : 5; // Minimal margin - allow text to go almost to edges
           
-          // Calculate bounds with minimal padding to allow text extension
+          // Calculate bounds with absolute minimal padding
           const minX = margin + labelWidth/2;
           const maxX = viewportWidth - margin - labelWidth/2;
           const minY = margin + labelHeight/2;
