@@ -32,6 +32,7 @@ import './utils/eventDiscoveryTesting'; // Import Event Discovery testing utilit
 import './utils/gestureAndFilterTesting'; // Import gesture and filter testing utilities
 import './utils/testingDashboard'; // Import testing dashboard
 import './utils/mapPinSynchronization'; // Import map pin synchronization utilities
+import './utils/gestureDebug'; // Import gesture debug utilities
 
 /**
  * Main application component.
@@ -626,6 +627,18 @@ function App() {
       console.log('  window.mapPinSynchronization.testFilterSynchronization() - Test filter sync');
       console.log('  window.mapPinSynchronization.testPinVisibility() - Test pin visibility');
       console.log('  window.mapPinSynchronization.testPinRenderingPerformance() - Test performance');
+    }
+  }, []);
+
+  // Initialize gesture debug utilities
+  useEffect(() => {
+    if (isWindowAvailable() && window.gestureDebug) {
+      console.log('🧪 Gesture Debug utilities initialized');
+      console.log('Available commands:');
+      console.log('  window.gestureDebug.runGestureDiagnostics() - Run all gesture diagnostics');
+      console.log('  window.gestureDebug.testGestureDetection() - Test touch event capture');
+      console.log('  window.gestureDebug.testDialElements() - Test dial element detection');
+      console.log('  window.gestureDebug.testGestureState() - Test gesture state');
     }
   }, []);
 

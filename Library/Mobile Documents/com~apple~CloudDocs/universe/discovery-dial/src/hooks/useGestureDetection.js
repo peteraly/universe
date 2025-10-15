@@ -164,33 +164,14 @@ const useGestureDetection = () => {
     e.stopPropagation();
     e.stopImmediatePropagation();
     
-    // Prevent text selection and scrolling during touch
+    // Prevent multi-touch gestures
     if (e.touches.length > 1) {
-      e.preventDefault();
-      e.stopPropagation();
-      e.stopImmediatePropagation();
       return;
     }
-    
-    // Prevent momentum scrolling
-    if (e.touches.length > 1) {
-      e.preventDefault();
-      e.stopPropagation();
-      e.stopImmediatePropagation();
-      return;
-    }
-    
-    // Additional scroll prevention
-    e.preventDefault();
-    e.stopPropagation();
-    e.stopImmediatePropagation();
     
     // Safari-specific scroll prevention
     if (navigator.userAgent.includes('Safari') && !navigator.userAgent.includes('Chrome')) {
-      // Force scroll position to top for Safari
       window.scrollTo(0, 0);
-      document.documentElement.scrollTop = 0;
-      document.body.scrollTop = 0;
     }
     
     const touch = e.touches[0];
@@ -229,33 +210,9 @@ const useGestureDetection = () => {
     e.stopPropagation();
     e.stopImmediatePropagation();
     
-    // Prevent text selection and scrolling during gesture
+    // Prevent multi-touch gestures
     if (e.touches.length > 1) {
-      e.preventDefault();
-      e.stopPropagation();
-      e.stopImmediatePropagation();
       return;
-    }
-    
-    // Prevent scroll during gesture
-    if (e.touches.length > 1) {
-      e.preventDefault();
-      e.stopPropagation();
-      e.stopImmediatePropagation();
-      return;
-    }
-    
-    // Additional scroll prevention
-    e.preventDefault();
-    e.stopPropagation();
-    e.stopImmediatePropagation();
-    
-    // Safari-specific scroll prevention
-    if (navigator.userAgent.includes('Safari') && !navigator.userAgent.includes('Chrome')) {
-      // Force scroll position to top for Safari
-      window.scrollTo(0, 0);
-      document.documentElement.scrollTop = 0;
-      document.body.scrollTop = 0;
     }
 
     const touch = e.touches[0];
@@ -295,27 +252,6 @@ const useGestureDetection = () => {
     e.preventDefault();
     e.stopPropagation();
     e.stopImmediatePropagation();
-    
-    // Prevent text selection and scrolling on touch end
-    if (e.touches.length > 1) {
-      e.preventDefault();
-      e.stopPropagation();
-      e.stopImmediatePropagation();
-      return;
-    }
-    
-    // Additional scroll prevention
-    e.preventDefault();
-    e.stopPropagation();
-    e.stopImmediatePropagation();
-    
-    // Safari-specific scroll prevention
-    if (navigator.userAgent.includes('Safari') && !navigator.userAgent.includes('Chrome')) {
-      // Force scroll position to top for Safari
-      window.scrollTo(0, 0);
-      document.documentElement.scrollTop = 0;
-      document.body.scrollTop = 0;
-    }
     
     if (gestureState.activeGesture) {
       onGestureComplete?.(gestureState.activeGesture);
