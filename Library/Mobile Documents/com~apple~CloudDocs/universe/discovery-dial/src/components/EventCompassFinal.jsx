@@ -471,18 +471,18 @@ export default function EventCompassFinal({
           const isAdjacent = distance === 1;
           
           // Enhanced: Progressive sizing and opacity
-          let fontSize = '10px';
+          let dynamicFontSize = '10px';
           let fontWeight = '500';
           let opacity = 0.4;
           let textShadow = 'none';
           
           if (isActive) {
-            fontSize = '14px';  // Enhanced: larger active
+            dynamicFontSize = '14px';  // Enhanced: larger active
             fontWeight = '700';
             opacity = 1;
             textShadow = '0 0 6px rgba(255, 255, 255, 0.4)';  // Enhanced: glow
           } else if (isAdjacent) {
-            fontSize = '12px';
+            dynamicFontSize = '12px';
             fontWeight = '600';
             opacity = 0.8;  // Enhanced: brighter adjacent
           }
@@ -503,7 +503,7 @@ export default function EventCompassFinal({
                 left: `${adjustedPos.x}px`,
                 top: `${adjustedPos.y}px`,
                 transform: 'translate(-50%, -50%)',
-                fontSize,
+                fontSize: dynamicFontSize,
                 fontWeight,
                 letterSpacing: '0.3px',
                 color: 'white',
