@@ -42,11 +42,6 @@
   ],
   "env": {
     "WORDPRESS_API_URL": "https://hyyper.co/wp-json/wp/v2"
-  },
-  "functions": {
-    "src/pages/api/**/*.js": {
-      "maxDuration": 30
-    }
   }
 }
 
