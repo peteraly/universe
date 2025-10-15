@@ -513,6 +513,21 @@ export default function EventCompassFinal({
         selectedRange={dateRange}
         onRangeChange={handleDateRangeChange}
       />
+      
+      {/* DEBUG: Fallback button to test rendering */}
+      <div style={{
+        position: 'fixed',
+        top: '100px',
+        right: '20px',
+        background: 'lime',
+        color: 'black',
+        padding: '10px',
+        borderRadius: '5px',
+        zIndex: 9999,
+        fontSize: '12px'
+      }}>
+        DEBUG: Button should be below
+      </div>
 
       {/* TIMEFRAME INDICATOR - Enhanced Debug Display */}
       <div style={{

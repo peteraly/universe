@@ -13,6 +13,8 @@ const DATE_RANGES = ['TODAY', 'TOMORROW', 'THIS WEEK', 'THIS MONTH'];
  * - Meets accessibility standards (WCAG)
  */
 export default function DateRangeButton({ selectedRange = 'TODAY', onRangeChange }) {
+  console.log('🚨 DateRangeButton RENDERED with selectedRange:', selectedRange);
+  
   const [currentRange, setCurrentRange] = useState(selectedRange);
   const [isMobile, setIsMobile] = useState(false);
   const [isTouch, setIsTouch] = useState(false);
@@ -153,6 +155,9 @@ export default function DateRangeButton({ selectedRange = 'TODAY', onRangeChange
     }
   }, [isMobile, isTouch]);
 
+  // DEBUG: Always render something visible
+  console.log('🚨 DateRangeButton ABOUT TO RENDER button');
+  
   return (
     <button
       onClick={handleClick}
