@@ -295,6 +295,7 @@ const EnhancedDial = ({
     // Prevent default browser behaviors that interfere with dial gestures
     e.preventDefault();
     e.stopPropagation();
+    e.stopImmediatePropagation();
     
     // Unlock position for new gesture
     setPositionLocked(false);
@@ -304,25 +305,33 @@ const EnhancedDial = ({
     const eventBounds = getEventAreaBounds();
     const dialCenter = dialBounds ? { x: dialBounds.centerX, y: dialBounds.centerY } : null;
     
-    handleTouchStart(e, dialBounds, eventBounds, dialCenter);
+    // Mobile-specific optimizations
+    if (e.touches.length === 1) {
+      handleTouchStart(e, dialBounds, eventBounds, dialCenter);
+    }
   }, [handleTouchStart, getDialBounds, getEventAreaBounds, clearPositionTimeouts]);
 
   const onTouchMove = useCallback((e) => {
     // Prevent default browser behaviors that interfere with dial gestures
     e.preventDefault();
     e.stopPropagation();
+    e.stopImmediatePropagation();
     
-    const dialBounds = getDialBounds();
-    const eventBounds = getEventAreaBounds();
-    const dialCenter = dialBounds ? { x: dialBounds.centerX, y: dialBounds.centerY } : null;
-    
-    handleTouchMove(e, dialBounds, eventBounds, dialCenter, onGestureDetected);
+    // Mobile-specific optimizations
+    if (e.touches.length === 1) {
+      const dialBounds = getDialBounds();
+      const eventBounds = getEventAreaBounds();
+      const dialCenter = dialBounds ? { x: dialBounds.centerX, y: dialBounds.centerY } : null;
+      
+      handleTouchMove(e, dialBounds, eventBounds, dialCenter, onGestureDetected);
+    }
   }, [handleTouchMove, getDialBounds, getEventAreaBounds, onGestureDetected]);
 
   const onTouchEnd = useCallback((e) => {
     // Prevent default browser behaviors that interfere with dial gestures
     e.preventDefault();
     e.stopPropagation();
+    e.stopImmediatePropagation();
     
     // Get final position and lock it immediately
     const finalPosition = rotate.get();
@@ -332,7 +341,10 @@ const EnhancedDial = ({
     // Clear any pending position updates
     clearPositionTimeouts();
     
-    handleTouchEnd(e, onGestureComplete);
+    // Mobile-specific optimizations
+    if (e.changedTouches.length === 1) {
+      handleTouchEnd(e, onGestureComplete);
+    }
   }, [handleTouchEnd, onGestureComplete, rotate, clearPositionTimeouts]);
 
   // Keyboard event listener

@@ -48,6 +48,8 @@ html {
   -ms-overflow-style: none !important;
   /* Mobile Safari specific fixes */
   -webkit-text-size-adjust: 100% !important;
+  -webkit-tap-highlight-color: transparent !important;
+  -webkit-touch-callout: none !important;
   -ms-text-size-adjust: 100% !important;
   -webkit-transform: translateZ(0) !important;
   backface-visibility: hidden !important;
@@ -1758,12 +1760,24 @@ a::-webkit-scrollbar {
     height: clamp(220px, 35vw, 260px); /* Reduced from 250-300px */
     min-height: 220px; /* Reduced minimum */
     min-width: 220px; /* Reduced minimum */
+    /* Mobile gesture optimizations */
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
   }
   
   /* Mobile subcategory dial sizing */
   .subcategory-dial {
     width: clamp(160px, 28vw, 200px); /* Reduced from 180-220px */
     height: clamp(160px, 28vw, 200px); /* Reduced from 180-220px */
+    /* Mobile gesture optimizations */
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
   }
   
   /* Mobile subcategory label adjustments */
@@ -1772,6 +1786,12 @@ a::-webkit-scrollbar {
     padding: clamp(5px, 1vw, 8px); /* Reduced from 6-10px */
     min-height: 48px; /* Larger touch target on mobile */
     min-width: 48px;
+    /* Mobile touch optimizations */
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
   }
   
   .event-meta {
