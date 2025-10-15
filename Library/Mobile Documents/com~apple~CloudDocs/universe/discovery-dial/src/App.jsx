@@ -6,6 +6,7 @@ import EventInformationDisplay from './components/EventInformationDisplay';
 import ErrorBoundary from './components/ErrorBoundary';
 import categoriesData from './data/categories.json';
 import { MOCK_EVENTS } from './data/mockEvents';
+import { ALL_SAMPLE_EVENTS } from './data/enhancedSampleEvents';
 import useScrollPrevention from './hooks/useScrollPrevention';
 import useTextSelectionPrevention from './hooks/useTextSelectionPrevention';
 import useSafariScrollPrevention from './hooks/useSafariScrollPrevention';
@@ -30,6 +31,7 @@ import './utils/completeFunctionalityVerification'; // Import complete functiona
 import './utils/eventDiscoveryTesting'; // Import Event Discovery testing utilities
 import './utils/gestureAndFilterTesting'; // Import gesture and filter testing utilities
 import './utils/testingDashboard'; // Import testing dashboard
+import './utils/mapPinSynchronization'; // Import map pin synchronization system
 
 /**
  * Main application component.
@@ -39,7 +41,7 @@ function App() {
   // Unified state management for map background integration
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedSubcategory, setSelectedSubcategory] = useState(null);
-  const [filteredEvents, setFilteredEvents] = useState(MOCK_EVENTS);
+  const [filteredEvents, setFilteredEvents] = useState(ALL_SAMPLE_EVENTS);
   const [activeFilters, setActiveFilters] = useState({
     time: 'All',
     day: 'All',
@@ -503,16 +505,16 @@ function App() {
     return filtered;
   }, []);
 
-  // Update filtered events when selections change
-  useEffect(() => {
-    const filtered = filterEventsByDialSelection(
-      MOCK_EVENTS, 
-      selectedCategory, 
-      selectedSubcategory, 
-      activeFilters
-    );
-    setFilteredEvents(filtered);
-  }, [selectedCategory, selectedSubcategory, activeFilters, filterEventsByDialSelection]);
+         // Update filtered events when selections change
+         useEffect(() => {
+           const filtered = filterEventsByDialSelection(
+             ALL_SAMPLE_EVENTS, 
+             selectedCategory, 
+             selectedSubcategory, 
+             activeFilters
+           );
+           setFilteredEvents(filtered);
+         }, [selectedCategory, selectedSubcategory, activeFilters, filterEventsByDialSelection]);
 
   // Handle category selection from dial
   const handleCategorySelect = useCallback((category) => {
@@ -611,6 +613,24 @@ function App() {
       console.log('  window.testingDashboard.quickFilterTest() - Quick filter test');
       console.log('  window.testingDashboard.quickMobileTest() - Quick mobile test');
       console.log('  window.testingDashboard.exportResults() - Export test results');
+    }
+  }, []);
+
+  // Initialize map pin synchronization system
+  useEffect(() => {
+    if (isWindowAvailable() && window.mapPinSynchronization) {
+      console.log('🗺️ Map Pin Synchronization system initialized');
+      console.log('Available commands:');
+      console.log('  window.mapPinSynchronization.runComprehensiveSyncTest() - Run sync tests');
+      console.log('  window.mapPinSynchronization.verifyEventMapSync() - Verify sync');
+      console.log('  window.mapPinSynchronization.testPinVisibility() - Test visibility');
+      console.log('  window.mapPinSynchronization.createMapPins() - Create pins from events');
+      
+      // Run initial synchronization test
+      setTimeout(() => {
+        console.log('🧪 Running initial map pin synchronization test...');
+        window.mapPinSynchronization.runComprehensiveSyncTest();
+      }, 5000);
     }
   }, []);
 
