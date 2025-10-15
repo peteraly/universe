@@ -22,6 +22,7 @@ import './utils/testWordPressCom'; // Import WordPress.com test utilities
 import './utils/qaTesting'; // Import QA testing utilities
 import './utils/mobileUIDebug'; // Import mobile UI debug utilities
 import './utils/comprehensiveQATesting'; // Import comprehensive QA testing utilities
+import './utils/completeFunctionalityVerification'; // Import complete functionality verification utilities
 
 /**
  * Main application component.
@@ -439,6 +440,27 @@ function App() {
     };
 
     runQATests();
+  }, []);
+
+  // Run complete functionality verification after app loads
+  useEffect(() => {
+    const runFunctionalityVerification = async () => {
+      // Wait for app to fully load
+      await new Promise(resolve => setTimeout(resolve, 3000));
+      
+      console.log('🚀 Starting complete functionality verification...');
+      try {
+        if (isWindowAvailable() && window.completeFunctionalityVerification) {
+          await window.completeFunctionalityVerification.runCompleteVerification();
+        } else {
+          console.warn('Complete functionality verification not available');
+        }
+      } catch (error) {
+        console.error('Functionality verification failed:', error);
+      }
+    };
+
+    runFunctionalityVerification();
   }, []);
 
   return (
