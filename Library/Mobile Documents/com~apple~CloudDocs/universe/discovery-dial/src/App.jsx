@@ -6,7 +6,7 @@ import EventInformationDisplay from './components/EventInformationDisplay';
 import ErrorBoundary from './components/ErrorBoundary';
 import categoriesData from './data/categories.json';
 import { MOCK_EVENTS } from './data/mockEvents';
-import { ALL_SAMPLE_EVENTS } from './data/enhancedSampleEvents';
+import { ENHANCED_SAMPLE_EVENTS } from './data/enhancedSampleEvents';
 import useScrollPrevention from './hooks/useScrollPrevention';
 import useTextSelectionPrevention from './hooks/useTextSelectionPrevention';
 import useSafariScrollPrevention from './hooks/useSafariScrollPrevention';
@@ -31,7 +31,7 @@ import './utils/completeFunctionalityVerification'; // Import complete functiona
 import './utils/eventDiscoveryTesting'; // Import Event Discovery testing utilities
 import './utils/gestureAndFilterTesting'; // Import gesture and filter testing utilities
 import './utils/testingDashboard'; // Import testing dashboard
-import './utils/mapPinSynchronization'; // Import map pin synchronization system
+import './utils/mapPinSynchronization'; // Import map pin synchronization utilities
 
 /**
  * Main application component.
@@ -41,7 +41,7 @@ function App() {
   // Unified state management for map background integration
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedSubcategory, setSelectedSubcategory] = useState(null);
-  const [filteredEvents, setFilteredEvents] = useState(ALL_SAMPLE_EVENTS);
+  const [filteredEvents, setFilteredEvents] = useState(ENHANCED_SAMPLE_EVENTS);
   const [activeFilters, setActiveFilters] = useState({
     time: 'All',
     day: 'All',
@@ -508,7 +508,7 @@ function App() {
          // Update filtered events when selections change
          useEffect(() => {
            const filtered = filterEventsByDialSelection(
-             ALL_SAMPLE_EVENTS, 
+             ENHANCED_SAMPLE_EVENTS, 
              selectedCategory, 
              selectedSubcategory, 
              activeFilters
@@ -616,21 +616,16 @@ function App() {
     }
   }, []);
 
-  // Initialize map pin synchronization system
+  // Initialize map pin synchronization testing
   useEffect(() => {
     if (isWindowAvailable() && window.mapPinSynchronization) {
-      console.log('🗺️ Map Pin Synchronization system initialized');
+      console.log('🗺️ Map Pin Synchronization utilities initialized');
       console.log('Available commands:');
-      console.log('  window.mapPinSynchronization.runComprehensiveSyncTest() - Run sync tests');
-      console.log('  window.mapPinSynchronization.verifyEventMapSync() - Verify sync');
-      console.log('  window.mapPinSynchronization.testPinVisibility() - Test visibility');
-      console.log('  window.mapPinSynchronization.createMapPins() - Create pins from events');
-      
-      // Run initial synchronization test
-      setTimeout(() => {
-        console.log('🧪 Running initial map pin synchronization test...');
-        window.mapPinSynchronization.runComprehensiveSyncTest();
-      }, 5000);
+      console.log('  window.mapPinSynchronization.runComprehensiveSyncTests() - Run all sync tests');
+      console.log('  window.mapPinSynchronization.testSynchronizationAccuracy() - Test sync accuracy');
+      console.log('  window.mapPinSynchronization.testFilterSynchronization() - Test filter sync');
+      console.log('  window.mapPinSynchronization.testPinVisibility() - Test pin visibility');
+      console.log('  window.mapPinSynchronization.testPinRenderingPerformance() - Test performance');
     }
   }, []);
 

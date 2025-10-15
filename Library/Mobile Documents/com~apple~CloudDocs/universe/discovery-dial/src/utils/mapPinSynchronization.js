@@ -3,118 +3,80 @@
  * Ensures perfect synchronization between events and map pins
  */
 
-import { ALL_SAMPLE_EVENTS } from '../data/enhancedSampleEvents';
+import { ENHANCED_SAMPLE_EVENTS, getCategoryColor, getEventSize } from '../data/enhancedSampleEvents';
 
-// Category color mapping for visual distinction
-const CATEGORY_COLORS = {
-  'Social': '#ff6b6b',      // Red
-  'Education': '#4ecdc4',   // Teal
-  'Recreation': '#45b7d1',  // Blue
-  'Professional': '#96ceb4' // Green
-};
-
-// Event size mapping based on attendees
-const getEventSize = (attendees) => {
-  if (attendees < 20) return 'small';
-  if (attendees < 50) return 'medium';
-  return 'large';
-};
-
-// Pin size mapping
-const PIN_SIZES = {
-  small: { width: 12, height: 12 },
-  medium: { width: 16, height: 16 },
-  large: { width: 20, height: 20 }
-};
+// ========================================
+// MAP PIN CREATION AND MANAGEMENT
+// ========================================
 
 /**
  * Create map pins from events
  */
-export const createMapPins = (events = ALL_SAMPLE_EVENTS) => {
-  console.log(`🗺️ Creating ${events.length} map pins from events...`);
-  
-  const pins = events.map(event => {
-    const pin = {
-      id: event.id,
-      position: [event.longitude, event.latitude],
-      popup: {
-        title: event.name,
-        description: event.description,
-        venue: event.venue,
-        time: event.time,
-        day: event.day,
-        price: event.price,
-        attendees: event.attendees,
-        organizer: event.organizer,
-        website: event.website
-      },
-      category: event.categoryPrimary,
-      subcategory: event.categorySecondary,
+export const createMapPins = (events) => {
+  return events.map(event => ({
+    id: event.id,
+    position: [event.longitude, event.latitude],
+    popup: {
+      title: event.name,
+      description: event.description,
+      venue: event.venue,
       time: event.time,
       day: event.day,
-      color: CATEGORY_COLORS[event.categoryPrimary] || '#666666',
-      size: getEventSize(event.attendees),
-      pinSize: PIN_SIZES[getEventSize(event.attendees)],
-      visible: true,
-      event: event // Store reference to original event
-    };
-    
-    return pin;
-  });
-  
-  console.log(`✅ Created ${pins.length} map pins successfully`);
-  return pins;
-};
-
-/**
- * Filter pins based on criteria
- */
-export const filterMapPins = (pins, filters = {}) => {
-  let filteredPins = [...pins];
-  
-  // Filter by category
-  if (filters.category && filters.category !== 'All') {
-    filteredPins = filteredPins.filter(pin => pin.category === filters.category);
-  }
-  
-  // Filter by subcategory
-  if (filters.subcategory && filters.subcategory !== 'All') {
-    filteredPins = filteredPins.filter(pin => pin.subcategory === filters.subcategory);
-  }
-  
-  // Filter by time
-  if (filters.time && filters.time !== 'All') {
-    filteredPins = filteredPins.filter(pin => pin.time === filters.time);
-  }
-  
-  // Filter by day
-  if (filters.day && filters.day !== 'All') {
-    filteredPins = filteredPins.filter(pin => pin.day === filters.day);
-  }
-  
-  // Filter by location bounds (if provided)
-  if (filters.bounds) {
-    const { north, south, east, west } = filters.bounds;
-    filteredPins = filteredPins.filter(pin => {
-      const [lng, lat] = pin.position;
-      return lat >= south && lat <= north && lng >= west && lng <= east;
-    });
-  }
-  
-  return filteredPins;
-};
-
-/**
- * Update pin visibility based on filters
- */
-export const updatePinVisibility = (pins, filters = {}) => {
-  const filteredPins = filterMapPins(pins, filters);
-  const visiblePinIds = new Set(filteredPins.map(pin => pin.id));
-  
-  return pins.map(pin => ({
-    ...pin,
-    visible: visiblePinIds.has(pin.id)
+      price: event.price,
+      attendees: event.attendees,
+      organizer: event.organizer,
+      website: event.website
+    },
+    category: event.categoryPrimary,
+    subcategory: event.categorySecondary,
+    time: event.time,
+    day: event.day,
+    color: getCategoryColor(event.categoryPrimary),
+    size: getEventSize(event.attendees),
+    visible: true,
+    event: event // Store reference to original event
   }));
+};
+
+/**
+ * Update map pins based on filters
+ */
+export const updateMapPins = (pins, filters) => {
+  return pins.map(pin => {
+    let visible = true;
+    
+    // Filter by category
+    if (filters.category && filters.category !== 'All' && pin.category !== filters.category) {
+      visible = false;
+    }
+    
+    // Filter by subcategory
+    if (filters.subcategory && filters.subcategory !== 'All' && pin.subcategory !== filters.subcategory) {
+      visible = false;
+    }
+    
+    // Filter by time
+    if (filters.time && filters.time !== 'All' && pin.time !== filters.time) {
+      visible = false;
+    }
+    
+    // Filter by day
+    if (filters.day && filters.day !== 'All' && pin.day !== filters.day) {
+      visible = false;
+    }
+    
+    return {
+      ...pin,
+      visible
+    };
+  });
+};
+
+/**
+ * Get visible pins
+ */
+export const getVisiblePins = (pins) => {
+  return pins.filter(pin => pin.visible);
 };
 
 /**
@@ -122,6 +84,13 @@ export const updatePinVisibility = (pins, filters = {}) => {
  */
 export const getPinsByCategory = (pins, category) => {
   return pins.filter(pin => pin.category === category);
+};
+
+/**
+ * Get pins by subcategory
+ */
+export const getPinsBySubcategory = (pins, subcategory) => {
+  return pins.filter(pin => pin.subcategory === subcategory);
 };
 
 /**
@@ -138,75 +107,17 @@ export const getPinsByDay = (pins, day) => {
   return pins.filter(pin => pin.day === day);
 };
 
-/**
- * Get visible pins
- */
-export const getVisiblePins = (pins) => {
-  return pins.filter(pin => pin.visible);
-};
+// ========================================
+// SYNCHRONIZATION VERIFICATION
+// ========================================
 
 /**
- * Calculate map bounds from pins
+ * Verify event-map pin synchronization
  */
-export const calculateMapBounds = (pins) => {
-  if (pins.length === 0) {
-    return {
-      north: 37.7849,
-      south: 37.7849,
-      east: -122.4094,
-      west: -122.4094
-    };
-  }
-  
-  const lats = pins.map(pin => pin.position[1]);
-  const lngs = pins.map(pin => pin.position[0]);
-  
-  return {
-    north: Math.max(...lats),
-    south: Math.min(...lats),
-    east: Math.max(...lngs),
-    west: Math.min(...lngs)
-  };
-};
-
-/**
- * Get pin statistics
- */
-export const getPinStatistics = (pins) => {
-  const visiblePins = getVisiblePins(pins);
-  
-  const categoryCounts = {};
-  const timeCounts = {};
-  const dayCounts = {};
-  
-  visiblePins.forEach(pin => {
-    categoryCounts[pin.category] = (categoryCounts[pin.category] || 0) + 1;
-    timeCounts[pin.time] = (timeCounts[pin.time] || 0) + 1;
-    dayCounts[pin.day] = (dayCounts[pin.day] || 0) + 1;
-  });
-  
-  return {
-    total: pins.length,
-    visible: visiblePins.length,
-    hidden: pins.length - visiblePins.length,
-    visibilityRate: (visiblePins.length / pins.length * 100).toFixed(1),
-    categoryCounts,
-    timeCounts,
-    dayCounts
-  };
-};
-
-/**
- * Synchronization verification system
- */
-export const verifyEventMapSync = (events = ALL_SAMPLE_EVENTS, pins = null) => {
-  console.log('🧪 Verifying Event-Map Pin Synchronization...');
-  
-  const mapPins = pins || createMapPins(events);
-  
-  const syncResults = {
+export const verifyEventMapSync = (events, pins) => {
+  const results = {
     totalEvents: events.length,
-    totalPins: mapPins.length,
+    totalPins: pins.length,
     syncedPins: 0,
     missingPins: [],
     extraPins: [],
@@ -219,68 +130,116 @@ export const verifyEventMapSync = (events = ALL_SAMPLE_EVENTS, pins = null) => {
   
   // Check each event has corresponding pin
   events.forEach(event => {
-    const pin = mapPins.find(pin => pin.id === event.id);
+    const pin = pins.find(pin => pin.id === event.id);
     if (pin) {
-      syncResults.syncedPins++;
+      results.syncedPins++;
       
-      // Verify location accuracy
+      // Check location accuracy
       const locationMatch = Math.abs(pin.position[1] - event.latitude) < 0.0001 &&
                            Math.abs(pin.position[0] - event.longitude) < 0.0001;
-      if (locationMatch) syncResults.locationMatches++;
+      if (locationMatch) results.locationMatches++;
       
-      // Verify category match
-      if (pin.category === event.categoryPrimary) syncResults.categoryMatches++;
+      // Check category match
+      if (pin.category === event.categoryPrimary) results.categoryMatches++;
       
-      // Verify time match
-      if (pin.time === event.time) syncResults.timeMatches++;
+      // Check time match
+      if (pin.time === event.time) results.timeMatches++;
       
-      // Verify day match
-      if (pin.day === event.day) syncResults.dayMatches++;
+      // Check day match
+      if (pin.day === event.day) results.dayMatches++;
     } else {
-      syncResults.missingPins.push(event.id);
+      results.missingPins.push(event.id);
     }
   });
   
   // Check for extra pins
-  mapPins.forEach(pin => {
+  pins.forEach(pin => {
     const event = events.find(event => event.id === pin.id);
     if (!event) {
-      syncResults.extraPins.push(pin.id);
+      results.extraPins.push(pin.id);
     }
   });
   
-  // Calculate sync percentage
-  syncResults.syncPercentage = (syncResults.syncedPins / syncResults.totalEvents) * 100;
+  results.syncPercentage = results.totalEvents > 0 ? 
+    (results.syncedPins / results.totalEvents) * 100 : 0;
   
-  // Log results
-  console.log(`📊 Sync Results:`);
-  console.log(`  Total Events: ${syncResults.totalEvents}`);
-  console.log(`  Total Pins: ${syncResults.totalPins}`);
-  console.log(`  Synced Pins: ${syncResults.syncedPins}`);
-  console.log(`  Sync Percentage: ${syncResults.syncPercentage.toFixed(1)}%`);
-  console.log(`  Location Matches: ${syncResults.locationMatches}/${syncResults.totalEvents}`);
-  console.log(`  Category Matches: ${syncResults.categoryMatches}/${syncResults.totalEvents}`);
-  console.log(`  Time Matches: ${syncResults.timeMatches}/${syncResults.totalEvents}`);
-  console.log(`  Day Matches: ${syncResults.dayMatches}/${syncResults.totalEvents}`);
-  
-  if (syncResults.missingPins.length > 0) {
-    console.log(`❌ Missing Pins: ${syncResults.missingPins.join(', ')}`);
-  }
-  
-  if (syncResults.extraPins.length > 0) {
-    console.log(`❌ Extra Pins: ${syncResults.extraPins.join(', ')}`);
-  }
-  
-  const overallSync = syncResults.syncPercentage === 100 && 
-                     syncResults.locationMatches === syncResults.totalEvents &&
-                     syncResults.categoryMatches === syncResults.totalEvents &&
-                     syncResults.timeMatches === syncResults.totalEvents &&
-                     syncResults.dayMatches === syncResults.totalEvents;
-  
-  console.log(`🎯 Overall Synchronization: ${overallSync ? '✅ PERFECT SYNC' : '❌ SYNC ISSUES DETECTED'}`);
-  
-  return syncResults;
+  return results;
 };
+
+/**
+ * Test synchronization accuracy
+ */
+export const testSynchronizationAccuracy = () => {
+  console.log('🧪 Testing Event-Map Pin Synchronization...');
+  
+  const events = ENHANCED_SAMPLE_EVENTS;
+  const pins = createMapPins(events);
+  const syncResults = verifyEventMapSync(events, pins);
+  
+  // Test 1: Count verification
+  const countMatch = events.length === pins.length;
+  console.log(`📊 Event count: ${events.length}, Pin count: ${pins.length}, Match: ${countMatch ? '✅' : '❌'}`);
+  
+  // Test 2: ID verification
+  const eventIds = events.map(e => e.id);
+  const pinIds = pins.map(p => p.id);
+  const idMatch = eventIds.every(id => pinIds.includes(id));
+  console.log(`🆔 All event IDs have corresponding pins: ${idMatch ? '✅' : '❌'}`);
+  
+  // Test 3: Location verification
+  const locationMatch = events.every(event => {
+    const pin = pins.find(p => p.id === event.id);
+    return pin && 
+           Math.abs(pin.position[1] - event.latitude) < 0.0001 &&
+           Math.abs(pin.position[0] - event.longitude) < 0.0001;
+  });
+  console.log(`📍 All locations match: ${locationMatch ? '✅' : '❌'}`);
+  
+  // Test 4: Category verification
+  const categoryMatch = events.every(event => {
+    const pin = pins.find(p => p.id === event.id);
+    return pin && pin.category === event.categoryPrimary;
+  });
+  console.log(`🏷️ All categories match: ${categoryMatch ? '✅' : '❌'}`);
+  
+  // Test 5: Time/Day verification
+  const timeMatch = events.every(event => {
+    const pin = pins.find(p => p.id === event.id);
+    return pin && pin.time === event.time && pin.day === event.day;
+  });
+  console.log(`⏰ All time/day match: ${timeMatch ? '✅' : '❌'}`);
+  
+  const overallSync = countMatch && idMatch && locationMatch && categoryMatch && timeMatch;
+  console.log(`🎯 Overall synchronization: ${overallSync ? '✅ PERFECT SYNC' : '❌ SYNC ISSUES DETECTED'}`);
+  
+  // Detailed results
+  console.log('📊 Detailed Sync Results:', {
+    totalEvents: syncResults.totalEvents,
+    totalPins: syncResults.totalPins,
+    syncedPins: syncResults.syncedPins,
+    syncPercentage: syncResults.syncPercentage.toFixed(1) + '%',
+    locationMatches: syncResults.locationMatches,
+    categoryMatches: syncResults.categoryMatches,
+    timeMatches: syncResults.timeMatches,
+    dayMatches: syncResults.dayMatches,
+    missingPins: syncResults.missingPins.length,
+    extraPins: syncResults.extraPins.length
+  });
+  
+  return {
+    countMatch,
+    idMatch,
+    locationMatch,
+    categoryMatch,
+    timeMatch,
+    overallSync,
+    syncResults
+  };
+};
+
+// ========================================
+// PIN VISIBILITY TESTING
+// ========================================
 
 /**
  * Test pin visibility
@@ -288,172 +247,298 @@ export const verifyEventMapSync = (events = ALL_SAMPLE_EVENTS, pins = null) => {
 export const testPinVisibility = (pins) => {
   console.log('👁️ Testing Map Pin Visibility...');
   
-  const visiblePins = getVisiblePins(pins);
-  const stats = getPinStatistics(pins);
+  const visiblePins = pins.filter(pin => pin.visible);
   
-  console.log(`📌 Total pins: ${stats.total}`);
-  console.log(`👀 Visible pins: ${stats.visible}`);
-  console.log(`🔍 Visibility rate: ${stats.visibilityRate}%`);
+  console.log(`📌 Total pins: ${pins.length}`);
+  console.log(`👀 Visible pins: ${visiblePins.length}`);
+  console.log(`🔍 Visibility rate: ${(visiblePins.length / pins.length * 100).toFixed(1)}%`);
+  
+  // Test category distribution
+  const categoryCounts = {};
+  visiblePins.forEach(pin => {
+    categoryCounts[pin.category] = (categoryCounts[pin.category] || 0) + 1;
+  });
   
   console.log('📊 Category distribution:');
-  Object.entries(stats.categoryCounts).forEach(([category, count]) => {
+  Object.entries(categoryCounts).forEach(([category, count]) => {
     console.log(`  ${category}: ${count} pins`);
   });
   
-  console.log('⏰ Time distribution:');
-  Object.entries(stats.timeCounts).forEach(([time, count]) => {
-    console.log(`  ${time}: ${count} pins`);
-  });
-  
-  console.log('📅 Day distribution:');
-  Object.entries(stats.dayCounts).forEach(([day, count]) => {
-    console.log(`  ${day}: ${count} pins`);
-  });
-  
-  return stats;
+  return {
+    totalPins: pins.length,
+    visiblePins: visiblePins.length,
+    visibilityRate: (visiblePins.length / pins.length * 100),
+    categoryCounts
+  };
 };
 
 /**
  * Test filter synchronization
  */
-export const testFilterSynchronization = (pins, filters) => {
+export const testFilterSynchronization = () => {
   console.log('🔍 Testing Filter Synchronization...');
   
-  const filteredPins = filterMapPins(pins, filters);
-  const visiblePins = getVisiblePins(filteredPins);
+  const events = ENHANCED_SAMPLE_EVENTS;
+  const pins = createMapPins(events);
   
-  console.log(`📊 Filter Results:`);
-  console.log(`  Applied Filters:`, filters);
-  console.log(`  Total Pins: ${pins.length}`);
-  console.log(`  Filtered Pins: ${filteredPins.length}`);
-  console.log(`  Visible Pins: ${visiblePins.length}`);
+  // Test category filtering
+  const categories = ['Social', 'Education', 'Recreation', 'Professional'];
+  let categoryTestsPassed = 0;
   
-  // Test category filter
-  if (filters.category && filters.category !== 'All') {
-    const categoryPins = getPinsByCategory(pins, filters.category);
-    console.log(`  Category "${filters.category}": ${categoryPins.length} pins`);
-  }
+  categories.forEach(category => {
+    const filteredEvents = events.filter(event => event.categoryPrimary === category);
+    const filteredPins = updateMapPins(pins, { category });
+    const visiblePins = getVisiblePins(filteredPins);
+    
+    const testPassed = filteredEvents.length === visiblePins.length;
+    console.log(`🏷️ Category ${category}: ${filteredEvents.length} events, ${visiblePins.length} visible pins - ${testPassed ? '✅' : '❌'}`);
+    
+    if (testPassed) categoryTestsPassed++;
+  });
   
-  // Test time filter
-  if (filters.time && filters.time !== 'All') {
-    const timePins = getPinsByTime(pins, filters.time);
-    console.log(`  Time "${filters.time}": ${timePins.length} pins`);
-  }
+  // Test time filtering
+  const times = ['Morning', 'Afternoon', 'Evening', 'Night'];
+  let timeTestsPassed = 0;
   
-  // Test day filter
-  if (filters.day && filters.day !== 'All') {
-    const dayPins = getPinsByDay(pins, filters.day);
-    console.log(`  Day "${filters.day}": ${dayPins.length} pins`);
-  }
+  times.forEach(time => {
+    const filteredEvents = events.filter(event => event.time === time);
+    const filteredPins = updateMapPins(pins, { time });
+    const visiblePins = getVisiblePins(filteredPins);
+    
+    const testPassed = filteredEvents.length === visiblePins.length;
+    console.log(`⏰ Time ${time}: ${filteredEvents.length} events, ${visiblePins.length} visible pins - ${testPassed ? '✅' : '❌'}`);
+    
+    if (testPassed) timeTestsPassed++;
+  });
+  
+  // Test day filtering
+  const days = ['Today', 'Tomorrow', 'This Week', 'Weekend'];
+  let dayTestsPassed = 0;
+  
+  days.forEach(day => {
+    const filteredEvents = events.filter(event => event.day === day);
+    const filteredPins = updateMapPins(pins, { day });
+    const visiblePins = getVisiblePins(filteredPins);
+    
+    const testPassed = filteredEvents.length === visiblePins.length;
+    console.log(`📅 Day ${day}: ${filteredEvents.length} events, ${visiblePins.length} visible pins - ${testPassed ? '✅' : '❌'}`);
+    
+    if (testPassed) dayTestsPassed++;
+  });
+  
+  const overallFilterSync = categoryTestsPassed === categories.length && 
+                           timeTestsPassed === times.length && 
+                           dayTestsPassed === days.length;
+  
+  console.log(`🎯 Overall filter synchronization: ${overallFilterSync ? '✅ PERFECT SYNC' : '❌ SYNC ISSUES DETECTED'}`);
   
   return {
-    totalPins: pins.length,
-    filteredPins: filteredPins.length,
-    visiblePins: visiblePins.length,
-    filters
+    categoryTestsPassed,
+    timeTestsPassed,
+    dayTestsPassed,
+    overallFilterSync
   };
 };
 
+// ========================================
+// PERFORMANCE TESTING
+// ========================================
+
 /**
- * Comprehensive synchronization test
+ * Test pin rendering performance
  */
-export const runComprehensiveSyncTest = () => {
-  console.log('🚀 Running Comprehensive Synchronization Test...');
+export const testPinRenderingPerformance = () => {
+  console.log('⚡ Testing Pin Rendering Performance...');
+  
+  const events = ENHANCED_SAMPLE_EVENTS;
+  const startTime = performance.now();
+  
+  // Create pins
+  const pins = createMapPins(events);
+  const creationTime = performance.now() - startTime;
+  
+  // Test filtering performance
+  const filterStartTime = performance.now();
+  const filteredPins = updateMapPins(pins, { category: 'Social', time: 'Evening' });
+  const filterTime = performance.now() - filterStartTime;
+  
+  // Test visibility check performance
+  const visibilityStartTime = performance.now();
+  const visiblePins = getVisiblePins(filteredPins);
+  const visibilityTime = performance.now() - visibilityStartTime;
+  
+  console.log(`📊 Performance Results:`);
+  console.log(`  Pin creation: ${creationTime.toFixed(2)}ms`);
+  console.log(`  Filtering: ${filterTime.toFixed(2)}ms`);
+  console.log(`  Visibility check: ${visibilityTime.toFixed(2)}ms`);
+  console.log(`  Total time: ${(creationTime + filterTime + visibilityTime).toFixed(2)}ms`);
+  
+  const performanceGood = creationTime < 100 && filterTime < 50 && visibilityTime < 10;
+  console.log(`🎯 Performance: ${performanceGood ? '✅ EXCELLENT' : '❌ NEEDS OPTIMIZATION'}`);
+  
+  return {
+    creationTime,
+    filterTime,
+    visibilityTime,
+    totalTime: creationTime + filterTime + visibilityTime,
+    performanceGood
+  };
+};
+
+// ========================================
+// COMPREHENSIVE TESTING SUITE
+// ========================================
+
+/**
+ * Run comprehensive synchronization tests
+ */
+export const runComprehensiveSyncTests = async () => {
+  console.log('🚀 Starting Comprehensive Map Pin Synchronization Tests...');
   console.log('='.repeat(60));
   
+  const results = {
+    synchronization: null,
+    visibility: null,
+    filtering: null,
+    performance: null,
+    overall: false
+  };
+  
   try {
-    // Test 1: Create pins from events
-    console.log('\n1️⃣ Creating map pins from events...');
-    const pins = createMapPins();
+    // Test 1: Synchronization accuracy
+    console.log('\n🧪 Test 1: Synchronization Accuracy');
+    results.synchronization = testSynchronizationAccuracy();
     
-    // Test 2: Verify synchronization
-    console.log('\n2️⃣ Verifying event-pin synchronization...');
-    const syncResults = verifyEventMapSync(ALL_SAMPLE_EVENTS, pins);
+    // Test 2: Pin visibility
+    console.log('\n👁️ Test 2: Pin Visibility');
+    const events = ENHANCED_SAMPLE_EVENTS;
+    const pins = createMapPins(events);
+    results.visibility = testPinVisibility(pins);
     
-    // Test 3: Test pin visibility
-    console.log('\n3️⃣ Testing pin visibility...');
-    const visibilityStats = testPinVisibility(pins);
+    // Test 3: Filter synchronization
+    console.log('\n🔍 Test 3: Filter Synchronization');
+    results.filtering = testFilterSynchronization();
     
-    // Test 4: Test filter synchronization
-    console.log('\n4️⃣ Testing filter synchronization...');
-    const filterTests = [
-      { category: 'Social' },
-      { time: 'Evening' },
-      { day: 'Today' },
-      { category: 'Education', time: 'Morning' },
-      { category: 'Professional', day: 'Weekend' }
-    ];
+    // Test 4: Performance
+    console.log('\n⚡ Test 4: Performance');
+    results.performance = testPinRenderingPerformance();
     
-    filterTests.forEach((filters, index) => {
-      console.log(`\n   Test ${index + 1}:`, filters);
-      testFilterSynchronization(pins, filters);
-    });
+    // Calculate overall result
+    results.overall = results.synchronization.overallSync && 
+                     results.visibility.visibilityRate === 100 && 
+                     results.filtering.overallFilterSync && 
+                     results.performance.performanceGood;
     
-    // Test 5: Calculate map bounds
-    console.log('\n5️⃣ Calculating map bounds...');
-    const bounds = calculateMapBounds(pins);
-    console.log(`   Map Bounds:`, bounds);
-    
-    // Overall results
-    console.log('\n🎯 COMPREHENSIVE TEST RESULTS');
+    // Display final results
+    console.log('\n📊 FINAL TEST RESULTS');
     console.log('='.repeat(60));
-    console.log(`✅ Events: ${ALL_SAMPLE_EVENTS.length}`);
-    console.log(`✅ Pins Created: ${pins.length}`);
-    console.log(`✅ Sync Rate: ${syncResults.syncPercentage.toFixed(1)}%`);
-    console.log(`✅ Visibility Rate: ${visibilityStats.visibilityRate}%`);
-    console.log(`✅ Location Accuracy: ${syncResults.locationMatches}/${syncResults.totalEvents}`);
-    console.log(`✅ Category Accuracy: ${syncResults.categoryMatches}/${syncResults.totalEvents}`);
-    console.log(`✅ Time Accuracy: ${syncResults.timeMatches}/${syncResults.totalEvents}`);
-    console.log(`✅ Day Accuracy: ${syncResults.dayMatches}/${syncResults.totalEvents}`);
-    
-    const overallSuccess = syncResults.syncPercentage === 100 && 
-                          syncResults.locationMatches === syncResults.totalEvents &&
-                          syncResults.categoryMatches === syncResults.totalEvents &&
-                          syncResults.timeMatches === syncResults.totalEvents &&
-                          syncResults.dayMatches === syncResults.totalEvents;
-    
-    console.log(`\n🏆 OVERALL RESULT: ${overallSuccess ? '✅ PERFECT SYNCHRONIZATION' : '❌ ISSUES DETECTED'}`);
-    
-    return {
-      success: overallSuccess,
-      pins,
-      syncResults,
-      visibilityStats,
-      bounds
-    };
+    console.log(`Synchronization: ${results.synchronization.overallSync ? '✅' : '❌'}`);
+    console.log(`Visibility: ${results.visibility.visibilityRate === 100 ? '✅' : '❌'}`);
+    console.log(`Filtering: ${results.filtering.overallFilterSync ? '✅' : '❌'}`);
+    console.log(`Performance: ${results.performance.performanceGood ? '✅' : '❌'}`);
+    console.log(`\n🎯 OVERALL RESULT: ${results.overall ? '✅ ALL TESTS PASSED' : '❌ SOME TESTS FAILED'}`);
     
   } catch (error) {
-    console.error('❌ Comprehensive sync test failed:', error);
-    return {
-      success: false,
-      error: error.message
-    };
+    console.error('❌ Test suite failed:', error);
   }
+  
+  return results;
 };
 
-// Export all functions for global access
-export const mapPinSynchronization = {
-  createMapPins,
-  filterMapPins,
-  updatePinVisibility,
-  getPinsByCategory,
-  getPinsByTime,
-  getPinsByDay,
-  getVisiblePins,
-  calculateMapBounds,
-  getPinStatistics,
-  verifyEventMapSync,
-  testPinVisibility,
-  testFilterSynchronization,
-  runComprehensiveSyncTest,
-  CATEGORY_COLORS,
-  PIN_SIZES
+// ========================================
+// UTILITY FUNCTIONS
+// ========================================
+
+/**
+ * Get all events
+ */
+export const getAllEvents = () => {
+  return ENHANCED_SAMPLE_EVENTS;
 };
 
-// Expose globally for testing
+/**
+ * Get all map pins
+ */
+export const getAllMapPins = () => {
+  return createMapPins(ENHANCED_SAMPLE_EVENTS);
+};
+
+/**
+ * Get event by ID
+ */
+export const getEventById = (id) => {
+  return ENHANCED_SAMPLE_EVENTS.find(event => event.id === id);
+};
+
+/**
+ * Get pin by ID
+ */
+export const getPinById = (id) => {
+  const pins = createMapPins(ENHANCED_SAMPLE_EVENTS);
+  return pins.find(pin => pin.id === id);
+};
+
+/**
+ * Get events by bounds
+ */
+export const getEventsByBounds = (bounds) => {
+  return ENHANCED_SAMPLE_EVENTS.filter(event => {
+    const lat = event.latitude;
+    const lng = event.longitude;
+    return lat >= bounds.south && lat <= bounds.north && 
+           lng >= bounds.west && lng <= bounds.east;
+  });
+};
+
+/**
+ * Get pins by bounds
+ */
+export const getPinsByBounds = (bounds) => {
+  const events = getEventsByBounds(bounds);
+  return createMapPins(events);
+};
+
+// ========================================
+// GLOBAL EXPOSURE
+// ========================================
+
+// Expose testing functions globally
 if (typeof window !== 'undefined') {
-  window.mapPinSynchronization = mapPinSynchronization;
-  console.log('🗺️ Map Pin Synchronization system loaded. Access via window.mapPinSynchronization');
+  window.mapPinSynchronization = {
+    runComprehensiveSyncTests,
+    testSynchronizationAccuracy,
+    testPinVisibility,
+    testFilterSynchronization,
+    testPinRenderingPerformance,
+    createMapPins,
+    updateMapPins,
+    getVisiblePins,
+    verifyEventMapSync,
+    getAllEvents,
+    getAllMapPins,
+    getEventById,
+    getPinById,
+    getEventsByBounds,
+    getPinsByBounds
+  };
+  
+  console.log('🗺️ Map Pin Synchronization utilities loaded. Access via window.mapPinSynchronization');
 }
 
-export default mapPinSynchronization;
+export default {
+  createMapPins,
+  updateMapPins,
+  getVisiblePins,
+  verifyEventMapSync,
+  testSynchronizationAccuracy,
+  testPinVisibility,
+  testFilterSynchronization,
+  testPinRenderingPerformance,
+  runComprehensiveSyncTests,
+  getAllEvents,
+  getAllMapPins,
+  getEventById,
+  getPinById,
+  getEventsByBounds,
+  getPinsByBounds
+};

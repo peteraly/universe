@@ -1,64 +1,8 @@
 /**
  * Enhanced Sample Events Database
- * Comprehensive collection of 70+ events with perfect map pin synchronization
+ * Comprehensive collection of 70+ sample events with perfect map pin synchronization
  */
 
-// Location data for realistic coordinates
-const LOCATION_DATA = {
-  'San Francisco': {
-    center: { lat: 37.7749, lng: -122.4194 },
-    venues: [
-      { name: 'Tech Hub Downtown', lat: 37.7849, lng: -122.4094 },
-      { name: 'Golden Gate Park', lat: 37.7694, lng: -122.4862 },
-      { name: 'Mission District', lat: 37.7599, lng: -122.4148 },
-      { name: 'SOMA District', lat: 37.7749, lng: -122.4194 },
-      { name: 'Marina District', lat: 37.8024, lng: -122.4358 },
-      { name: 'Castro District', lat: 37.7609, lng: -122.4350 },
-      { name: 'Haight-Ashbury', lat: 37.7699, lng: -122.4469 },
-      { name: 'Financial District', lat: 37.7950, lng: -122.3997 }
-    ]
-  },
-  'New York': {
-    center: { lat: 40.7128, lng: -74.0060 },
-    venues: [
-      { name: 'Times Square', lat: 40.7580, lng: -73.9855 },
-      { name: 'Central Park', lat: 40.7829, lng: -73.9654 },
-      { name: 'Brooklyn Bridge', lat: 40.7061, lng: -73.9969 },
-      { name: 'High Line', lat: 40.7480, lng: -74.0048 },
-      { name: 'SoHo', lat: 40.7231, lng: -74.0026 },
-      { name: 'Greenwich Village', lat: 40.7336, lng: -74.0027 }
-    ]
-  },
-  'Los Angeles': {
-    center: { lat: 34.0522, lng: -118.2437 },
-    venues: [
-      { name: 'Hollywood', lat: 34.0928, lng: -118.3287 },
-      { name: 'Santa Monica', lat: 34.0195, lng: -118.4912 },
-      { name: 'Venice Beach', lat: 33.9850, lng: -118.4695 },
-      { name: 'Downtown LA', lat: 34.0522, lng: -118.2437 },
-      { name: 'Beverly Hills', lat: 34.0736, lng: -118.4004 }
-    ]
-  }
-};
-
-// Helper function to get random venue from location
-const getRandomVenue = (city) => {
-  const venues = LOCATION_DATA[city]?.venues || LOCATION_DATA['San Francisco'].venues;
-  return venues[Math.floor(Math.random() * venues.length)];
-};
-
-// Helper function to get random coordinates within city bounds
-const getRandomCoordinates = (city) => {
-  const center = LOCATION_DATA[city]?.center || LOCATION_DATA['San Francisco'].center;
-  // Add small random offset for variety
-  const offset = 0.01; // ~1km radius
-  return {
-    lat: center.lat + (Math.random() - 0.5) * offset,
-    lng: center.lng + (Math.random() - 0.5) * offset
-  };
-};
-
-// Enhanced Sample Events Database
 export const ENHANCED_SAMPLE_EVENTS = [
   // SOCIAL EVENTS (23 events)
   {
@@ -157,15 +101,15 @@ export const ENHANCED_SAMPLE_EVENTS = [
     categorySecondary: 'Parties',
     venue: 'Modern Art Gallery',
     address: '321 Art Ave, San Francisco, CA',
-    latitude: 37.8024,
-    longitude: -122.4358,
+    latitude: 37.7849,
+    longitude: -122.4094,
     time: 'Evening',
     day: 'Today',
     date: '2024-01-15',
-    startTime: '18:30',
+    startTime: '19:00',
     endTime: '22:00',
     price: '$15',
-    attendees: 65,
+    attendees: 60,
     maxAttendees: 80,
     organizer: 'Art Collective',
     tags: ['art', 'gallery', 'culture'],
@@ -177,18 +121,18 @@ export const ENHANCED_SAMPLE_EVENTS = [
     description: 'Practice languages with native speakers in a friendly environment.',
     categoryPrimary: 'Social',
     categorySecondary: 'Meetups',
-    venue: 'International Cafe',
+    venue: 'Cultural Center',
     address: '654 Language St, San Francisco, CA',
-    latitude: 37.7609,
-    longitude: -122.4350,
+    latitude: 37.7749,
+    longitude: -122.4194,
     time: 'Evening',
     day: 'This Week',
     date: '2024-01-17',
-    startTime: '19:30',
-    endTime: '21:30',
+    startTime: '18:30',
+    endTime: '20:30',
     price: 'Free',
-    attendees: 22,
-    maxAttendees: 30,
+    attendees: 25,
+    maxAttendees: 40,
     organizer: 'Language Exchange',
     tags: ['language', 'culture', 'learning'],
     website: 'https://example.com/language-exchange'
@@ -199,10 +143,10 @@ export const ENHANCED_SAMPLE_EVENTS = [
     description: 'Sample delicious food from local food trucks and enjoy live entertainment.',
     categoryPrimary: 'Social',
     categorySecondary: 'Community',
-    venue: 'Golden Gate Park',
-    address: 'Golden Gate Park, San Francisco, CA',
-    latitude: 37.7694,
-    longitude: -122.4862,
+    venue: 'Mission District',
+    address: 'Mission District, San Francisco, CA',
+    latitude: 37.7599,
+    longitude: -122.4148,
     time: 'Afternoon',
     day: 'Weekend',
     date: '2024-01-21',
@@ -223,19 +167,63 @@ export const ENHANCED_SAMPLE_EVENTS = [
     categorySecondary: 'Networking',
     venue: 'Wine Bar',
     address: '987 Wine St, San Francisco, CA',
-    latitude: 37.7699,
-    longitude: -122.4469,
+    latitude: 37.7849,
+    longitude: -122.4094,
     time: 'Evening',
     day: 'Tomorrow',
     date: '2024-01-16',
-    startTime: '18:00',
-    endTime: '21:00',
+    startTime: '19:00',
+    endTime: '21:30',
     price: '$35',
-    attendees: 28,
+    attendees: 30,
     maxAttendees: 40,
     organizer: 'Wine Society',
     tags: ['wine', 'tasting', 'social'],
     website: 'https://example.com/wine-tasting'
+  },
+  {
+    id: 'social-009',
+    name: 'Comedy Night',
+    description: 'Laugh the night away with local comedians and open mic performers.',
+    categoryPrimary: 'Social',
+    categorySecondary: 'Parties',
+    venue: 'Comedy Club',
+    address: '147 Laugh St, San Francisco, CA',
+    latitude: 37.7749,
+    longitude: -122.4194,
+    time: 'Evening',
+    day: 'This Week',
+    date: '2024-01-19',
+    startTime: '20:00',
+    endTime: '23:00',
+    price: '$20',
+    attendees: 80,
+    maxAttendees: 100,
+    organizer: 'Comedy Collective',
+    tags: ['comedy', 'entertainment', 'fun'],
+    website: 'https://example.com/comedy-night'
+  },
+  {
+    id: 'social-010',
+    name: 'Volunteer Cleanup Day',
+    description: 'Help clean up the neighborhood and make a positive impact.',
+    categoryPrimary: 'Social',
+    categorySecondary: 'Community',
+    venue: 'Local Park',
+    address: '258 Park Ave, San Francisco, CA',
+    latitude: 37.7694,
+    longitude: -122.4862,
+    time: 'Morning',
+    day: 'Weekend',
+    date: '2024-01-20',
+    startTime: '09:00',
+    endTime: '12:00',
+    price: 'Free',
+    attendees: 35,
+    maxAttendees: 50,
+    organizer: 'Community Service',
+    tags: ['volunteer', 'cleanup', 'community'],
+    website: 'https://example.com/cleanup-day'
   },
 
   // EDUCATION EVENTS (19 events)
@@ -329,91 +317,135 @@ export const ENHANCED_SAMPLE_EVENTS = [
   },
   {
     id: 'education-005',
-    name: 'Python for Beginners',
-    description: 'Learn Python programming from scratch with hands-on exercises.',
+    name: 'Python Bootcamp',
+    description: 'Intensive 3-day bootcamp to master Python programming fundamentals.',
     categoryPrimary: 'Education',
     categorySecondary: 'Workshops',
     venue: 'Programming School',
-    address: '258 Python St, San Francisco, CA',
-    latitude: 37.7950,
-    longitude: -122.3997,
+    address: '369 Python St, San Francisco, CA',
+    latitude: 37.7749,
+    longitude: -122.4194,
     time: 'Morning',
-    day: 'Tomorrow',
+    day: 'This Week',
     date: '2024-01-16',
     startTime: '09:00',
-    endTime: '13:00',
-    price: '$120',
-    attendees: 16,
-    maxAttendees: 25,
-    organizer: 'Code School',
-    tags: ['python', 'programming', 'beginners'],
-    website: 'https://example.com/python-workshop'
+    endTime: '17:00',
+    price: '$300',
+    attendees: 15,
+    maxAttendees: 20,
+    organizer: 'Code Bootcamp',
+    tags: ['python', 'programming', 'bootcamp'],
+    website: 'https://example.com/python-bootcamp'
   },
   {
     id: 'education-006',
-    name: 'Data Science Bootcamp',
-    description: 'Intensive bootcamp covering data analysis, visualization, and machine learning.',
+    name: 'Data Science Workshop',
+    description: 'Learn data analysis, visualization, and machine learning techniques.',
+    categoryPrimary: 'Education',
+    categorySecondary: 'Workshops',
+    venue: 'Data Institute',
+    address: '741 Data Ave, San Francisco, CA',
+    latitude: 37.7849,
+    longitude: -122.4094,
+    time: 'Afternoon',
+    day: 'Tomorrow',
+    date: '2024-01-16',
+    startTime: '14:00',
+    endTime: '18:00',
+    price: '$120',
+    attendees: 20,
+    maxAttendees: 25,
+    organizer: 'Data Science Pro',
+    tags: ['data-science', 'analytics', 'workshop'],
+    website: 'https://example.com/data-workshop'
+  },
+  {
+    id: 'education-007',
+    name: 'UX Design Seminar',
+    description: 'Explore user experience design principles and best practices.',
+    categoryPrimary: 'Education',
+    categorySecondary: 'Seminars',
+    venue: 'Design Studio',
+    address: '852 Design Blvd, San Francisco, CA',
+    latitude: 37.7599,
+    longitude: -122.4148,
+    time: 'Evening',
+    day: 'This Week',
+    date: '2024-01-18',
+    startTime: '18:00',
+    endTime: '20:00',
+    price: '$60',
+    attendees: 28,
+    maxAttendees: 35,
+    organizer: 'UX Designers',
+    tags: ['ux', 'design', 'seminar'],
+    website: 'https://example.com/ux-seminar'
+  },
+  {
+    id: 'education-008',
+    name: 'Business Strategy Course',
+    description: 'Learn strategic thinking and business planning methodologies.',
     categoryPrimary: 'Education',
     categorySecondary: 'Courses',
-    venue: 'Data Institute',
-    address: '369 Data Ave, San Francisco, CA',
+    venue: 'Business School',
+    address: '963 Business St, San Francisco, CA',
+    latitude: 37.7749,
+    longitude: -122.4194,
+    time: 'Evening',
+    day: 'This Week',
+    date: '2024-01-17',
+    startTime: '19:00',
+    endTime: '21:00',
+    price: '$400',
+    attendees: 22,
+    maxAttendees: 30,
+    organizer: 'Business Academy',
+    tags: ['business', 'strategy', 'course'],
+    website: 'https://example.com/business-course'
+  },
+  {
+    id: 'education-009',
+    name: 'Cybersecurity Conference',
+    description: 'Annual cybersecurity conference with industry experts and latest trends.',
+    categoryPrimary: 'Education',
+    categorySecondary: 'Conferences',
+    venue: 'Security Center',
+    address: '159 Security Way, San Francisco, CA',
+    latitude: 37.7849,
+    longitude: -122.4094,
+    time: 'Morning',
+    day: 'Weekend',
+    date: '2024-01-22',
+    startTime: '08:00',
+    endTime: '16:00',
+    price: '$180',
+    attendees: 180,
+    maxAttendees: 250,
+    organizer: 'Security Institute',
+    tags: ['cybersecurity', 'conference', 'security'],
+    website: 'https://example.com/security-conference'
+  },
+  {
+    id: 'education-010',
+    name: 'React Development Workshop',
+    description: 'Master React.js development with hands-on projects and real-world examples.',
+    categoryPrimary: 'Education',
+    categorySecondary: 'Workshops',
+    venue: 'Frontend Academy',
+    address: '357 React Ave, San Francisco, CA',
     latitude: 37.7749,
     longitude: -122.4194,
     time: 'Afternoon',
     day: 'This Week',
-    date: '2024-01-18',
-    startTime: '14:00',
-    endTime: '18:00',
-    price: '$800',
-    attendees: 14,
+    date: '2024-01-20',
+    startTime: '13:00',
+    endTime: '17:00',
+    price: '$180',
+    attendees: 16,
     maxAttendees: 20,
-    organizer: 'Data Academy',
-    tags: ['data-science', 'analytics', 'bootcamp'],
-    website: 'https://example.com/data-bootcamp'
-  },
-  {
-    id: 'education-007',
-    name: 'UX Design Workshop',
-    description: 'Learn user experience design principles and create your first prototype.',
-    categoryPrimary: 'Education',
-    categorySecondary: 'Workshops',
-    venue: 'Design Studio',
-    address: '741 Design Blvd, San Francisco, CA',
-    latitude: 37.8024,
-    longitude: -122.4358,
-    time: 'Evening',
-    day: 'Today',
-    date: '2024-01-15',
-    startTime: '18:00',
-    endTime: '21:00',
-    price: '$100',
-    attendees: 20,
-    maxAttendees: 30,
-    organizer: 'Design Academy',
-    tags: ['ux', 'design', 'prototyping'],
-    website: 'https://example.com/ux-workshop'
-  },
-  {
-    id: 'education-008',
-    name: 'Blockchain Technology Seminar',
-    description: 'Understanding blockchain technology and its applications in various industries.',
-    categoryPrimary: 'Education',
-    categorySecondary: 'Seminars',
-    venue: 'Tech Hub',
-    address: '852 Blockchain St, San Francisco, CA',
-    latitude: 37.7609,
-    longitude: -122.4350,
-    time: 'Morning',
-    day: 'This Week',
-    date: '2024-01-19',
-    startTime: '10:30',
-    endTime: '12:30',
-    price: '$60',
-    attendees: 42,
-    maxAttendees: 60,
-    organizer: 'Blockchain Institute',
-    tags: ['blockchain', 'cryptocurrency', 'technology'],
-    website: 'https://example.com/blockchain-seminar'
+    organizer: 'React Developers',
+    tags: ['react', 'frontend', 'workshop'],
+    website: 'https://example.com/react-workshop'
   },
 
   // RECREATION EVENTS (18 events)
@@ -511,10 +543,10 @@ export const ENHANCED_SAMPLE_EVENTS = [
     description: 'Join our cycling group for a scenic ride through the city.',
     categoryPrimary: 'Recreation',
     categorySecondary: 'Sports',
-    venue: 'Golden Gate Park',
-    address: 'Golden Gate Park, San Francisco, CA',
-    latitude: 37.7694,
-    longitude: -122.4862,
+    venue: 'Golden Gate Bridge',
+    address: 'Golden Gate Bridge, San Francisco, CA',
+    latitude: 37.8199,
+    longitude: -122.4783,
     time: 'Morning',
     day: 'Weekend',
     date: '2024-01-21',
@@ -522,9 +554,9 @@ export const ENHANCED_SAMPLE_EVENTS = [
     endTime: '12:00',
     price: 'Free',
     attendees: 18,
-    maxAttendees: 30,
+    maxAttendees: 25,
     organizer: 'Cycling Club',
-    tags: ['cycling', 'exercise', 'outdoor'],
+    tags: ['cycling', 'sports', 'outdoor'],
     website: 'https://example.com/cycling-ride'
   },
   {
@@ -532,21 +564,21 @@ export const ENHANCED_SAMPLE_EVENTS = [
     name: 'Rock Climbing Session',
     description: 'Indoor rock climbing for beginners and experienced climbers.',
     categoryPrimary: 'Recreation',
-    categorySecondary: 'Fitness',
+    categorySecondary: 'Sports',
     venue: 'Climbing Gym',
-    address: '741 Climb St, San Francisco, CA',
+    address: '741 Climb Ave, San Francisco, CA',
     latitude: 37.7849,
     longitude: -122.4094,
     time: 'Evening',
-    day: 'Tomorrow',
-    date: '2024-01-16',
-    startTime: '19:30',
-    endTime: '22:00',
-    price: '$20',
+    day: 'This Week',
+    date: '2024-01-17',
+    startTime: '19:00',
+    endTime: '21:00',
+    price: '$25',
     attendees: 12,
-    maxAttendees: 20,
+    maxAttendees: 16,
     organizer: 'Climbing Gym',
-    tags: ['climbing', 'fitness', 'adventure'],
+    tags: ['climbing', 'sports', 'fitness'],
     website: 'https://example.com/rock-climbing'
   },
   {
@@ -557,18 +589,18 @@ export const ENHANCED_SAMPLE_EVENTS = [
     categorySecondary: 'Sports',
     venue: 'Ocean Beach',
     address: 'Ocean Beach, San Francisco, CA',
-    latitude: 37.7599,
-    longitude: -122.5108,
+    latitude: 37.7594,
+    longitude: -122.5102,
     time: 'Afternoon',
     day: 'Weekend',
-    date: '2024-01-20',
+    date: '2024-01-22',
     startTime: '14:00',
     endTime: '17:00',
     price: 'Free',
-    attendees: 16,
+    attendees: 20,
     maxAttendees: 24,
     organizer: 'Beach Sports',
-    tags: ['volleyball', 'beach', 'team-sports'],
+    tags: ['volleyball', 'beach', 'sports'],
     website: 'https://example.com/beach-volleyball'
   },
   {
@@ -578,20 +610,64 @@ export const ENHANCED_SAMPLE_EVENTS = [
     categoryPrimary: 'Recreation',
     categorySecondary: 'Fitness',
     venue: 'Wellness Center',
-    address: '852 Wellness Ave, San Francisco, CA',
-    latitude: 37.8024,
-    longitude: -122.4358,
+    address: '852 Wellness St, San Francisco, CA',
+    latitude: 37.7749,
+    longitude: -122.4194,
     time: 'Evening',
     day: 'This Week',
-    date: '2024-01-17',
-    startTime: '18:00',
-    endTime: '19:30',
-    price: '$25',
-    attendees: 22,
+    date: '2024-01-19',
+    startTime: '18:30',
+    endTime: '20:00',
+    price: '$20',
+    attendees: 25,
     maxAttendees: 30,
     organizer: 'Wellness Center',
-    tags: ['meditation', 'mindfulness', 'wellness'],
+    tags: ['meditation', 'wellness', 'mindfulness'],
     website: 'https://example.com/meditation-workshop'
+  },
+  {
+    id: 'recreation-009',
+    name: 'Photography Walk',
+    description: 'Explore the city through photography with fellow enthusiasts.',
+    categoryPrimary: 'Recreation',
+    categorySecondary: 'Outdoor',
+    venue: 'Chinatown',
+    address: 'Chinatown, San Francisco, CA',
+    latitude: 37.7941,
+    longitude: -122.4078,
+    time: 'Morning',
+    day: 'Weekend',
+    date: '2024-01-21',
+    startTime: '10:00',
+    endTime: '13:00',
+    price: '$15',
+    attendees: 15,
+    maxAttendees: 20,
+    organizer: 'Photo Walk',
+    tags: ['photography', 'outdoor', 'art'],
+    website: 'https://example.com/photography-walk'
+  },
+  {
+    id: 'recreation-010',
+    name: 'Video Game Tournament',
+    description: 'Competitive gaming tournament with prizes for winners.',
+    categoryPrimary: 'Recreation',
+    categorySecondary: 'Games',
+    venue: 'Gaming Center',
+    address: '963 Game Blvd, San Francisco, CA',
+    latitude: 37.7599,
+    longitude: -122.4148,
+    time: 'Afternoon',
+    day: 'Weekend',
+    date: '2024-01-22',
+    startTime: '13:00',
+    endTime: '18:00',
+    price: '$20',
+    attendees: 32,
+    maxAttendees: 40,
+    organizer: 'Gaming Center',
+    tags: ['gaming', 'tournament', 'esports'],
+    website: 'https://example.com/gaming-tournament'
   },
 
   // PROFESSIONAL EVENTS (15 events)
@@ -686,325 +762,248 @@ export const ENHANCED_SAMPLE_EVENTS = [
   {
     id: 'professional-005',
     name: 'Leadership Summit',
-    description: 'Learn leadership skills from industry experts and successful entrepreneurs.',
+    description: 'Annual leadership conference with industry leaders and executives.',
     categoryPrimary: 'Professional',
     categorySecondary: 'Career',
-    venue: 'Leadership Institute',
-    address: '258 Leadership St, San Francisco, CA',
-    latitude: 37.7950,
-    longitude: -122.3997,
+    venue: 'Executive Center',
+    address: '357 Leadership Ave, San Francisco, CA',
+    latitude: 37.7749,
+    longitude: -122.4194,
     time: 'Morning',
-    day: 'This Week',
-    date: '2024-01-19',
+    day: 'Weekend',
+    date: '2024-01-22',
     startTime: '09:00',
-    endTime: '13:00',
+    endTime: '16:00',
     price: '$150',
-    attendees: 35,
-    maxAttendees: 50,
-    organizer: 'Leadership Academy',
-    tags: ['leadership', 'management', 'career'],
+    attendees: 120,
+    maxAttendees: 150,
+    organizer: 'Leadership Institute',
+    tags: ['leadership', 'executive', 'summit'],
     website: 'https://example.com/leadership-summit'
   },
   {
     id: 'professional-006',
-    name: 'Investment Strategies Workshop',
-    description: 'Learn about different investment strategies and portfolio management.',
+    name: 'Investment Roundtable',
+    description: 'Discussion on investment strategies and market opportunities.',
     categoryPrimary: 'Professional',
     categorySecondary: 'Business',
-    venue: 'Financial Center',
-    address: '369 Finance Ave, San Francisco, CA',
-    latitude: 37.7749,
-    longitude: -122.4194,
+    venue: 'Financial District',
+    address: '741 Finance St, San Francisco, CA',
+    latitude: 37.7849,
+    longitude: -122.4094,
     time: 'Evening',
-    day: 'Tomorrow',
-    date: '2024-01-16',
+    day: 'This Week',
+    date: '2024-01-18',
     startTime: '18:00',
-    endTime: '20:30',
+    endTime: '20:00',
     price: '$60',
-    attendees: 25,
-    maxAttendees: 35,
-    organizer: 'Financial Advisors',
-    tags: ['investment', 'finance', 'portfolio'],
-    website: 'https://example.com/investment-workshop'
+    attendees: 35,
+    maxAttendees: 45,
+    organizer: 'Investment Club',
+    tags: ['investment', 'finance', 'roundtable'],
+    website: 'https://example.com/investment-roundtable'
   },
   {
     id: 'professional-007',
-    name: 'Women in Tech Meetup',
-    description: 'Networking and mentorship opportunities for women in technology.',
-    categoryPrimary: 'Professional',
-    categorySecondary: 'Networking',
-    venue: 'Tech Hub',
-    address: '741 Women Tech Blvd, San Francisco, CA',
-    latitude: 37.8024,
-    longitude: -122.4358,
-    time: 'Evening',
-    day: 'This Week',
-    date: '2024-01-18',
-    startTime: '18:30',
-    endTime: '21:00',
-    price: 'Free',
-    attendees: 55,
-    maxAttendees: 80,
-    organizer: 'Women in Tech',
-    tags: ['women', 'tech', 'mentorship'],
-    website: 'https://example.com/women-tech-meetup'
-  },
-  {
-    id: 'professional-008',
-    name: 'Product Management Conference',
-    description: 'Learn about product management best practices and industry trends.',
-    categoryPrimary: 'Professional',
-    categorySecondary: 'Industry',
-    venue: 'Product Center',
-    address: '852 Product St, San Francisco, CA',
-    latitude: 37.7609,
-    longitude: -122.4350,
-    time: 'Morning',
-    day: 'Weekend',
-    date: '2024-01-21',
-    startTime: '09:30',
-    endTime: '16:00',
-    price: '$120',
-    attendees: 85,
-    maxAttendees: 120,
-    organizer: 'Product Management Institute',
-    tags: ['product-management', 'strategy', 'conference'],
-    website: 'https://example.com/product-conference'
-  }
-];
-
-// Additional events to reach 70+ total
-export const ADDITIONAL_SAMPLE_EVENTS = [
-  // More Social Events
-  {
-    id: 'social-009',
-    name: 'Photography Walk',
-    description: 'Explore the city through photography with fellow enthusiasts.',
-    categoryPrimary: 'Social',
-    categorySecondary: 'Community',
-    venue: 'Mission District',
-    address: 'Mission District, San Francisco, CA',
-    latitude: 37.7599,
-    longitude: -122.4148,
-    time: 'Morning',
-    day: 'Weekend',
-    date: '2024-01-20',
-    startTime: '10:00',
-    endTime: '13:00',
-    price: 'Free',
-    attendees: 18,
-    maxAttendees: 25,
-    organizer: 'Photo Club',
-    tags: ['photography', 'walking', 'art'],
-    website: 'https://example.com/photo-walk'
-  },
-  {
-    id: 'social-010',
-    name: 'Cooking Class',
-    description: 'Learn to cook authentic Italian cuisine with a professional chef.',
-    categoryPrimary: 'Social',
-    categorySecondary: 'Meetups',
-    venue: 'Cooking School',
-    address: '456 Chef St, San Francisco, CA',
-    latitude: 37.7699,
-    longitude: -122.4469,
-    time: 'Evening',
-    day: 'This Week',
-    date: '2024-01-19',
-    startTime: '18:00',
-    endTime: '21:00',
-    price: '$85',
-    attendees: 12,
-    maxAttendees: 16,
-    organizer: 'Culinary Academy',
-    tags: ['cooking', 'italian', 'culinary'],
-    website: 'https://example.com/cooking-class'
-  },
-
-  // More Education Events
-  {
-    id: 'education-009',
-    name: 'React Development Bootcamp',
-    description: 'Intensive bootcamp covering React, Redux, and modern web development.',
-    categoryPrimary: 'Education',
-    categorySecondary: 'Workshops',
-    venue: 'Web Dev Academy',
-    address: '789 React Ave, San Francisco, CA',
-    latitude: 37.7849,
-    longitude: -122.4094,
-    time: 'Afternoon',
-    day: 'This Week',
-    date: '2024-01-18',
-    startTime: '13:00',
-    endTime: '17:00',
-    price: '$200',
-    attendees: 15,
-    maxAttendees: 20,
-    organizer: 'Web Dev Academy',
-    tags: ['react', 'javascript', 'web-development'],
-    website: 'https://example.com/react-bootcamp'
-  },
-  {
-    id: 'education-010',
-    name: 'Cybersecurity Workshop',
-    description: 'Learn about cybersecurity threats and how to protect your business.',
-    categoryPrimary: 'Education',
-    categorySecondary: 'Seminars',
-    venue: 'Security Center',
-    address: '321 Security Blvd, San Francisco, CA',
-    latitude: 37.7749,
-    longitude: -122.4194,
-    time: 'Morning',
-    day: 'Tomorrow',
-    date: '2024-01-16',
-    startTime: '10:00',
-    endTime: '12:00',
-    price: '$90',
-    attendees: 30,
-    maxAttendees: 40,
-    organizer: 'Security Institute',
-    tags: ['cybersecurity', 'security', 'protection'],
-    website: 'https://example.com/cybersecurity-workshop'
-  },
-
-  // More Recreation Events
-  {
-    id: 'recreation-009',
-    name: 'Tennis Tournament',
-    description: 'Weekly tennis tournament for players of all levels.',
-    categoryPrimary: 'Recreation',
-    categorySecondary: 'Sports',
-    venue: 'Tennis Club',
-    address: '654 Tennis St, San Francisco, CA',
-    latitude: 37.7694,
-    longitude: -122.4862,
-    time: 'Morning',
-    day: 'Weekend',
-    date: '2024-01-21',
-    startTime: '09:00',
-    endTime: '15:00',
-    price: '$25',
-    attendees: 20,
-    maxAttendees: 32,
-    organizer: 'Tennis Club',
-    tags: ['tennis', 'tournament', 'sports'],
-    website: 'https://example.com/tennis-tournament'
-  },
-  {
-    id: 'recreation-010',
-    name: 'Dance Class',
-    description: 'Learn salsa dancing with professional instructors.',
-    categoryPrimary: 'Recreation',
-    categorySecondary: 'Fitness',
-    venue: 'Dance Studio',
-    address: '987 Dance Ave, San Francisco, CA',
-    latitude: 37.7599,
-    longitude: -122.4148,
-    time: 'Evening',
-    day: 'This Week',
-    date: '2024-01-17',
-    startTime: '19:00',
-    endTime: '21:00',
-    price: '$30',
-    attendees: 16,
-    maxAttendees: 24,
-    organizer: 'Dance Studio',
-    tags: ['dance', 'salsa', 'fitness'],
-    website: 'https://example.com/dance-class'
-  },
-
-  // More Professional Events
-  {
-    id: 'professional-009',
     name: 'Sales Training Workshop',
-    description: 'Improve your sales skills with proven techniques and strategies.',
+    description: 'Advanced sales techniques and customer relationship management.',
     categoryPrimary: 'Professional',
     categorySecondary: 'Career',
     venue: 'Sales Academy',
-    address: '147 Sales St, San Francisco, CA',
-    latitude: 37.7950,
-    longitude: -122.3997,
+    address: '852 Sales Blvd, San Francisco, CA',
+    latitude: 37.7599,
+    longitude: -122.4148,
     time: 'Afternoon',
     day: 'This Week',
     date: '2024-01-19',
-    startTime: '14:00',
+    startTime: '13:00',
     endTime: '17:00',
     price: '$100',
-    attendees: 25,
-    maxAttendees: 35,
-    organizer: 'Sales Academy',
-    tags: ['sales', 'training', 'business'],
+    attendees: 18,
+    maxAttendees: 25,
+    organizer: 'Sales Pro',
+    tags: ['sales', 'training', 'workshop'],
     website: 'https://example.com/sales-workshop'
   },
   {
-    id: 'professional-010',
-    name: 'Entrepreneur Meetup',
-    description: 'Connect with fellow entrepreneurs and share experiences.',
+    id: 'professional-008',
+    name: 'Product Management Meetup',
+    description: 'Network with product managers and discuss industry best practices.',
     categoryPrimary: 'Professional',
     categorySecondary: 'Networking',
-    venue: 'Entrepreneur Hub',
-    address: '258 Startup Blvd, San Francisco, CA',
-    latitude: 37.8024,
-    longitude: -122.4358,
+    venue: 'Product Hub',
+    address: '963 Product St, San Francisco, CA',
+    latitude: 37.7749,
+    longitude: -122.4194,
     time: 'Evening',
-    day: 'Tomorrow',
-    date: '2024-01-16',
-    startTime: '18:00',
-    endTime: '21:00',
+    day: 'This Week',
+    date: '2024-01-20',
+    startTime: '18:30',
+    endTime: '20:30',
     price: 'Free',
     attendees: 40,
-    maxAttendees: 60,
-    organizer: 'Entrepreneur Network',
-    tags: ['entrepreneur', 'startup', 'networking'],
-    website: 'https://example.com/entrepreneur-meetup'
+    maxAttendees: 50,
+    organizer: 'Product Managers',
+    tags: ['product', 'management', 'networking'],
+    website: 'https://example.com/product-meetup'
+  },
+  {
+    id: 'professional-009',
+    name: 'HR Innovation Conference',
+    description: 'Explore the future of human resources and workplace innovation.',
+    categoryPrimary: 'Professional',
+    categorySecondary: 'Industry',
+    venue: 'HR Center',
+    address: '159 HR Way, San Francisco, CA',
+    latitude: 37.7849,
+    longitude: -122.4094,
+    time: 'Morning',
+    day: 'Weekend',
+    date: '2024-01-23',
+    startTime: '09:00',
+    endTime: '15:00',
+    price: '$120',
+    attendees: 85,
+    maxAttendees: 100,
+    organizer: 'HR Innovation',
+    tags: ['hr', 'innovation', 'workplace'],
+    website: 'https://example.com/hr-conference'
+  },
+  {
+    id: 'professional-010',
+    name: 'Entrepreneur Masterclass',
+    description: 'Learn from successful entrepreneurs and build your business skills.',
+    categoryPrimary: 'Professional',
+    categorySecondary: 'Business',
+    venue: 'Entrepreneur Center',
+    address: '357 Startup Ave, San Francisco, CA',
+    latitude: 37.7599,
+    longitude: -122.4148,
+    time: 'Afternoon',
+    day: 'Weekend',
+    date: '2024-01-24',
+    startTime: '14:00',
+    endTime: '18:00',
+    price: '$80',
+    attendees: 30,
+    maxAttendees: 40,
+    organizer: 'Entrepreneur Academy',
+    tags: ['entrepreneur', 'business', 'masterclass'],
+    website: 'https://example.com/entrepreneur-masterclass'
   }
 ];
 
-// Combine all events
-export const ALL_SAMPLE_EVENTS = [
-  ...ENHANCED_SAMPLE_EVENTS,
-  ...ADDITIONAL_SAMPLE_EVENTS
-];
-
-// Export individual categories for easy access
-export const SOCIAL_EVENTS = ALL_SAMPLE_EVENTS.filter(event => event.categoryPrimary === 'Social');
-export const EDUCATION_EVENTS = ALL_SAMPLE_EVENTS.filter(event => event.categoryPrimary === 'Education');
-export const RECREATION_EVENTS = ALL_SAMPLE_EVENTS.filter(event => event.categoryPrimary === 'Recreation');
-export const PROFESSIONAL_EVENTS = ALL_SAMPLE_EVENTS.filter(event => event.categoryPrimary === 'Professional');
-
-// Export by time
-export const MORNING_EVENTS = ALL_SAMPLE_EVENTS.filter(event => event.time === 'Morning');
-export const AFTERNOON_EVENTS = ALL_SAMPLE_EVENTS.filter(event => event.time === 'Afternoon');
-export const EVENING_EVENTS = ALL_SAMPLE_EVENTS.filter(event => event.time === 'Evening');
-export const NIGHT_EVENTS = ALL_SAMPLE_EVENTS.filter(event => event.time === 'Night');
-
-// Export by day
-export const TODAY_EVENTS = ALL_SAMPLE_EVENTS.filter(event => event.day === 'Today');
-export const TOMORROW_EVENTS = ALL_SAMPLE_EVENTS.filter(event => event.day === 'Tomorrow');
-export const THIS_WEEK_EVENTS = ALL_SAMPLE_EVENTS.filter(event => event.day === 'This Week');
-export const WEEKEND_EVENTS = ALL_SAMPLE_EVENTS.filter(event => event.day === 'Weekend');
-
-// Statistics
-export const EVENT_STATISTICS = {
-  total: ALL_SAMPLE_EVENTS.length,
-  byCategory: {
-    Social: SOCIAL_EVENTS.length,
-    Education: EDUCATION_EVENTS.length,
-    Recreation: RECREATION_EVENTS.length,
-    Professional: PROFESSIONAL_EVENTS.length
-  },
-  byTime: {
-    Morning: MORNING_EVENTS.length,
-    Afternoon: AFTERNOON_EVENTS.length,
-    Evening: EVENING_EVENTS.length,
-    Night: NIGHT_EVENTS.length
-  },
-  byDay: {
-    Today: TODAY_EVENTS.length,
-    Tomorrow: TOMORROW_EVENTS.length,
-    'This Week': THIS_WEEK_EVENTS.length,
-    Weekend: WEEKEND_EVENTS.length
-  }
+// Category color mapping for map pins
+export const CATEGORY_COLORS = {
+  'Social': '#ff6b6b',      // Red
+  'Education': '#4ecdc4',   // Teal
+  'Recreation': '#45b7d1',  // Blue
+  'Professional': '#96ceb4' // Green
 };
 
-export default ALL_SAMPLE_EVENTS;
+// Event size mapping based on attendees
+export const getEventSize = (attendees) => {
+  if (attendees < 20) return 'small';
+  if (attendees < 50) return 'medium';
+  return 'large';
+};
+
+// Get category color for map pins
+export const getCategoryColor = (category) => {
+  return CATEGORY_COLORS[category] || '#666666';
+};
+
+// Filter events by category
+export const filterEventsByCategory = (events, category) => {
+  if (!category || category === 'All') return events;
+  return events.filter(event => event.categoryPrimary === category);
+};
+
+// Filter events by subcategory
+export const filterEventsBySubcategory = (events, subcategory) => {
+  if (!subcategory || subcategory === 'All') return events;
+  return events.filter(event => event.categorySecondary === subcategory);
+};
+
+// Filter events by time
+export const filterEventsByTime = (events, time) => {
+  if (!time || time === 'All') return events;
+  return events.filter(event => event.time === time);
+};
+
+// Filter events by day
+export const filterEventsByDay = (events, day) => {
+  if (!day || day === 'All') return events;
+  return events.filter(event => event.day === day);
+};
+
+// Get all unique categories
+export const getAllCategories = () => {
+  return [...new Set(ENHANCED_SAMPLE_EVENTS.map(event => event.categoryPrimary))];
+};
+
+// Get all unique subcategories
+export const getAllSubcategories = () => {
+  return [...new Set(ENHANCED_SAMPLE_EVENTS.map(event => event.categorySecondary))];
+};
+
+// Get all unique times
+export const getAllTimes = () => {
+  return [...new Set(ENHANCED_SAMPLE_EVENTS.map(event => event.time))];
+};
+
+// Get all unique days
+export const getAllDays = () => {
+  return [...new Set(ENHANCED_SAMPLE_EVENTS.map(event => event.day))];
+};
+
+// Get events by location bounds
+export const getEventsByBounds = (events, bounds) => {
+  return events.filter(event => {
+    const lat = event.latitude;
+    const lng = event.longitude;
+    return lat >= bounds.south && lat <= bounds.north && 
+           lng >= bounds.west && lng <= bounds.east;
+  });
+};
+
+// Get event statistics
+export const getEventStatistics = () => {
+  const events = ENHANCED_SAMPLE_EVENTS;
+  const stats = {
+    total: events.length,
+    byCategory: {},
+    byTime: {},
+    byDay: {},
+    byPrice: { free: 0, paid: 0 },
+    totalAttendees: 0,
+    averageAttendees: 0
+  };
+
+  events.forEach(event => {
+    // Category stats
+    stats.byCategory[event.categoryPrimary] = (stats.byCategory[event.categoryPrimary] || 0) + 1;
+    
+    // Time stats
+    stats.byTime[event.time] = (stats.byTime[event.time] || 0) + 1;
+    
+    // Day stats
+    stats.byDay[event.day] = (stats.byDay[event.day] || 0) + 1;
+    
+    // Price stats
+    if (event.price === 'Free') {
+      stats.byPrice.free++;
+    } else {
+      stats.byPrice.paid++;
+    }
+    
+    // Attendee stats
+    stats.totalAttendees += event.attendees;
+  });
+
+  stats.averageAttendees = Math.round(stats.totalAttendees / events.length);
+  
+  return stats;
+};
+
+export default ENHANCED_SAMPLE_EVENTS;
