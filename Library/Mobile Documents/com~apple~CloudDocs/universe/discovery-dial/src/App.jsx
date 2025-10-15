@@ -21,6 +21,7 @@ import './utils/testWordPress'; // Import test utilities
 import './utils/testWordPressCom'; // Import WordPress.com test utilities
 import './utils/qaTesting'; // Import QA testing utilities
 import './utils/mobileUIDebug'; // Import mobile UI debug utilities
+import './utils/comprehensiveQATesting'; // Import comprehensive QA testing utilities
 
 /**
  * Main application component.
@@ -417,6 +418,27 @@ function App() {
   const handleTimeframeChange = useCallback((newTimeframe) => {
     console.log('App: Timeframe changed to', newTimeframe);
     setCurrentTimeframe(newTimeframe);
+  }, []);
+
+  // Run comprehensive QA tests after app loads
+  useEffect(() => {
+    const runQATests = async () => {
+      // Wait for app to fully load
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
+      console.log('🚀 Starting comprehensive QA audit...');
+      try {
+        if (isWindowAvailable() && window.comprehensiveQATesting) {
+          await window.comprehensiveQATesting.runComprehensiveTests();
+        } else {
+          console.warn('Comprehensive QA testing not available');
+        }
+      } catch (error) {
+        console.error('QA testing failed:', error);
+      }
+    };
+
+    runQATests();
   }, []);
 
   return (
