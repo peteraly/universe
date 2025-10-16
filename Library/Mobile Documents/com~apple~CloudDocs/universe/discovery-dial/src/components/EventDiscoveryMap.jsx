@@ -63,7 +63,20 @@ const LEAFLET_CONFIG = {
   // Default center (San Francisco)
   center: [37.7749, -122.4194],
   zoom: 13,
-  // OpenStreetMap tile layer
+  // Try multiple tile providers for better reliability
+  tileProviders: [
+    {
+      name: 'OpenStreetMap',
+      url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+      attribution: '© OpenStreetMap contributors'
+    },
+    {
+      name: 'CartoDB',
+      url: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
+      attribution: '© OpenStreetMap contributors © CARTO'
+    }
+  ],
+  // Default to first provider
   tileLayer: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
   attribution: '© OpenStreetMap contributors'
 };
@@ -182,14 +195,51 @@ const EventDiscoveryMap = ({
       try {
         console.log('🗺️ Initializing OpenStreetMap with Leaflet');
         
+        // Debug container dimensions
+        const containerRect = mapContainer.current.getBoundingClientRect();
+        console.log('🗺️ Map container dimensions:', {
+          width: containerRect.width,
+          height: containerRect.height,
+          top: containerRect.top,
+          left: containerRect.left
+        });
+
         // Create map instance
         mapInstance.current = L.map(mapContainer.current).setView(LEAFLET_CONFIG.center, LEAFLET_CONFIG.zoom);
 
-        // Add OpenStreetMap tile layer
-        L.tileLayer(LEAFLET_CONFIG.tileLayer, {
-          attribution: LEAFLET_CONFIG.attribution,
-          maxZoom: 19
-        }).addTo(mapInstance.current);
+        // Try to add tile layer with fallback
+        let tileLayer;
+        try {
+          // Try OpenStreetMap first
+          tileLayer = L.tileLayer(LEAFLET_CONFIG.tileProviders[0].url, {
+            attribution: LEAFLET_CONFIG.tileProviders[0].attribution,
+            maxZoom: 19
+          }).addTo(mapInstance.current);
+          
+          console.log('🗺️ Using OpenStreetMap tiles');
+        } catch (error) {
+          console.warn('🗺️ OpenStreetMap failed, trying CartoDB:', error);
+          // Fallback to CartoDB
+          tileLayer = L.tileLayer(LEAFLET_CONFIG.tileProviders[1].url, {
+            attribution: LEAFLET_CONFIG.tileProviders[1].attribution,
+            maxZoom: 19
+          }).addTo(mapInstance.current);
+          
+          console.log('🗺️ Using CartoDB tiles');
+        }
+
+        // Debug tile loading
+        tileLayer.on('loading', () => {
+          console.log('🗺️ Tiles loading...');
+        });
+        
+        tileLayer.on('load', () => {
+          console.log('🗺️ Tiles loaded successfully');
+        });
+        
+        tileLayer.on('tileerror', (e) => {
+          console.error('🗺️ Tile loading error:', e);
+        });
 
         // Map loaded successfully
         mapInstance.current.whenReady(() => {
@@ -197,6 +247,20 @@ const EventDiscoveryMap = ({
           setMapLoaded(true);
           setMapError(null);
           setUseFallback(false);
+        });
+
+        // Fallback timeout - if tiles don't load within 10 seconds, use fallback
+        const fallbackTimeout = setTimeout(() => {
+          if (!mapLoaded) {
+            console.warn('🗺️ Map tiles taking too long to load, using fallback');
+            setUseFallback(true);
+            setMapError('Map tiles loading slowly, using fallback view');
+          }
+        }, 10000);
+
+        // Clear timeout if map loads successfully
+        mapInstance.current.on('load', () => {
+          clearTimeout(fallbackTimeout);
         });
 
         // Handle map errors
@@ -455,7 +519,16 @@ const EventDiscoveryMap = ({
         <FallbackMap />
       ) : (
         <>
-          <div ref={mapContainer} className="map-container" />
+          <div 
+            ref={mapContainer} 
+            className="map-container"
+            style={{
+              width: '100%',
+              height: '100%',
+              minHeight: '400px',
+              position: 'relative'
+            }}
+          />
           {mapError ? (
             <div className="map-error">
               <div className="error-icon">⚠️</div>
