@@ -497,6 +497,13 @@ function App() {
   const handleTimeframeChange = useCallback((newTimeframe) => {
     console.log('App: Timeframe changed to', newTimeframe);
     setCurrentTimeframe(newTimeframe);
+    
+    // Also update activeFilters to trigger event filtering
+    setActiveFilters(prevFilters => ({
+      ...prevFilters,
+      time: newTimeframe,
+      day: newTimeframe // Assuming timeframe includes day info
+    }));
   }, []);
 
   // Dynamic event filtering based on dial selection and filters
@@ -526,12 +533,28 @@ function App() {
     }
     
     // Apply additional filters (only if not 'All')
-    if (filters.time !== 'All') {
-      filtered = filtered.filter(event => event.time === filters.time);
-      console.log('After time filter:', filtered.length);
+    if (filters.time && filters.time !== 'All') {
+      // Handle timeframe filtering (Today, Tomorrow, This Week, This Month)
+      if (['Today', 'Tomorrow', 'This Week', 'This Month'].includes(filters.time)) {
+        if (filters.time === 'Today') {
+          filtered = filtered.filter(event => event.day === 'Today');
+        } else if (filters.time === 'Tomorrow') {
+          filtered = filtered.filter(event => event.day === 'Tomorrow');
+        } else if (filters.time === 'This Week') {
+          filtered = filtered.filter(event => ['Today', 'Tomorrow', 'This Week'].includes(event.day));
+        } else if (filters.time === 'This Month') {
+          filtered = filtered.filter(event => ['Today', 'Tomorrow', 'This Week', 'This Month'].includes(event.day));
+        }
+        console.log('After timeframe filter:', filtered.length);
+      } 
+      // Handle time-of-day filtering (Morning, Afternoon, Evening, Night)
+      else if (['Morning', 'Afternoon', 'Evening', 'Night'].includes(filters.time)) {
+        filtered = filtered.filter(event => event.time === filters.time);
+        console.log('After time-of-day filter:', filtered.length);
+      }
     }
     
-    if (filters.day !== 'All') {
+    if (filters.day && filters.day !== 'All') {
       filtered = filtered.filter(event => event.day === filters.day);
       console.log('After day filter:', filtered.length);
     }
@@ -563,8 +586,8 @@ function App() {
              filteredEvents: filtered.slice(0, 3).map(e => ({ name: e.name, category: e.categoryPrimary, subcategory: e.categorySecondary }))
            });
            
-          // If no events after filtering, show all events (fallback)
-          const finalEvents = filtered.length > 0 ? filtered : ENHANCED_SAMPLE_EVENTS;
+          // Use filtered events directly (no fallback to all events)
+          const finalEvents = filtered;
           console.log('Final events to display:', finalEvents.length);
           console.log('Final events sample:', finalEvents.slice(0, 3).map(e => ({ name: e.name, category: e.categoryPrimary, subcategory: e.categorySecondary })));
           
