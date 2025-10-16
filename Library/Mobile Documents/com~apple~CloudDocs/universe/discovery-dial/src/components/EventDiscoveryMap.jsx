@@ -215,6 +215,7 @@ const EventDiscoveryMap = ({
   // Fallback map component
   const FallbackMap = () => {
     console.log('🗺️ Fallback map rendering with events:', events.length);
+    console.log('🗺️ Fallback map events sample:', events.slice(0, 3).map(e => ({ name: e.name, category: e.categoryPrimary, subcategory: e.categorySecondary })));
     
     return (
       <div 

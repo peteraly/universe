@@ -545,11 +545,12 @@ function App() {
              filteredEvents: filtered.slice(0, 3).map(e => ({ name: e.name, category: e.categoryPrimary, subcategory: e.categorySecondary }))
            });
            
-           // If no events after filtering, show all events (fallback)
-           const finalEvents = filtered.length > 0 ? filtered : ENHANCED_SAMPLE_EVENTS;
-           console.log('Final events to display:', finalEvents.length);
-           
-           setFilteredEvents(finalEvents);
+          // If no events after filtering, show all events (fallback)
+          const finalEvents = filtered.length > 0 ? filtered : ENHANCED_SAMPLE_EVENTS;
+          console.log('Final events to display:', finalEvents.length);
+          console.log('Final events sample:', finalEvents.slice(0, 3).map(e => ({ name: e.name, category: e.categoryPrimary, subcategory: e.categorySecondary })));
+          
+          setFilteredEvents(finalEvents);
          }, [selectedCategory, selectedSubcategory, activeFilters, filterEventsByDialSelection]);
 
   // Handle category selection from dial
