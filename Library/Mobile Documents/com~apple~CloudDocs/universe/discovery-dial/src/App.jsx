@@ -47,6 +47,18 @@ function App() {
     categories: ENHANCED_SAMPLE_EVENTS.map(e => e.categoryPrimary).slice(0, 5)
   });
 
+  // Mobile debugging
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || window.innerWidth <= 768;
+  console.log('📱 Mobile Debug Info:', {
+    isMobile,
+    userAgent: navigator.userAgent.substring(0, 100) + '...',
+    screenWidth: window.innerWidth,
+    screenHeight: window.innerHeight,
+    connection: navigator.connection?.effectiveType || 'unknown',
+    memory: navigator.deviceMemory || 'unknown',
+    cores: navigator.hardwareConcurrency || 'unknown'
+  });
+
   // Unified state management for map background integration
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedSubcategory, setSelectedSubcategory] = useState(null);

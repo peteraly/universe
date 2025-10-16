@@ -2,6 +2,25 @@ import React, { useRef, useEffect, useState, useCallback } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
+// Mobile detection utility
+const isMobileDevice = () => {
+  return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
+         window.innerWidth <= 768;
+};
+
+// Network detection utility
+const getNetworkInfo = () => {
+  if ('connection' in navigator) {
+    const connection = navigator.connection;
+    return {
+      effectiveType: connection.effectiveType,
+      downlink: connection.downlink,
+      rtt: connection.rtt
+    };
+  }
+  return { effectiveType: 'unknown' };
+};
+
 // Simple error boundary for map component
 const MapErrorBoundary = ({ children, fallback }) => {
   const [hasError, setHasError] = useState(false);
@@ -79,6 +98,12 @@ const EventDiscoveryMap = ({
   const [mapError, setMapError] = useState(null);
   const [pins, setPins] = useState([]);
   const [useFallback, setUseFallback] = useState(false);
+  
+  // Mobile-specific state
+  const [isMobile, setIsMobile] = useState(false);
+  const [networkInfo, setNetworkInfo] = useState({ effectiveType: 'unknown' });
+  const [mapReady, setMapReady] = useState(false);
+  const [mobileLoadingDelay, setMobileLoadingDelay] = useState(0);
 
   // Create map pins from events with comprehensive validation
   const createMapPins = useCallback((events) => {
@@ -164,9 +189,47 @@ const EventDiscoveryMap = ({
     return 'small';
   };
 
-  // Initialize Leaflet map
+  // Mobile detection and progressive loading
   useEffect(() => {
-    if (!mapContainer.current || mapInstance.current) return;
+    const mobile = isMobileDevice();
+    const network = getNetworkInfo();
+    
+    setIsMobile(mobile);
+    setNetworkInfo(network);
+    
+    console.log('📱 Mobile detection:', {
+      isMobile: mobile,
+      network: network,
+      userAgent: navigator.userAgent.substring(0, 100) + '...'
+    });
+    
+    // Progressive loading for mobile
+    if (mobile) {
+      // Force fallback on slow connections
+      if (network.effectiveType === 'slow-2g' || network.effectiveType === '2g') {
+        console.log('📱 Slow connection detected - using fallback map');
+        setUseFallback(true);
+        setMapReady(true);
+        return;
+      }
+      
+      // Delay map loading on mobile for better UX
+      const delay = network.effectiveType === '3g' ? 3000 : 2000;
+      setMobileLoadingDelay(delay);
+      
+      const timer = setTimeout(() => {
+        setMapReady(true);
+      }, delay);
+      
+      return () => clearTimeout(timer);
+    } else {
+      setMapReady(true);
+    }
+  }, []);
+
+  // Initialize Mapbox map
+  useEffect(() => {
+    if (!mapContainer.current || mapInstance.current || !mapReady) return;
 
     const initializeMap = () => {
       try {
@@ -200,10 +263,18 @@ const EventDiscoveryMap = ({
           setUseFallback(false);
         });
 
-        // Handle map errors
+        // Handle map errors with mobile-specific handling
         mapInstance.current.on('error', (e) => {
           console.error('🗺️ Mapbox error:', e);
-          setMapError('Failed to load map');
+          
+          // Mobile-specific error handling
+          if (isMobile) {
+            console.log('📱 Mobile map error - switching to fallback');
+            setMapError('Map unavailable on mobile - using fallback view');
+          } else {
+            setMapError('Failed to load map');
+          }
+          
           setMapLoaded(false);
           setUseFallback(true);
         });
@@ -515,7 +586,14 @@ const EventDiscoveryMap = ({
           ) : !mapLoaded ? (
             <div className="map-loading">
               <div className="loading-spinner" />
-              <p>Loading map...</p>
+              <p>
+                {isMobile ? '📱 Loading map for mobile...' : 'Loading map...'}
+                {mobileLoadingDelay > 0 && (
+                  <span style={{ fontSize: '12px', opacity: 0.7, display: 'block', marginTop: '8px' }}>
+                    Optimizing for mobile experience...
+                  </span>
+                )}
+              </p>
             </div>
           ) : null}
         </>
