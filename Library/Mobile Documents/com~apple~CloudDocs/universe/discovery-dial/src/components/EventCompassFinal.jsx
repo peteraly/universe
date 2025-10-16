@@ -240,12 +240,18 @@ export default function EventCompassFinal({
       <div
         ref={dialRef}
         data-dial-root
+        className="enhanced-dial"
+        data-testid="dial"
+        aria-label="Event discovery dial"
+        role="application"
         {...bindDialAreaProps}
         style={{
           position: 'relative',
           width: `${dialSize}px`,
           height: `${dialSize}px`,
-          flexShrink: 0
+          flexShrink: 0,
+          display: 'block',
+          visibility: 'visible'
         }}
       >
         {/* GESTURE HINTS - Zone-aware visual feedback */}
@@ -401,11 +407,21 @@ export default function EventCompassFinal({
                 opacity: [0.4, 1, 1]
               } : {}}
               transition={{ duration: 0.4 }}
+              role="button"
+              aria-label={`Primary category: ${cat.name}`}
+              aria-pressed={isActive}
+              tabIndex="0"
               style={{
                 position: 'absolute',
                 left: `${pos.x}px`,
                 top: `${pos.y}px`,
                 transform: 'translate(-50%, -50%)',
+                minWidth: '44px',
+                minHeight: '44px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '8px 12px',
                 fontSize: isActive ? '18px' : '13px',  // Enhanced: larger active, smaller inactive
                 fontWeight: isActive ? '700' : '500',  // Enhanced: bolder active
                 letterSpacing: '0.5px',
@@ -427,6 +443,19 @@ export default function EventCompassFinal({
         })}
 
         {/* SUBCATEGORY LABELS (with pulse on rotation & progressive opacity) */}
+        <div 
+          className="subcategory-dial"
+          data-testid="subcategory-dial"
+          aria-label="Subcategory selection dial"
+          role="listbox"
+          style={{
+            position: 'absolute',
+            width: '100%',
+            height: '100%',
+            display: 'block',
+            visibility: 'visible'
+          }}
+        >
         {subcategories.map((sub, i) => {
           // REAL-TIME ROTATION: Calculate rotation offset from drag
           const dragRotation = subCount > 0 
@@ -515,6 +544,9 @@ export default function EventCompassFinal({
                 opacity: [0.6, 1, 1]
               } : {}}
               transition={{ duration: 0.3 }}
+              role="option"
+              aria-selected={isActive}
+              aria-label={`Subcategory: ${sub.label}`}
               style={{
                 position: 'absolute',
                 left: `${adjustedPos.x}px`,
@@ -530,13 +562,20 @@ export default function EventCompassFinal({
                 whiteSpace: 'nowrap',
                 textAlign: 'center',
                 zIndex: 5,
-                textTransform: 'uppercase'
+                textTransform: 'uppercase',
+                minWidth: '44px',
+                minHeight: '44px',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '8px 12px'
               }}
             >
               {sub.label}
             </motion.div>
           );
         })}
+        </div>
 
         {/* CENTER DOT */}
         <div style={{

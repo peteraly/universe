@@ -79,7 +79,15 @@ const EventDiscoveryMap = ({
 
     const initializeMap = async () => {
       try {
-        // Test token validity first
+        // Force fallback mode due to Mapbox token issues
+        console.log('🗺️ Using fallback map due to token issues');
+        setMapError('Map temporarily unavailable');
+        setMapLoaded(false);
+        setUseFallback(true);
+        return;
+
+        // Original map initialization (commented out due to token issues)
+        /*
         const response = await fetch(`https://api.mapbox.com/styles/v1/mapbox/streets-v11?access_token=${MAPBOX_CONFIG.token}`);
         
         if (!response.ok) {
@@ -107,6 +115,7 @@ const EventDiscoveryMap = ({
           setMapLoaded(false);
           setUseFallback(true);
         });
+        */
 
       } catch (error) {
         console.error('🗺️ Map initialization error:', error);

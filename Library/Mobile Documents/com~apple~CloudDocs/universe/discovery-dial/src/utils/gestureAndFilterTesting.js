@@ -183,7 +183,7 @@ const clickTimeFilter = (time) => {
   
   const filterButton = document.querySelector(`[data-filter="time"][data-value="${time}"]`) ||
                       document.querySelector(`.filter-pill[data-time="${time}"]`) ||
-                      document.querySelector(`button:contains("${time}")`);
+                      Array.from(document.querySelectorAll('button')).find(btn => btn.textContent && btn.textContent.includes(time));
   
   if (filterButton) {
     filterButton.click();
@@ -201,7 +201,7 @@ const clickDayFilter = (day) => {
   
   const filterButton = document.querySelector(`[data-filter="day"][data-value="${day}"]`) ||
                       document.querySelector(`.filter-pill[data-day="${day}"]`) ||
-                      document.querySelector(`button:contains("${day}")`);
+                      Array.from(document.querySelectorAll('button')).find(btn => btn.textContent && btn.textContent.includes(day));
   
   if (filterButton) {
     filterButton.click();
@@ -219,7 +219,7 @@ const selectCategoryViaDial = (category) => {
   
   // Find category element
   const categoryElement = document.querySelector(`[data-category="${category}"]`) ||
-                         document.querySelector(`.primary-category:contains("${category}")`);
+                         Array.from(document.querySelectorAll('.primary-category')).find(el => el.textContent && el.textContent.includes(category));
   
   if (categoryElement) {
     categoryElement.click();
@@ -236,7 +236,7 @@ const selectSubcategory = (subcategory) => {
   if (!isDocumentAvailable()) return;
   
   const subcategoryElement = document.querySelector(`[data-subcategory="${subcategory}"]`) ||
-                            document.querySelector(`.subcategory-label:contains("${subcategory}")`);
+                            Array.from(document.querySelectorAll('.subcategory-label')).find(el => el.textContent && el.textContent.includes(subcategory));
   
   if (subcategoryElement) {
     subcategoryElement.click();
