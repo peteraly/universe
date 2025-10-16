@@ -28,19 +28,21 @@ import {
   safeSetStyle,
   safeSetStyles
 } from './utils/safeDOM';
-import './utils/testWordPress'; // Import test utilities
-import './utils/testWordPressCom'; // Import WordPress.com test utilities
-import './utils/qaTesting'; // Import QA testing utilities
-import './utils/mobileUIDebug'; // Import mobile UI debug utilities
-import './utils/comprehensiveQATesting'; // Import comprehensive QA testing utilities
-import './utils/completeFunctionalityVerification'; // Import complete functionality verification utilities
-import './utils/eventDiscoveryTesting'; // Import Event Discovery testing utilities
-import './utils/gestureAndFilterTesting'; // Import gesture and filter testing utilities
-import './utils/testingDashboard'; // Import testing dashboard
-import './utils/mapPinSynchronization'; // Import map pin synchronization utilities
-import './utils/gestureDebug'; // Import gesture debug utilities
-import './utils/mobileGestureTest'; // Import mobile gesture test utilities
-import './utils/comprehensiveFilterSync'; // Import comprehensive filter synchronization utilities
+// ⚠️ DEBUG UTILITIES - Uncomment only when needed for testing
+// These imports load many large files and can cause ERR_INSUFFICIENT_RESOURCES
+// import './utils/testWordPress';
+// import './utils/testWordPressCom';
+// import './utils/qaTesting';
+// import './utils/mobileUIDebug';
+// import './utils/comprehensiveQATesting';
+// import './utils/completeFunctionalityVerification';
+// import './utils/eventDiscoveryTesting';
+// import './utils/gestureAndFilterTesting';
+// import './utils/testingDashboard';
+// import './utils/mapPinSynchronization';
+// import './utils/gestureDebug';
+// import './utils/mobileGestureTest';
+// import './utils/comprehensiveFilterSync';
 
 /**
  * Main application component.
@@ -762,6 +764,9 @@ function App() {
     runQATests();
   }, []);
 
+  // ⚠️ DEBUG: Test runners commented out to prevent ERR_INSUFFICIENT_RESOURCES
+  // Uncomment only when needed for debugging
+  /*
   // Run complete functionality verification after app loads
   useEffect(() => {
     const runFunctionalityVerification = async () => {
@@ -866,6 +871,7 @@ function App() {
       console.log('  window.comprehensiveFilterSync.applyFiltersWithLogging() - Apply filters with detailed logging');
     }
   }, []);
+  */
 
   // Comprehensive component rendering debug
   useEffect(() => {
