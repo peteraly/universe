@@ -40,6 +40,13 @@ import './utils/mobileGestureTest'; // Import mobile gesture test utilities
  * FINAL PRODUCTION VERSION - Clean compass dial with WordPress.com integration and complete scroll prevention
  */
 function App() {
+  // Debug: Log events on app start
+  console.log('🚀 App starting with events:', {
+    totalEvents: ENHANCED_SAMPLE_EVENTS.length,
+    firstEvent: ENHANCED_SAMPLE_EVENTS[0],
+    categories: ENHANCED_SAMPLE_EVENTS.map(e => e.categoryPrimary).slice(0, 5)
+  });
+
   // Unified state management for map background integration
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedSubcategory, setSelectedSubcategory] = useState(null);
@@ -478,32 +485,45 @@ function App() {
   const filterEventsByDialSelection = useCallback((events, category, subcategory, filters) => {
     let filtered = events;
     
-    // Filter by dial selection
+    console.log('🔍 Filtering events:', {
+      totalEvents: events.length,
+      category: category?.name,
+      subcategory: subcategory?.label,
+      filters: filters
+    });
+    
+    // Filter by dial selection (only if category is selected)
     if (category) {
       filtered = filtered.filter(event => 
         event.categoryPrimary === category.name
       );
+      console.log('After category filter:', filtered.length);
     }
     
     if (subcategory) {
       filtered = filtered.filter(event => 
         event.categorySecondary === subcategory.label
       );
+      console.log('After subcategory filter:', filtered.length);
     }
     
-    // Apply additional filters
+    // Apply additional filters (only if not 'All')
     if (filters.time !== 'All') {
       filtered = filtered.filter(event => event.time === filters.time);
+      console.log('After time filter:', filtered.length);
     }
     
     if (filters.day !== 'All') {
       filtered = filtered.filter(event => event.day === filters.day);
+      console.log('After day filter:', filtered.length);
     }
     
     if (filters.category !== 'All') {
       filtered = filtered.filter(event => event.categoryPrimary === filters.category);
+      console.log('After category filter:', filtered.length);
     }
     
+    console.log('Final filtered events:', filtered.length);
     return filtered;
   }, []);
 
@@ -525,7 +545,11 @@ function App() {
              filteredEvents: filtered.slice(0, 3).map(e => ({ name: e.name, category: e.categoryPrimary, subcategory: e.categorySecondary }))
            });
            
-           setFilteredEvents(filtered);
+           // If no events after filtering, show all events (fallback)
+           const finalEvents = filtered.length > 0 ? filtered : ENHANCED_SAMPLE_EVENTS;
+           console.log('Final events to display:', finalEvents.length);
+           
+           setFilteredEvents(finalEvents);
          }, [selectedCategory, selectedSubcategory, activeFilters, filterEventsByDialSelection]);
 
   // Handle category selection from dial
