@@ -27,44 +27,29 @@ export default function EventCompassFinal({
   onTimeframeChange,
   onCategorySelect,
   onSubcategorySelect,
-  highlightedEvent
+  highlightedEvent,
+  selectedTime: selectedTimeProp,
+  onTimeChange,
+  selectedDateRange: selectedDateRangeProp,
+  onDateRangeChange
 }) {
   const [dialSize, setDialSize] = useState(400);
   
-  // TIME PICKER STATE (NEW - ADDITIVE ONLY)
-  const [selectedTime, setSelectedTime] = useState(() => {
-    const now = getCurrentTime();
-    // If it's after 11PM, default to 6PM for discovery
-    if (now.hours >= 23) {
-      return { hours: 18, minutes: 0 };
-    }
-    return now;
-  });
-  
-  // DATE RANGE STATE (NEW - ADDITIVE)
-  const [dateRange, setDateRange] = useState('TODAY');
-  
-
-  // Enhanced date range change handler
-  const handleDateRangeChange = useCallback((newRange) => {
-    setDateRange(newRange);
-    
-    // Notify parent component if callback provided
-    if (onTimeframeChange) {
-      onTimeframeChange(newRange);
-    }
-  }, [onTimeframeChange]);
+  // Use props if provided, otherwise fallback to default values
+  const selectedTime = selectedTimeProp || { hours: 18, minutes: 0 };
+  const dateRange = selectedDateRangeProp || 'Today';
 
   
   // Calculate responsive dial size (handles resize AND orientation change)
+  // REDUCED SIZE: 30-40% smaller for better layout
   useEffect(() => {
     const calculateSize = () => {
       const vw = window.innerWidth;
       const vh = window.innerHeight;
       const size = Math.min(
-        vw * 0.85,
-        vh * 0.5,
-        480
+        vw * 0.55,  // Reduced from 0.85 to 0.55 (35% reduction)
+        vh * 0.32,  // Reduced from 0.5 to 0.32 (36% reduction)
+        300         // Reduced from 480 to 300 max
       );
       setDialSize(size);
     };
@@ -173,6 +158,44 @@ export default function EventCompassFinal({
       onSubcategorySelect(state.activeSub);
     }
   }, [state.activeSub, onSubcategorySelect]);
+
+  // Expose state to window for gesture debugging
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.__REACT_STATE__ = {
+        activePrimary: state.activePrimary,
+        activeSub: state.activeSub,
+        subIndex: state.subIndex,
+        primaryIndex: state.primaryIndex,
+        hasCategories: categories && categories.length > 0,
+        categoryCount: categories?.length || 0
+      };
+      
+      // Expose reset functions for debugging
+      window.__DIAL_DEBUG__ = {
+        reset: () => {
+          console.log('🔄 Resetting dial to category 0...');
+          actions.setPrimaryIndex(0);
+          actions.setSubIndex(0);
+        },
+        setCategory: (index) => {
+          console.log(`🔄 Setting category to index ${index}...`);
+          actions.setPrimaryIndex(index);
+        },
+        getCurrentState: () => {
+          return {
+            primaryIndex: state.primaryIndex,
+            activePrimary: state.activePrimary?.label,
+            subIndex: state.subIndex,
+            activeSub: state.activeSub?.label
+          };
+        }
+      };
+      
+      console.log('🔍 State exposed for gesture debugging:', window.__REACT_STATE__);
+      console.log('🛠️ Debug commands available: window.__DIAL_DEBUG__.reset(), window.__DIAL_DEBUG__.setCategory(index)');
+    }
+  }, [state.activePrimary, state.activeSub, state.subIndex, state.primaryIndex, categories, actions]);
   
   // Get the currently displayed event from filtered list
   const displayedEvent = useMemo(() => {
@@ -644,13 +667,13 @@ export default function EventCompassFinal({
       {/* TIME PICKER SLIDER (NEW - ADDITIVE ONLY) */}
       <TimePickerSlider 
         selectedTime={selectedTime} 
-        onTimeChange={(newTime) => setSelectedTime(newTime)} 
+        onTimeChange={onTimeChange || (() => {})} 
       />
 
       {/* DATE RANGE BUTTON (NEW - ADDITIVE) */}
       <DateRangeButton 
         selectedRange={dateRange}
-        onRangeChange={handleDateRangeChange}
+        onRangeChange={onDateRangeChange || (() => {})}
       />
 
       {/* EVENT READOUT (with slide transition) */}

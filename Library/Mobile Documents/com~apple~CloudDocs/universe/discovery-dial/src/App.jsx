@@ -6,13 +6,18 @@ import EventInformationDisplay from './components/EventInformationDisplay';
 import EventDisplayCard from './components/EventDisplayCard';
 import ErrorBoundary from './components/ErrorBoundary';
 import categoriesData from './data/categories.json';
-import { MOCK_EVENTS } from './data/mockEvents';
-import { ENHANCED_SAMPLE_EVENTS } from './data/enhancedSampleEvents';
+import { COMPREHENSIVE_SAMPLE_EVENTS } from './data/comprehensiveSampleEvents';
 import useScrollPrevention from './hooks/useScrollPrevention';
 import useTextSelectionPrevention from './hooks/useTextSelectionPrevention';
 import useSafariScrollPrevention from './hooks/useSafariScrollPrevention';
 import { useWordPressComEvents } from './hooks/useWordPressComEvents';
 import { TIMEFRAMES } from './utils/formatters';
+import { 
+  parseEventTime, 
+  getDateRangeBounds, 
+  isDateInRange,
+  getTodayDate
+} from './utils/timeHelpers';
 import { 
   safeDocumentBody, 
   safeDocumentElement, 
@@ -35,6 +40,7 @@ import './utils/testingDashboard'; // Import testing dashboard
 import './utils/mapPinSynchronization'; // Import map pin synchronization utilities
 import './utils/gestureDebug'; // Import gesture debug utilities
 import './utils/mobileGestureTest'; // Import mobile gesture test utilities
+import './utils/comprehensiveFilterSync'; // Import comprehensive filter synchronization utilities
 
 /**
  * Main application component.
@@ -43,9 +49,9 @@ import './utils/mobileGestureTest'; // Import mobile gesture test utilities
 function App() {
   // Debug: Log events on app start
   console.log('🚀 App starting with events:', {
-    totalEvents: ENHANCED_SAMPLE_EVENTS.length,
-    firstEvent: ENHANCED_SAMPLE_EVENTS[0],
-    categories: ENHANCED_SAMPLE_EVENTS.map(e => e.categoryPrimary).slice(0, 5)
+    totalEvents: COMPREHENSIVE_SAMPLE_EVENTS.length,
+    firstEvent: COMPREHENSIVE_SAMPLE_EVENTS[0],
+    categories: COMPREHENSIVE_SAMPLE_EVENTS.map(e => e.categoryPrimary).slice(0, 5)
   });
 
   // Mobile debugging
@@ -63,7 +69,7 @@ function App() {
   // Unified state management for map background integration
   const [selectedCategory, setSelectedCategory] = useState(null);
   const [selectedSubcategory, setSelectedSubcategory] = useState(null);
-  const [filteredEvents, setFilteredEvents] = useState(ENHANCED_SAMPLE_EVENTS);
+  const [filteredEvents, setFilteredEvents] = useState(COMPREHENSIVE_SAMPLE_EVENTS);
   const [activeFilters, setActiveFilters] = useState({
     time: 'All',
     day: 'All',
@@ -517,68 +523,85 @@ function App() {
       filters: filters
     });
     
-    // Filter by dial selection (only if category is selected)
-    if (category) {
-      filtered = filtered.filter(event => 
-        event.categoryPrimary === category.label
-      );
-      console.log('After category filter:', filtered.length);
+    // 1. CATEGORY FILTER (from dial)
+    if (category && category.label) {
+      filtered = filtered.filter(event => event.categoryPrimary === category.label);
+      console.log(`After category filter (${category.label}):`, filtered.length);
     }
     
-    if (subcategory) {
-      filtered = filtered.filter(event => 
-        event.categorySecondary === subcategory.label
-      );
-      console.log('After subcategory filter:', filtered.length);
+    // 2. SUBCATEGORY FILTER (from dial)
+    if (subcategory && subcategory.label) {
+      filtered = filtered.filter(event => event.categorySecondary === subcategory.label);
+      console.log(`After subcategory filter (${subcategory.label}):`, filtered.length);
     }
     
-    // Apply additional filters (only if not 'All')
+    // 3. TIME FILTER (from TimePickerSlider)
     if (filters.time && filters.time !== 'All') {
-      // Handle timeframe filtering (Today, Tomorrow, This Week, This Month)
-      if (['Today', 'Tomorrow', 'This Week', 'This Month'].includes(filters.time)) {
-        if (filters.time === 'Today') {
-          filtered = filtered.filter(event => event.day === 'Today');
-        } else if (filters.time === 'Tomorrow') {
-          filtered = filtered.filter(event => event.day === 'Tomorrow');
-        } else if (filters.time === 'This Week') {
-          filtered = filtered.filter(event => ['Today', 'Tomorrow', 'This Week'].includes(event.day));
-        } else if (filters.time === 'This Month') {
-          filtered = filtered.filter(event => ['Today', 'Tomorrow', 'This Week', 'This Month'].includes(event.day));
+      if (typeof filters.time === 'object' && filters.time.hours !== undefined) {
+        // Specific time object { hours: 18, minutes: 0 }
+        filtered = filtered.filter(event => {
+          const eventTime = parseEventTime(event.time || event.startTime);
+          const filterMinutes = filters.time.hours * 60 + filters.time.minutes;
+          const eventMinutes = eventTime.hours * 60 + eventTime.minutes;
+          return eventMinutes >= filterMinutes;
+        });
+        console.log(`After time filter (${filters.time.hours}:${filters.time.minutes}):`, filtered.length);
+      } else {
+        // Time range string (Morning, Afternoon, Evening, Night)
+        const timeRanges = {
+          'Morning': { start: 6, end: 12 },
+          'Afternoon': { start: 12, end: 18 },
+          'Evening': { start: 18, end: 22 },
+          'Night': { start: 22, end: 6 }
+        };
+        const range = timeRanges[filters.time];
+        if (range) {
+          filtered = filtered.filter(event => {
+            const eventTime = parseEventTime(event.time || event.startTime);
+            if (filters.time === 'Night') {
+              // Handle wrap-around (22:00 - 06:00)
+              return eventTime.hours >= 22 || eventTime.hours < 6;
+            }
+            return eventTime.hours >= range.start && eventTime.hours < range.end;
+          });
+          console.log(`After time range filter (${filters.time}):`, filtered.length);
         }
-        console.log('After timeframe filter:', filtered.length);
-      } 
-      // Handle time-of-day filtering (Morning, Afternoon, Evening, Night)
-      else if (['Morning', 'Afternoon', 'Evening', 'Night'].includes(filters.time)) {
-        filtered = filtered.filter(event => event.time === filters.time);
-        console.log('After time-of-day filter:', filtered.length);
       }
     }
     
+    // 4. DAY/DATE RANGE FILTER (from DateRangeButton)
     if (filters.day && filters.day !== 'All') {
-      filtered = filtered.filter(event => event.day === filters.day);
-      console.log('After day filter:', filtered.length);
+      const today = getTodayDate();
+      const { startDate, endDate } = getDateRangeBounds(filters.day);
+      
+      filtered = filtered.filter(event => {
+        const eventDate = event.date || today;
+        return isDateInRange(eventDate, startDate, endDate);
+      });
+      console.log(`After day filter (${filters.day}):`, filtered.length);
     }
     
-    if (filters.category !== 'All') {
+    // 5. CATEGORY TYPE FILTER (if using filter pills at top)
+    if (filters.category && filters.category !== 'All') {
       filtered = filtered.filter(event => event.categoryPrimary === filters.category);
-      console.log('After category filter:', filtered.length);
+      console.log(`After category type filter (${filters.category}):`, filtered.length);
     }
     
-    console.log('Final filtered events:', filtered.length);
+    console.log('✅ Final filtered events:', filtered.length);
     return filtered;
   }, []);
 
          // Update filtered events when selections change
          useEffect(() => {
-           const filtered = filterEventsByDialSelection(
-             ENHANCED_SAMPLE_EVENTS, 
-             selectedCategory, 
-             selectedSubcategory, 
-             activeFilters
-           );
-           
-           console.log('🔍 Event filtering debug:', {
-             totalEvents: ENHANCED_SAMPLE_EVENTS.length,
+         const filtered = filterEventsByDialSelection(
+           COMPREHENSIVE_SAMPLE_EVENTS, 
+           selectedCategory, 
+           selectedSubcategory, 
+           activeFilters
+         );
+         
+         console.log('🔍 Event filtering debug:', {
+           totalEvents: COMPREHENSIVE_SAMPLE_EVENTS.length,
              selectedCategory: selectedCategory?.label,
              selectedSubcategory: selectedSubcategory?.label,
              activeFilters: activeFilters,
@@ -649,6 +672,24 @@ function App() {
     setActiveFilters(prevFilters => ({
       ...prevFilters,
       [filterType]: value,
+    }));
+  }, []);
+
+  // Handle time change from TimePickerSlider
+  const handleTimeChange = useCallback((newTime) => {
+    console.log('🕐 Time changed:', newTime);
+    setActiveFilters(prevFilters => ({
+      ...prevFilters,
+      time: newTime
+    }));
+  }, []);
+
+  // Handle date range change from DateRangeButton
+  const handleDateRangeChange = useCallback((newDateRange) => {
+    console.log('📅 Date range changed:', newDateRange);
+    setActiveFilters(prevFilters => ({
+      ...prevFilters,
+      day: newDateRange
     }));
   }, []);
 
@@ -766,6 +807,19 @@ function App() {
     }
   }, []);
 
+  // Initialize comprehensive filter sync utilities
+  useEffect(() => {
+    if (isWindowAvailable() && window.comprehensiveFilterSync) {
+      console.log('🔍 Comprehensive Filter Sync utilities initialized');
+      console.log('Available commands:');
+      console.log('  window.comprehensiveFilterSync.runComprehensiveFilterTests() - Run all filter sync tests');
+      console.log('  window.comprehensiveFilterSync.testAllFilterCombinations() - Test all filter combinations');
+      console.log('  window.comprehensiveFilterSync.testFilterConsistency() - Test filter consistency');
+      console.log('  window.comprehensiveFilterSync.testFilterPerformance() - Test filter performance');
+      console.log('  window.comprehensiveFilterSync.applyFiltersWithLogging() - Apply filters with detailed logging');
+    }
+  }, []);
+
   // Comprehensive component rendering debug
   useEffect(() => {
     const debugComponents = () => {
@@ -859,7 +913,7 @@ function App() {
             selectedCategory={selectedCategory}
             selectedSubcategory={selectedSubcategory}
             onEventSelect={handleEventSelect}
-            highlightedEventId={highlightedEventId}
+            highlightedEventId={displayedEvent?.id || highlightedEventId}
           />
         </div>
         
@@ -900,6 +954,10 @@ function App() {
             onCategorySelect={handleCategorySelect}
             onSubcategorySelect={handleSubcategorySelect}
             highlightedEvent={highlightedEvent}
+            selectedTime={activeFilters.time}
+            onTimeChange={handleTimeChange}
+            selectedDateRange={activeFilters.day}
+            onDateRangeChange={handleDateRangeChange}
           />
         </div>
         
