@@ -243,18 +243,16 @@ export default function EventCompassFinal({
 
   return (
     <div style={{
-      width: '100vw',
-      minHeight: '100vh',
-      background: '#000000',
+      width: '100%',
+      height: '100%',
+      background: 'transparent', // Remove black background since it's now in a layer
       color: '#ffffff',
       display: 'flex',
       flexDirection: 'column',
       alignItems: 'center',
       justifyContent: 'center',
       fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-      padding: '20px',
-      paddingTop: 'max(20px, env(safe-area-inset-top))',
-      paddingBottom: 'max(20px, env(safe-area-inset-bottom))'
+      padding: '20px'
     }}>
       
       {/* DIAL CONTAINER */}
