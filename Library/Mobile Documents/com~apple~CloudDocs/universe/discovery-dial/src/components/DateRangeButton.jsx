@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 
-const DATE_RANGES = ['Today', 'Tomorrow', 'This Week', 'Weekend'];
+const DATE_RANGES = ['All', 'Today', 'Tomorrow', 'This Week', 'Weekend'];
 
 /**
  * DateRangeButton - Cross-platform optimized timeframe toggle
@@ -12,7 +12,7 @@ const DATE_RANGES = ['Today', 'Tomorrow', 'This Week', 'Weekend'];
  * - Works on desktop, mobile, and all browsers
  * - Meets accessibility standards (WCAG)
  */
-export default function DateRangeButton({ selectedRange = 'Today', onRangeChange }) {
+export default function DateRangeButton({ selectedRange = 'All', onRangeChange }) {
   
   // 1. State declarations first
   const [currentRange, setCurrentRange] = useState(selectedRange);
@@ -46,6 +46,13 @@ export default function DateRangeButton({ selectedRange = 'Today', onRangeChange
   
   // 4. Click handler (defined before use)
   const handleClick = useCallback((e) => {
+    // CRITICAL: Only trigger if the click/touch is DIRECTLY on this button
+    // Ignore events that bubbled up from other elements (like event card swipes)
+    if (e.target.className !== 'date-range-button') {
+      console.log('DateRangeButton: Ignoring click from child element:', e.target.className);
+      return;
+    }
+    
     e.preventDefault();
     e.stopPropagation();
     
@@ -99,21 +106,25 @@ export default function DateRangeButton({ selectedRange = 'Today', onRangeChange
         MsUserSelect: 'none'
       });
       
-      // Add click event listener as backup
+      // Add click event listener as backup (but NOT touchstart to avoid double-triggering)
       const handleButtonClick = (e) => {
+        // Only trigger if click is directly on button
+        if (e.target.className !== 'date-range-button') {
+          return;
+        }
         e.preventDefault();
         e.stopPropagation();
         handleClick(e);
       };
       
       button.addEventListener('click', handleButtonClick);
-      button.addEventListener('touchstart', handleButtonClick);
+      // NOTE: Removed 'touchstart' listener to prevent double-triggering
+      // The component already has onTouchStart handler
       
       console.log('Button visibility and functionality forced');
       
       return () => {
         button.removeEventListener('click', handleButtonClick);
-        button.removeEventListener('touchstart', handleButtonClick);
       };
     }
   }, [isMobile, handleClick]);

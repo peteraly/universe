@@ -37,7 +37,7 @@ export default function EventCompassFinal({
   
   // Use props if provided, otherwise fallback to default values
   const selectedTime = selectedTimeProp || { hours: 18, minutes: 0 };
-  const dateRange = selectedDateRangeProp || 'Today';
+  const dateRange = selectedDateRangeProp || 'All';
 
   
   // Calculate responsive dial size (handles resize AND orientation change)
