@@ -294,15 +294,14 @@ export default function EventCompassFinal({
         aria-label="Event discovery dial"
         role="application"
         {...bindDialAreaProps}
-        style={{
-          position: 'relative',
-          width: `${dialSize}px`,
-          height: `${dialSize}px`,
-          flexShrink: 0,
-          display: 'block',
-          visibility: 'visible',
-          border: '2px solid red' // Debug border
-        }}
+         style={{
+           position: 'relative',
+           width: `${dialSize}px`,
+           height: `${dialSize}px`,
+           flexShrink: 0,
+           display: 'block',
+           visibility: 'visible'
+         }}
       >
         {/* GESTURE HINTS - Zone-aware visual feedback */}
         <GestureHints 
@@ -498,14 +497,13 @@ export default function EventCompassFinal({
           data-testid="subcategory-dial"
           aria-label="Subcategory selection dial"
           role="listbox"
-          style={{
-            position: 'absolute',
-            width: '100%',
-            height: '100%',
-            display: 'block',
-            visibility: 'visible',
-            border: '2px solid blue' // Debug border
-          }}
+         style={{
+           position: 'absolute',
+           width: '100%',
+           height: '100%',
+           display: 'block',
+           visibility: 'visible'
+         }}
         >
         {subcategories.map((sub, i) => {
           // REAL-TIME ROTATION: Calculate rotation offset from drag
