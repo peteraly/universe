@@ -79,7 +79,7 @@ const MapErrorBoundary = ({ children, fallback }) => {
 
 // Mapbox configuration
 const MAPBOX_CONFIG = {
-  token: 'pk.eyJ1IjoicGV0ZXJhbHkiLCJhIjoiY21lNXpuNDhwMTBqZTJwb2RicWw5YWcxaSJ9.IiIfhu1oA2ua_oUDcjlIbQ',
+  token: 'pk.eyJ1IjoicGV0ZXJhbHkiLCJhIjoiY21ndTJsY3VlMDh5ZjJqcTJqeGVzdGtlOCJ9.MPugLXlCQmpIg3jz76zA0g',
   style: 'mapbox://styles/mapbox/light-v11',
   center: [-122.4194, 37.7749], // [lng, lat] for Mapbox
   zoom: 13
