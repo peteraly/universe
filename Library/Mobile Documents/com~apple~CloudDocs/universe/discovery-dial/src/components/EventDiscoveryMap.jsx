@@ -232,7 +232,7 @@ const EventDiscoveryMap = ({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          zIndex: 10,
+          zIndex: 200,
           opacity: 1,
           minHeight: '100vh'
         }}

@@ -2174,7 +2174,7 @@ a::-webkit-scrollbar {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 10; /* Higher z-index to be above map background */
+  z-index: 200; /* Higher z-index to be above all other elements */
   opacity: 1; /* Make it fully visible */
   min-height: 100vh; /* Ensure it covers full height */
 }
