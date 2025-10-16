@@ -235,3 +235,4 @@ const PerformanceMonitor = ({ isVisible, onClose }) => {
 
 export default memo(PerformanceMonitor);
 
+

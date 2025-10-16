@@ -1,5 +1,5 @@
 import React from 'react';
-import { FILTER_OPTIONS } from '../data/mockEvents';
+import { FILTER_OPTIONS } from '../data/comprehensiveSampleEvents';
 
 const EventDiscoveryFilters = ({ filters, onFilterChange, compact = false }) => {
   const handleFilterChange = (filterType, value) => {
@@ -30,17 +30,23 @@ const EventDiscoveryFilters = ({ filters, onFilterChange, compact = false }) => 
               onClick={() => handleFilterChange('time', option)}
               aria-pressed={filters.time === option}
               style={{
-                minWidth: '44px',
+                minWidth: '60px',
                 minHeight: '44px',
-                padding: '8px 16px',
+                padding: '12px 18px',
                 backgroundColor: filters.time === option ? '#007bff' : 'rgba(255, 255, 255, 0.2)',
                 color: 'white',
                 border: 'none',
-                borderRadius: '20px',
+                borderRadius: '22px',
                 fontSize: '14px',
+                fontWeight: '600',
                 cursor: 'pointer',
-                display: 'block',
-                visibility: 'visible'
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                visibility: 'visible',
+                touchAction: 'manipulation',
+                userSelect: 'none',
+                WebkitTapHighlightColor: 'transparent'
               }}
             >
               {option}
@@ -55,17 +61,23 @@ const EventDiscoveryFilters = ({ filters, onFilterChange, compact = false }) => 
               onClick={() => handleFilterChange('day', option)}
               aria-pressed={filters.day === option}
               style={{
-                minWidth: '44px',
+                minWidth: '60px',
                 minHeight: '44px',
-                padding: '8px 16px',
+                padding: '12px 18px',
                 backgroundColor: filters.day === option ? '#007bff' : 'rgba(255, 255, 255, 0.2)',
                 color: 'white',
                 border: 'none',
-                borderRadius: '20px',
+                borderRadius: '22px',
                 fontSize: '14px',
+                fontWeight: '600',
                 cursor: 'pointer',
-                display: 'block',
-                visibility: 'visible'
+                display: 'inline-flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                visibility: 'visible',
+                touchAction: 'manipulation',
+                userSelect: 'none',
+                WebkitTapHighlightColor: 'transparent'
               }}
             >
               {option}

@@ -186,3 +186,4 @@ const EmergencyFixEventCuration = ({ events, onEventsUpdate, onEdit, onDelete, o
 
 export default EmergencyFixEventCuration
 
+

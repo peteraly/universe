@@ -382,23 +382,26 @@ body {
 
 /* Layout separation between dial and event areas */
 .dial-container {
-  position: relative;
-  /* Responsive sizing with clamp functions */
-  width: clamp(300px, 70vmin, 80vmin);
-  height: clamp(300px, 70vmin, 80vmin);
-  max-width: 80vmin;
-  max-height: 80vmin;
-  min-width: 300px;
-  min-height: 300px;
+  position: fixed !important;
+  bottom: 2% !important; /* Position at bottom center of screen */
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  z-index: 10 !important; /* Below event card (z-index: 100) */
+  
+  /* Responsive sizing - SMALLER DIAL */
+  width: clamp(220px, 45vmin, 300px) !important;
+  height: clamp(220px, 45vmin, 300px) !important;
+  max-width: 300px !important;
+  max-height: 300px !important;
+  min-width: 220px !important;
+  min-height: 220px !important;
   
   /* Use flexbox for centering */
   display: flex;
   align-items: center;
   justify-content: center;
-  position: relative;
-  margin: 0 auto 2rem auto;
-  z-index: 10;
   overflow: hidden; /* Prevent dial text from extending beyond boundaries */
+  pointer-events: auto;
 }
 
 .event-information-area {
@@ -1577,21 +1580,28 @@ a::-webkit-scrollbar {
   backdrop-filter: blur(4px);
 }
 
-/* Event Information Panel - Optimized positioning for new layout */
+/* Event Information Panel - COMPACT DESIGN for Map Visibility */
 .event-info-panel {
-  position: absolute;
-  bottom: 35%; /* Adjusted for new dial size and map expansion */
+  position: fixed;
+  bottom: 35%; /* Position above dial - dial is at bottom 25% */
   left: 50%;
   transform: translateX(-50%);
   width: 90%;
-  max-width: 600px;
-  z-index: 15;
-  background: rgba(0, 0, 0, 0.8);
-  backdrop-filter: blur(10px);
-  border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  padding: 18px; /* Reduced from 20px */
+  max-width: 500px;
+  height: auto;
+  min-height: 120px;
+  max-height: 160px;
+  z-index: 100; /* ABOVE dial (dial is z-index: 10) */
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(15px) saturate(150%);
+  -webkit-backdrop-filter: blur(15px) saturate(150%);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  padding: 16px;
   pointer-events: auto;
+  overflow: hidden;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5),
+              inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
 /* Controls Overlay */
@@ -2664,5 +2674,215 @@ a::-webkit-scrollbar {
   
   .selected-event-title {
     font-size: 1.25rem;
+  }
+}
+
+/* ========================================
+   CRITICAL UX FIXES - WCAG & Accessibility
+   ======================================== */
+
+/* Subcategory Dial - Force Visibility */
+.subcategory-dial {
+  position: absolute !important;
+  z-index: 20 !important;
+  pointer-events: auto !important;
+  min-width: 200px !important;
+  min-height: 200px !important;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+.subcategory-dial * {
+  pointer-events: auto !important;
+}
+
+/* Subcategory Items - WCAG 44x44px Touch Targets */
+.subcategory-item-perimeter {
+  min-width: 44px !important;
+  min-height: 44px !important;
+  padding: 12px !important;
+  cursor: pointer !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  touch-action: manipulation !important;
+}
+
+/* Filter Pills - WCAG Touch Targets */
+.filter-pill {
+  min-width: 60px !important;
+  min-height: 44px !important;
+  padding: 12px 18px !important;
+  touch-action: manipulation !important;
+  cursor: pointer !important;
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+/* Date Range Button - Ensure Visibility */
+.date-range-button {
+  position: fixed !important;
+  z-index: 9999 !important;
+  pointer-events: auto !important;
+  min-width: 120px !important;
+  min-height: 44px !important;
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+}
+
+/* All Interactive Elements - WCAG Minimum Spacing */
+.filter-pills {
+  gap: 10px !important;
+}
+
+.subcategory-ring-perimeter {
+  gap: 10px !important;
+}
+
+/* Touch Targets - Universal WCAG Compliance */
+button[role="button"],
+[role="option"],
+.touch-target {
+  min-width: 44px !important;
+  min-height: 44px !important;
+  padding: 12px !important;
+  touch-action: manipulation !important;
+  cursor: pointer !important;
+}
+
+/* Prevent iOS Double-Tap Zoom */
+button,
+a,
+[role="button"],
+.filter-pill,
+.date-range-button,
+.subcategory-item-perimeter {
+  -webkit-tap-highlight-color: transparent !important;
+  -webkit-touch-callout: none !important;
+  user-select: none !important;
+  -webkit-user-select: none !important;
+  -ms-user-select: none !important;
+}
+
+/* ========================================
+   COMPACT EVENT CARD DESIGN
+   ======================================== */
+
+/* Event Card - Compact Layout */
+.event-display-card-compact {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+  gap: 8px;
+  position: relative;
+}
+
+/* Event Title - Single Line with Ellipsis */
+.event-display-card-compact .event-title {
+  font-size: 16px;
+  font-weight: 600;
+  color: #ffffff;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Event Counter - Inline with Title */
+.event-display-card-compact .event-counter {
+  font-size: 12px;
+  color: rgba(255, 255, 255, 0.6);
+  margin-left: 12px;
+  flex-shrink: 0;
+}
+
+/* Event Meta Info - Single Line */
+.event-display-card-compact .event-meta {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.8);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Event Time - Single Line */
+.event-display-card-compact .event-time {
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.7);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Swipe Indicators - Minimal */
+.event-display-card-compact .swipe-indicators {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 18px;
+  color: rgba(255, 255, 255, 0.4);
+  pointer-events: none;
+  user-select: none;
+}
+
+.event-display-card-compact .swipe-left {
+  left: 8px;
+}
+
+.event-display-card-compact .swipe-right {
+  right: 8px;
+}
+
+/* Mobile: Even more compact */
+@media (max-width: 768px) {
+  .event-info-panel {
+    bottom: 32%; /* Just above the dial on mobile */
+    width: 95%;
+    max-width: none;
+    min-height: 100px;
+    max-height: 140px;
+    padding: 12px;
+    border-radius: 12px;
+  }
+  
+  .dial-container {
+    bottom: 1% !important;
+    width: clamp(180px, 40vmin, 250px) !important;
+    height: clamp(180px, 40vmin, 250px) !important;
+    min-width: 180px !important;
+    min-height: 180px !important;
+  }
+
+  .event-display-card-compact .event-title {
+    font-size: 14px;
+  }
+
+  .event-display-card-compact .event-meta {
+    font-size: 12px;
+  }
+
+  .event-display-card-compact .event-time {
+    font-size: 11px;
+  }
+
+  .event-display-card-compact .event-counter {
+    font-size: 11px;
+  }
+}
+
+/* Extra small screens */
+@media (max-width: 480px) {
+  .event-info-panel {
+    bottom: 10%;
+    padding: 10px;
+    min-height: 80px;
+    max-height: 90px;
   }
 }

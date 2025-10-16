@@ -3,11 +3,40 @@
  * Ensures perfect synchronization between events and map pins
  */
 
-import { ENHANCED_SAMPLE_EVENTS, getCategoryColor, getEventSize } from '../data/enhancedSampleEvents';
+import { COMPREHENSIVE_SAMPLE_EVENTS } from '../data/comprehensiveSampleEvents';
 
 // ========================================
 // MAP PIN CREATION AND MANAGEMENT
 // ========================================
+
+// Get category color
+const getCategoryColor = (category) => {
+  const colors = {
+    'Social': '#e63946',
+    'Arts/Culture': '#7209b7',
+    'Wellness': '#06d6a0',
+    'Professional': '#3a86ff',
+    'Music': '#e63946',
+    'Food': '#f77f00',
+    'Sports': '#2a9d8f',
+    'Art': '#7209b7',
+    'Tech': '#3a86ff',
+    'Outdoor': '#06d6a0',
+    'Nightlife': '#f72585',
+    'Family': '#ffbe0b'
+  };
+  return colors[category] || '#6c757d';
+};
+
+// Get event size based on attendees
+const getEventSize = (attendees) => {
+  const safeAttendees = typeof attendees === 'string' ? attendees : String(attendees || '0');
+  const count = parseInt(safeAttendees.replace(/\D/g, ''));
+  if (isNaN(count)) return 'small';
+  if (count > 1000) return 'large';
+  if (count > 100) return 'medium';
+  return 'small';
+};
 
 /**
  * Create map pins from events
@@ -172,7 +201,7 @@ export const verifyEventMapSync = (events, pins) => {
 export const testSynchronizationAccuracy = () => {
   console.log('🧪 Testing Event-Map Pin Synchronization...');
   
-  const events = ENHANCED_SAMPLE_EVENTS;
+  const events = COMPREHENSIVE_SAMPLE_EVENTS;
   const pins = createMapPins(events);
   const syncResults = verifyEventMapSync(events, pins);
   
@@ -278,11 +307,11 @@ export const testPinVisibility = (pins) => {
 export const testFilterSynchronization = () => {
   console.log('🔍 Testing Filter Synchronization...');
   
-  const events = ENHANCED_SAMPLE_EVENTS;
+  const events = COMPREHENSIVE_SAMPLE_EVENTS;
   const pins = createMapPins(events);
   
   // Test category filtering
-  const categories = ['Social', 'Education', 'Recreation', 'Professional'];
+  const categories = ['Social', 'Arts/Culture', 'Wellness', 'Professional'];
   let categoryTestsPassed = 0;
   
   categories.forEach(category => {
@@ -350,7 +379,7 @@ export const testFilterSynchronization = () => {
 export const testPinRenderingPerformance = () => {
   console.log('⚡ Testing Pin Rendering Performance...');
   
-  const events = ENHANCED_SAMPLE_EVENTS;
+  const events = COMPREHENSIVE_SAMPLE_EVENTS;
   const startTime = performance.now();
   
   // Create pins
@@ -411,7 +440,7 @@ export const runComprehensiveSyncTests = async () => {
     
     // Test 2: Pin visibility
     console.log('\n👁️ Test 2: Pin Visibility');
-    const events = ENHANCED_SAMPLE_EVENTS;
+    const events = COMPREHENSIVE_SAMPLE_EVENTS;
     const pins = createMapPins(events);
     results.visibility = testPinVisibility(pins);
     
@@ -453,28 +482,28 @@ export const runComprehensiveSyncTests = async () => {
  * Get all events
  */
 export const getAllEvents = () => {
-  return ENHANCED_SAMPLE_EVENTS;
+  return COMPREHENSIVE_SAMPLE_EVENTS;
 };
 
 /**
  * Get all map pins
  */
 export const getAllMapPins = () => {
-  return createMapPins(ENHANCED_SAMPLE_EVENTS);
+  return createMapPins(COMPREHENSIVE_SAMPLE_EVENTS);
 };
 
 /**
  * Get event by ID
  */
 export const getEventById = (id) => {
-  return ENHANCED_SAMPLE_EVENTS.find(event => event.id === id);
+  return COMPREHENSIVE_SAMPLE_EVENTS.find(event => event.id === id);
 };
 
 /**
  * Get pin by ID
  */
 export const getPinById = (id) => {
-  const pins = createMapPins(ENHANCED_SAMPLE_EVENTS);
+  const pins = createMapPins(COMPREHENSIVE_SAMPLE_EVENTS);
   return pins.find(pin => pin.id === id);
 };
 
@@ -482,7 +511,7 @@ export const getPinById = (id) => {
  * Get events by bounds
  */
 export const getEventsByBounds = (bounds) => {
-  return ENHANCED_SAMPLE_EVENTS.filter(event => {
+  return COMPREHENSIVE_SAMPLE_EVENTS.filter(event => {
     const lat = event.latitude;
     const lng = event.longitude;
     return lat >= bounds.south && lat <= bounds.north && 

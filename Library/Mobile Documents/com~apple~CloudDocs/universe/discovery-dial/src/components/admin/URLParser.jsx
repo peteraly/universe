@@ -103,3 +103,4 @@ const URLParser = ({ onParse, onAutoRefresh, isAutoRefresh, isParsing }) => {
 
 export default URLParser
 
+

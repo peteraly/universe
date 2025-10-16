@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Comprehensive Sample Events</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .test-section {
+            background: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .success { color: #28a745; }
+        .error { color: #dc3545; }
+        .info { color: #17a2b8; }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #0056b3; }
+        pre { background: #f8f9fa; padding: 10px; border-radius: 4px; overflow-x: auto; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Comprehensive Sample Events Test</h1>
+    
+    <div class="test-section">
+        <h2>📊 Event Data Test</h2>
+        <button onclick="testEventData()">Test Event Data</button>
+        <div id="eventDataResults"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>🎯 Filter Coverage Test</h2>
+        <button onclick="testFilterCoverage()">Test Filter Coverage</button>
+        <div id="filterCoverageResults"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>🗺️ Map Pin Test</h2>
+        <button onclick="testMapPins()">Test Map Pins</button>
+        <div id="mapPinResults"></div>
+    </div>
+    
+    <div class="test-section">
+        <h2>🚀 Demo Readiness Test</h2>
+        <button onclick="testDemoReadiness()">Test Demo Readiness</button>
+        <div id="demoReadinessResults"></div>
+    </div>
+
+    <script type="module">
+        // Import the comprehensive sample events
+        import { COMPREHENSIVE_SAMPLE_EVENTS, FILTER_OPTIONS, filterEvents } from './src/data/comprehensiveSampleEvents.js';
+        
+        // Make functions available globally
+        window.testEventData = function() {
+            const results = document.getElementById('eventDataResults');
+            results.innerHTML = '<p class="info">Testing event data...</p>';
+            
+            try {
+                const totalEvents = COMPREHENSIVE_SAMPLE_EVENTS.length;
+                const categories = [...new Set(COMPREHENSIVE_SAMPLE_EVENTS.map(e => e.categoryPrimary))];
+                const times = [...new Set(COMPREHENSIVE_SAMPLE_EVENTS.map(e => e.time))];
+                const days = [...new Set(COMPREHENSIVE_SAMPLE_EVENTS.map(e => e.day))];
+                
+                results.innerHTML = `
+                    <div class="success">
+                        <h3>✅ Event Data Test Results</h3>
+                        <p><strong>Total Events:</strong> ${totalEvents}</p>
+                        <p><strong>Categories:</strong> ${categories.join(', ')}</p>
+                        <p><strong>Times:</strong> ${times.join(', ')}</p>
+                        <p><strong>Days:</strong> ${days.join(', ')}</p>
+                        <p><strong>Sample Event:</strong></p>
+                        <pre>${JSON.stringify(COMPREHENSIVE_SAMPLE_EVENTS[0], null, 2)}</pre>
+                    </div>
+                `;
+            } catch (error) {
+                results.innerHTML = `<div class="error">❌ Error: ${error.message}</div>`;
+            }
+        };
+        
+        window.testFilterCoverage = function() {
+            const results = document.getElementById('filterCoverageResults');
+            results.innerHTML = '<p class="info">Testing filter coverage...</p>';
+            
+            try {
+                const timeOptions = FILTER_OPTIONS.time;
+                const dayOptions = FILTER_OPTIONS.day;
+                const categoryOptions = FILTER_OPTIONS.category;
+                
+                let coverageResults = [];
+                let totalCombinations = 0;
+                let workingCombinations = 0;
+                
+                timeOptions.forEach(time => {
+                    dayOptions.forEach(day => {
+                        categoryOptions.forEach(category => {
+                            totalCombinations++;
+                            const filtered = filterEvents(COMPREHENSIVE_SAMPLE_EVENTS, { time, day, category });
+                            if (filtered.length > 0) {
+                                workingCombinations++;
+                                coverageResults.push(`✅ ${time} + ${day} + ${category}: ${filtered.length} events`);
+                            } else {
+                                coverageResults.push(`❌ ${time} + ${day} + ${category}: 0 events`);
+                            }
+                        });
+                    });
+                });
+                
+                const successRate = ((workingCombinations / totalCombinations) * 100).toFixed(1);
+                
+                results.innerHTML = `
+                    <div class="${successRate === '100.0' ? 'success' : 'error'}">
+                        <h3>${successRate === '100.0' ? '✅' : '❌'} Filter Coverage Test Results</h3>
+                        <p><strong>Success Rate:</strong> ${successRate}% (${workingCombinations}/${totalCombinations})</p>
+                        <details>
+                            <summary>View All Combinations</summary>
+                            <pre>${coverageResults.join('\n')}</pre>
+                        </details>
+                    </div>
+                `;
+            } catch (error) {
+                results.innerHTML = `<div class="error">❌ Error: ${error.message}</div>`;
+            }
+        };
+        
+        window.testMapPins = function() {
+            const results = document.getElementById('mapPinResults');
+            results.innerHTML = '<p class="info">Testing map pins...</p>';
+            
+            try {
+                const eventsWithCoordinates = COMPREHENSIVE_SAMPLE_EVENTS.filter(e => 
+                    e.latitude && e.longitude && 
+                    typeof e.latitude === 'number' && 
+                    typeof e.longitude === 'number'
+                );
+                
+                const eventsWithoutCoordinates = COMPREHENSIVE_SAMPLE_EVENTS.filter(e => 
+                    !e.latitude || !e.longitude || 
+                    typeof e.latitude !== 'number' || 
+                    typeof e.longitude !== 'number'
+                );
+                
+                results.innerHTML = `
+                    <div class="${eventsWithoutCoordinates.length === 0 ? 'success' : 'error'}">
+                        <h3>${eventsWithoutCoordinates.length === 0 ? '✅' : '❌'} Map Pin Test Results</h3>
+                        <p><strong>Events with coordinates:</strong> ${eventsWithCoordinates.length}</p>
+                        <p><strong>Events without coordinates:</strong> ${eventsWithoutCoordinates.length}</p>
+                        ${eventsWithoutCoordinates.length > 0 ? `
+                            <p><strong>Events missing coordinates:</strong></p>
+                            <pre>${JSON.stringify(eventsWithoutCoordinates.map(e => ({ name: e.name, id: e.id })), null, 2)}</pre>
+                        ` : ''}
+                    </div>
+                `;
+            } catch (error) {
+                results.innerHTML = `<div class="error">❌ Error: ${error.message}</div>`;
+            }
+        };
+        
+        window.testDemoReadiness = function() {
+            const results = document.getElementById('demoReadinessResults');
+            results.innerHTML = '<p class="info">Testing demo readiness...</p>';
+            
+            try {
+                const totalEvents = COMPREHENSIVE_SAMPLE_EVENTS.length;
+                const hasAllCategories = ['Social', 'Education', 'Recreation', 'Professional'].every(cat => 
+                    COMPREHENSIVE_SAMPLE_EVENTS.some(e => e.categoryPrimary === cat)
+                );
+                const hasAllTimes = ['Morning', 'Afternoon', 'Evening', 'Night'].every(time => 
+                    COMPREHENSIVE_SAMPLE_EVENTS.some(e => e.time === time)
+                );
+                const hasAllDays = ['Today', 'Tomorrow', 'This Week', 'Weekend'].every(day => 
+                    COMPREHENSIVE_SAMPLE_EVENTS.some(e => e.day === day)
+                );
+                
+                const eventsWithCoordinates = COMPREHENSIVE_SAMPLE_EVENTS.filter(e => 
+                    e.latitude && e.longitude
+                ).length;
+                
+                const coordinateCoverage = ((eventsWithCoordinates / totalEvents) * 100).toFixed(1);
+                
+                const isReady = totalEvents >= 50 && hasAllCategories && hasAllTimes && hasAllDays && coordinateCoverage === '100.0';
+                
+                results.innerHTML = `
+                    <div class="${isReady ? 'success' : 'error'}">
+                        <h3>${isReady ? '✅' : '❌'} Demo Readiness Test Results</h3>
+                        <p><strong>Total Events:</strong> ${totalEvents} ${totalEvents >= 50 ? '✅' : '❌'}</p>
+                        <p><strong>All Categories:</strong> ${hasAllCategories ? '✅' : '❌'}</p>
+                        <p><strong>All Times:</strong> ${hasAllTimes ? '✅' : '❌'}</p>
+                        <p><strong>All Days:</strong> ${hasAllDays ? '✅' : '❌'}</p>
+                        <p><strong>Coordinate Coverage:</strong> ${coordinateCoverage}% ${coordinateCoverage === '100.0' ? '✅' : '❌'}</p>
+                        <h4>${isReady ? '🎉 DEMO READY!' : '⚠️ Needs more work'}</h4>
+                    </div>
+                `;
+            } catch (error) {
+                results.innerHTML = `<div class="error">❌ Error: ${error.message}</div>`;
+            }
+        };
+    </script>
+</body>
+</html>

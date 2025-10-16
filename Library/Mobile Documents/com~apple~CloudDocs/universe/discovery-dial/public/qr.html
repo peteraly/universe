@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📱 Scan to Open on Mobile</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .container {
+            text-align: center;
+            max-width: 600px;
+        }
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 40px;
+        }
+        .qr-container {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            margin: 30px auto;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            display: inline-block;
+        }
+        #qrcode {
+            margin: 0 auto;
+        }
+        .url-box {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 30px 0;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .url {
+            font-size: 1.3rem;
+            font-weight: bold;
+            word-break: break-all;
+            font-family: 'Monaco', 'Courier New', monospace;
+            color: #ffd700;
+            margin: 10px 0;
+        }
+        .copy-btn {
+            background: white;
+            color: #667eea;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .copy-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+        }
+        .copy-btn:active {
+            transform: translateY(0);
+        }
+        .copy-btn.copied {
+            background: #4CAF50;
+            color: white;
+        }
+        .instructions {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 25px;
+            border-radius: 15px;
+            margin-top: 30px;
+            text-align: left;
+        }
+        .instructions h3 {
+            margin-bottom: 15px;
+            font-size: 1.3rem;
+        }
+        .instructions ol {
+            margin-left: 20px;
+            line-height: 1.8;
+        }
+        .instructions li {
+            margin-bottom: 10px;
+        }
+        .emoji {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        .status {
+            display: inline-block;
+            background: rgba(76, 175, 80, 0.2);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-top: 10px;
+            border: 1px solid rgba(76, 175, 80, 0.5);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="emoji">📱</div>
+        <h1>Open on Your Phone</h1>
+        <p class="subtitle">Scan the QR code or type the URL manually</p>
+
+        <div class="qr-container">
+            <div id="qrcode"></div>
+        </div>
+
+        <div class="url-box">
+            <div>📍 Your Device URL:</div>
+            <div class="url" id="url">Loading...</div>
+            <button class="copy-btn" onclick="copyURL()">📋 Copy URL</button>
+            <div class="status">✅ Server Running</div>
+        </div>
+
+        <div class="instructions">
+            <h3>🎯 Two Ways to Connect:</h3>
+            <ol>
+                <li><strong>Option 1 (Easiest):</strong> Open your phone camera and point it at the QR code above. Tap the notification that appears.</li>
+                <li><strong>Option 2:</strong> Open Safari on your phone and type the URL shown above.</li>
+                <li>Make sure your phone is on the <strong>same WiFi network</strong> as this computer!</li>
+            </ol>
+        </div>
+    </div>
+
+    <!-- QR Code Library -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+    
+    <script>
+        // Get the server's network IP
+        const protocol = window.location.protocol;
+        const host = window.location.hostname;
+        const port = window.location.port;
+        const baseUrl = `${protocol}//${host}${port ? ':' + port : ''}`;
+        
+        // Display URL
+        document.getElementById('url').textContent = baseUrl + '/';
+        
+        // Generate QR code
+        new QRCode(document.getElementById('qrcode'), {
+            text: baseUrl + '/',
+            width: 256,
+            height: 256,
+            colorDark: '#000000',
+            colorLight: '#ffffff',
+            correctLevel: QRCode.CorrectLevel.H
+        });
+
+        // Copy URL function
+        function copyURL() {
+            const url = baseUrl + '/';
+            navigator.clipboard.writeText(url).then(() => {
+                const btn = document.querySelector('.copy-btn');
+                btn.textContent = '✓ Copied!';
+                btn.classList.add('copied');
+                setTimeout(() => {
+                    btn.textContent = '📋 Copy URL';
+                    btn.classList.remove('copied');
+                }, 2000);
+            });
+        }
+
+        // Test connection every 5 seconds
+        setInterval(async () => {
+            try {
+                const response = await fetch('/');
+                const status = document.querySelector('.status');
+                if (response.ok) {
+                    status.textContent = '✅ Server Running';
+                    status.style.background = 'rgba(76, 175, 80, 0.2)';
+                    status.style.borderColor = 'rgba(76, 175, 80, 0.5)';
+                } else {
+                    status.textContent = '⚠️ Server Issue';
+                    status.style.background = 'rgba(255, 152, 0, 0.2)';
+                    status.style.borderColor = 'rgba(255, 152, 0, 0.5)';
+                }
+            } catch (error) {
+                const status = document.querySelector('.status');
+                status.textContent = '❌ Server Offline';
+                status.style.background = 'rgba(244, 67, 54, 0.2)';
+                status.style.borderColor = 'rgba(244, 67, 54, 0.5)';
+            }
+        }, 5000);
+    </script>
+</body>
+</html>
+

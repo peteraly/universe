@@ -40,3 +40,4 @@ export const CATEGORY_ICONS = {
   professional: '💼'
 };
 
+

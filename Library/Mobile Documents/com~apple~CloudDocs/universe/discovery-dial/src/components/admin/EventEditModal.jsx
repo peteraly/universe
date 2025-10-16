@@ -159,3 +159,4 @@ const EventEditModal = ({ event, isOpen, onClose, onSave }) => {
 
 export default EventEditModal
 
+

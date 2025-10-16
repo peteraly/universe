@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mobile Network Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+        h1 {
+            font-size: 3rem;
+            margin: 0;
+            animation: pulse 2s ease-in-out infinite;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+        .success {
+            font-size: 5rem;
+            margin: 20px 0;
+        }
+        p {
+            font-size: 1.2rem;
+            max-width: 600px;
+            line-height: 1.6;
+        }
+        .info {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 30px;
+            backdrop-filter: blur(10px);
+        }
+        .button {
+            display: inline-block;
+            margin-top: 30px;
+            padding: 15px 30px;
+            background: white;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            transition: transform 0.2s;
+        }
+        .button:hover {
+            transform: scale(1.05);
+        }
+        .network-info {
+            font-size: 0.9rem;
+            margin-top: 20px;
+            opacity: 0.8;
+        }
+    </style>
+</head>
+<body>
+    <div class="success">✅</div>
+    <h1>Network Connection Working!</h1>
+    <p>
+        Your phone successfully connected to your Mac's development server.
+        This means the network setup is correct!
+    </p>
+    
+    <a href="/" class="button">Open Event Discovery App →</a>
+    
+    <div class="info">
+        <h3>✨ What This Means:</h3>
+        <p>
+            ✅ You're on the same WiFi network<br>
+            ✅ Firewall is not blocking connections<br>
+            ✅ Dev server is running correctly<br>
+            ✅ Your phone can access local resources
+        </p>
+    </div>
+
+    <div class="network-info">
+        <strong>Connection Details:</strong><br>
+        Time: <span id="time"></span><br>
+        User Agent: <span id="ua"></span>
+    </div>
+
+    <script>
+        document.getElementById('time').textContent = new Date().toLocaleTimeString();
+        document.getElementById('ua').textContent = navigator.userAgent.includes('iPhone') ? 'iPhone' : 
+                                                      navigator.userAgent.includes('Android') ? 'Android' : 
+                                                      'Desktop';
+    </script>
+</body>
+</html>
+

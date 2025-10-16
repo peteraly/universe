@@ -2,7 +2,7 @@ import React, { useState, useMemo } from 'react';
 import EventDiscoveryFilters from './EventDiscoveryFilters';
 import EventDiscoveryMap from './EventDiscoveryMap';
 import EventDiscoveryList from './EventDiscoveryList';
-import { MOCK_EVENTS, DEFAULT_FILTERS, filterEvents } from '../data/mockEvents';
+import { COMPREHENSIVE_SAMPLE_EVENTS, DEFAULT_FILTERS, filterEvents } from '../data/comprehensiveSampleEvents';
 
 const EventDiscovery = () => {
   const [filters, setFilters] = useState(DEFAULT_FILTERS);
@@ -10,7 +10,7 @@ const EventDiscovery = () => {
 
   // Filter events based on current filters
   const filteredEvents = useMemo(() => {
-    return filterEvents(MOCK_EVENTS, filters);
+    return filterEvents(COMPREHENSIVE_SAMPLE_EVENTS, filters);
   }, [filters]);
 
   const handleFilterChange = (filterType, value) => {

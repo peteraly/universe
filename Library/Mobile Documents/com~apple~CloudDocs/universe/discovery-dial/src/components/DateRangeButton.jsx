@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 
-const DATE_RANGES = ['TODAY', 'TOMORROW', 'THIS WEEK', 'THIS MONTH'];
+const DATE_RANGES = ['Today', 'Tomorrow', 'This Week', 'Weekend'];
 
 /**
  * DateRangeButton - Cross-platform optimized timeframe toggle
@@ -12,7 +12,7 @@ const DATE_RANGES = ['TODAY', 'TOMORROW', 'THIS WEEK', 'THIS MONTH'];
  * - Works on desktop, mobile, and all browsers
  * - Meets accessibility standards (WCAG)
  */
-export default function DateRangeButton({ selectedRange = 'TODAY', onRangeChange }) {
+export default function DateRangeButton({ selectedRange = 'Today', onRangeChange }) {
   
   // 1. State declarations first
   const [currentRange, setCurrentRange] = useState(selectedRange);
@@ -95,7 +95,8 @@ export default function DateRangeButton({ selectedRange = 'TODAY', onRangeChange
         cursor: 'pointer',
         transition: 'all 0.2s ease',
         userSelect: 'none',
-        webkitUserSelect: 'none'
+        WebkitUserSelect: 'none',
+        MsUserSelect: 'none'
       });
       
       // Add click event listener as backup
@@ -157,7 +158,8 @@ export default function DateRangeButton({ selectedRange = 'TODAY', onRangeChange
         cursor: 'pointer',
         transition: 'all 0.2s ease',
         userSelect: 'none',
-        webkitUserSelect: 'none',
+        WebkitUserSelect: 'none',
+        MsUserSelect: 'none',
         display: 'block',
         visibility: 'visible',
         opacity: '1',

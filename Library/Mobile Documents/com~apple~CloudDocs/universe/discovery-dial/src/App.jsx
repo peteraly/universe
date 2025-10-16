@@ -514,80 +514,140 @@ function App() {
 
   // Dynamic event filtering based on dial selection and filters
   const filterEventsByDialSelection = useCallback((events, category, subcategory, filters) => {
-    let filtered = events;
+    // SAFETY CHECK: Ensure events array exists
+    if (!events || events.length === 0) {
+      console.error('❌ CRITICAL: No events array provided to filter!', { events });
+      return [];
+    }
     
-    console.log('🔍 Filtering events:', {
+    console.log('🔍 Starting filter pipeline:', {
       totalEvents: events.length,
-      category: category?.label,
-      subcategory: subcategory?.label,
+      category: category?.label || 'None',
+      subcategory: subcategory?.label || 'None',
       filters: filters
     });
     
+    let filtered = [...events]; // Create copy to avoid mutation
+    let step = 0;
+    
     // 1. CATEGORY FILTER (from dial)
     if (category && category.label) {
+      step++;
+      const beforeCount = filtered.length;
       filtered = filtered.filter(event => event.categoryPrimary === category.label);
-      console.log(`After category filter (${category.label}):`, filtered.length);
+      console.log(`Step ${step} - Category filter (${category.label}): ${beforeCount} → ${filtered.length} events`);
+      
+      if (filtered.length === 0) {
+        console.error(`❌ ZERO EVENTS after category filter!`);
+        console.log('📊 Available categories in data:', [...new Set(events.map(e => e.categoryPrimary))]);
+        console.log(`⚠️ Looking for: "${category.label}"`);
+        return []; // Early exit to prevent further filtering
+      }
     }
     
     // 2. SUBCATEGORY FILTER (from dial)
     if (subcategory && subcategory.label) {
+      step++;
+      const beforeCount = filtered.length;
       filtered = filtered.filter(event => event.categorySecondary === subcategory.label);
-      console.log(`After subcategory filter (${subcategory.label}):`, filtered.length);
+      console.log(`Step ${step} - Subcategory filter (${subcategory.label}): ${beforeCount} → ${filtered.length} events`);
+      
+      if (filtered.length === 0) {
+        console.error(`❌ ZERO EVENTS after subcategory filter!`);
+        console.log('📊 Available subcategories for', category?.label, ':', 
+          [...new Set(events.filter(e => e.categoryPrimary === category?.label).map(e => e.categorySecondary))]);
+        console.log(`⚠️ Looking for: "${subcategory.label}"`);
+        return [];
+      }
     }
     
     // 3. TIME FILTER (from TimePickerSlider)
     if (filters.time && filters.time !== 'All') {
-      if (typeof filters.time === 'object' && filters.time.hours !== undefined) {
-        // Specific time object { hours: 18, minutes: 0 }
-        filtered = filtered.filter(event => {
-          const eventTime = parseEventTime(event.time || event.startTime);
-          const filterMinutes = filters.time.hours * 60 + filters.time.minutes;
-          const eventMinutes = eventTime.hours * 60 + eventTime.minutes;
-          return eventMinutes >= filterMinutes;
-        });
-        console.log(`After time filter (${filters.time.hours}:${filters.time.minutes}):`, filtered.length);
-      } else {
-        // Time range string (Morning, Afternoon, Evening, Night)
-        const timeRanges = {
-          'Morning': { start: 6, end: 12 },
-          'Afternoon': { start: 12, end: 18 },
-          'Evening': { start: 18, end: 22 },
-          'Night': { start: 22, end: 6 }
-        };
-        const range = timeRanges[filters.time];
-        if (range) {
+      step++;
+      const beforeCount = filtered.length;
+      
+      try {
+        if (typeof filters.time === 'object' && filters.time.hours !== undefined) {
+          // Specific time object { hours: 18, minutes: 0 }
           filtered = filtered.filter(event => {
             const eventTime = parseEventTime(event.time || event.startTime);
-            if (filters.time === 'Night') {
-              // Handle wrap-around (22:00 - 06:00)
-              return eventTime.hours >= 22 || eventTime.hours < 6;
-            }
-            return eventTime.hours >= range.start && eventTime.hours < range.end;
+            const filterMinutes = filters.time.hours * 60 + filters.time.minutes;
+            const eventMinutes = eventTime.hours * 60 + eventTime.minutes;
+            return eventMinutes >= filterMinutes;
           });
-          console.log(`After time range filter (${filters.time}):`, filtered.length);
+          console.log(`Step ${step} - Time filter (${filters.time.hours}:${String(filters.time.minutes).padStart(2, '0')}): ${beforeCount} → ${filtered.length} events`);
+        } else {
+          // Time range string (Morning, Afternoon, Evening, Night)
+          const timeRanges = {
+            'Morning': { start: 6, end: 12 },
+            'Afternoon': { start: 12, end: 18 },
+            'Evening': { start: 18, end: 22 },
+            'Night': { start: 22, end: 6 }
+          };
+          const range = timeRanges[filters.time];
+          if (range) {
+            filtered = filtered.filter(event => {
+              const eventTime = parseEventTime(event.time || event.startTime);
+              if (filters.time === 'Night') {
+                return eventTime.hours >= 22 || eventTime.hours < 6;
+              }
+              return eventTime.hours >= range.start && eventTime.hours < range.end;
+            });
+            console.log(`Step ${step} - Time range filter (${filters.time}): ${beforeCount} → ${filtered.length} events`);
+          }
         }
+        
+        if (filtered.length === 0) {
+          console.warn(`⚠️ ZERO EVENTS after time filter (${JSON.stringify(filters.time)})`);
+        }
+      } catch (error) {
+        console.error('❌ Time filter error:', error);
+        // Don't filter if error - keep previous results
+        filtered = events.slice(0, beforeCount);
       }
     }
     
     // 4. DAY/DATE RANGE FILTER (from DateRangeButton)
     if (filters.day && filters.day !== 'All') {
-      const today = getTodayDate();
-      const { startDate, endDate } = getDateRangeBounds(filters.day);
+      step++;
+      const beforeCount = filtered.length;
       
-      filtered = filtered.filter(event => {
-        const eventDate = event.date || today;
-        return isDateInRange(eventDate, startDate, endDate);
-      });
-      console.log(`After day filter (${filters.day}):`, filtered.length);
+      try {
+        const today = getTodayDate();
+        const { startDate, endDate } = getDateRangeBounds(filters.day);
+        
+        filtered = filtered.filter(event => {
+          const eventDate = event.date || today;
+          return isDateInRange(eventDate, startDate, endDate);
+        });
+        console.log(`Step ${step} - Day filter (${filters.day}): ${beforeCount} → ${filtered.length} events`);
+        
+        if (filtered.length === 0) {
+          console.warn(`⚠️ ZERO EVENTS after day filter (${filters.day})`);
+          console.log('📊 Available days:', [...new Set(events.map(e => e.day))]);
+        }
+      } catch (error) {
+        console.error('❌ Day filter error:', error);
+        // Don't filter if error
+        filtered = events.slice(0, beforeCount);
+      }
     }
     
     // 5. CATEGORY TYPE FILTER (if using filter pills at top)
     if (filters.category && filters.category !== 'All') {
+      step++;
+      const beforeCount = filtered.length;
       filtered = filtered.filter(event => event.categoryPrimary === filters.category);
-      console.log(`After category type filter (${filters.category}):`, filtered.length);
+      console.log(`Step ${step} - Category type filter (${filters.category}): ${beforeCount} → ${filtered.length} events`);
     }
     
-    console.log('✅ Final filtered events:', filtered.length);
+    console.log(`✅ Filter pipeline complete: ${filtered.length} events (from ${events.length} total)`);
+    
+    if (filtered.length === 0) {
+      console.error('❌ NO EVENTS FOUND after all filters!');
+      console.log('💡 Try resetting filters or checking event data matches filter criteria');
+    }
+    
     return filtered;
   }, []);
 

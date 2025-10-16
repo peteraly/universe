@@ -139,7 +139,7 @@ const EventDiscoveryMap = ({
 
         return {
           id: safeString(event.id, `event-${index}`),
-          position: [lat, lng],
+          position: [lng, lat], // [longitude, latitude] for Mapbox
           popup: {
             title: safeString(event.name, 'Untitled Event'),
             description: safeString(event.description, 'No description available'),
@@ -400,12 +400,14 @@ const EventDiscoveryMap = ({
 
     // Add click handler for markers
     mapInstance.current.on('click', 'event-markers', (e) => {
-      const feature = e.features[0];
-      const eventData = feature.properties;
-      console.log('📍 Marker clicked:', eventData);
-      
-      if (onEventSelect) {
-        onEventSelect(eventData.event);
+      if (e.features && e.features.length > 0) {
+        const feature = e.features[0];
+        const eventData = feature.properties;
+        console.log('📍 Marker clicked:', eventData);
+        
+        if (onEventSelect && eventData.event) {
+          onEventSelect(eventData.event);
+        }
       }
     });
 
@@ -421,9 +423,16 @@ const EventDiscoveryMap = ({
     console.log('📍 Map pins updated:', newPins.length, 'visible pins');
   }, [mapLoaded, events, createMapPins, onEventSelect]);
 
-  // Filter pins based on selections and highlight active pin
+  // Filter pins based on selections and highlight active pin with guaranteed visibility
   useEffect(() => {
-    if (!pins.length) return;
+    if (!mapInstance.current || !mapLoaded || !pins.length) return;
+
+    console.log('🗺️ Updating map pins and highlighting:', {
+      totalPins: pins.length,
+      highlightedEventId: highlightedEventId,
+      selectedCategory: selectedCategory?.label,
+      selectedSubcategory: selectedSubcategory?.label
+    });
 
     const filteredPins = pins.map(pin => {
       let visible = true;
@@ -441,31 +450,103 @@ const EventDiscoveryMap = ({
       return { ...pin, visible };
     });
 
-    // Update marker visibility and highlighting
-    const markers = document.querySelectorAll('.mapboxgl-marker');
-    markers.forEach((marker, index) => {
-      const pin = filteredPins[index];
-      if (pin) {
-        marker.style.display = pin.visible ? 'block' : 'none';
+    // Find the highlighted event in filtered pins
+    const highlightedPin = highlightedEventId 
+      ? filteredPins.find(pin => pin.id === highlightedEventId)
+      : null;
+
+    console.log('🎯 Highlighted pin:', highlightedPin ? {
+      id: highlightedPin.id,
+      title: highlightedPin.popup.title,
+      position: highlightedPin.position
+    } : 'None');
+
+    // Update GeoJSON data with visibility and highlight information
+    const geojsonData = {
+      type: 'FeatureCollection',
+      features: filteredPins
+        .filter(pin => pin.visible)
+        .map(pin => ({
+          type: 'Feature',
+          geometry: {
+            type: 'Point',
+            coordinates: pin.position
+          },
+          properties: {
+            id: pin.id,
+            title: pin.popup.title,
+            description: pin.popup.description,
+            venue: pin.popup.venue,
+            time: pin.popup.time,
+            day: pin.popup.day,
+            price: pin.popup.price,
+            attendees: pin.popup.attendees,
+            category: pin.category,
+            subcategory: pin.subcategory,
+            color: pin.color,
+            size: pin.size,
+            highlighted: pin.id === highlightedEventId,
+            event: pin.event
+          }
+        }))
+    };
+
+    // Update map source with new data
+    const source = mapInstance.current.getSource('event-markers');
+    if (source) {
+      source.setData(geojsonData);
+      console.log('✅ Map pins updated:', geojsonData.features.length, 'visible');
+
+      // Update marker styling for highlighted pin
+      if (mapInstance.current.getLayer('event-markers')) {
+        mapInstance.current.setPaintProperty('event-markers', 'circle-radius', [
+          'case',
+          ['get', 'highlighted'],
+          16, // Larger radius for highlighted pin
+          8  // Normal radius
+        ]);
+
+        mapInstance.current.setPaintProperty('event-markers', 'circle-stroke-width', [
+          'case',
+          ['get', 'highlighted'],
+          4, // Thicker stroke for highlighted pin
+          2
+        ]);
+
+        mapInstance.current.setPaintProperty('event-markers', 'circle-stroke-color', [
+          'case',
+          ['get', 'highlighted'],
+          '#FFD700', // Gold stroke for highlighted pin
+          '#ffffff'
+        ]);
+      }
+
+      // Auto-zoom to highlighted pin with smooth animation
+      if (highlightedPin && highlightedPin.position) {
+        const [lng, lat] = highlightedPin.position;
         
-        // Add/remove highlight class
-        if (pin.visible && highlightedEventId && pin.eventId === highlightedEventId) {
-          marker.classList.add('highlighted-pin');
-          marker.style.transform = 'scale(1.2)';
-          marker.style.zIndex = '1000';
+        // Validate coordinates before flyTo
+        if (lng >= -180 && lng <= 180 && lat >= -90 && lat <= 90) {
+          console.log('🎯 Zooming to highlighted pin:', highlightedPin.popup.title, `[${lng}, ${lat}]`);
+          
+          mapInstance.current.flyTo({
+            center: [lng, lat],
+            zoom: 15,
+            duration: 1500,
+            essential: true,
+            padding: { top: 100, bottom: 250, left: 50, right: 50 }
+          });
         } else {
-          marker.classList.remove('highlighted-pin');
-          marker.style.transform = 'scale(1)';
-          marker.style.zIndex = '1';
+          console.error('❌ Invalid coordinates for flyTo:', { lng, lat, pin: highlightedPin });
         }
       }
-    });
+    }
 
     console.log('🔍 Pins filtered:', filteredPins.filter(p => p.visible).length, 'visible');
     if (highlightedEventId) {
       console.log('🎯 Highlighted event:', highlightedEventId);
     }
-  }, [pins, selectedCategory, selectedSubcategory, highlightedEventId]);
+  }, [mapLoaded, pins, selectedCategory, selectedSubcategory, highlightedEventId]);
 
   // Fallback map component
   const FallbackMap = () => {
@@ -635,4 +716,4 @@ const EventDiscoveryMap = ({
   );
 };
 
-export default EventDiscoveryMap;
+export default EventDiscoveryMap; 

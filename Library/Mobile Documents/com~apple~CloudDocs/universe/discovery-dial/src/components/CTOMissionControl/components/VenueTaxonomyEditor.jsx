@@ -244,3 +244,4 @@ const VenueTaxonomyEditor = ({ data, onUpdate, canEdit }) => {
 
 export default VenueTaxonomyEditor
 
+

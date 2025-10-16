@@ -95,22 +95,33 @@ export default function TimePickerSlider({ selectedTime, onTimeChange }) {
       onPointerCancel={handlePointerUp}
       style={{
         position: 'fixed',
-        right: 'max(8px, env(safe-area-inset-right))',
+        right: 'max(20px, env(safe-area-inset-right))', // Increased from 8px to 20px for more space
         top: '50%',
         transform: 'translateY(-50%)',
-        height: 'clamp(200px, 30vh, 280px)',
-        width: 'clamp(40px, 10vw, 56px)',
-        minWidth: '44px', // WCAG minimum touch target
-        maxWidth: 'calc(100vw - 80px)', // Prevent overflow at high zoom
+        height: 'clamp(220px, 35vh, 300px)', // Slightly taller for easier interaction
+        width: 'clamp(50px, 12vw, 70px)', // Wider for easier tap targets
+        minWidth: '50px', // Increased minimum width
+        maxWidth: 'calc(100vw - 80px)',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
         alignItems: 'center',
-        zIndex: 50, // Highest - must be on top
+        zIndex: 1000, // Increased z-index to ensure it's on top
         touchAction: 'none',
         userSelect: 'none',
-        paddingTop: 'max(4px, env(safe-area-inset-top))',
-        paddingBottom: 'max(4px, env(safe-area-inset-bottom))'
+        paddingTop: 'max(8px, env(safe-area-inset-top))', // Increased padding
+        paddingBottom: 'max(8px, env(safe-area-inset-bottom))',
+        paddingLeft: '12px', // Added horizontal padding for breathing room
+        paddingRight: '12px',
+        // Subtle background for better visibility and touch area definition
+        background: 'rgba(0, 0, 0, 0.15)',
+        backdropFilter: 'blur(8px)',
+        WebkitBackdropFilter: 'blur(8px)',
+        borderRadius: '28px', // Rounded edges for modern look
+        border: '1px solid rgba(255, 255, 255, 0.1)',
+        boxShadow: '0 4px 16px rgba(0, 0, 0, 0.2)',
+        // Smooth transition for hover effects
+        transition: 'all 0.2s ease'
       }}
     >
       {/* Time markers */}
@@ -123,27 +134,35 @@ export default function TimePickerSlider({ selectedTime, onTimeChange }) {
           <motion.div
             key={marker.label}
             onClick={() => handleMarkerTap(marker)}
-            animate={isActive ? { scale: 1.1 } : { scale: 1 }}
+            animate={isActive ? { scale: 1.15 } : { scale: 1 }}
+            whileHover={{ scale: 1.05 }} // Added hover effect
+            whileTap={{ scale: 0.95 }} // Added tap feedback
             transition={{ duration: 0.2 }}
             style={{
-              fontSize: isActive ? 'clamp(12px, 3vw, 14px)' : 'clamp(10px, 2.5vw, 12px)',
-              fontWeight: isActive ? '700' : '500',
+              fontSize: isActive ? 'clamp(13px, 3.2vw, 15px)' : 'clamp(11px, 2.8vw, 13px)', // Slightly larger
+              fontWeight: isActive ? '700' : '600', // Bolder for better readability
               color: isActive 
-                ? 'rgba(100, 150, 255, 0.8)'  // Blue accent (matches primary swipe)
-                : 'rgba(255, 255, 255, 0.5)', // Faded white (matches inactive labels)
-              opacity: isActive ? 1 : 0.5,
+                ? 'rgba(100, 150, 255, 1)'  // More vibrant blue
+                : 'rgba(255, 255, 255, 0.7)', // Brighter inactive labels
+              opacity: isActive ? 1 : 0.7,
               transition: 'all 0.2s',
               cursor: 'pointer',
               textAlign: 'center',
-              letterSpacing: '0.3px',
+              letterSpacing: '0.4px',
               textTransform: 'uppercase',
               fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
               pointerEvents: 'auto',
-              minWidth: '44px', // WCAG minimum touch target
-              minHeight: '44px',
+              minWidth: '48px', // Slightly larger touch target
+              minHeight: '48px',
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'center'
+              justifyContent: 'center',
+              // Subtle background for better tap target visibility
+              background: isActive 
+                ? 'rgba(100, 150, 255, 0.15)' 
+                : 'transparent',
+              borderRadius: '12px',
+              WebkitTapHighlightColor: 'transparent' // Remove default tap highlight
             }}
           >
             {marker.label}

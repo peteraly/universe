@@ -180,11 +180,16 @@ const EventDisplayCard = ({
 
   if (!event) {
     return (
-      <div className="event-display-card empty">
-        <div className="empty-state">
-          <div className="empty-icon">📅</div>
-          <h3>No Events Found</h3>
-          <p>Try adjusting your filters to see more events.</p>
+      <div className="event-display-card-compact">
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: '100%',
+          color: 'rgba(255, 255, 255, 0.5)',
+          fontSize: '14px'
+        }}>
+          {totalEvents === 0 ? 'No events found' : 'Select a category to discover events'}
         </div>
       </div>
     );
@@ -193,105 +198,91 @@ const EventDisplayCard = ({
   const canSwipeLeft = currentIndex < totalEvents - 1;
   const canSwipeRight = currentIndex > 0;
 
+  // Get category emoji
+  const getCategoryEmoji = (category) => {
+    switch(category) {
+      case 'Arts/Culture': return '🎵';
+      case 'Social': return '🎉';
+      case 'Wellness': return '🧘';
+      case 'Professional': return '💼';
+      default: return '📍';
+    }
+  };
+
+  // COMPACT MODE - Minimal card for map visibility
   return (
     <div 
       ref={cardRef}
-      className={`event-display-card ${isSwipeActive ? 'swipe-active' : ''} ${swipeDirection ? `swipe-${swipeDirection}` : ''}`}
-      style={{
-        transform: swipeDirection ? `translateX(${swipeDirection === 'left' ? -swipeDistance * 0.1 : swipeDistance * 0.1}px)` : 'none',
-        opacity: swipeDistance > 100 ? 0.7 : 1
-      }}
+      className="event-display-card-compact"
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
       onMouseDown={handleMouseDown}
-      onClick={() => onEventSelect && onEventSelect(event)}
+      onMouseMove={handleMouseMove}
+      onMouseUp={handleMouseUp}
+      style={{
+        cursor: isSwipeActive ? 'grabbing' : 'grab',
+        transform: swipeDirection ? `translateX(${swipeDistance * (swipeDirection === 'left' ? -0.1 : 0.1)}px)` : 'none',
+        transition: isSwipeActive ? 'none' : 'transform 0.3s ease'
+      }}
     >
-      {/* Navigation Arrows */}
-      <div className="event-navigation">
-        <button 
-          className={`nav-arrow left ${!canSwipeRight ? 'disabled' : ''}`}
-          onClick={(e) => {
-            e.stopPropagation();
-            if (canSwipeRight) onSwipeRight();
-          }}
-          disabled={!canSwipeRight}
-          aria-label="Previous event"
-        >
-          ←
-        </button>
-        
-        <div className="event-counter">
-          {currentIndex + 1} of {totalEvents}
-        </div>
-        
-        <button 
-          className={`nav-arrow right ${!canSwipeLeft ? 'disabled' : ''}`}
-          onClick={(e) => {
-            e.stopPropagation();
-            if (canSwipeLeft) onSwipeLeft();
-          }}
-          disabled={!canSwipeLeft}
-          aria-label="Next event"
-        >
-          →
-        </button>
+      {/* Title Row with Counter */}
+      <div className="event-title">
+        <span style={{ 
+          display: 'flex', 
+          alignItems: 'center', 
+          gap: '8px',
+          overflow: 'hidden',
+          flex: 1
+        }}>
+          {getCategoryEmoji(event.categoryPrimary)}
+          <span style={{ 
+            overflow: 'hidden', 
+            textOverflow: 'ellipsis',
+            whiteSpace: 'nowrap'
+          }}>
+            {event.name}
+          </span>
+        </span>
+        <span className="event-counter">
+          {currentIndex + 1}/{totalEvents}
+        </span>
       </div>
 
-      {/* Event Content */}
-      <div className="event-content">
-        <h2 className="event-title">{event.name || 'Untitled Event'}</h2>
-        
-        <div className="event-details">
-          <div className="event-detail">
-            <span className="detail-icon">📅</span>
-            <span className="detail-text">
-              {formatDate(event.date)} at {formatTime(event.time)}
-            </span>
-          </div>
-          
-          {event.location && (
-            <div className="event-detail">
-              <span className="detail-icon">📍</span>
-              <span className="detail-text">{event.location}</span>
-            </div>
-          )}
-          
-          <div className="event-detail">
-            <span className="detail-icon">👥</span>
-            <span className="detail-text">
-              {formatAttendees(event.attendees)} attendees
-            </span>
-          </div>
+      {/* Description */}
+      {event.description && (
+        <div className="event-description" style={{
+          fontSize: '13px',
+          color: 'rgba(255, 255, 255, 0.8)',
+          margin: '4px 0',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          display: '-webkit-box',
+          WebkitLineClamp: 2,
+          WebkitBoxOrient: 'vertical',
+          lineHeight: '1.4'
+        }}>
+          {event.description}
         </div>
+      )}
 
-        {event.description && (
-          <div className="event-description">
-            <p>{event.description}</p>
-          </div>
-        )}
+      {/* Time */}
+      <div className="event-time">
+        🕐 {event.time || 'Time TBD'}{event.endTime ? ` - ${event.endTime}` : ''}
+      </div>
 
-        <div className="event-meta">
-          <span className="event-category">{event.categoryPrimary}</span>
-          {event.categorySecondary && (
-            <span className="event-subcategory">• {event.categorySecondary}</span>
-          )}
-        </div>
+      {/* Venue and Full Address */}
+      <div className="event-meta">
+        📍 {event.venue || 'Venue TBD'}{event.address ? `, ${event.address}` : ''}{!event.address && event.distance ? ` • ${event.distance}` : ''}
       </div>
 
       {/* Swipe Indicators */}
-      <div className="swipe-indicators">
-        {canSwipeRight && (
-          <div className="swipe-hint left">
-            <span>← Swipe for previous</span>
-          </div>
-        )}
-        {canSwipeLeft && (
-          <div className="swipe-hint right">
-            <span>Swipe for next →</span>
-          </div>
-        )}
-      </div>
+      {canSwipeRight && (
+        <div className="swipe-indicators swipe-left">←</div>
+      )}
+      {canSwipeLeft && (
+        <div className="swipe-indicators swipe-right">→</div>
+      )}
     </div>
   );
 };

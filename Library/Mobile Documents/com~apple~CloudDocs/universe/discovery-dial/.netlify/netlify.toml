@@ -1,0 +1,51 @@
+headersOrigin = "config"
+redirectsOrigin = "config"
+plugins = []
+
+[functions]
+
+[functions."*"]
+
+[build]
+publish = "/Users/alyssapeterson/Library/Mobile Documents/com~apple~CloudDocs/universe/discovery-dial/dist"
+publishOrigin = "config"
+commandOrigin = "config"
+base = "/Users/alyssapeterson/Library/Mobile Documents/com~apple~CloudDocs/universe/discovery-dial"
+command = "npm run build"
+
+[build.environment]
+NODE_VERSION = "18"
+WORDPRESS_API_URL = "https://hyyper.co/wp-json/wp/v2"
+
+[build.processing]
+
+[build.processing.css]
+
+[build.processing.html]
+
+[build.processing.images]
+
+[build.processing.js]
+
+[build.services]
+
+[[headers]]
+for = "/*"
+
+[headers.values]
+X-Frame-Options = "DENY"
+X-XSS-Protection = "1; mode=block"
+X-Content-Type-Options = "nosniff"
+Referrer-Policy = "strict-origin-when-cross-origin"
+
+[[redirects]]
+from = "/*"
+to = "/index.html"
+status = 200.0
+force = false
+
+[redirects.query]
+
+[redirects.conditions]
+
+[redirects.headers]

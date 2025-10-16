@@ -60,3 +60,4 @@ const RotatingDaySelector = ({ currentIndex = 0, onDayChange }) => {
 
 export default memo(RotatingDaySelector);
 
+

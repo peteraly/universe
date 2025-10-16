@@ -206,3 +206,4 @@ If you encounter any issues:
 
 **The Discovery Dial should now look and feel exactly like the iPhone Compass app with advanced gesture functionality!** 🎯
 
+

@@ -758,3 +758,4 @@ const feedbackDuration = prefersReducedMotion ? 0 : 300;
 **This implementation makes the two gesture types unmistakably different through coordinated visual, haptic, and optional audio feedback!**
 
 
+

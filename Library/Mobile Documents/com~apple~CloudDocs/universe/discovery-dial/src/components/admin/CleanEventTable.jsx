@@ -274,3 +274,4 @@ const CleanEventTable = ({ events, onEdit, onDelete, onBulkAction }) => {
 
 export default CleanEventTable
 
+

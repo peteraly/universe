@@ -20,3 +20,4 @@ const EventCounter = ({ current, total, isVisible = true }) => {
 
 export default EventCounter;
 
+
