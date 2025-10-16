@@ -14,11 +14,12 @@ const DATE_RANGES = ['TODAY', 'TOMORROW', 'THIS WEEK', 'THIS MONTH'];
  */
 export default function DateRangeButton({ selectedRange = 'TODAY', onRangeChange }) {
   
+  // 1. State declarations first
   const [currentRange, setCurrentRange] = useState(selectedRange);
   const [isMobile, setIsMobile] = useState(false);
   const [isTouch, setIsTouch] = useState(false);
   
-  // Cross-platform device detection
+  // 2. Device detection
   useEffect(() => {
     const checkDevice = () => {
       const userAgent = navigator.userAgent;
@@ -38,37 +39,64 @@ export default function DateRangeButton({ selectedRange = 'TODAY', onRangeChange
     return () => window.removeEventListener('resize', checkDevice);
   }, []);
   
-  // Sync with parent component
+  // 3. Sync with parent component
   useEffect(() => {
     setCurrentRange(selectedRange);
   }, [selectedRange]);
   
-  // Force button visibility and functionality on all devices
+  // 4. Click handler (defined before use)
+  const handleClick = useCallback((e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
+    console.log('DateRangeButton clicked:', { currentRange, isMobile, isTouch });
+    
+    const currentIndex = DATE_RANGES.indexOf(currentRange);
+    const nextIndex = (currentIndex + 1) % DATE_RANGES.length;
+    const nextRange = DATE_RANGES[nextIndex];
+    
+    console.log('Changing from', currentRange, 'to', nextRange);
+    
+    // Update local state immediately for visual feedback
+    setCurrentRange(nextRange);
+    
+    // Notify parent component
+    onRangeChange?.(nextRange);
+    
+    // Haptic feedback
+    if (navigator.vibrate) {
+      navigator.vibrate(30);
+    }
+  }, [currentRange, isMobile, isTouch, onRangeChange]);
+  
+  // 5. Button styling and event listeners (after handleClick is defined)
   useEffect(() => {
     const button = document.querySelector('.date-range-button');
     if (button) {
       // Ensure button is always visible and clickable
-      button.style.position = 'fixed';
-      button.style.bottom = isMobile ? '80px' : '20px';
-      button.style.right = '20px';
-      button.style.zIndex = '9999';
-      button.style.display = 'block';
-      button.style.visibility = 'visible';
-      button.style.opacity = '1';
-      button.style.pointerEvents = 'auto';
-      button.style.minWidth = '120px';
-      button.style.minHeight = '44px';
-      button.style.backgroundColor = '#000000';
-      button.style.color = '#ffffff';
-      button.style.border = '1px solid #ffffff';
-      button.style.borderRadius = '8px';
-      button.style.padding = '12px 16px';
-      button.style.fontSize = '14px';
-      button.style.fontWeight = '600';
-      button.style.cursor = 'pointer';
-      button.style.transition = 'all 0.2s ease';
-      button.style.userSelect = 'none';
-      button.style.webkitUserSelect = 'none';
+      Object.assign(button.style, {
+        position: 'fixed',
+        bottom: isMobile ? '80px' : '20px',
+        right: '20px',
+        zIndex: '9999',
+        display: 'block',
+        visibility: 'visible',
+        opacity: '1',
+        pointerEvents: 'auto',
+        minWidth: '120px',
+        minHeight: '44px',
+        backgroundColor: '#000000',
+        color: '#ffffff',
+        border: '1px solid #ffffff',
+        borderRadius: '8px',
+        padding: '12px 16px',
+        fontSize: '14px',
+        fontWeight: '600',
+        cursor: 'pointer',
+        transition: 'all 0.2s ease',
+        userSelect: 'none',
+        webkitUserSelect: 'none'
+      });
       
       // Add click event listener as backup
       const handleButtonClick = (e) => {
@@ -89,102 +117,55 @@ export default function DateRangeButton({ selectedRange = 'TODAY', onRangeChange
     }
   }, [isMobile, handleClick]);
   
-  const handleClick = useCallback((e) => {
-    console.log('DateRangeButton clicked:', { currentRange, isMobile, isTouch });
-    
-    const currentIndex = DATE_RANGES.indexOf(currentRange);
-    const nextIndex = (currentIndex + 1) % DATE_RANGES.length;
-    const nextRange = DATE_RANGES[nextIndex];
-    
-    console.log('Changing from', currentRange, 'to', nextRange);
-    
-    // Update local state immediately for visual feedback
-    setCurrentRange(nextRange);
-    
-    // Notify parent component
-    if (onRangeChange) {
-      onRangeChange(nextRange);
-    }
-  }, [currentRange, onRangeChange, isMobile, isTouch]);
-
-  // Cross-platform responsive button styles
-  const buttonStyle = {
-    position: 'fixed',
-    right: isMobile ? '16px' : '20px',
-    bottom: isMobile ? '60px' : '20px', // Match CSS positioning
-    border: '2px solid #007bff',
-    backgroundColor: '#007bff',
-    padding: isMobile ? '16px 24px' : '12px 20px', // Larger touch targets on mobile
-    color: 'white',
-    borderRadius: '8px',
-    fontSize: isMobile ? '16px' : '14px', // Larger text on mobile
-    fontWeight: 'bold',
-    cursor: 'pointer',
-    zIndex: 9999, // Higher z-index to ensure visibility
-    minWidth: isMobile ? '120px' : '100px', // Larger minimum width on mobile
-    minHeight: '44px', // WCAG minimum touch target
-    textAlign: 'center',
-    boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
-    transition: 'all 0.2s ease',
-    userSelect: 'none',
-    WebkitUserSelect: 'none',
-    touchAction: 'manipulation', // Optimize for touch
-    WebkitTapHighlightColor: 'transparent', // Remove iOS tap highlight
-    // Cross-platform compatibility
-    WebkitAppearance: 'none',
-    MozAppearance: 'none',
-    appearance: 'none',
-    // Ensure button is always clickable
-    pointerEvents: 'auto',
-    // Hardware acceleration for smooth performance
-    transform: 'translateZ(0)',
-    backfaceVisibility: 'hidden'
-  };
-
-
-  
+  // 6. Render
   return (
     <button
+      className="date-range-button"
       onClick={handleClick}
       onTouchStart={(e) => {
-        // Don't prevent default on touch start - let the click event fire
-        e.target.style.transform = 'scale(0.95)';
-        e.target.style.backgroundColor = '#0056b3';
-      }}
-      onTouchEnd={(e) => {
-        e.target.style.transform = 'scale(1)';
-        e.target.style.backgroundColor = '#007bff';
-        // Trigger click manually for mobile Safari
-        if (isMobile || isTouch) {
+        // Mobile Safari touch fix
+        if (isMobile && isTouch) {
           e.preventDefault();
           e.stopPropagation();
-          console.log('Touch end - triggering click manually');
           handleClick(e);
         }
       }}
+      onTouchEnd={(e) => {
+        // Prevent default browser behaviors
+        e.preventDefault();
+        e.stopPropagation();
+      }}
       onTouchCancel={(e) => {
-        e.target.style.transform = 'scale(1)';
-        e.target.style.backgroundColor = '#007bff';
+        // Reset styles on touch cancel
+        e.preventDefault();
+        e.stopPropagation();
       }}
-      onMouseDown={(e) => {
-        e.target.style.transform = 'scale(0.95)';
+      style={{
+        position: 'fixed',
+        bottom: isMobile ? '80px' : '20px',
+        right: '20px',
+        zIndex: 9999,
+        minWidth: '120px',
+        minHeight: '44px',
+        backgroundColor: '#000000',
+        color: '#ffffff',
+        border: '1px solid #ffffff',
+        borderRadius: '8px',
+        padding: '12px 16px',
+        fontSize: '14px',
+        fontWeight: '600',
+        cursor: 'pointer',
+        transition: 'all 0.2s ease',
+        userSelect: 'none',
+        webkitUserSelect: 'none',
+        display: 'block',
+        visibility: 'visible',
+        opacity: '1',
+        pointerEvents: 'auto'
       }}
-      onMouseUp={(e) => {
-        e.target.style.transform = 'scale(1)';
-      }}
-      style={buttonStyle}
-      onMouseOver={(e) => e.target.style.backgroundColor = '#0056b3'}
-      onMouseOut={(e) => e.target.style.backgroundColor = '#007bff'}
       aria-label={`Current timeframe: ${currentRange}. Click to change.`}
       role="button"
       tabIndex={0}
-      // Cross-platform accessibility
-      onKeyDown={(e) => {
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          handleClick(e);
-        }
-      }}
     >
       {currentRange}
     </button>

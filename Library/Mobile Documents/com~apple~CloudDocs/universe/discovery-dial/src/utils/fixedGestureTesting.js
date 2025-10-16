@@ -30,12 +30,16 @@ const FixedElementSelection = {
            document.querySelector('.secondary-dial');
   },
 
-  // Find day toggle button
+  // Find day toggle button with multiple fallbacks
   findDayToggleButton: () => {
     return document.querySelector('.date-range-button') ||
            document.querySelector('.day-toggle-button') ||
            document.querySelector('[data-testid="day-toggle"]') ||
-           document.querySelector('.timeframe-toggle');
+           document.querySelector('.timeframe-toggle') ||
+           document.querySelector('button[class*="date"]') ||
+           document.querySelector('button[class*="range"]') ||
+           document.querySelector('button[class*="toggle"]') ||
+           document.querySelector('button[aria-label*="timeframe"]');
   },
 
   // Find event display element
