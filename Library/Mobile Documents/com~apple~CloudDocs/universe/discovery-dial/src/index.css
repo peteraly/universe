@@ -2165,13 +2165,19 @@ a::-webkit-scrollbar {
   align-items: center;
   justify-content: center;
   z-index: 5;
+  opacity: 1; /* Make it fully visible */
+  min-height: 100vh; /* Ensure it covers full height */
 }
 
 .fallback-map-content {
   text-align: center;
   color: white;
   padding: 20px;
-  max-width: 400px;
+  max-width: 600px;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 12px;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .fallback-map-content h3 {
@@ -2189,32 +2195,39 @@ a::-webkit-scrollbar {
   margin-top: 20px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
+  max-height: 400px;
+  overflow-y: auto;
 }
 
 .fallback-event {
-  background: rgba(255, 255, 255, 0.1);
-  padding: 15px;
-  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.15);
+  padding: 16px;
+  border-radius: 10px;
   cursor: pointer;
-  transition: background-color 0.2s;
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(5px);
 }
 
 .fallback-event:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.25);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .fallback-event h4 {
-  font-size: 16px;
-  margin-bottom: 5px;
+  font-size: 18px;
+  margin-bottom: 8px;
   color: #ffffff;
+  font-weight: 600;
 }
 
 .fallback-event p {
   font-size: 14px;
-  margin: 2px 0;
-  opacity: 0.8;
+  margin: 4px 0;
+  opacity: 0.9;
+  color: #e0e0e0;
 }
 
 /* Map Popup Styles */
