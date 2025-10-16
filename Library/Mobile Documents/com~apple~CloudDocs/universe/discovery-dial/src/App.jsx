@@ -735,6 +735,38 @@ function App() {
     setTimeout(debugComponents, 1000);
   }, []);
 
+  // Map visibility debugging
+  useEffect(() => {
+    const debugMapVisibility = () => {
+      const mapLayer = document.querySelector('.map-background-layer');
+      const fallbackMap = document.querySelector('.fallback-map');
+      const eventDiscoveryMap = document.querySelector('.event-discovery-map');
+      
+      console.log('🗺️ Map visibility debug:', {
+        mapLayer: {
+          found: !!mapLayer,
+          visible: mapLayer ? mapLayer.offsetWidth > 0 : false,
+          dimensions: mapLayer ? `${mapLayer.offsetWidth}x${mapLayer.offsetHeight}` : '0x0',
+          zIndex: mapLayer ? window.getComputedStyle(mapLayer).zIndex : 'none',
+          opacity: mapLayer ? window.getComputedStyle(mapLayer).opacity : 'none',
+          background: mapLayer ? window.getComputedStyle(mapLayer).background : 'none'
+        },
+        fallbackMap: {
+          found: !!fallbackMap,
+          visible: fallbackMap ? fallbackMap.offsetWidth > 0 : false,
+          dimensions: fallbackMap ? `${fallbackMap.offsetWidth}x${fallbackMap.offsetHeight}` : '0x0'
+        },
+        eventDiscoveryMap: {
+          found: !!eventDiscoveryMap,
+          visible: eventDiscoveryMap ? eventDiscoveryMap.offsetWidth > 0 : false,
+          dimensions: eventDiscoveryMap ? `${eventDiscoveryMap.offsetWidth}x${eventDiscoveryMap.offsetHeight}` : '0x0'
+        }
+      });
+    };
+
+    setTimeout(debugMapVisibility, 1500);
+  }, []);
+
   return (
     <ErrorBoundary name="App">
       <div className="unified-app-container">
