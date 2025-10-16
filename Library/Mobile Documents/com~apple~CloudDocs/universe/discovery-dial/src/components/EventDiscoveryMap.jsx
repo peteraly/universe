@@ -214,10 +214,8 @@ const EventDiscoveryMap = ({
         return;
       }
       
-      // For debugging: Let's try forcing fallback on mobile first to see if that works
-      console.log('📱 Mobile detected - testing fallback map first');
-      setForceFallback(true);
-      setUseFallback(true);
+      // Mobile detected - enable map loading
+      console.log('📱 Mobile detected - enabling map loading');
       setMapReady(true);
       
       // Add a safety timeout to force fallback if map doesn't load
@@ -430,7 +428,7 @@ const EventDiscoveryMap = ({
       let visible = true;
 
       // Filter by selected category
-      if (selectedCategory && pin.category !== selectedCategory.name) {
+      if (selectedCategory && pin.category !== selectedCategory.label) {
         visible = false;
       }
 
