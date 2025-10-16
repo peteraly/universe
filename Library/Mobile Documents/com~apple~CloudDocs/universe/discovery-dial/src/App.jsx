@@ -655,6 +655,52 @@ function App() {
     }
   }, []);
 
+  // Comprehensive component rendering debug
+  useEffect(() => {
+    const debugComponents = () => {
+      const components = {
+        dial: document.querySelector('.enhanced-dial'),
+        subcategoryDial: document.querySelector('.subcategory-dial'),
+        subcategoryItems: document.querySelectorAll('.subcategory-dial > *'),
+        eventDisplay: document.querySelector('[data-testid="event-display"]'),
+        filterPills: document.querySelectorAll('.filter-pill'),
+        map: document.querySelector('.event-discovery-map')
+      };
+
+      console.log('🔍 Component rendering debug:', {
+        dial: {
+          found: !!components.dial,
+          visible: components.dial ? components.dial.offsetWidth > 0 : false,
+          dimensions: components.dial ? `${components.dial.offsetWidth}x${components.dial.offsetHeight}` : '0x0'
+        },
+        subcategoryDial: {
+          found: !!components.subcategoryDial,
+          visible: components.subcategoryDial ? components.subcategoryDial.offsetWidth > 0 : false,
+          dimensions: components.subcategoryDial ? `${components.subcategoryDial.offsetWidth}x${components.subcategoryDial.offsetHeight}` : '0x0',
+          items: components.subcategoryItems.length
+        },
+        eventDisplay: {
+          found: !!components.eventDisplay,
+          visible: components.eventDisplay ? components.eventDisplay.offsetWidth > 0 : false,
+          dimensions: components.eventDisplay ? `${components.eventDisplay.offsetWidth}x${components.eventDisplay.offsetHeight}` : '0x0'
+        },
+        filterPills: {
+          found: components.filterPills.length,
+          visible: Array.from(components.filterPills).filter(pill => pill.offsetWidth > 0).length,
+          dimensions: Array.from(components.filterPills).map(pill => `${pill.offsetWidth}x${pill.offsetHeight}`)
+        },
+        map: {
+          found: !!components.map,
+          visible: components.map ? components.map.offsetWidth > 0 : false,
+          dimensions: components.map ? `${components.map.offsetWidth}x${components.map.offsetHeight}` : '0x0'
+        }
+      });
+    };
+
+    // Run debug after components mount
+    setTimeout(debugComponents, 1000);
+  }, []);
+
   return (
     <ErrorBoundary name="App">
       <div className="unified-app-container">
@@ -699,8 +745,8 @@ function App() {
           {/* Time picker and day toggle will be added here */}
         </div>
         
-        {/* Filter Controls - Hidden (using today toggle below time filter instead) */}
-        <div className="controls-overlay" style={{ display: 'none' }}>
+        {/* Filter Controls - Visible for testing */}
+        <div className="controls-overlay" style={{ display: 'block' }}>
           <EventDiscoveryFilters 
             filters={activeFilters}
             onFilterChange={handleFilterChange}

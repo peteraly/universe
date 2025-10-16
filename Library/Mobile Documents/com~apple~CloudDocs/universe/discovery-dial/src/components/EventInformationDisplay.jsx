@@ -14,15 +14,18 @@ const EventInformationDisplay = ({
   if (!event && !selectedCategory) {
     return (
       <div 
-        className="event-info-panel event-info-placeholder"
+        className="event-info-placeholder"
         data-testid="event-display"
         style={{
-          position: 'absolute',
           display: 'block',
           visibility: 'visible',
           width: '100%',
           height: 'auto',
-          minHeight: '100px'
+          minHeight: '100px',
+          backgroundColor: 'rgba(0, 0, 0, 0.8)',
+          color: 'white',
+          padding: '20px',
+          borderRadius: '8px'
         }}
       >
         <h3 className="info-title">Select a category to discover events</h3>
@@ -35,15 +38,18 @@ const EventInformationDisplay = ({
   if (!event && selectedCategory) {
     return (
       <div 
-        className="event-info-panel event-info-category"
+        className="event-info-category"
         data-testid="event-display"
         style={{
-          position: 'absolute',
           display: 'block',
           visibility: 'visible',
           width: '100%',
           height: 'auto',
-          minHeight: '100px'
+          minHeight: '100px',
+          backgroundColor: 'rgba(0, 0, 0, 0.8)',
+          color: 'white',
+          padding: '20px',
+          borderRadius: '8px'
         }}
       >
         <h3 className="info-title">{selectedCategory.name}</h3>
@@ -58,15 +64,18 @@ const EventInformationDisplay = ({
   // Show detailed event information
   return (
     <div 
-      className="event-info-panel event-info-details"
+      className="event-info-details"
       data-testid="event-display"
       style={{
-        position: 'absolute',
         display: 'block',
         visibility: 'visible',
         width: '100%',
         height: 'auto',
-        minHeight: '100px'
+        minHeight: '100px',
+        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+        color: 'white',
+        padding: '20px',
+        borderRadius: '8px'
       }}
     >
       <div className="event-header">

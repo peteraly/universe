@@ -80,6 +80,14 @@ export default function EventCompassFinal({
   }, []);
   
   const { state, actions } = useEventCompassState(categories);
+
+  // Ensure first category is initialized
+  useEffect(() => {
+    if (categories.length > 0 && !state.activePrimary) {
+      console.log('Initializing first category:', categories[0]);
+      actions.setPrimaryIndex(0);
+    }
+  }, [categories, state.activePrimary, actions]);
   
   // TIME & DATE RANGE FILTERING: Filter events by time AND date range
   const filteredEvents = useMemo(() => {
@@ -178,6 +186,17 @@ export default function EventCompassFinal({
   // Get subcategories for active primary
   const subcategories = state.activePrimary?.subcategories || [];
   const subCount = subcategories.length;
+
+  // Debug subcategory data flow
+  useEffect(() => {
+    console.log('Subcategory data flow debug:', {
+      activePrimary: state.activePrimary?.name,
+      hasSubcategories: !!state.activePrimary?.subcategories,
+      subcategories: subcategories.map(sub => sub.label),
+      subCount: subCount,
+      subIndex: state.subIndex
+    });
+  }, [state.activePrimary, subcategories, subCount, state.subIndex]);
 
   // Helper to calculate position on circle
   const polarToCartesian = (centerX, centerY, radius, angleDeg) => {

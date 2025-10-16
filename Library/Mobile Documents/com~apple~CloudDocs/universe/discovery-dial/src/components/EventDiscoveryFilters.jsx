@@ -9,26 +9,64 @@ const EventDiscoveryFilters = ({ filters, onFilterChange, compact = false }) => 
   // Compact overlay version
   if (compact) {
     return (
-      <div className="compact-filters-overlay">
-        <div className="filter-pills">
+      <div 
+        className="compact-filters-overlay"
+        style={{
+          position: 'absolute',
+          top: '20px',
+          left: '20px',
+          right: '20px',
+          display: 'flex',
+          gap: '10px',
+          zIndex: 1000,
+          minHeight: '44px'
+        }}
+      >
+        <div className="filter-pills" style={{ display: 'flex', gap: '8px' }}>
           {FILTER_OPTIONS.time.slice(0, 4).map(option => (
             <button
               key={option}
               className={`filter-pill ${filters.time === option ? 'active' : ''}`}
               onClick={() => handleFilterChange('time', option)}
               aria-pressed={filters.time === option}
+              style={{
+                minWidth: '44px',
+                minHeight: '44px',
+                padding: '8px 16px',
+                backgroundColor: filters.time === option ? '#007bff' : 'rgba(255, 255, 255, 0.2)',
+                color: 'white',
+                border: 'none',
+                borderRadius: '20px',
+                fontSize: '14px',
+                cursor: 'pointer',
+                display: 'block',
+                visibility: 'visible'
+              }}
             >
               {option}
             </button>
           ))}
         </div>
-        <div className="filter-pills">
+        <div className="filter-pills" style={{ display: 'flex', gap: '8px' }}>
           {FILTER_OPTIONS.day.slice(0, 3).map(option => (
             <button
               key={option}
               className={`filter-pill ${filters.day === option ? 'active' : ''}`}
               onClick={() => handleFilterChange('day', option)}
               aria-pressed={filters.day === option}
+              style={{
+                minWidth: '44px',
+                minHeight: '44px',
+                padding: '8px 16px',
+                backgroundColor: filters.day === option ? '#007bff' : 'rgba(255, 255, 255, 0.2)',
+                color: 'white',
+                border: 'none',
+                borderRadius: '20px',
+                fontSize: '14px',
+                cursor: 'pointer',
+                display: 'block',
+                visibility: 'visible'
+              }}
             >
               {option}
             </button>
