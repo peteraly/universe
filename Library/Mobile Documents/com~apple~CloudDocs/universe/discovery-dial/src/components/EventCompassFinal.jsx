@@ -81,11 +81,29 @@ export default function EventCompassFinal({
   
   const { state, actions } = useEventCompassState(categories);
 
+  // Add comprehensive debugging for actions object
+  useEffect(() => {
+    console.log('🔍 Actions debugging:', {
+      actionsExists: !!actions,
+      actionsType: typeof actions,
+      actionsKeys: actions ? Object.keys(actions) : 'N/A',
+      setPrimaryIndexExists: actions ? 'setPrimaryIndex' in actions : false,
+      setPrimaryIndexType: actions ? typeof actions.setPrimaryIndex : 'N/A',
+      actionsObject: actions
+    });
+  }, [actions]);
+
   // Ensure first category is initialized
   useEffect(() => {
     console.log('EventCompassFinal: Categories received:', categories.length, categories);
     console.log('EventCompassFinal: State:', state);
     console.log('EventCompassFinal: activePrimary:', state.activePrimary);
+    
+    // Add error handling for actions
+    if (!actions || typeof actions.setPrimaryIndex !== 'function') {
+      console.error('❌ CRITICAL: actions.setPrimaryIndex is not a function', actions);
+      return;
+    }
     
     // Always initialize the first category if we have categories
     if (categories.length > 0) {

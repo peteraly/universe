@@ -224,6 +224,7 @@ export default function useEventCompassState(categories = []) {
      * Navigation actions
      */
     actions: {
+      setPrimaryIndex,
       setPrimaryByDirection,
       rotateSub,
       nextEvent,
