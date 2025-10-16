@@ -1,6 +1,6 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
-import L from 'leaflet';
-import 'leaflet/dist/leaflet.css';
+import mapboxgl from 'mapbox-gl';
+import 'mapbox-gl/dist/mapbox-gl.css';
 
 // Simple error boundary for map component
 const MapErrorBoundary = ({ children, fallback }) => {
@@ -58,36 +58,13 @@ const MapErrorBoundary = ({ children, fallback }) => {
   return children;
 };
 
-// Leaflet/OpenStreetMap configuration
-const LEAFLET_CONFIG = {
-  // Default center (San Francisco)
-  center: [37.7749, -122.4194],
-  zoom: 13,
-  // Try multiple tile providers for better reliability
-  tileProviders: [
-    {
-      name: 'OpenStreetMap',
-      url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-      attribution: '© OpenStreetMap contributors'
-    },
-    {
-      name: 'CartoDB',
-      url: 'https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',
-      attribution: '© OpenStreetMap contributors © CARTO'
-    }
-  ],
-  // Default to first provider
-  tileLayer: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-  attribution: '© OpenStreetMap contributors'
+// Mapbox configuration
+const MAPBOX_CONFIG = {
+  token: 'pk.eyJ1IjoicGV0ZXJhbHkiLCJhIjoiY21lNXpuNDhwMTBqZTJwb2RicWw5YWcxaSJ9.IiIfhu1oA2ua_oUDcjlIbQ',
+  style: 'mapbox://styles/mapbox/light-v11',
+  center: [-122.4194, 37.7749], // [lng, lat] for Mapbox
+  zoom: 13
 };
-
-// Fix Leaflet default markers
-delete L.Icon.Default.prototype._getIconUrl;
-L.Icon.Default.mergeOptions({
-  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
-  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
-  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
-});
 
 const EventDiscoveryMap = ({ 
   events = [], 
@@ -193,7 +170,10 @@ const EventDiscoveryMap = ({
 
     const initializeMap = () => {
       try {
-        console.log('🗺️ Initializing OpenStreetMap with Leaflet');
+        console.log('🗺️ Initializing Mapbox GL JS');
+        
+        // Set Mapbox access token
+        mapboxgl.accessToken = MAPBOX_CONFIG.token;
         
         // Debug container dimensions
         const containerRect = mapContainer.current.getBoundingClientRect();
@@ -205,56 +185,35 @@ const EventDiscoveryMap = ({
         });
 
         // Create map instance
-        mapInstance.current = L.map(mapContainer.current).setView(LEAFLET_CONFIG.center, LEAFLET_CONFIG.zoom);
-
-        // Try to add tile layer with fallback
-        let tileLayer;
-        try {
-          // Try OpenStreetMap first
-          tileLayer = L.tileLayer(LEAFLET_CONFIG.tileProviders[0].url, {
-            attribution: LEAFLET_CONFIG.tileProviders[0].attribution,
-            maxZoom: 19
-          }).addTo(mapInstance.current);
-          
-          console.log('🗺️ Using OpenStreetMap tiles');
-        } catch (error) {
-          console.warn('🗺️ OpenStreetMap failed, trying CartoDB:', error);
-          // Fallback to CartoDB
-          tileLayer = L.tileLayer(LEAFLET_CONFIG.tileProviders[1].url, {
-            attribution: LEAFLET_CONFIG.tileProviders[1].attribution,
-            maxZoom: 19
-          }).addTo(mapInstance.current);
-          
-          console.log('🗺️ Using CartoDB tiles');
-        }
-
-        // Debug tile loading
-        tileLayer.on('loading', () => {
-          console.log('🗺️ Tiles loading...');
-        });
-        
-        tileLayer.on('load', () => {
-          console.log('🗺️ Tiles loaded successfully');
-        });
-        
-        tileLayer.on('tileerror', (e) => {
-          console.error('🗺️ Tile loading error:', e);
+        mapInstance.current = new mapboxgl.Map({
+          container: mapContainer.current,
+          style: MAPBOX_CONFIG.style,
+          center: MAPBOX_CONFIG.center,
+          zoom: MAPBOX_CONFIG.zoom
         });
 
         // Map loaded successfully
-        mapInstance.current.whenReady(() => {
-          console.log('🗺️ OpenStreetMap loaded successfully');
+        mapInstance.current.on('load', () => {
+          console.log('🗺️ Mapbox map loaded successfully');
           setMapLoaded(true);
           setMapError(null);
           setUseFallback(false);
         });
 
-        // Fallback timeout - if tiles don't load within 10 seconds, use fallback
+        // Handle map errors
+        mapInstance.current.on('error', (e) => {
+          console.error('🗺️ Mapbox error:', e);
+          setMapError('Failed to load map');
+          setMapLoaded(false);
+          setUseFallback(true);
+        });
+
+        // Fallback timeout - if map doesn't load within 10 seconds, use fallback
         const fallbackTimeout = setTimeout(() => {
           if (!mapLoaded) {
-            console.warn('🗺️ Map tiles taking too long to load, using fallback');
+            console.warn('🗺️ Mapbox taking too long to load, using fallback');
             setUseFallback(true);
-            setMapError('Map tiles loading slowly, using fallback view');
+            setMapError('Map loading slowly, using fallback view');
           }
         }, 10000);
 
@@ -263,16 +222,8 @@ const EventDiscoveryMap = ({
           clearTimeout(fallbackTimeout);
         });
 
-        // Handle map errors
-        mapInstance.current.on('error', (e) => {
-          console.error('🗺️ Map error:', e);
-          setMapError('Failed to load map');
-          setMapLoaded(false);
-          setUseFallback(true);
-        });
-
       } catch (error) {
-        console.error('🗺️ Map initialization error:', error);
+        console.error('🗺️ Mapbox initialization error:', error);
         setMapError('Failed to initialize map');
         setMapLoaded(false);
         setUseFallback(true);
@@ -296,60 +247,86 @@ const EventDiscoveryMap = ({
     console.log('📍 Updating map pins:', events.length, 'events');
 
     // Clear existing markers
-    mapInstance.current.eachLayer((layer) => {
-      if (layer instanceof L.Marker) {
-        mapInstance.current.removeLayer(layer);
-      }
-    });
+    if (mapInstance.current.getLayer('event-markers')) {
+      mapInstance.current.removeLayer('event-markers');
+    }
+    if (mapInstance.current.getSource('event-markers')) {
+      mapInstance.current.removeSource('event-markers');
+    }
 
     // Create new pins
     const newPins = createMapPins(events);
     setPins(newPins);
 
-    // Add markers to map
-    newPins.forEach(pin => {
-      if (pin.visible) {
-        // Create custom icon based on pin size
-        const iconSize = pin.size === 'large' ? [30, 30] : pin.size === 'medium' ? [25, 25] : [20, 20];
-        const customIcon = L.divIcon({
-          className: 'custom-marker',
-          html: `<div style="
-            width: ${iconSize[0]}px; 
-            height: ${iconSize[1]}px; 
-            background-color: ${pin.color}; 
-            border-radius: 50%; 
-            border: 2px solid white; 
-            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-weight: bold;
-            font-size: 12px;
-          ">📍</div>`,
-          iconSize: iconSize,
-          iconAnchor: [iconSize[0]/2, iconSize[1]/2]
-        });
+    // Prepare GeoJSON data for Mapbox
+    const geojsonData = {
+      type: 'FeatureCollection',
+      features: newPins.filter(pin => pin.visible).map(pin => ({
+        type: 'Feature',
+        geometry: {
+          type: 'Point',
+          coordinates: pin.position
+        },
+        properties: {
+          id: pin.id,
+          title: pin.popup.title,
+          description: pin.popup.description,
+          venue: pin.popup.venue,
+          time: pin.popup.time,
+          day: pin.popup.day,
+          price: pin.popup.price,
+          attendees: pin.popup.attendees,
+          category: pin.category,
+          subcategory: pin.subcategory,
+          color: pin.color,
+          size: pin.size,
+          event: pin.event
+        }
+      }))
+    };
 
-        const marker = L.marker(pin.position, { icon: customIcon })
-          .bindPopup(`
-            <div class="event-popup">
-              <h3>${pin.popup.title}</h3>
-              <p>${pin.popup.description}</p>
-              <p><strong>Venue:</strong> ${pin.popup.venue}</p>
-              <p><strong>Time:</strong> ${pin.popup.time} on ${pin.popup.day}</p>
-              <p><strong>Price:</strong> ${pin.popup.price}</p>
-              <p><strong>Attendees:</strong> ${pin.popup.attendees}</p>
-            </div>
-          `)
-          .addTo(mapInstance.current);
+    // Add source and layer to map
+    mapInstance.current.addSource('event-markers', {
+      type: 'geojson',
+      data: geojsonData
+    });
 
-        // Add click handler
-        marker.on('click', () => {
-          console.log('🎯 Event selected:', pin.event);
-          onEventSelect?.(pin.event);
-        });
+    mapInstance.current.addLayer({
+      id: 'event-markers',
+      type: 'circle',
+      source: 'event-markers',
+      paint: {
+        'circle-radius': {
+          'base': 1.75,
+          'stops': [
+            [12, 8],
+            [22, 24]
+          ]
+        },
+        'circle-color': ['get', 'color'],
+        'circle-stroke-width': 2,
+        'circle-stroke-color': '#ffffff'
       }
+    });
+
+    // Add click handler for markers
+    mapInstance.current.on('click', 'event-markers', (e) => {
+      const feature = e.features[0];
+      const eventData = feature.properties;
+      console.log('📍 Marker clicked:', eventData);
+      
+      if (onEventSelect) {
+        onEventSelect(eventData.event);
+      }
+    });
+
+    // Change cursor on hover
+    mapInstance.current.on('mouseenter', 'event-markers', () => {
+      mapInstance.current.getCanvas().style.cursor = 'pointer';
+    });
+
+    mapInstance.current.on('mouseleave', 'event-markers', () => {
+      mapInstance.current.getCanvas().style.cursor = '';
     });
 
     console.log('📍 Map pins updated:', newPins.length, 'visible pins');
