@@ -213,16 +213,20 @@ const EventDiscoveryMap = ({
         return;
       }
       
-      // Delay map loading on mobile for better UX
-      const delay = network.effectiveType === '3g' ? 3000 : 2000;
-      setMobileLoadingDelay(delay);
+      // For now, let's try immediate loading on mobile to see if that fixes the issue
+      console.log('📱 Mobile detected - enabling map immediately (no delay)');
+      setMapReady(true);
       
-      const timer = setTimeout(() => {
-        setMapReady(true);
-      }, delay);
-      
-      return () => clearTimeout(timer);
+      // Optional: Add a small delay if needed
+      // const delay = 1000;
+      // setMobileLoadingDelay(delay);
+      // const timer = setTimeout(() => {
+      //   console.log('📱 Mobile delay complete - enabling map');
+      //   setMapReady(true);
+      // }, delay);
+      // return () => clearTimeout(timer);
     } else {
+      console.log('📱 Desktop detected - enabling map immediately');
       setMapReady(true);
     }
   }, []);
@@ -255,9 +259,20 @@ const EventDiscoveryMap = ({
           zoom: MAPBOX_CONFIG.zoom
         });
 
+        // Fallback timeout - shorter timeout for mobile
+        const timeoutDuration = isMobile ? 5000 : 10000;
+        const fallbackTimeout = setTimeout(() => {
+          if (!mapLoaded) {
+            console.warn('🗺️ Mapbox taking too long to load, using fallback');
+            setUseFallback(true);
+            setMapError(isMobile ? 'Map loading slowly on mobile, using fallback view' : 'Map loading slowly, using fallback view');
+          }
+        }, timeoutDuration);
+
         // Map loaded successfully
         mapInstance.current.on('load', () => {
           console.log('🗺️ Mapbox map loaded successfully');
+          clearTimeout(fallbackTimeout);
           setMapLoaded(true);
           setMapError(null);
           setUseFallback(false);
@@ -266,6 +281,7 @@ const EventDiscoveryMap = ({
         // Handle map errors with mobile-specific handling
         mapInstance.current.on('error', (e) => {
           console.error('🗺️ Mapbox error:', e);
+          clearTimeout(fallbackTimeout);
           
           // Mobile-specific error handling
           if (isMobile) {
@@ -277,20 +293,6 @@ const EventDiscoveryMap = ({
           
           setMapLoaded(false);
           setUseFallback(true);
-        });
-
-        // Fallback timeout - if map doesn't load within 10 seconds, use fallback
-        const fallbackTimeout = setTimeout(() => {
-          if (!mapLoaded) {
-            console.warn('🗺️ Mapbox taking too long to load, using fallback');
-            setUseFallback(true);
-            setMapError('Map loading slowly, using fallback view');
-          }
-        }, 10000);
-
-        // Clear timeout if map loads successfully
-        mapInstance.current.on('load', () => {
-          clearTimeout(fallbackTimeout);
         });
 
       } catch (error) {
