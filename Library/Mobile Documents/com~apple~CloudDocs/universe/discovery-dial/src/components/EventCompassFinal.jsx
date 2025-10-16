@@ -83,6 +83,8 @@ export default function EventCompassFinal({
 
   // Ensure first category is initialized
   useEffect(() => {
+    console.log('EventCompassFinal: Categories received:', categories.length, categories);
+    console.log('EventCompassFinal: State:', state);
     if (categories.length > 0 && !state.activePrimary) {
       console.log('Initializing first category:', categories[0]);
       actions.setPrimaryIndex(0);
@@ -270,7 +272,8 @@ export default function EventCompassFinal({
           height: `${dialSize}px`,
           flexShrink: 0,
           display: 'block',
-          visibility: 'visible'
+          visibility: 'visible',
+          border: '2px solid red' // Debug border
         }}
       >
         {/* GESTURE HINTS - Zone-aware visual feedback */}
@@ -472,7 +475,8 @@ export default function EventCompassFinal({
             width: '100%',
             height: '100%',
             display: 'block',
-            visibility: 'visible'
+            visibility: 'visible',
+            border: '2px solid blue' // Debug border
           }}
         >
         {subcategories.map((sub, i) => {
