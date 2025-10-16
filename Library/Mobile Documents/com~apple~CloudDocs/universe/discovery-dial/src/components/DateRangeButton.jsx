@@ -48,8 +48,12 @@ export default function DateRangeButton({ selectedRange = 'All', onRangeChange }
   const handleClick = useCallback((e) => {
     // CRITICAL: Only trigger if the click/touch is DIRECTLY on this button
     // Ignore events that bubbled up from other elements (like event card swipes)
-    if (e.target.className !== 'date-range-button') {
-      console.log('DateRangeButton: Ignoring click from child element:', e.target.className);
+    const targetClass = typeof e.target.className === 'string' 
+      ? e.target.className 
+      : e.target.className?.baseVal || '';
+    
+    if (!targetClass.includes('date-range-button')) {
+      console.log('DateRangeButton: Ignoring click from non-button element:', targetClass);
       return;
     }
     
@@ -109,7 +113,11 @@ export default function DateRangeButton({ selectedRange = 'All', onRangeChange }
       // Add click event listener as backup (but NOT touchstart to avoid double-triggering)
       const handleButtonClick = (e) => {
         // Only trigger if click is directly on button
-        if (e.target.className !== 'date-range-button') {
+        const targetClass = typeof e.target.className === 'string' 
+          ? e.target.className 
+          : e.target.className?.baseVal || '';
+        
+        if (!targetClass.includes('date-range-button')) {
           return;
         }
         e.preventDefault();
