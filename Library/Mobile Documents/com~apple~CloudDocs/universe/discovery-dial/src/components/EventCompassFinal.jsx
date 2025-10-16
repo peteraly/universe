@@ -86,19 +86,21 @@ export default function EventCompassFinal({
     console.log('EventCompassFinal: Categories received:', categories.length, categories);
     console.log('EventCompassFinal: State:', state);
     console.log('EventCompassFinal: activePrimary:', state.activePrimary);
-    if (categories.length > 0 && !state.activePrimary) {
+    
+    // Always initialize the first category if we have categories
+    if (categories.length > 0) {
       console.log('Initializing first category:', categories[0]);
       actions.setPrimaryIndex(0);
     }
-  }, [categories, state.activePrimary, actions]);
+  }, [categories, actions]);
 
   // Force category initialization if needed
   useEffect(() => {
-    if (categories.length > 0 && state.primaryIndex === 0 && !state.activePrimary) {
-      console.log('Force initializing first category');
+    if (categories.length > 0 && (!state.activePrimary || state.activePrimary === null)) {
+      console.log('Force initializing first category - activePrimary is null/undefined');
       actions.setPrimaryIndex(0);
     }
-  }, [categories, state.primaryIndex, state.activePrimary, actions]);
+  }, [categories, state.activePrimary, actions]);
   
   // TIME & DATE RANGE FILTERING: Filter events by time AND date range
   const filteredEvents = useMemo(() => {
