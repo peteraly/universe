@@ -2,6 +2,62 @@ import React, { useRef, useEffect, useState, useCallback } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 
+// Simple error boundary for map component
+const MapErrorBoundary = ({ children, fallback }) => {
+  const [hasError, setHasError] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const handleError = (error) => {
+      console.error('Map error caught:', error);
+      setHasError(true);
+      setError(error);
+    };
+
+    window.addEventListener('error', handleError);
+    return () => window.removeEventListener('error', handleError);
+  }, []);
+
+  if (hasError) {
+    return fallback || (
+      <div className="map-error-fallback" style={{
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        color: 'white',
+        textAlign: 'center',
+        padding: '20px'
+      }}>
+        <div>
+          <h3>Map temporarily unavailable</h3>
+          <p>Event discovery is still fully functional</p>
+          <button 
+            onClick={() => setHasError(false)}
+            style={{
+              padding: '10px 20px',
+              background: '#007bff',
+              color: 'white',
+              border: 'none',
+              borderRadius: '5px',
+              cursor: 'pointer'
+            }}
+          >
+            Retry
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  return children;
+};
+
 // Leaflet/OpenStreetMap configuration
 const LEAFLET_CONFIG = {
   // Default center (San Francisco)
@@ -34,29 +90,62 @@ const EventDiscoveryMap = ({
   const [pins, setPins] = useState([]);
   const [useFallback, setUseFallback] = useState(false);
 
-  // Create map pins from events
+  // Create map pins from events with comprehensive validation
   const createMapPins = useCallback((events) => {
-    return events.map(event => ({
-      id: event.id,
-      position: [event.longitude, event.latitude],
-      popup: {
-        title: event.name,
-        description: event.description,
-        venue: event.venue,
-        time: event.time,
-        day: event.day,
-        price: event.price,
-        attendees: event.attendees
-      },
-      category: event.categoryPrimary,
-      subcategory: event.categorySecondary,
-      time: event.time,
-      day: event.day,
-      color: getCategoryColor(event.categoryPrimary),
-      size: getEventSize(event.attendees),
-      visible: true,
-      event: event
-    }));
+    if (!Array.isArray(events)) {
+      console.warn('Events is not an array:', events);
+      return [];
+    }
+
+    return events.map((event, index) => {
+      try {
+        // Validate required properties
+        if (!event || typeof event !== 'object') {
+          console.warn(`Event ${index} is not a valid object:`, event);
+          return null;
+        }
+
+        // Safe string conversion with fallbacks
+        const safeString = (value, fallback = '') => {
+          if (typeof value === 'string') return value;
+          if (value === null || value === undefined) return fallback;
+          return String(value);
+        };
+
+        // Validate coordinates
+        const lat = parseFloat(event.latitude);
+        const lng = parseFloat(event.longitude);
+        if (isNaN(lat) || isNaN(lng)) {
+          console.warn(`Event ${index} has invalid coordinates:`, event);
+          return null;
+        }
+
+        return {
+          id: safeString(event.id, `event-${index}`),
+          position: [lat, lng],
+          popup: {
+            title: safeString(event.name, 'Untitled Event'),
+            description: safeString(event.description, 'No description available'),
+            venue: safeString(event.venue, 'Venue TBD'),
+            time: safeString(event.time, 'Time TBD'),
+            day: safeString(event.day, 'Day TBD'),
+            price: safeString(event.price, 'Price TBD'),
+            attendees: safeString(event.attendees, '0')
+          },
+          category: safeString(event.categoryPrimary, 'Other'),
+          subcategory: safeString(event.categorySecondary, 'General'),
+          time: safeString(event.time, 'Time TBD'),
+          day: safeString(event.day, 'Day TBD'),
+          color: getCategoryColor(event.categoryPrimary),
+          size: getEventSize(event.attendees),
+          visible: true,
+          event: event
+        };
+      } catch (error) {
+        console.error(`Error creating pin for event ${index}:`, error, event);
+        return null;
+      }
+    }).filter(pin => pin !== null); // Remove null pins
   }, []);
 
   // Get category color
@@ -76,7 +165,10 @@ const EventDiscoveryMap = ({
 
   // Get event size based on attendees
   const getEventSize = (attendees) => {
-    const count = parseInt(attendees.replace(/\D/g, ''));
+    // Safe string conversion with fallback
+    const safeAttendees = typeof attendees === 'string' ? attendees : String(attendees || '0');
+    const count = parseInt(safeAttendees.replace(/\D/g, ''));
+    if (isNaN(count)) return 'small';
     if (count > 1000) return 'large';
     if (count > 100) return 'medium';
     return 'small';
@@ -347,17 +439,18 @@ const EventDiscoveryMap = ({
   };
 
   return (
-    <div 
-      className="event-discovery-map"
-      style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        width: '100%',
-        height: '100%',
-        zIndex: 1
-      }}
-    >
+    <MapErrorBoundary>
+      <div 
+        className="event-discovery-map"
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          zIndex: 1
+        }}
+      >
       {useFallback ? (
         <FallbackMap />
       ) : (
@@ -377,7 +470,8 @@ const EventDiscoveryMap = ({
           ) : null}
         </>
       )}
-    </div>
+      </div>
+    </MapErrorBoundary>
   );
 };
 
