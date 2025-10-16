@@ -104,6 +104,7 @@ const EventDiscoveryMap = ({
   const [networkInfo, setNetworkInfo] = useState({ effectiveType: 'unknown' });
   const [mapReady, setMapReady] = useState(false);
   const [mobileLoadingDelay, setMobileLoadingDelay] = useState(0);
+  const [forceFallback, setForceFallback] = useState(false);
 
   // Create map pins from events with comprehensive validation
   const createMapPins = useCallback((events) => {
@@ -213,18 +214,20 @@ const EventDiscoveryMap = ({
         return;
       }
       
-      // For now, let's try immediate loading on mobile to see if that fixes the issue
-      console.log('📱 Mobile detected - enabling map immediately (no delay)');
+      // For debugging: Let's try forcing fallback on mobile first to see if that works
+      console.log('📱 Mobile detected - testing fallback map first');
+      setForceFallback(true);
+      setUseFallback(true);
       setMapReady(true);
       
-      // Optional: Add a small delay if needed
-      // const delay = 1000;
-      // setMobileLoadingDelay(delay);
-      // const timer = setTimeout(() => {
-      //   console.log('📱 Mobile delay complete - enabling map');
-      //   setMapReady(true);
-      // }, delay);
-      // return () => clearTimeout(timer);
+      // Add a safety timeout to force fallback if map doesn't load
+      const safetyTimeout = setTimeout(() => {
+        console.log('📱 Mobile safety timeout - forcing fallback map');
+        setForceFallback(true);
+        setUseFallback(true);
+      }, 8000); // 8 second timeout
+      
+      return () => clearTimeout(safetyTimeout);
     } else {
       console.log('📱 Desktop detected - enabling map immediately');
       setMapReady(true);
@@ -233,7 +236,21 @@ const EventDiscoveryMap = ({
 
   // Initialize Mapbox map
   useEffect(() => {
-    if (!mapContainer.current || mapInstance.current || !mapReady) return;
+    console.log('🗺️ Map initialization effect triggered:', {
+      hasContainer: !!mapContainer.current,
+      hasInstance: !!mapInstance.current,
+      mapReady: mapReady,
+      isMobile: isMobile
+    });
+    
+    if (!mapContainer.current || mapInstance.current || !mapReady) {
+      console.log('🗺️ Map initialization skipped:', {
+        reason: !mapContainer.current ? 'No container' : 
+                mapInstance.current ? 'Instance exists' : 
+                !mapReady ? 'Not ready' : 'Unknown'
+      });
+      return;
+    }
 
     const initializeMap = () => {
       try {
@@ -311,7 +328,7 @@ const EventDiscoveryMap = ({
         mapInstance.current = null;
       }
     };
-  }, []);
+  }, [mapReady, isMobile]);
 
   // Update pins when events change
   useEffect(() => {
@@ -565,7 +582,7 @@ const EventDiscoveryMap = ({
           zIndex: 1
         }}
       >
-      {useFallback ? (
+      {useFallback || forceFallback ? (
         <FallbackMap />
       ) : (
         <>
