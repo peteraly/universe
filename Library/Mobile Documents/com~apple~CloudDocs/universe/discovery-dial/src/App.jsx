@@ -487,7 +487,7 @@ function App() {
     
     console.log('🔍 Filtering events:', {
       totalEvents: events.length,
-      category: category?.name,
+      category: category?.label,
       subcategory: subcategory?.label,
       filters: filters
     });
@@ -495,7 +495,7 @@ function App() {
     // Filter by dial selection (only if category is selected)
     if (category) {
       filtered = filtered.filter(event => 
-        event.categoryPrimary === category.name
+        event.categoryPrimary === category.label
       );
       console.log('After category filter:', filtered.length);
     }
@@ -538,7 +538,7 @@ function App() {
            
            console.log('🔍 Event filtering debug:', {
              totalEvents: ENHANCED_SAMPLE_EVENTS.length,
-             selectedCategory: selectedCategory?.name,
+             selectedCategory: selectedCategory?.label,
              selectedSubcategory: selectedSubcategory?.label,
              activeFilters: activeFilters,
              filteredCount: filtered.length,
@@ -555,12 +555,14 @@ function App() {
 
   // Handle category selection from dial
   const handleCategorySelect = useCallback((category) => {
+    console.log('🎯 Category selected:', category);
     setSelectedCategory(category);
     setSelectedSubcategory(null); // Reset subcategory when category changes
   }, []);
 
   // Handle subcategory selection from dial
   const handleSubcategorySelect = useCallback((subcategory) => {
+    console.log('🎯 Subcategory selected:', subcategory);
     setSelectedSubcategory(subcategory);
   }, []);
 
