@@ -1,16 +1,24 @@
 import React, { useRef, useEffect, useState, useCallback } from 'react';
-import mapboxgl from 'mapbox-gl';
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
 
-// Mapbox configuration with fallback
-const MAPBOX_CONFIG = {
-  // Use environment variable or fallback to public token
-  token: import.meta.env.VITE_MAPBOX_TOKEN || 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw',
-  style: 'mapbox://styles/mapbox/streets-v11',
-  fallbackStyle: 'mapbox://styles/mapbox/light-v10'
+// Leaflet/OpenStreetMap configuration
+const LEAFLET_CONFIG = {
+  // Default center (San Francisco)
+  center: [37.7749, -122.4194],
+  zoom: 13,
+  // OpenStreetMap tile layer
+  tileLayer: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+  attribution: '© OpenStreetMap contributors'
 };
 
-// Set Mapbox token
-mapboxgl.accessToken = MAPBOX_CONFIG.token;
+// Fix Leaflet default markers
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+});
 
 const EventDiscoveryMap = ({ 
   events = [], 
@@ -19,7 +27,8 @@ const EventDiscoveryMap = ({
   onEventSelect 
 }) => {
   const mapContainer = useRef(null);
-  const map = useRef(null);
+  const mapRef = useRef(null);
+  const mapInstance = useRef(null);
   const [mapLoaded, setMapLoaded] = useState(false);
   const [mapError, setMapError] = useState(null);
   const [pins, setPins] = useState([]);
@@ -73,53 +82,42 @@ const EventDiscoveryMap = ({
     return 'small';
   };
 
-  // Initialize map with enhanced error handling
+  // Initialize Leaflet map
   useEffect(() => {
-    if (!mapContainer.current || map.current) return;
+    if (!mapContainer.current || mapInstance.current) return;
 
-    const initializeMap = async () => {
+    const initializeMap = () => {
       try {
-        // Force fallback mode due to Mapbox token issues
-        console.log('🗺️ Using fallback map due to token issues');
-        setMapError('Map temporarily unavailable');
-        setMapLoaded(false);
-        setUseFallback(true);
-        return;
-
-        // Original map initialization (commented out due to token issues)
-        /*
-        const response = await fetch(`https://api.mapbox.com/styles/v1/mapbox/streets-v11?access_token=${MAPBOX_CONFIG.token}`);
+        console.log('🗺️ Initializing OpenStreetMap with Leaflet');
         
-        if (!response.ok) {
-          throw new Error(`Mapbox API error: ${response.status}`);
-        }
+        // Create map instance
+        mapInstance.current = L.map(mapContainer.current).setView(LEAFLET_CONFIG.center, LEAFLET_CONFIG.zoom);
 
-        map.current = new mapboxgl.Map({
-          container: mapContainer.current,
-          style: MAPBOX_CONFIG.style,
-          center: [-122.4194, 37.7749], // San Francisco
-          zoom: 12,
-          attributionControl: false
-        });
+        // Add OpenStreetMap tile layer
+        L.tileLayer(LEAFLET_CONFIG.tileLayer, {
+          attribution: LEAFLET_CONFIG.attribution,
+          maxZoom: 19
+        }).addTo(mapInstance.current);
 
-        map.current.on('load', () => {
+        // Map loaded successfully
+        mapInstance.current.whenReady(() => {
+          console.log('🗺️ OpenStreetMap loaded successfully');
           setMapLoaded(true);
           setMapError(null);
           setUseFallback(false);
-          console.log('🗺️ Map loaded successfully');
         });
 
-        map.current.on('error', (e) => {
+        // Handle map errors
+        mapInstance.current.on('error', (e) => {
           console.error('🗺️ Map error:', e);
           setMapError('Failed to load map');
           setMapLoaded(false);
           setUseFallback(true);
         });
-        */
 
       } catch (error) {
         console.error('🗺️ Map initialization error:', error);
-        setMapError('Map temporarily unavailable');
+        setMapError('Failed to initialize map');
         setMapLoaded(false);
         setUseFallback(true);
       }
@@ -128,22 +126,25 @@ const EventDiscoveryMap = ({
     initializeMap();
 
     return () => {
-      if (map.current) {
-        map.current.remove();
-        map.current = null;
+      if (mapInstance.current) {
+        mapInstance.current.remove();
+        mapInstance.current = null;
       }
     };
   }, []);
 
   // Update pins when events change
   useEffect(() => {
-    if (!map.current || !mapLoaded || !events.length) return;
+    if (!mapInstance.current || !mapLoaded || !events.length) return;
 
     console.log('📍 Updating map pins:', events.length, 'events');
 
     // Clear existing markers
-    const existingMarkers = document.querySelectorAll('.mapboxgl-marker');
-    existingMarkers.forEach(marker => marker.remove());
+    mapInstance.current.eachLayer((layer) => {
+      if (layer instanceof L.Marker) {
+        mapInstance.current.removeLayer(layer);
+      }
+    });
 
     // Create new pins
     const newPins = createMapPins(events);
@@ -152,12 +153,30 @@ const EventDiscoveryMap = ({
     // Add markers to map
     newPins.forEach(pin => {
       if (pin.visible) {
-        const marker = new mapboxgl.Marker({ 
-          color: pin.color,
-          scale: pin.size === 'large' ? 1.2 : pin.size === 'medium' ? 1.0 : 0.8
-        })
-          .setLngLat(pin.position)
-          .setPopup(new mapboxgl.Popup().setHTML(`
+        // Create custom icon based on pin size
+        const iconSize = pin.size === 'large' ? [30, 30] : pin.size === 'medium' ? [25, 25] : [20, 20];
+        const customIcon = L.divIcon({
+          className: 'custom-marker',
+          html: `<div style="
+            width: ${iconSize[0]}px; 
+            height: ${iconSize[1]}px; 
+            background-color: ${pin.color}; 
+            border-radius: 50%; 
+            border: 2px solid white; 
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+          ">📍</div>`,
+          iconSize: iconSize,
+          iconAnchor: [iconSize[0]/2, iconSize[1]/2]
+        });
+
+        const marker = L.marker(pin.position, { icon: customIcon })
+          .bindPopup(`
             <div class="event-popup">
               <h3>${pin.popup.title}</h3>
               <p>${pin.popup.description}</p>
@@ -166,11 +185,11 @@ const EventDiscoveryMap = ({
               <p><strong>Price:</strong> ${pin.popup.price}</p>
               <p><strong>Attendees:</strong> ${pin.popup.attendees}</p>
             </div>
-          `))
-          .addTo(map.current);
+          `)
+          .addTo(mapInstance.current);
 
         // Add click handler
-        marker.getElement().addEventListener('click', () => {
+        marker.on('click', () => {
           console.log('🎯 Event selected:', pin.event);
           onEventSelect?.(pin.event);
         });
