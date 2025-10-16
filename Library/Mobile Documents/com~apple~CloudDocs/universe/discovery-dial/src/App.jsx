@@ -515,6 +515,16 @@ function App() {
              selectedSubcategory, 
              activeFilters
            );
+           
+           console.log('🔍 Event filtering debug:', {
+             totalEvents: ENHANCED_SAMPLE_EVENTS.length,
+             selectedCategory: selectedCategory?.name,
+             selectedSubcategory: selectedSubcategory?.label,
+             activeFilters: activeFilters,
+             filteredCount: filtered.length,
+             filteredEvents: filtered.slice(0, 3).map(e => ({ name: e.name, category: e.categoryPrimary, subcategory: e.categorySecondary }))
+           });
+           
            setFilteredEvents(filtered);
          }, [selectedCategory, selectedSubcategory, activeFilters, filterEventsByDialSelection]);
 

@@ -213,24 +213,36 @@ const EventDiscoveryMap = ({
   }, [pins, selectedCategory, selectedSubcategory]);
 
   // Fallback map component
-  const FallbackMap = () => (
-    <div className="fallback-map">
-      <div className="fallback-map-content">
-        <h3>🗺️ Interactive Map</h3>
-        <p>Map functionality is temporarily unavailable</p>
-        <p>Event discovery is still fully functional</p>
-        <div className="fallback-events">
-          {events.slice(0, 3).map(event => (
-            <div key={event.id} className="fallback-event" onClick={() => onEventSelect?.(event)}>
-              <h4>{event.name}</h4>
-              <p>{event.venue}</p>
-              <p>{event.time} on {event.day}</p>
-            </div>
-          ))}
+  const FallbackMap = () => {
+    console.log('🗺️ Fallback map rendering with events:', events.length);
+    
+    return (
+      <div className="fallback-map">
+        <div className="fallback-map-content">
+          <h3>🗺️ Interactive Map</h3>
+          <p>Map functionality is temporarily unavailable</p>
+          <p>Event discovery is still fully functional</p>
+          <p>Showing {events.length} events</p>
+          <div className="fallback-events">
+            {events.slice(0, 6).map(event => (
+              <div key={event.id} className="fallback-event" onClick={() => onEventSelect?.(event)}>
+                <h4>{event.name}</h4>
+                <p>📍 {event.venue}</p>
+                <p>⏰ {event.time} on {event.day}</p>
+                <p>🏷️ {event.categoryPrimary} - {event.categorySecondary}</p>
+                <p>💰 {event.price}</p>
+              </div>
+            ))}
+            {events.length > 6 && (
+              <div className="fallback-event">
+                <p>... and {events.length - 6} more events</p>
+              </div>
+            )}
+          </div>
         </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   return (
     <div className="event-discovery-map">
