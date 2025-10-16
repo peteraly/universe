@@ -771,7 +771,13 @@ function App() {
     <ErrorBoundary name="App">
       <div className="unified-app-container">
         {/* Full-screen Map Background */}
-        <div className="map-background-layer">
+        <div 
+          className="map-background-layer"
+          style={{
+            border: '3px solid green', // Debug border
+            zIndex: 1
+          }}
+        >
           <EventDiscoveryMap 
             events={filteredEvents}
             selectedCategory={selectedCategory}
@@ -781,7 +787,13 @@ function App() {
         </div>
         
         {/* Event Information Panel - Above Dial */}
-        <div className="event-info-panel">
+        <div 
+          className="event-info-panel"
+          style={{
+            border: '3px solid purple', // Debug border
+            zIndex: 10
+          }}
+        >
           <EventInformationDisplay 
             event={highlightedEvent}
             selectedCategory={selectedCategory}
@@ -790,7 +802,13 @@ function App() {
         </div>
         
         {/* Repositioned Dial Interface - Bottom */}
-        <div className="dial-foreground-layer">
+        <div 
+          className="dial-foreground-layer"
+          style={{
+            border: '3px solid yellow', // Debug border
+            zIndex: 15
+          }}
+        >
           <EventCompassFinal
             categories={categoriesData.categories}
             wordPressEvents={wordPressComEvents}
