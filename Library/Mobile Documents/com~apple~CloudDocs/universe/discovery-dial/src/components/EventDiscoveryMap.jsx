@@ -89,7 +89,8 @@ const EventDiscoveryMap = ({
   events = [], 
   selectedCategory, 
   selectedSubcategory, 
-  onEventSelect 
+  onEventSelect,
+  highlightedEventId = null
 }) => {
   const mapContainer = useRef(null);
   const mapRef = useRef(null);
@@ -420,7 +421,7 @@ const EventDiscoveryMap = ({
     console.log('📍 Map pins updated:', newPins.length, 'visible pins');
   }, [mapLoaded, events, createMapPins, onEventSelect]);
 
-  // Filter pins based on selections
+  // Filter pins based on selections and highlight active pin
   useEffect(() => {
     if (!pins.length) return;
 
@@ -440,17 +441,31 @@ const EventDiscoveryMap = ({
       return { ...pin, visible };
     });
 
-    // Update marker visibility
+    // Update marker visibility and highlighting
     const markers = document.querySelectorAll('.mapboxgl-marker');
     markers.forEach((marker, index) => {
       const pin = filteredPins[index];
       if (pin) {
         marker.style.display = pin.visible ? 'block' : 'none';
+        
+        // Add/remove highlight class
+        if (pin.visible && highlightedEventId && pin.eventId === highlightedEventId) {
+          marker.classList.add('highlighted-pin');
+          marker.style.transform = 'scale(1.2)';
+          marker.style.zIndex = '1000';
+        } else {
+          marker.classList.remove('highlighted-pin');
+          marker.style.transform = 'scale(1)';
+          marker.style.zIndex = '1';
+        }
       }
     });
 
     console.log('🔍 Pins filtered:', filteredPins.filter(p => p.visible).length, 'visible');
-  }, [pins, selectedCategory, selectedSubcategory]);
+    if (highlightedEventId) {
+      console.log('🎯 Highlighted event:', highlightedEventId);
+    }
+  }, [pins, selectedCategory, selectedSubcategory, highlightedEventId]);
 
   // Fallback map component
   const FallbackMap = () => {

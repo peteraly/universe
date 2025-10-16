@@ -3,6 +3,7 @@ import EventCompassFinal from './components/EventCompassFinal';
 import EventDiscoveryMap from './components/EventDiscoveryMap';
 import EventDiscoveryFilters from './components/EventDiscoveryFilters';
 import EventInformationDisplay from './components/EventInformationDisplay';
+import EventDisplayCard from './components/EventDisplayCard';
 import ErrorBoundary from './components/ErrorBoundary';
 import categoriesData from './data/categories.json';
 import { MOCK_EVENTS } from './data/mockEvents';
@@ -69,6 +70,11 @@ function App() {
     category: 'All'
   });
   const [highlightedEvent, setHighlightedEvent] = useState(null);
+  
+  // Event display state
+  const [currentEventIndex, setCurrentEventIndex] = useState(0);
+  const [displayedEvent, setDisplayedEvent] = useState(null);
+  const [highlightedEventId, setHighlightedEventId] = useState(null);
 
   // Initialize complete scroll prevention
   useScrollPrevention();
@@ -565,6 +571,43 @@ function App() {
           setFilteredEvents(finalEvents);
          }, [selectedCategory, selectedSubcategory, activeFilters, filterEventsByDialSelection]);
 
+  // Update displayed event when filtered events change
+  useEffect(() => {
+    if (filteredEvents.length > 0) {
+      // Reset to first event when filters change
+      setCurrentEventIndex(0);
+      setDisplayedEvent(filteredEvents[0]);
+      setHighlightedEventId(filteredEvents[0]?.id || null);
+    } else {
+      setDisplayedEvent(null);
+      setHighlightedEventId(null);
+    }
+  }, [filteredEvents]);
+
+  // Event navigation handlers
+  const handleSwipeLeft = useCallback(() => {
+    if (currentEventIndex < filteredEvents.length - 1) {
+      const newIndex = currentEventIndex + 1;
+      setCurrentEventIndex(newIndex);
+      setDisplayedEvent(filteredEvents[newIndex]);
+      setHighlightedEventId(filteredEvents[newIndex]?.id || null);
+    }
+  }, [currentEventIndex, filteredEvents]);
+
+  const handleSwipeRight = useCallback(() => {
+    if (currentEventIndex > 0) {
+      const newIndex = currentEventIndex - 1;
+      setCurrentEventIndex(newIndex);
+      setDisplayedEvent(filteredEvents[newIndex]);
+      setHighlightedEventId(filteredEvents[newIndex]?.id || null);
+    }
+  }, [currentEventIndex, filteredEvents]);
+
+  const handleEventSelect = useCallback((event) => {
+    console.log('🎯 Event selected:', event);
+    setHighlightedEvent(event);
+  }, []);
+
   // Handle category selection from dial
   const handleCategorySelect = useCallback((category) => {
     console.log('🎯 Category selected:', category);
@@ -797,6 +840,7 @@ function App() {
             selectedCategory={selectedCategory}
             selectedSubcategory={selectedSubcategory}
             onEventSelect={handleEventSelect}
+            highlightedEventId={highlightedEventId}
           />
         </div>
         
@@ -807,10 +851,14 @@ function App() {
            zIndex: 10
          }}
        >
-          <EventInformationDisplay 
-            event={highlightedEvent}
-            selectedCategory={selectedCategory}
-            selectedSubcategory={selectedSubcategory}
+          <EventDisplayCard 
+            event={displayedEvent}
+            currentIndex={currentEventIndex}
+            totalEvents={filteredEvents.length}
+            onSwipeLeft={handleSwipeLeft}
+            onSwipeRight={handleSwipeRight}
+            onEventSelect={handleEventSelect}
+            isLoading={false}
           />
         </div>
         

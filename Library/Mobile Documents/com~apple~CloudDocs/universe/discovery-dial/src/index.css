@@ -2240,6 +2240,35 @@ a::-webkit-scrollbar {
   color: #e0e0e0;
 }
 
+/* Map Pin Highlighting Styles */
+.highlighted-pin {
+  animation: pulse 2s infinite;
+  filter: drop-shadow(0 0 10px rgba(255, 255, 0, 0.8));
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1.2);
+  }
+  50% {
+    transform: scale(1.3);
+  }
+  100% {
+    transform: scale(1.2);
+  }
+}
+
+/* Map marker styles */
+.mapboxgl-marker {
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.mapboxgl-marker:hover {
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 5px rgba(0, 0, 0, 0.3));
+}
+
 /* Map Popup Styles */
 .event-popup-content {
   padding: 0.75rem;
