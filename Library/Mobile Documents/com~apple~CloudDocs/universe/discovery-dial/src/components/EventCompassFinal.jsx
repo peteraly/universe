@@ -85,11 +85,20 @@ export default function EventCompassFinal({
   useEffect(() => {
     console.log('EventCompassFinal: Categories received:', categories.length, categories);
     console.log('EventCompassFinal: State:', state);
+    console.log('EventCompassFinal: activePrimary:', state.activePrimary);
     if (categories.length > 0 && !state.activePrimary) {
       console.log('Initializing first category:', categories[0]);
       actions.setPrimaryIndex(0);
     }
   }, [categories, state.activePrimary, actions]);
+
+  // Force category initialization if needed
+  useEffect(() => {
+    if (categories.length > 0 && state.primaryIndex === 0 && !state.activePrimary) {
+      console.log('Force initializing first category');
+      actions.setPrimaryIndex(0);
+    }
+  }, [categories, state.primaryIndex, state.activePrimary, actions]);
   
   // TIME & DATE RANGE FILTERING: Filter events by time AND date range
   const filteredEvents = useMemo(() => {
@@ -196,7 +205,8 @@ export default function EventCompassFinal({
       hasSubcategories: !!state.activePrimary?.subcategories,
       subcategories: subcategories.map(sub => sub.label),
       subCount: subCount,
-      subIndex: state.subIndex
+      subIndex: state.subIndex,
+      rawSubcategories: state.activePrimary?.subcategories
     });
   }, [state.activePrimary, subcategories, subCount, state.subIndex]);
 
