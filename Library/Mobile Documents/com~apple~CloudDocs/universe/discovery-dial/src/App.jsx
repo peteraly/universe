@@ -629,10 +629,6 @@ function App() {
     }));
   }, []);
 
-  // Handle event selection from map
-  const handleEventSelect = useCallback((event) => {
-    setHighlightedEvent(event);
-  }, []);
 
   // Run comprehensive QA tests after app loads
   useEffect(() => {
