@@ -565,12 +565,13 @@ function App() {
     if (filters.time && filters.time !== 'All') {
       step++;
       const beforeCount = filtered.length;
-      
+
       try {
         if (typeof filters.time === 'object' && filters.time.hours !== undefined) {
           // Specific time object { hours: 18, minutes: 0 }
+          // Match events where startTime >= filter time
           filtered = filtered.filter(event => {
-            const eventTime = parseEventTime(event.time || event.startTime);
+            const eventTime = parseEventTime(event.startTime);
             const filterMinutes = filters.time.hours * 60 + filters.time.minutes;
             const eventMinutes = eventTime.hours * 60 + eventTime.minutes;
             return eventMinutes >= filterMinutes;
@@ -578,23 +579,9 @@ function App() {
           console.log(`Step ${step} - Time filter (${filters.time.hours}:${String(filters.time.minutes).padStart(2, '0')}): ${beforeCount} → ${filtered.length} events`);
         } else {
           // Time range string (Morning, Afternoon, Evening, Night)
-          const timeRanges = {
-            'Morning': { start: 6, end: 12 },
-            'Afternoon': { start: 12, end: 18 },
-            'Evening': { start: 18, end: 22 },
-            'Night': { start: 22, end: 6 }
-          };
-          const range = timeRanges[filters.time];
-          if (range) {
-            filtered = filtered.filter(event => {
-              const eventTime = parseEventTime(event.time || event.startTime);
-              if (filters.time === 'Night') {
-                return eventTime.hours >= 22 || eventTime.hours < 6;
-              }
-              return eventTime.hours >= range.start && eventTime.hours < range.end;
-            });
-            console.log(`Step ${step} - Time range filter (${filters.time}): ${beforeCount} → ${filtered.length} events`);
-          }
+          // DIRECT STRING COMPARISON - event.time is already "Morning", "Afternoon", etc.
+          filtered = filtered.filter(event => event.time === filters.time);
+          console.log(`Step ${step} - Time range filter (${filters.time}): ${beforeCount} → ${filtered.length} events`);
         }
         
         if (filtered.length === 0) {
