@@ -217,25 +217,107 @@ const EventDiscoveryMap = ({
     console.log('🗺️ Fallback map rendering with events:', events.length);
     
     return (
-      <div className="fallback-map">
-        <div className="fallback-map-content">
-          <h3>🗺️ Interactive Map</h3>
-          <p>Map functionality is temporarily unavailable</p>
-          <p>Event discovery is still fully functional</p>
-          <p>Showing {events.length} events</p>
-          <div className="fallback-events">
+      <div 
+        className="fallback-map"
+        style={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          width: '100%',
+          height: '100%',
+          background: 'linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          zIndex: 10,
+          opacity: 1,
+          minHeight: '100vh'
+        }}
+      >
+        <div 
+          className="fallback-map-content"
+          style={{
+            textAlign: 'center',
+            color: 'white',
+            padding: '20px',
+            maxWidth: '600px',
+            background: 'rgba(0, 0, 0, 0.7)',
+            borderRadius: '12px',
+            backdropFilter: 'blur(10px)',
+            border: '1px solid rgba(255, 255, 255, 0.1)'
+          }}
+        >
+          <h3 style={{ fontSize: '24px', marginBottom: '10px', color: '#ffffff' }}>
+            🗺️ Interactive Map
+          </h3>
+          <p style={{ marginBottom: '15px', opacity: 0.8 }}>
+            Map functionality is temporarily unavailable
+          </p>
+          <p style={{ marginBottom: '15px', opacity: 0.8 }}>
+            Event discovery is still fully functional
+          </p>
+          <p style={{ marginBottom: '15px', opacity: 0.8 }}>
+            Showing {events.length} events
+          </p>
+          <div 
+            className="fallback-events"
+            style={{
+              marginTop: '20px',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '12px',
+              maxHeight: '400px',
+              overflowY: 'auto'
+            }}
+          >
             {events.slice(0, 6).map(event => (
-              <div key={event.id} className="fallback-event" onClick={() => onEventSelect?.(event)}>
-                <h4>{event.name}</h4>
-                <p>📍 {event.venue}</p>
-                <p>⏰ {event.time} on {event.day}</p>
-                <p>🏷️ {event.categoryPrimary} - {event.categorySecondary}</p>
-                <p>💰 {event.price}</p>
+              <div 
+                key={event.id} 
+                className="fallback-event" 
+                onClick={() => onEventSelect?.(event)}
+                style={{
+                  background: 'rgba(255, 255, 255, 0.15)',
+                  padding: '16px',
+                  borderRadius: '10px',
+                  cursor: 'pointer',
+                  transition: 'all 0.3s ease',
+                  border: '1px solid rgba(255, 255, 255, 0.3)',
+                  backdropFilter: 'blur(5px)'
+                }}
+              >
+                <h4 style={{ fontSize: '18px', marginBottom: '8px', color: '#ffffff', fontWeight: 600 }}>
+                  {event.name}
+                </h4>
+                <p style={{ fontSize: '14px', margin: '4px 0', opacity: 0.9, color: '#e0e0e0' }}>
+                  📍 {event.venue}
+                </p>
+                <p style={{ fontSize: '14px', margin: '4px 0', opacity: 0.9, color: '#e0e0e0' }}>
+                  ⏰ {event.time} on {event.day}
+                </p>
+                <p style={{ fontSize: '14px', margin: '4px 0', opacity: 0.9, color: '#e0e0e0' }}>
+                  🏷️ {event.categoryPrimary} - {event.categorySecondary}
+                </p>
+                <p style={{ fontSize: '14px', margin: '4px 0', opacity: 0.9, color: '#e0e0e0' }}>
+                  💰 {event.price}
+                </p>
               </div>
             ))}
             {events.length > 6 && (
-              <div className="fallback-event">
-                <p>... and {events.length - 6} more events</p>
+              <div 
+                className="fallback-event"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.15)',
+                  padding: '16px',
+                  borderRadius: '10px',
+                  border: '1px solid rgba(255, 255, 255, 0.3)',
+                  backdropFilter: 'blur(5px)'
+                }}
+              >
+                <p style={{ fontSize: '14px', margin: '4px 0', opacity: 0.9, color: '#e0e0e0' }}>
+                  ... and {events.length - 6} more events
+                </p>
               </div>
             )}
           </div>

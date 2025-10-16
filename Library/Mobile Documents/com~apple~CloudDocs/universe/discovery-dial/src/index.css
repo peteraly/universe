@@ -2168,11 +2168,13 @@ a::-webkit-scrollbar {
   left: 0;
   right: 0;
   bottom: 0;
+  width: 100%;
+  height: 100%;
   background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 5;
+  z-index: 10; /* Higher z-index to be above map background */
   opacity: 1; /* Make it fully visible */
   min-height: 100vh; /* Ensure it covers full height */
 }
