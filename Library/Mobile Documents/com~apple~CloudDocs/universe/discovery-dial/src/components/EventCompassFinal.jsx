@@ -1,4 +1,4 @@
-import { useMemo, useCallback, useState, useEffect } from 'react';
+import { useMemo, useCallback, useState, useEffect, memo } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import useEventCompassState from '../hooks/useEventCompassState';
 import useDialGestures from '../hooks/useDialGestures';
@@ -19,8 +19,10 @@ import {
  * FINAL PRODUCTION VERSION with Enhanced Gesture Feedback
  * - Primary swipe: Directional arrows, blue tint, strong double-pulse
  * - Subcategory rotation: Rotation symbol, circle glow, soft triple-tick
+ * 
+ * 🔧 OPTIMIZED: Wrapped in React.memo to prevent excessive re-renders
  */
-export default function EventCompassFinal({ 
+function EventCompassFinal({ 
   categories = [], 
   config = {},
   currentTimeframe,
@@ -66,24 +68,11 @@ export default function EventCompassFinal({
   
   const { state, actions } = useEventCompassState(categories);
 
-  // Add comprehensive debugging for actions object
-  useEffect(() => {
-    console.log('🔍 Actions debugging:', {
-      actionsExists: !!actions,
-      actionsType: typeof actions,
-      actionsKeys: actions ? Object.keys(actions) : 'N/A',
-      setPrimaryIndexExists: actions ? 'setPrimaryIndex' in actions : false,
-      setPrimaryIndexType: actions ? typeof actions.setPrimaryIndex : 'N/A',
-      actionsObject: actions
-    });
-  }, [actions]);
-
+  // 🔧 OPTIMIZED: Remove excessive console logs that run on every render
+  // Only log during initialization
+  
   // Ensure first category is initialized ONLY ONCE on mount
   useEffect(() => {
-    console.log('EventCompassFinal: Categories received:', categories.length, categories);
-    console.log('EventCompassFinal: State:', state);
-    console.log('EventCompassFinal: activePrimary:', state.activePrimary);
-    
     // Add error handling for actions
     if (!actions || typeof actions.setPrimaryIndex !== 'function') {
       console.error('❌ CRITICAL: actions.setPrimaryIndex is not a function', actions);
@@ -93,7 +82,7 @@ export default function EventCompassFinal({
     // 🔧 FIX: Only initialize if primaryIndex is still 0 and we're on first load
     // Don't reset after user has changed categories!
     if (categories.length > 0 && state.primaryIndex === 0 && !state.activePrimary) {
-      console.log('Initializing first category (first load only):', categories[0]);
+      console.log('✅ EventCompassFinal: Initializing first category:', categories[0].label);
       actions.setPrimaryIndex(0);
     }
   }, [categories, actions, state.primaryIndex, state.activePrimary]);
@@ -763,4 +752,14 @@ export default function EventCompassFinal({
     </div>
   );
 }
+
+// 🔧 OPTIMIZED: Wrap in React.memo to prevent unnecessary re-renders
+// Only re-render if categories, actions, or selectedDateRange actually change
+export default memo(EventCompassFinal, (prevProps, nextProps) => {
+  return (
+    prevProps.categories === nextProps.categories &&
+    prevProps.actions === nextProps.actions &&
+    prevProps.selectedDateRange === nextProps.selectedDateRange
+  );
+});
 
