@@ -78,7 +78,7 @@ export default function EventCompassFinal({
     });
   }, [actions]);
 
-  // Ensure first category is initialized
+  // Ensure first category is initialized ONLY ONCE on mount
   useEffect(() => {
     console.log('EventCompassFinal: Categories received:', categories.length, categories);
     console.log('EventCompassFinal: State:', state);
@@ -90,20 +90,23 @@ export default function EventCompassFinal({
       return;
     }
     
-    // Always initialize the first category if we have categories
-    if (categories.length > 0) {
-      console.log('Initializing first category:', categories[0]);
+    // 🔧 FIX: Only initialize if primaryIndex is still 0 and we're on first load
+    // Don't reset after user has changed categories!
+    if (categories.length > 0 && state.primaryIndex === 0 && !state.activePrimary) {
+      console.log('Initializing first category (first load only):', categories[0]);
       actions.setPrimaryIndex(0);
     }
-  }, [categories, actions]);
+  }, [categories, actions, state.primaryIndex, state.activePrimary]);
 
-  // Force category initialization if needed
+  // Force category initialization if needed (but ONLY if truly null, not after user changes)
   useEffect(() => {
-    if (categories.length > 0 && (!state.activePrimary || state.activePrimary === null)) {
+    // 🔧 FIX: Only initialize if activePrimary is genuinely null AND primaryIndex is 0
+    // This prevents reset after user navigates to other categories
+    if (categories.length > 0 && (!state.activePrimary || state.activePrimary === null) && state.primaryIndex === 0) {
       console.log('Force initializing first category - activePrimary is null/undefined');
       actions.setPrimaryIndex(0);
     }
-  }, [categories, state.activePrimary, actions]);
+  }, [categories, state.activePrimary, state.primaryIndex, actions]);
   
   // TIME & DATE RANGE FILTERING: Filter events by time AND date range
   const filteredEvents = useMemo(() => {
