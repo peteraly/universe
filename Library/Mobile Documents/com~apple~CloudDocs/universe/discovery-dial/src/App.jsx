@@ -573,10 +573,11 @@ function App() {
           // Specific time object { hours: 18, minutes: 0 }
           // Match events where startTime >= filter time
           filtered = filtered.filter(event => {
-            const eventTime = parseEventTime(event.startTime);
+            // Parse event.startTime which is in "HH:MM" format (24-hour)
+            const [eventHours, eventMinutes] = (event.startTime || '00:00').split(':').map(Number);
             const filterMinutes = filters.time.hours * 60 + filters.time.minutes;
-            const eventMinutes = eventTime.hours * 60 + eventTime.minutes;
-            return eventMinutes >= filterMinutes;
+            const eventTotalMinutes = eventHours * 60 + eventMinutes;
+            return eventTotalMinutes >= filterMinutes;
           });
           console.log(`Step ${step} - Time filter (${filters.time.hours}:${String(filters.time.minutes).padStart(2, '0')}): ${beforeCount} → ${filtered.length} events`);
         } else {
@@ -588,6 +589,7 @@ function App() {
         
         if (filtered.length === 0) {
           console.warn(`⚠️ ZERO EVENTS after time filter (${JSON.stringify(filters.time)})`);
+          console.log('📊 Sample event times:', events.slice(0, 5).map(e => ({ name: e.name, startTime: e.startTime, time: e.time })));
         }
       } catch (error) {
         console.error('❌ Time filter error:', error);
