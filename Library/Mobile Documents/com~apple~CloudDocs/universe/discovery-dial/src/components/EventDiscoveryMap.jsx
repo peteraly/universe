@@ -120,6 +120,9 @@ const EventDiscoveryMap = ({
   // Only update when event count or first event ID changes
   const memoizedEvents = useMemo(() => events, [events.length, events[0]?.id]);
   const memoizedHighlightedId = useMemo(() => highlightedEventId, [highlightedEventId]);
+  
+  // 🔧 NEW: Store previous events reference to prevent unnecessary pin updates
+  const prevEventsRef = useRef(null);
 
   // Create map pins from events with comprehensive validation
   const createMapPins = useCallback((events) => {
@@ -469,7 +472,14 @@ const EventDiscoveryMap = ({
   );
   
   // 🔧 FIX: Call debounced update when memoized events change
+  // Skip if events haven't actually changed (reference equality check)
   useEffect(() => {
+    // Skip if events reference hasn't changed
+    if (prevEventsRef.current === memoizedEvents) {
+      return;
+    }
+    
+    prevEventsRef.current = memoizedEvents;
     updateMapPinsDebounced(memoizedEvents);
   }, [memoizedEvents, updateMapPinsDebounced]);
 
@@ -722,8 +732,11 @@ const EventDiscoveryMap = ({
           position: 'absolute',
           top: 0,
           left: 0,
+          right: 0,
+          bottom: 0,
           width: '100%',
           height: '100%',
+          minHeight: '100vh',
           zIndex: 1
         }}
       >
@@ -735,10 +748,14 @@ const EventDiscoveryMap = ({
             ref={mapContainer} 
             className="map-container"
             style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
               width: '100%',
               height: '100%',
-              minHeight: '400px',
-              position: 'relative'
+              minHeight: '100vh'
             }}
           />
           {mapError ? (
