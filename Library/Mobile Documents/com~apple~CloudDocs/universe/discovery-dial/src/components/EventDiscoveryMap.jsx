@@ -1,6 +1,15 @@
-import React, { useRef, useEffect, useState, useCallback } from 'react';
+import React, { useRef, useEffect, useState, useCallback, useMemo } from 'react';
 import mapboxgl from 'mapbox-gl';
 import 'mapbox-gl/dist/mapbox-gl.css';
+
+// Debounce utility to prevent excessive updates
+const debounce = (func, wait) => {
+  let timeout;
+  return (...args) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func(...args), wait);
+  };
+};
 
 // Mobile detection utility
 const isMobileDevice = () => {
@@ -106,6 +115,11 @@ const EventDiscoveryMap = ({
   const [mapReady, setMapReady] = useState(false);
   const [mobileLoadingDelay, setMobileLoadingDelay] = useState(0);
   const [forceFallback, setForceFallback] = useState(false);
+  
+  // 🔧 FIX: Memoize events to prevent unnecessary re-renders
+  // Only update when event count or first event ID changes
+  const memoizedEvents = useMemo(() => events, [events.length, events[0]?.id]);
+  const memoizedHighlightedId = useMemo(() => highlightedEventId, [highlightedEventId]);
 
   // Create map pins from events with comprehensive validation
   const createMapPins = useCallback((events) => {
@@ -295,20 +309,30 @@ const EventDiscoveryMap = ({
         });
 
         // Handle map errors with mobile-specific handling
+        // 🔧 FIX: Only log critical errors, tile loading failures are normal
         mapInstance.current.on('error', (e) => {
-          console.error('🗺️ Mapbox error:', e);
-          clearTimeout(fallbackTimeout);
+          // Tile loading errors are common and non-critical - don't spam console
+          const isTileError = e.error?.message?.includes('tile') || e.tile;
           
-          // Mobile-specific error handling
-          if (isMobile) {
-            console.log('📱 Mobile map error - switching to fallback');
-            setMapError('Map unavailable on mobile - using fallback view');
-          } else {
-            setMapError('Failed to load map');
+          if (!isTileError) {
+            console.error('🗺️ Mapbox error:', e.error?.message || 'Unknown error');
           }
           
-          setMapLoaded(false);
-          setUseFallback(true);
+          // Only switch to fallback for critical errors, not tile issues
+          if (!isTileError) {
+            clearTimeout(fallbackTimeout);
+            
+            // Mobile-specific error handling
+            if (isMobile) {
+              console.log('📱 Mobile map error - switching to fallback');
+              setMapError('Map unavailable on mobile - using fallback view');
+            } else {
+              setMapError('Failed to load map');
+            }
+            
+            setMapLoaded(false);
+            setUseFallback(true);
+          }
         });
 
       } catch (error) {
@@ -329,23 +353,24 @@ const EventDiscoveryMap = ({
     };
   }, [mapReady, isMobile]);
 
-  // Update pins when events change
-  useEffect(() => {
-    if (!mapInstance.current || !mapLoaded || !events.length) return;
+  // 🔧 FIX: Debounced pin update function to prevent map reload spam
+  const updateMapPinsDebounced = useMemo(
+    () => debounce((eventsToShow) => {
+      if (!mapInstance.current || !mapLoaded || !eventsToShow.length) return;
 
-    console.log('📍 Updating map pins:', events.length, 'events');
+      console.log('📍 Updating map pins:', eventsToShow.length, 'events');
 
-    // Clear existing markers
-    if (mapInstance.current.getLayer('event-markers')) {
-      mapInstance.current.removeLayer('event-markers');
-    }
-    if (mapInstance.current.getSource('event-markers')) {
-      mapInstance.current.removeSource('event-markers');
-    }
+      // Clear existing markers
+      if (mapInstance.current.getLayer('event-markers')) {
+        mapInstance.current.removeLayer('event-markers');
+      }
+      if (mapInstance.current.getSource('event-markers')) {
+        mapInstance.current.removeSource('event-markers');
+      }
 
-    // Create new pins
-    const newPins = createMapPins(events);
-    setPins(newPins);
+      // Create new pins
+      const newPins = createMapPins(eventsToShow);
+      setPins(newPins);
 
     // Prepare GeoJSON data for Mapbox
     const geojsonData = {
@@ -420,16 +445,24 @@ const EventDiscoveryMap = ({
       mapInstance.current.getCanvas().style.cursor = '';
     });
 
-    console.log('📍 Map pins updated:', newPins.length, 'visible pins');
-  }, [mapLoaded, events, createMapPins, onEventSelect]);
+      console.log('📍 Map pins updated:', newPins.length, 'visible pins');
+    }, 250), // 250ms debounce
+    [mapLoaded, createMapPins]
+  );
+  
+  // 🔧 FIX: Call debounced update when memoized events change
+  useEffect(() => {
+    updateMapPinsDebounced(memoizedEvents);
+  }, [memoizedEvents, updateMapPinsDebounced]);
 
-  // Filter pins based on selections and highlight active pin with guaranteed visibility
+  // 🔧 FIX: Filter pins based on selections and highlight active pin with guaranteed visibility
+  // Use memoized highlightedId to prevent unnecessary updates
   useEffect(() => {
     if (!mapInstance.current || !mapLoaded || !pins.length) return;
 
     console.log('🗺️ Updating map pins and highlighting:', {
       totalPins: pins.length,
-      highlightedEventId: highlightedEventId,
+      highlightedEventId: memoizedHighlightedId,
       selectedCategory: selectedCategory?.label,
       selectedSubcategory: selectedSubcategory?.label
     });
@@ -450,9 +483,9 @@ const EventDiscoveryMap = ({
       return { ...pin, visible };
     });
 
-    // Find the highlighted event in filtered pins
-    const highlightedPin = highlightedEventId 
-      ? filteredPins.find(pin => pin.id === highlightedEventId)
+    // Find the highlighted event in filtered pins (use memoized value)
+    const highlightedPin = memoizedHighlightedId 
+      ? filteredPins.find(pin => pin.id === memoizedHighlightedId)
       : null;
 
     console.log('🎯 Highlighted pin:', highlightedPin ? {
@@ -485,7 +518,7 @@ const EventDiscoveryMap = ({
             subcategory: pin.subcategory,
             color: pin.color,
             size: pin.size,
-            highlighted: pin.id === highlightedEventId,
+            highlighted: pin.id === memoizedHighlightedId,
             event: pin.event
           }
         }))
@@ -543,10 +576,10 @@ const EventDiscoveryMap = ({
     }
 
     console.log('🔍 Pins filtered:', filteredPins.filter(p => p.visible).length, 'visible');
-    if (highlightedEventId) {
-      console.log('🎯 Highlighted event:', highlightedEventId);
+    if (memoizedHighlightedId) {
+      console.log('🎯 Highlighted event:', memoizedHighlightedId);
     }
-  }, [mapLoaded, pins, selectedCategory, selectedSubcategory, highlightedEventId]);
+  }, [mapLoaded, pins, selectedCategory, selectedSubcategory, memoizedHighlightedId]);
 
   // Fallback map component
   const FallbackMap = () => {

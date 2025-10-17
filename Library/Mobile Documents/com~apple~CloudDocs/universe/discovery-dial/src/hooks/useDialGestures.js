@@ -336,13 +336,19 @@ export default function useDialGestures(actions, options = {}) {
     // Process based on gesture type
     if (g.gestureType === 'swipe') {
       // Directional swipe for primary category
-      if (velocity >= config.minSwipeVelocity) {
+      // Accept based on distance OR velocity (more lenient for deliberate swipes)
+      const meetsVelocity = velocity >= config.minSwipeVelocity;
+      const meetsDistance = distance >= config.minSwipeDistance;
+      
+      if (meetsVelocity || meetsDistance) {
         const direction = getSwipeDirection(deltaX, deltaY, distance);
         if (direction && actions.setPrimaryByDirection) {
           if (DEBUG_GESTURES) {
             console.log('✅ PRIMARY SWIPE:', direction, {
               velocity: velocity.toFixed(2),
               distance: distance.toFixed(1),
+              meetsVelocity,
+              meetsDistance,
               zone: g.zone
             });
           }
@@ -351,7 +357,21 @@ export default function useDialGestures(actions, options = {}) {
           primarySwipeHaptic();
           
           actions.setPrimaryByDirection(direction);
+        } else if (DEBUG_GESTURES) {
+          console.warn('❌ PRIMARY SWIPE failed:', {
+            direction,
+            hasPrimaryByDirection: !!actions.setPrimaryByDirection,
+            distance: distance.toFixed(1),
+            velocity: velocity.toFixed(2)
+          });
         }
+      } else if (DEBUG_GESTURES) {
+        console.warn('❌ PRIMARY SWIPE threshold not met:', {
+          velocity: velocity.toFixed(2),
+          minVelocity: config.minSwipeVelocity,
+          distance: distance.toFixed(1),
+          minDistance: config.minSwipeDistance
+        });
       }
     } else if (g.gestureType === 'rotate') {
       // Rotation for subcategory
