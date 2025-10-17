@@ -1,5 +1,8 @@
-// Generated 288 comprehensive events
-export const COMPREHENSIVE_SAMPLE_EVENTS = [
+// Import real events from DC area
+import { REAL_EVENTS } from './realEvents';
+
+// Generated 288 comprehensive events + 77 real events = 365 total
+const SAMPLE_EVENTS = [
   {
     id: 'social-parties-morning-today-0',
     name: 'Today Morning Parties Party',
@@ -6338,11 +6341,18 @@ export const COMPREHENSIVE_SAMPLE_EVENTS = [
   }
 ];
 
+// Merge sample events with real events from DC area
+// Total: 288 sample + 77 real = 365 events
+export const COMPREHENSIVE_SAMPLE_EVENTS = [
+  ...SAMPLE_EVENTS,
+  ...REAL_EVENTS
+];
+
 // Filter Options
 export const FILTER_OPTIONS = {
   time: ['All', 'Morning', 'Afternoon', 'Evening', 'Night'],
   day: ['All', 'Today', 'Tomorrow', 'This Week', 'Weekend'],
-  category: ['All', 'Social', 'Arts/Culture', 'Wellness', 'Professional']
+  category: ['All', 'Social', 'Arts/Culture', 'Wellness', 'Professional', 'Recreation', 'Family']
 };
 
 // Default Filters
