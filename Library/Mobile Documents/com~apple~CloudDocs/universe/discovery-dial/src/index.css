@@ -1492,17 +1492,19 @@ a::-webkit-scrollbar {
   overflow: hidden;
 }
 
-/* Map Background Layer - Expanded for more real estate */
+/* Map Background Layer - FULL VIEWPORT COVERAGE */
 .map-background-layer {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
+  right: 0;
+  bottom: 0;
   width: 100%;
-  height: 75%; /* Increased from 60% to 75% for more map space */
-  z-index: 1;
-  opacity: 1; /* Make it fully visible */
-  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); /* Add fallback background */
-  filter: brightness(0.8) contrast(1.1); /* Subtle darkening */
+  height: 100%;
+  z-index: 0; /* Behind all UI elements */
+  opacity: 1;
+  background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); /* Fallback background */
+  filter: brightness(0.85) contrast(1.05); /* Subtle darkening for UI readability */
 }
 
 .map-background-container {
@@ -1763,11 +1765,18 @@ a::-webkit-scrollbar {
 
 /* Mobile optimizations for optimized dial size */
 @media (max-width: 768px) {
-  /* Mobile map positioning */
+  /* Mobile map positioning - FULL VIEWPORT */
   .map-background-layer {
-    height: 70%; /* Increased from 55% for more map space */
-    opacity: 1; /* Make it fully visible */
-    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); /* Add fallback background */
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%; /* FULL HEIGHT on mobile */
+    z-index: 0;
+    opacity: 1;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
   }
   
   /* Mobile dial positioning */
@@ -1876,11 +1885,15 @@ a::-webkit-scrollbar {
 }
 
 @media (max-width: 480px) {
-  /* Small mobile adjustments - optimized for more map space */
+  /* Small mobile adjustments - FULL VIEWPORT */
   .map-background-layer {
-    height: 65%; /* More map space on small screens */
-    opacity: 1; /* Make it fully visible */
-    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); /* Add fallback background */
+    position: fixed;
+    inset: 0; /* Full viewport coverage */
+    width: 100%;
+    height: 100%; /* FULL HEIGHT on small screens */
+    z-index: 0;
+    opacity: 1;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
   }
   
   .dial-foreground-layer {
@@ -1912,9 +1925,13 @@ a::-webkit-scrollbar {
 /* Tablet-specific optimizations */
 @media (min-width: 769px) and (max-width: 1024px) {
   .map-background-layer {
-    height: 72%; /* Slightly less than desktop */
-    opacity: 1; /* Make it fully visible */
-    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); /* Add fallback background */
+    position: fixed;
+    inset: 0; /* Full viewport coverage */
+    width: 100%;
+    height: 100%; /* FULL HEIGHT on tablet */
+    z-index: 0;
+    opacity: 1;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
   }
   
   .dial-foreground-layer {
@@ -1935,9 +1952,13 @@ a::-webkit-scrollbar {
 /* Large desktop optimization */
 @media (min-width: 1440px) {
   .map-background-layer {
-    height: 78%; /* Even more map space on large screens */
-    opacity: 1; /* Make it fully visible */
-    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%); /* Add fallback background */
+    position: fixed;
+    inset: 0; /* Full viewport coverage */
+    width: 100%;
+    height: 100%; /* FULL HEIGHT on large desktop */
+    z-index: 0;
+    opacity: 1;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
   }
   
   .dial-foreground-layer {

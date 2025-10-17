@@ -960,11 +960,11 @@ function App() {
   return (
     <ErrorBoundary name="App">
       <div className="unified-app-container">
-        {/* Full-screen Map Background */}
+        {/* Full-screen Map Background - LAYER 0 */}
        <div 
          className="map-background-layer"
          style={{
-           zIndex: 1
+           zIndex: 0  // Background layer - behind everything
          }}
        >
           <EventDiscoveryMap 
@@ -976,11 +976,11 @@ function App() {
           />
         </div>
         
-        {/* Event Information Panel - Above Dial */}
+        {/* Event Information Panel - LAYER 10 (Floating above dial) */}
        <div 
          className="event-info-panel"
          style={{
-           zIndex: 10
+           zIndex: 100  // Above dial and map
          }}
        >
           <EventDisplayCard 
@@ -994,11 +994,11 @@ function App() {
           />
         </div>
         
-        {/* Repositioned Dial Interface - Bottom */}
+        {/* Repositioned Dial Interface - LAYER 5 (Floating above map) */}
        <div 
          className="dial-foreground-layer"
          style={{
-           zIndex: 15
+           zIndex: 50  // Above map, below event info panel
          }}
        >
           <EventCompassFinal
