@@ -70,7 +70,7 @@ export const ENABLE_ANIMATIONS = true;
  * 
  * @type {boolean}
  */
-export const DEBUG_GESTURES = false;
+export const DEBUG_GESTURES = true;
 
 /**
  * Feature flag configuration object.

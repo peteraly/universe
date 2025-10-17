@@ -134,9 +134,9 @@ export default function useDialGestures(actions, options = {}) {
     const absDeltaX = Math.abs(deltaX);
     const absDeltaY = Math.abs(deltaY);
     
-    // Rotation is primarily horizontal (1.5:1 ratio - more lenient)
-    // This allows for natural circular drag with slight vertical variance
-    return absDeltaX > absDeltaY * 1.5;
+    // Rotation is primarily horizontal (1.1:1 ratio - very lenient)
+    // This allows for natural circular drag with more vertical variance
+    return absDeltaX > absDeltaY * 1.1;
   }, []);
 
   // ========================================

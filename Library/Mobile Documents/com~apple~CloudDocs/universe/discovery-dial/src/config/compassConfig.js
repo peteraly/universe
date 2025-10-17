@@ -13,7 +13,7 @@ export const COMPASS_CONFIG = {
     minSwipeVelocity: 0.3,     // Minimum velocity (px/ms)
     
     // Subcategory rotation sensitivity
-    dialSensitivity: 140,      // Pixels per rotation step (lower = more sensitive)
+    dialSensitivity: 60,       // Pixels per rotation step (lower = more sensitive)
     
     // Event navigation thresholds
     eventSwipeDistance: 24,    // Minimum pixels for event swipe

@@ -166,6 +166,23 @@ body {
   position: relative;
   z-index: 5;
   pointer-events: auto;
+  /* WCAG AAA minimum touch target size */
+  min-width: 48px;
+  min-height: 48px;
+  padding: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* Subcategory hover and active states */
+.subcategory-item:hover, .subcategory-item-perimeter:hover {
+  background-color: rgba(230, 57, 70, 0.15);
+  transform: scale(1.1);
+}
+
+.subcategory-item:active, .subcategory-item-perimeter:active {
+  background-color: rgba(230, 57, 70, 0.25);
+  transform: scale(1.05);
 }
 
 /* Event area - no scrolling for complete screen lock */
