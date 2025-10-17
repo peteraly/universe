@@ -3,7 +3,9 @@
  * This file handles integration with WordPress.com (hosted WordPress)
  */
 
-const WORDPRESS_COM_API_URL = import.meta.env.VITE_WORDPRESS_API_URL || 'https://hyyper.co/wp-json/wp/v2';
+// Use proxy path for local development, full URL for production
+const WORDPRESS_COM_API_URL = import.meta.env.VITE_WORDPRESS_API_URL || 
+  (import.meta.env.DEV ? '/wp-json/wp/v2' : 'https://hyyper.co/wp-json/wp/v2');
 
 // Cache configuration
 const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
@@ -25,9 +27,48 @@ export async function fetchWordPressComAPI(endpoint, params = {}) {
   }
 
   try {
-    const url = new URL(`${WORDPRESS_COM_API_URL}${endpoint}`);
+    // Build URL - handle both relative (proxy) and absolute URLs
+    let url;
+    if (WORDPRESS_COM_API_URL.startsWith('http')) {
+      // Absolute URL - use URL constructor
+      url = new URL(`${WORDPRESS_COM_API_URL}${endpoint}`);
+    } else {
+      // Relative URL (proxy) - use URLSearchParams for query string
+      url = `${WORDPRESS_COM_API_URL}${endpoint}`;
+      const searchParams = new URLSearchParams();
+      Object.keys(params).forEach(key => {
+        if (params[key] !== undefined && params[key] !== null) {
+          searchParams.append(key, params[key]);
+        }
+      });
+      if (searchParams.toString()) {
+        url += `?${searchParams.toString()}`;
+      }
+      
+      // For relative URLs, fetch directly
+      const response = await fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      
+      // Cache the result
+      cache.set(cacheKey, {
+        data: data,
+        timestamp: Date.now()
+      });
+
+      return data;
+    }
     
-    // Add query parameters
+    // For absolute URLs, add query parameters to URL object
     Object.keys(params).forEach(key => {
       if (params[key] !== undefined && params[key] !== null) {
         url.searchParams.append(key, params[key]);
@@ -319,13 +360,8 @@ export function getWordPressComCacheStats() {
  */
 export async function testWordPressComConnection() {
   try {
-    const response = await fetch(`${WORDPRESS_COM_API_URL}/posts?per_page=1`);
-    
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    
-    const data = await response.json();
+    // Use the same API function for consistency
+    const data = await fetchWordPressComAPI('/posts', { per_page: 1 });
     return {
       success: true,
       message: 'WordPress.com API connection successful',

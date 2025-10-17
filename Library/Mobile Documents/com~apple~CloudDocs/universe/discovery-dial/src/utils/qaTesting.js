@@ -216,7 +216,9 @@ export const testWordPressAPI = async () => {
   console.log('🧪 Testing WordPress.com API...');
   
   try {
-    const response = await fetch('https://hyyper.co/wp-json/wp/v2/posts');
+    // Use proxy in development, direct URL in production
+    const apiUrl = import.meta.env.DEV ? '/wp-json/wp/v2/posts' : 'https://hyyper.co/wp-json/wp/v2/posts';
+    const response = await fetch(apiUrl);
     if (!response.ok) {
       console.error('❌ WordPress.com API not responding:', response.status);
       return false;

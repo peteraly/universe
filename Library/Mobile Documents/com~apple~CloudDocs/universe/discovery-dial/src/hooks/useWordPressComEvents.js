@@ -38,7 +38,7 @@ export const useWordPressComEvents = (localEvents = []) => {
     } finally {
       setLoading(false);
     }
-  }, [localEvents]);
+  }, []); // 🔧 FIX: Remove localEvents from dependencies to prevent infinite loop
 
   // Load events by category
   const loadEventsByCategory = useCallback(async (category) => {
@@ -60,7 +60,7 @@ export const useWordPressComEvents = (localEvents = []) => {
     } finally {
       setLoading(false);
     }
-  }, [localEvents]);
+  }, []); // 🔧 FIX: Remove localEvents from dependencies to prevent infinite loop
 
   // Load events by subcategory
   const loadEventsBySubcategory = useCallback(async (subcategory) => {
@@ -83,7 +83,7 @@ export const useWordPressComEvents = (localEvents = []) => {
     } finally {
       setLoading(false);
     }
-  }, [localEvents]);
+  }, []); // 🔧 FIX: Remove localEvents from dependencies to prevent infinite loop
 
   // Search events
   const searchEvents = useCallback(async (keyword) => {
@@ -107,7 +107,7 @@ export const useWordPressComEvents = (localEvents = []) => {
     } finally {
       setLoading(false);
     }
-  }, [localEvents]);
+  }, []); // 🔧 FIX: Remove localEvents from dependencies to prevent infinite loop
 
   // Load categories
   const loadCategories = useCallback(async () => {
@@ -147,12 +147,15 @@ export const useWordPressComEvents = (localEvents = []) => {
     return () => clearInterval(interval);
   }, [lastFetch, refreshEvents]);
 
-  // Load events and categories on mount
+  // Load events and categories on mount ONCE
   useEffect(() => {
-    loadAllEvents();
-    loadCategories();
-    loadStats();
-  }, [loadAllEvents, loadCategories, loadStats]);
+    // 🔇 TEMPORARY: Disable WordPress API calls until backend is set up
+    // Uncomment these lines when WordPress is ready:
+    // loadAllEvents();
+    // loadCategories();
+    // loadStats();
+    console.log('ℹ️ WordPress API calls disabled - using sample data');
+  }, []); // 🔧 FIX: Empty dependency array - only run on mount, not on every callback change
 
   return {
     events,
@@ -200,7 +203,7 @@ export const useWordPressComEventsByCategory = (category, localEvents = []) => {
     } finally {
       setLoading(false);
     }
-  }, [category, localEvents]);
+  }, [category]); // 🔧 FIX: Only depend on category, not localEvents
 
   useEffect(() => {
     if (category) {
@@ -252,7 +255,7 @@ export const useWordPressComEventsSearch = (keyword, localEvents = []) => {
     } finally {
       setLoading(false);
     }
-  }, [keyword, localEvents]);
+  }, [keyword]); // 🔧 FIX: Only depend on keyword, not localEvents
 
   useEffect(() => {
     search();

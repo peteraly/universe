@@ -52,9 +52,13 @@ export function parseEventTime(timeString) {
  * formatTime(12, 0) → "12:00 PM"
  */
 export function formatTime(hours, minutes) {
-  const period = hours >= 12 ? 'PM' : 'AM';
-  const displayHours = hours % 12 || 12;
-  const displayMinutes = minutes.toString().padStart(2, '0');
+  // Defensive: handle undefined/null/NaN values
+  const safeHours = (typeof hours === 'number' && !isNaN(hours)) ? hours : 0;
+  const safeMinutes = (typeof minutes === 'number' && !isNaN(minutes)) ? minutes : 0;
+  
+  const period = safeHours >= 12 ? 'PM' : 'AM';
+  const displayHours = safeHours % 12 || 12;
+  const displayMinutes = safeMinutes.toString().padStart(2, '0');
   return `${displayHours}:${displayMinutes} ${period}`;
 }
 
@@ -66,14 +70,18 @@ export function formatTime(hours, minutes) {
  * @returns {string} Compact time string
  */
 export function formatTimeCompact(hours, minutes) {
-  const period = hours >= 12 ? 'PM' : 'AM';
-  const displayHours = hours % 12 || 12;
+  // Defensive: handle undefined/null/NaN values
+  const safeHours = (typeof hours === 'number' && !isNaN(hours)) ? hours : 0;
+  const safeMinutes = (typeof minutes === 'number' && !isNaN(minutes)) ? minutes : 0;
   
-  if (minutes === 0) {
+  const period = safeHours >= 12 ? 'PM' : 'AM';
+  const displayHours = safeHours % 12 || 12;
+  
+  if (safeMinutes === 0) {
     return `${displayHours}${period}`;
   }
   
-  return `${displayHours}:${minutes.toString().padStart(2, '0')}${period}`;
+  return `${displayHours}:${safeMinutes.toString().padStart(2, '0')}${period}`;
 }
 
 /**
@@ -263,7 +271,10 @@ export function getDateRangeBounds(range) {
   
   let startDate, endDate;
   
-  switch(range) {
+  // Normalize to uppercase for case-insensitive comparison
+  const normalizedRange = (range || '').toString().toUpperCase();
+  
+  switch(normalizedRange) {
     case 'TODAY':
       startDate = formatDateToISO(today);
       endDate = formatDateToISO(today);
@@ -277,6 +288,7 @@ export function getDateRangeBounds(range) {
       break;
       
     case 'THIS WEEK':
+    case 'WEEK':
       startDate = formatDateToISO(today);
       const nextWeek = new Date(today);
       nextWeek.setDate(today.getDate() + 7);
@@ -284,15 +296,35 @@ export function getDateRangeBounds(range) {
       break;
       
     case 'THIS MONTH':
+    case 'MONTH':
       startDate = formatDateToISO(today);
       const nextMonth = new Date(today);
       nextMonth.setDate(today.getDate() + 30);
       endDate = formatDateToISO(nextMonth);
       break;
+    
+    case 'WEEKEND':
+      // Weekend: next Saturday and Sunday
+      const dayOfWeek = today.getDay();
+      const daysUntilSaturday = (6 - dayOfWeek + 7) % 7 || 7; // If today is Saturday, get next Saturday
+      const saturday = new Date(today);
+      saturday.setDate(today.getDate() + daysUntilSaturday);
+      const sunday = new Date(saturday);
+      sunday.setDate(saturday.getDate() + 1);
+      startDate = formatDateToISO(saturday);
+      endDate = formatDateToISO(sunday);
+      break;
       
+    case 'ALL':
     default:
-      startDate = formatDateToISO(today);
-      endDate = formatDateToISO(today);
+      // For 'All' or any unrecognized value, return a wide range
+      // Return past 30 days to future 365 days to capture all events
+      const pastDate = new Date(today);
+      pastDate.setDate(today.getDate() - 30);
+      const futureDate = new Date(today);
+      futureDate.setDate(today.getDate() + 365);
+      startDate = formatDateToISO(pastDate);
+      endDate = formatDateToISO(futureDate);
   }
   
   return { startDate, endDate };

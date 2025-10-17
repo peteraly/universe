@@ -607,15 +607,19 @@ function App() {
         const today = getTodayDate();
         const { startDate, endDate } = getDateRangeBounds(filters.day);
         
+        console.log(`📅 Date range for "${filters.day}": ${startDate} to ${endDate}`);
+        
         filtered = filtered.filter(event => {
           const eventDate = event.date || today;
-          return isDateInRange(eventDate, startDate, endDate);
+          const inRange = isDateInRange(eventDate, startDate, endDate);
+          return inRange;
         });
         console.log(`Step ${step} - Day filter (${filters.day}): ${beforeCount} → ${filtered.length} events`);
         
         if (filtered.length === 0) {
           console.warn(`⚠️ ZERO EVENTS after day filter (${filters.day})`);
-          console.log('📊 Available days:', [...new Set(events.map(e => e.day))]);
+          console.log('📊 Available event dates:', [...new Set(filtered.slice(0, 10).map(e => e.date))]);
+          console.log('📊 Date range:', { startDate, endDate, today });
         }
       } catch (error) {
         console.error('❌ Day filter error:', error);

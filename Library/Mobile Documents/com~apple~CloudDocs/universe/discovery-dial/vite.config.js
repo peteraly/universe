@@ -14,6 +14,14 @@ export default defineConfig({
     port: 3000,
     host: '0.0.0.0',  // Listen on all network interfaces
     strictPort: false,
-    cors: true
+    cors: true,
+    proxy: {
+      '/wp-json': {
+        target: 'https://hyyper.co',
+        changeOrigin: true,
+        secure: true,
+        rewrite: (path) => path
+      }
+    }
   }
 })
