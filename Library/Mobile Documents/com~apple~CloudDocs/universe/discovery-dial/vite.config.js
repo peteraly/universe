@@ -4,7 +4,7 @@ import react from '@vitejs/plugin-react'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [react()],
-  base: process.env.NODE_ENV === 'production' ? '/universe/' : '/',  // Use / for dev, /universe/ for production
+  base: '/',  // Root path for production (hyyper.co)
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
