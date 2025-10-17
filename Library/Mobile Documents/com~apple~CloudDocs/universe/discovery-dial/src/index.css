@@ -455,8 +455,9 @@ body {
   font-size: 0.9em;
 }
 
-/* Subcategory text positioning to avoid event area */
+/* Subcategory text positioning to avoid event area - HIDDEN */
 .subcategory-text {
+  display: none !important; /* Hide subcategory text below dial */
   position: absolute;
   bottom: 30px;
   left: 50%;
