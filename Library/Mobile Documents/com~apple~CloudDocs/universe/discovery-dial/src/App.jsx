@@ -1004,11 +1004,12 @@ function App() {
           />
         </div>
 
-        {/* Universal Search Bar - LAYER 200 (Top-most UI element) */}
+        {/* Universal Search Bar - LAYER 300 (Top-most UI element) */}
         <UniversalSearchBar
           onSearch={handleSearch}
           totalEvents={COMPREHENSIVE_SAMPLE_EVENTS.length}
           filteredCount={filteredEvents.length}
+          events={COMPREHENSIVE_SAMPLE_EVENTS}
         />
         
         {/* Event Information Panel - LAYER 10 (Floating above dial) */}
