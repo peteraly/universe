@@ -1,9 +1,18 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 const SimpleSearchBar = ({ onSearch, totalEvents, filteredCount }) => {
   const [searchTerm, setSearchTerm] = useState('');
+  const inputRef = useRef(null);
 
   console.log('🔍 SimpleSearchBar RENDERING');
+
+  // Test click handler
+  const handleContainerClick = () => {
+    console.log('🟢 Search bar container clicked!');
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  };
 
   // Debounced search
   useEffect(() => {
@@ -18,16 +27,21 @@ const SimpleSearchBar = ({ onSearch, totalEvents, filteredCount }) => {
   };
 
   return (
-    <div style={{
-      position: 'fixed',
-      top: '20px',
-      left: '50%',
-      transform: 'translateX(-50%)',
-      width: '90%',
-      maxWidth: '650px',
-      zIndex: 99999,
-      padding: '10px'
-    }}>
+    <div 
+      onClick={handleContainerClick}
+      style={{
+        position: 'fixed',
+        top: '20px',
+        left: '50%',
+        transform: 'translateX(-50%)',
+        width: '90%',
+        maxWidth: '650px',
+        zIndex: 9999999,
+        padding: '10px',
+        pointerEvents: 'auto',
+        isolation: 'isolate'
+      }}
+    >
       <div style={{
         display: 'flex',
         alignItems: 'center',
@@ -36,20 +50,31 @@ const SimpleSearchBar = ({ onSearch, totalEvents, filteredCount }) => {
         borderRadius: '16px',
         boxShadow: '0 8px 32px rgba(0, 0, 0, 0.25)',
         padding: '16px 20px',
-        border: '2px solid rgba(0, 0, 0, 0.15)'
+        border: '2px solid rgba(0, 0, 0, 0.15)',
+        pointerEvents: 'auto',
+        cursor: 'text',
+        position: 'relative',
+        isolation: 'isolate'
       }}>
         {/* Search Icon */}
         <span style={{ fontSize: '20px', marginRight: '12px' }}>🔍</span>
 
         {/* Input */}
         <input
+          ref={inputRef}
           type="text"
           placeholder="Search events, venues, tags..."
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+          onChange={(e) => {
+            console.log('🟢 Input change:', e.target.value);
+            setSearchTerm(e.target.value);
+          }}
           onKeyDown={(e) => {
             if (e.key === 'Escape') handleClear();
           }}
+          onClick={() => console.log('🟢 Input clicked!')}
+          onFocus={() => console.log('🟢 Input focused!')}
+          autoComplete="off"
           style={{
             flex: 1,
             border: 'none',
@@ -58,7 +83,13 @@ const SimpleSearchBar = ({ onSearch, totalEvents, filteredCount }) => {
             fontSize: '17px',
             fontWeight: '500',
             color: '#000',
-            fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'
+            fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+            pointerEvents: 'auto',
+            cursor: 'text',
+            WebkitUserSelect: 'text',
+            userSelect: 'text',
+            position: 'relative',
+            zIndex: 1
           }}
         />
 
