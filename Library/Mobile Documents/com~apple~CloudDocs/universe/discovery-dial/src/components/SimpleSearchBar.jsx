@@ -1,10 +1,30 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { getSmartSuggestions } from '../utils/searchSuggestions';
 
-const SimpleSearchBar = ({ onSearch, totalEvents, filteredCount }) => {
+const SimpleSearchBar = ({ onSearch, totalEvents, filteredCount, events = [] }) => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [showDropdown, setShowDropdown] = useState(false);
+  const [suggestions, setSuggestions] = useState([]);
+  const [selectedIndex, setSelectedIndex] = useState(-1);
   const inputRef = useRef(null);
+  const dropdownRef = useRef(null);
 
-  console.log('🔍 SimpleSearchBar RENDERING');
+  console.log('🔍 SimpleSearchBar RENDERING', { hasEvents: events.length });
+
+  // Generate suggestions when search term changes
+  useEffect(() => {
+    if (searchTerm.trim().length > 0 && events && events.length > 0) {
+      const smartSuggestions = getSmartSuggestions(events, searchTerm, 8);
+      console.log('💡 Generated suggestions:', smartSuggestions.length, 'for term:', searchTerm);
+      setSuggestions(smartSuggestions);
+      setShowDropdown(smartSuggestions.length > 0);
+      setSelectedIndex(-1);
+    } else {
+      setSuggestions([]);
+      setShowDropdown(false);
+      setSelectedIndex(-1);
+    }
+  }, [searchTerm, events]);
 
   // Test click handler
   const handleContainerClick = () => {
@@ -24,7 +44,69 @@ const SimpleSearchBar = ({ onSearch, totalEvents, filteredCount }) => {
 
   const handleClear = () => {
     setSearchTerm('');
+    setShowDropdown(false);
+    setSelectedIndex(-1);
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
   };
+
+  // Handle suggestion selection
+  const handleSelectSuggestion = (suggestionText) => {
+    console.log('✅ Selected suggestion:', suggestionText);
+    setSearchTerm(suggestionText);
+    setShowDropdown(false);
+    setSelectedIndex(-1);
+    onSearch(suggestionText);
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  };
+
+  // Handle keyboard navigation
+  const handleKeyDown = (e) => {
+    if (e.key === 'Escape') {
+      handleClear();
+      setShowDropdown(false);
+    } else if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      if (showDropdown && suggestions.length > 0) {
+        setSelectedIndex(prev => 
+          prev < suggestions.length - 1 ? prev + 1 : prev
+        );
+      }
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (showDropdown && suggestions.length > 0) {
+        setSelectedIndex(prev => prev > 0 ? prev - 1 : -1);
+      }
+    } else if (e.key === 'Enter') {
+      e.preventDefault();
+      if (selectedIndex >= 0 && selectedIndex < suggestions.length) {
+        handleSelectSuggestion(suggestions[selectedIndex].text);
+      } else if (searchTerm.trim()) {
+        setShowDropdown(false);
+        onSearch(searchTerm);
+      }
+    }
+  };
+
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target) &&
+        !inputRef.current?.contains(event.target)
+      ) {
+        setShowDropdown(false);
+        setSelectedIndex(-1);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   return (
     <div 
@@ -69,11 +151,14 @@ const SimpleSearchBar = ({ onSearch, totalEvents, filteredCount }) => {
             console.log('🟢 Input change:', e.target.value);
             setSearchTerm(e.target.value);
           }}
-          onKeyDown={(e) => {
-            if (e.key === 'Escape') handleClear();
-          }}
+          onKeyDown={handleKeyDown}
           onClick={() => console.log('🟢 Input clicked!')}
-          onFocus={() => console.log('🟢 Input focused!')}
+          onFocus={() => {
+            console.log('🟢 Input focused!');
+            if (suggestions.length > 0) {
+              setShowDropdown(true);
+            }
+          }}
           autoComplete="off"
           style={{
             flex: 1,
@@ -116,8 +201,78 @@ const SimpleSearchBar = ({ onSearch, totalEvents, filteredCount }) => {
         )}
       </div>
 
+      {/* Autocomplete Dropdown */}
+      {showDropdown && suggestions.length > 0 && (
+        <div
+          ref={dropdownRef}
+          style={{
+            position: 'absolute',
+            top: 'calc(100% + 8px)',
+            left: 0,
+            right: 0,
+            background: 'rgba(255, 255, 255, 0.98)',
+            backdropFilter: 'blur(20px)',
+            borderRadius: '12px',
+            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.25)',
+            border: '2px solid rgba(0, 0, 0, 0.1)',
+            maxHeight: '320px',
+            overflowY: 'auto',
+            zIndex: 999999,
+            animation: 'fadeIn 0.2s ease'
+          }}
+        >
+          {suggestions.map((suggestion, index) => {
+            const isSelected = index === selectedIndex;
+            return (
+              <div
+                key={`${suggestion.category}-${suggestion.text}-${index}`}
+                onClick={() => handleSelectSuggestion(suggestion.text)}
+                onMouseEnter={() => setSelectedIndex(index)}
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  padding: '12px 16px',
+                  cursor: 'pointer',
+                  borderBottom: index < suggestions.length - 1 ? '1px solid rgba(0, 0, 0, 0.05)' : 'none',
+                  background: isSelected ? 'rgba(0, 123, 255, 0.1)' : 'transparent',
+                  transition: 'background 0.15s ease',
+                  minHeight: '48px'
+                }}
+              >
+                <span style={{ fontSize: '18px', marginRight: '12px' }}>
+                  {suggestion.icon}
+                </span>
+                <span style={{
+                  flex: 1,
+                  fontSize: '15px',
+                  color: '#333',
+                  fontWeight: '500',
+                  overflow: 'hidden',
+                  textOverflow: 'ellipsis',
+                  whiteSpace: 'nowrap'
+                }}>
+                  {suggestion.text}
+                </span>
+                <span style={{
+                  fontSize: '11px',
+                  color: 'rgba(0, 0, 0, 0.45)',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.5px',
+                  fontWeight: '500',
+                  padding: '2px 6px',
+                  background: 'rgba(0, 0, 0, 0.05)',
+                  borderRadius: '4px'
+                }}>
+                  {suggestion.category}
+                </span>
+              </div>
+            );
+          })}
+        </div>
+      )}
+
       {/* Result Count */}
-      {searchTerm && (
+      {searchTerm && !showDropdown && (
         <div style={{
           marginTop: '8px',
           textAlign: 'center',

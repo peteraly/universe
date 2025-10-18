@@ -989,11 +989,12 @@ function App() {
 
   return (
     <ErrorBoundary name="App">
-      {/* Simple Search Bar - Working version with inline styles (no CSS file dependency) */}
+      {/* Simple Search Bar - Working version with inline styles and autocomplete */}
       <SimpleSearchBar
         onSearch={handleSearch}
         totalEvents={COMPREHENSIVE_SAMPLE_EVENTS.length}
         filteredCount={filteredEvents.length}
+        events={COMPREHENSIVE_SAMPLE_EVENTS}
       />
 
       <div className="unified-app-container">
