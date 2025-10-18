@@ -4,6 +4,7 @@ import EventDiscoveryMap from './components/EventDiscoveryMap';
 import EventDiscoveryFilters from './components/EventDiscoveryFilters';
 import EventInformationDisplay from './components/EventInformationDisplay';
 import EventDisplayCard from './components/EventDisplayCard';
+import UniversalSearchBar from './components/UniversalSearchBar';
 import ErrorBoundary from './components/ErrorBoundary';
 import categoriesData from './data/categories.json';
 import { COMPREHENSIVE_SAMPLE_EVENTS } from './data/comprehensiveSampleEvents';
@@ -18,6 +19,7 @@ import {
   isDateInRange,
   getTodayDate
 } from './utils/timeHelpers';
+import { searchEvents } from './utils/searchHelpers';
 import { 
   safeDocumentBody, 
   safeDocumentElement, 
@@ -83,6 +85,10 @@ function App() {
   const [currentEventIndex, setCurrentEventIndex] = useState(0);
   const [displayedEvent, setDisplayedEvent] = useState(null);
   const [highlightedEventId, setHighlightedEventId] = useState(null);
+
+  // Search state
+  const [searchTerm, setSearchTerm] = useState('');
+  const [searchResults, setSearchResults] = useState(COMPREHENSIVE_SAMPLE_EVENTS);
 
   // Initialize complete scroll prevention
   useScrollPrevention();
@@ -514,6 +520,22 @@ function App() {
     }));
   }, []);
 
+  // Handle search
+  const handleSearch = useCallback((term) => {
+    console.log('🔍 Search term:', term);
+    setSearchTerm(term);
+    
+    // Perform search on COMPREHENSIVE_SAMPLE_EVENTS
+    const results = searchEvents(COMPREHENSIVE_SAMPLE_EVENTS, term);
+    console.log('🔍 Search results:', {
+      searchTerm: term,
+      totalResults: results.length,
+      totalEvents: COMPREHENSIVE_SAMPLE_EVENTS.length
+    });
+    
+    setSearchResults(results);
+  }, []);
+
   // Dynamic event filtering based on dial selection and filters
   const filterEventsByDialSelection = useCallback((events, category, subcategory, filters) => {
     // SAFETY CHECK: Ensure events array exists
@@ -526,7 +548,8 @@ function App() {
       totalEvents: events.length,
       category: category?.label || 'None',
       subcategory: subcategory?.label || 'None',
-      filters: filters
+      filters: filters,
+      searchActive: searchTerm ? true : false
     });
     
     let filtered = [...events]; // Create copy to avoid mutation
@@ -648,8 +671,11 @@ function App() {
 
          // Update filtered events when selections change
          useEffect(() => {
+         // Use search results if search is active, otherwise use all events
+         const eventsToFilter = searchTerm ? searchResults : COMPREHENSIVE_SAMPLE_EVENTS;
+
          const filtered = filterEventsByDialSelection(
-           COMPREHENSIVE_SAMPLE_EVENTS, 
+           eventsToFilter, 
            selectedCategory, 
            selectedSubcategory, 
            activeFilters
@@ -657,6 +683,8 @@ function App() {
          
          console.log('🔍 Event filtering debug:', {
            totalEvents: COMPREHENSIVE_SAMPLE_EVENTS.length,
+             searchTerm: searchTerm,
+             searchResultsCount: searchResults.length,
              selectedCategory: selectedCategory?.label,
              selectedSubcategory: selectedSubcategory?.label,
              activeFilters: activeFilters,
@@ -670,7 +698,7 @@ function App() {
           console.log('Final events sample:', finalEvents.slice(0, 3).map(e => ({ name: e.name, category: e.categoryPrimary, subcategory: e.categorySecondary })));
           
           setFilteredEvents(finalEvents);
-         }, [selectedCategory, selectedSubcategory, activeFilters, filterEventsByDialSelection]);
+         }, [selectedCategory, selectedSubcategory, activeFilters, searchTerm, searchResults, filterEventsByDialSelection]);
 
   // Update displayed event when filtered events change
   useEffect(() => {
@@ -975,6 +1003,13 @@ function App() {
             highlightedEventId={displayedEvent?.id || highlightedEventId}
           />
         </div>
+
+        {/* Universal Search Bar - LAYER 200 (Top-most UI element) */}
+        <UniversalSearchBar
+          onSearch={handleSearch}
+          totalEvents={COMPREHENSIVE_SAMPLE_EVENTS.length}
+          filteredCount={filteredEvents.length}
+        />
         
         {/* Event Information Panel - LAYER 10 (Floating above dial) */}
        <div 
