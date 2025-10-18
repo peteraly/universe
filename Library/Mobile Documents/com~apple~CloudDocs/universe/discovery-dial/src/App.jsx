@@ -987,6 +987,14 @@ function App() {
 
   return (
     <ErrorBoundary name="App">
+      {/* Universal Search Bar - LAYER 9999 (Top-most UI element) - OUTSIDE container for maximum visibility */}
+      <UniversalSearchBar
+        onSearch={handleSearch}
+        totalEvents={COMPREHENSIVE_SAMPLE_EVENTS.length}
+        filteredCount={filteredEvents.length}
+        events={COMPREHENSIVE_SAMPLE_EVENTS}
+      />
+
       <div className="unified-app-container">
         {/* Full-screen Map Background - LAYER 0 */}
        <div 
@@ -1003,14 +1011,6 @@ function App() {
             highlightedEventId={displayedEvent?.id || highlightedEventId}
           />
         </div>
-
-        {/* Universal Search Bar - LAYER 300 (Top-most UI element) */}
-        <UniversalSearchBar
-          onSearch={handleSearch}
-          totalEvents={COMPREHENSIVE_SAMPLE_EVENTS.length}
-          filteredCount={filteredEvents.length}
-          events={COMPREHENSIVE_SAMPLE_EVENTS}
-        />
         
         {/* Event Information Panel - LAYER 10 (Floating above dial) */}
        <div 
