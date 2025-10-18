@@ -329,18 +329,35 @@ const EventDiscoveryMap = ({
           setForceFallback(false); // 🔧 FIX: Reset force fallback flag
         });
 
+        // Track tile errors to detect authentication/token issues
+        let tileErrorCount = 0;
+        const MAX_TILE_ERRORS = 3; // Switch to fallback after 3 tile errors
+
         // Handle map errors with mobile-specific handling
-        // 🔧 FIX: Only log critical errors, tile loading failures are normal
+        // 🔧 FIX: Detect 403 errors and switch to fallback
         mapInstance.current.on('error', (e) => {
-          // Tile loading errors are common and non-critical - don't spam console
+          // Check for tile loading errors
           const isTileError = e.error?.message?.includes('tile') || e.tile;
+          const is403Error = e.error?.status === 403 || e.error?.message?.includes('403') || e.error?.message?.includes('Forbidden');
+          
+          if (is403Error) {
+            tileErrorCount++;
+            console.warn(`🗺️ Mapbox authentication error (${tileErrorCount}/${MAX_TILE_ERRORS}):`, e.error?.message || '403 Forbidden');
+            
+            // After multiple 403s, switch to fallback
+            if (tileErrorCount >= MAX_TILE_ERRORS) {
+              console.log('🗺️ Multiple 403 errors detected - Mapbox token expired/invalid');
+              console.log('🗺️ Switching to fallback map...');
+              clearTimeout(fallbackTimeout);
+              setMapError('Map token expired - using fallback view');
+              setMapLoaded(false);
+              setUseFallback(true);
+            }
+            return;
+          }
           
           if (!isTileError) {
             console.error('🗺️ Mapbox error:', e.error?.message || 'Unknown error');
-          }
-          
-          // Only switch to fallback for critical errors, not tile issues
-          if (!isTileError) {
             clearTimeout(fallbackTimeout);
             
             // Mobile-specific error handling
