@@ -10,6 +10,9 @@ const UniversalSearchBar = ({ onSearch, totalEvents, filteredCount, events }) =>
   const inputRef = useRef(null);
   const dropdownRef = useRef(null);
 
+  // DEBUG: Log when component renders
+  console.log('🔍 UniversalSearchBar RENDERED', { totalEvents, filteredCount, hasEvents: !!events });
+
   // Generate suggestions when search term changes
   useEffect(() => {
     if (searchTerm.trim().length > 0 && events && events.length > 0) {
