@@ -524,7 +524,16 @@ function App() {
 
   // Handle search
   const handleSearch = useCallback((term) => {
-    console.log('🔍 Search term:', term);
+    console.log('🔍 Search executed:', term);
+    
+    if (!term || term.trim() === '') {
+      // Clear search - return to all events
+      console.log('🔍 Search cleared - showing all events');
+      setSearchTerm('');
+      setSearchResults(COMPREHENSIVE_SAMPLE_EVENTS);
+      return;
+    }
+    
     setSearchTerm(term);
     
     // Perform search on COMPREHENSIVE_SAMPLE_EVENTS
@@ -532,7 +541,8 @@ function App() {
     console.log('🔍 Search results:', {
       searchTerm: term,
       totalResults: results.length,
-      totalEvents: COMPREHENSIVE_SAMPLE_EVENTS.length
+      totalEvents: COMPREHENSIVE_SAMPLE_EVENTS.length,
+      sampleResults: results.slice(0, 3).map(e => e.name)
     });
     
     setSearchResults(results);
@@ -671,13 +681,20 @@ function App() {
     return filtered;
   }, []);
 
-         // Update filtered events when selections change
-         useEffect(() => {
-         // Use search results if search is active, otherwise use all events
-         const eventsToFilter = searchTerm ? searchResults : COMPREHENSIVE_SAMPLE_EVENTS;
+       // Update filtered events when selections change
+       useEffect(() => {
+       // Use search results if search is active, otherwise use all events
+       const eventsToFilter = searchTerm ? searchResults : COMPREHENSIVE_SAMPLE_EVENTS;
+       
+       console.log('🔍 Filter pipeline input:', {
+         searchActive: !!searchTerm,
+         searchTerm: searchTerm,
+         inputEventsCount: eventsToFilter.length,
+         usingSearchResults: searchTerm ? true : false
+       });
 
-         const filtered = filterEventsByDialSelection(
-           eventsToFilter, 
+       const filtered = filterEventsByDialSelection(
+         eventsToFilter,
            selectedCategory, 
            selectedSubcategory, 
            activeFilters
