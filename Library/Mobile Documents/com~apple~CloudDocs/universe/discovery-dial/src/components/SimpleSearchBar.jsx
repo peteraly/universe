@@ -1,21 +1,35 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { getSmartSuggestions } from '../utils/searchSuggestions';
+import { getSmartSuggestions, highlightMatch } from '../utils/searchSuggestions';
 
-const SimpleSearchBar = ({ onSearch, totalEvents, filteredCount, events = [] }) => {
-  const [searchTerm, setSearchTerm] = useState('');
+const SimpleSearchBar = ({ onSearch, totalEvents, filteredCount, events }) => {
+  const [searchTerm, setSearchTerm] = useState(''); // What user is typing (for dropdown)
+  const [selectedSearchTerm, setSelectedSearchTerm] = useState(''); // What user selected (for filtering)
   const [showDropdown, setShowDropdown] = useState(false);
   const [suggestions, setSuggestions] = useState([]);
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const inputRef = useRef(null);
   const dropdownRef = useRef(null);
 
-  console.log('🔍 SimpleSearchBar RENDERING', { hasEvents: events.length });
+  console.log('🔍 SimpleSearchBar RENDERING', { 
+    searchTerm, 
+    selectedSearchTerm,
+    showDropdown,
+    suggestionsCount: suggestions.length 
+  });
 
-  // Generate suggestions when search term changes
+  // Test click handler
+  const handleContainerClick = () => {
+    console.log('🟢 Search bar container clicked!');
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  };
+
+  // Generate suggestions when user types (DON'T search yet!)
   useEffect(() => {
     if (searchTerm.trim().length > 0 && events && events.length > 0) {
       const smartSuggestions = getSmartSuggestions(events, searchTerm, 8);
-      console.log('💡 Generated suggestions:', smartSuggestions.length, 'for term:', searchTerm);
+      console.log('🔍 Generated suggestions:', smartSuggestions);
       setSuggestions(smartSuggestions);
       setShowDropdown(smartSuggestions.length > 0);
       setSelectedIndex(-1);
@@ -26,48 +40,29 @@ const SimpleSearchBar = ({ onSearch, totalEvents, filteredCount, events = [] }) 
     }
   }, [searchTerm, events]);
 
-  // Test click handler
-  const handleContainerClick = () => {
-    console.log('🟢 Search bar container clicked!');
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
-  };
-
-  // Debounced search
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      onSearch(searchTerm);
-    }, 300);
-    return () => clearTimeout(timer);
-  }, [searchTerm, onSearch]);
-
   const handleClear = () => {
+    console.log('🟢 Clearing search');
     setSearchTerm('');
+    setSelectedSearchTerm('');
     setShowDropdown(false);
-    setSelectedIndex(-1);
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
+    setSuggestions([]);
+    onSearch(''); // Clear search filter
   };
 
-  // Handle suggestion selection
+  // Handle suggestion selection (NOW execute search)
   const handleSelectSuggestion = (suggestionText) => {
-    console.log('✅ Selected suggestion:', suggestionText);
+    console.log('🟢 Suggestion selected:', suggestionText);
     setSearchTerm(suggestionText);
+    setSelectedSearchTerm(suggestionText); // This triggers the search
     setShowDropdown(false);
-    setSelectedIndex(-1);
-    onSearch(suggestionText);
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
+    setSuggestions([]);
+    onSearch(suggestionText); // Execute search NOW
   };
 
   // Handle keyboard navigation
   const handleKeyDown = (e) => {
     if (e.key === 'Escape') {
       handleClear();
-      setShowDropdown(false);
     } else if (e.key === 'ArrowDown') {
       e.preventDefault();
       if (showDropdown && suggestions.length > 0) {
@@ -83,8 +78,12 @@ const SimpleSearchBar = ({ onSearch, totalEvents, filteredCount, events = [] }) 
     } else if (e.key === 'Enter') {
       e.preventDefault();
       if (selectedIndex >= 0 && selectedIndex < suggestions.length) {
+        // User selected from dropdown with keyboard
         handleSelectSuggestion(suggestions[selectedIndex].text);
       } else if (searchTerm.trim()) {
+        // User pressed Enter without selecting from dropdown
+        console.log('🟢 Enter pressed, searching for:', searchTerm);
+        setSelectedSearchTerm(searchTerm);
         setShowDropdown(false);
         onSearch(searchTerm);
       }
@@ -148,17 +147,13 @@ const SimpleSearchBar = ({ onSearch, totalEvents, filteredCount, events = [] }) 
           placeholder="Search events, venues, tags..."
           value={searchTerm}
           onChange={(e) => {
-            console.log('🟢 Input change:', e.target.value);
-            setSearchTerm(e.target.value);
+            const value = e.target.value;
+            console.log('🟢 Input change:', value);
+            setSearchTerm(value); // DON'T call onSearch here!
           }}
           onKeyDown={handleKeyDown}
           onClick={() => console.log('🟢 Input clicked!')}
-          onFocus={() => {
-            console.log('🟢 Input focused!');
-            if (suggestions.length > 0) {
-              setShowDropdown(true);
-            }
-          }}
+          onFocus={() => console.log('🟢 Input focused!')}
           autoComplete="off"
           style={{
             flex: 1,
@@ -208,21 +203,23 @@ const SimpleSearchBar = ({ onSearch, totalEvents, filteredCount, events = [] }) 
           style={{
             position: 'absolute',
             top: 'calc(100% + 8px)',
-            left: 0,
-            right: 0,
+            left: '10px',
+            right: '10px',
             background: 'rgba(255, 255, 255, 0.98)',
             backdropFilter: 'blur(20px)',
             borderRadius: '12px',
             boxShadow: '0 8px 32px rgba(0, 0, 0, 0.25)',
-            border: '2px solid rgba(0, 0, 0, 0.1)',
             maxHeight: '320px',
             overflowY: 'auto',
             zIndex: 999999,
-            animation: 'fadeIn 0.2s ease'
+            border: '2px solid rgba(0, 0, 0, 0.1)',
+            animation: 'dropdownFadeIn 0.2s ease'
           }}
         >
           {suggestions.map((suggestion, index) => {
+            const highlighted = highlightMatch(suggestion.text, searchTerm);
             const isSelected = index === selectedIndex;
+
             return (
               <div
                 key={`${suggestion.category}-${suggestion.text}-${index}`}
@@ -234,31 +231,40 @@ const SimpleSearchBar = ({ onSearch, totalEvents, filteredCount, events = [] }) 
                   padding: '12px 16px',
                   cursor: 'pointer',
                   borderBottom: index < suggestions.length - 1 ? '1px solid rgba(0, 0, 0, 0.05)' : 'none',
-                  background: isSelected ? 'rgba(0, 123, 255, 0.1)' : 'transparent',
-                  transition: 'background 0.15s ease',
-                  minHeight: '48px'
+                  background: isSelected ? 'rgba(0, 123, 255, 0.12)' : 'transparent',
+                  transition: 'background 0.15s ease'
                 }}
               >
-                <span style={{ fontSize: '18px', marginRight: '12px' }}>
-                  {suggestion.icon}
-                </span>
-                <span style={{
-                  flex: 1,
-                  fontSize: '15px',
+                <span style={{ fontSize: '18px', marginRight: '12px' }}>{suggestion.icon}</span>
+                <span style={{ 
+                  flex: 1, 
+                  fontSize: '15px', 
                   color: '#333',
-                  fontWeight: '500',
                   overflow: 'hidden',
                   textOverflow: 'ellipsis',
                   whiteSpace: 'nowrap'
                 }}>
-                  {suggestion.text}
+                  {highlighted.parts.map((part, i) => (
+                    <span
+                      key={i}
+                      style={{
+                        fontWeight: part.highlight ? '600' : '400',
+                        background: part.highlight ? 'rgba(255, 200, 0, 0.3)' : 'transparent',
+                        padding: part.highlight ? '0 2px' : '0',
+                        borderRadius: part.highlight ? '3px' : '0'
+                      }}
+                    >
+                      {part.text}
+                    </span>
+                  ))}
                 </span>
-                <span style={{
+                <span style={{ 
                   fontSize: '11px',
                   color: 'rgba(0, 0, 0, 0.45)',
                   textTransform: 'uppercase',
                   letterSpacing: '0.5px',
                   fontWeight: '500',
+                  marginLeft: '8px',
                   padding: '2px 6px',
                   background: 'rgba(0, 0, 0, 0.05)',
                   borderRadius: '4px'
@@ -271,8 +277,8 @@ const SimpleSearchBar = ({ onSearch, totalEvents, filteredCount, events = [] }) 
         </div>
       )}
 
-      {/* Result Count */}
-      {searchTerm && !showDropdown && (
+      {/* Result Count - ONLY show after selection, NOT while typing */}
+      {selectedSearchTerm && !showDropdown && (
         <div style={{
           marginTop: '8px',
           textAlign: 'center',
@@ -287,10 +293,12 @@ const SimpleSearchBar = ({ onSearch, totalEvents, filteredCount, events = [] }) 
           transform: 'translateX(-50%)'
         }}>
           {filteredCount === 0 ? (
-            <span style={{ color: '#ff6b6b', fontWeight: '600' }}>No events found</span>
+            <span style={{ color: '#ff6b6b', fontWeight: '600' }}>
+              No events found for "{selectedSearchTerm}"
+            </span>
           ) : (
             <span style={{ fontWeight: '500' }}>
-              {filteredCount} of {totalEvents} events
+              {filteredCount} of {totalEvents} events for "{selectedSearchTerm}"
             </span>
           )}
         </div>
@@ -300,4 +308,3 @@ const SimpleSearchBar = ({ onSearch, totalEvents, filteredCount, events = [] }) 
 };
 
 export default SimpleSearchBar;
-

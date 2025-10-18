@@ -989,7 +989,7 @@ function App() {
 
   return (
     <ErrorBoundary name="App">
-      {/* Simple Search Bar - Working version with inline styles and autocomplete */}
+      {/* Simple Search Bar - Working version with inline styles (no CSS file dependency) */}
       <SimpleSearchBar
         onSearch={handleSearch}
         totalEvents={COMPREHENSIVE_SAMPLE_EVENTS.length}
