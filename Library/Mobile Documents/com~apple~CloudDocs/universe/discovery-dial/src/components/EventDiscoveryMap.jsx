@@ -107,7 +107,9 @@ const EventDiscoveryMap = ({
   const [mapLoaded, setMapLoaded] = useState(false);
   const [mapError, setMapError] = useState(null);
   const [pins, setPins] = useState([]);
-  const [useFallback, setUseFallback] = useState(false);
+  // 🔧 TEMP FIX: Default to fallback since Mapbox token is expired
+  // Change back to false once token is renewed
+  const [useFallback, setUseFallback] = useState(true);
   
   // Mobile-specific state
   const [isMobile, setIsMobile] = useState(false);
