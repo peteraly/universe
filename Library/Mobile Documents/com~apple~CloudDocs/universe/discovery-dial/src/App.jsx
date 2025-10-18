@@ -5,6 +5,7 @@ import EventDiscoveryFilters from './components/EventDiscoveryFilters';
 import EventInformationDisplay from './components/EventInformationDisplay';
 import EventDisplayCard from './components/EventDisplayCard';
 import UniversalSearchBar from './components/UniversalSearchBar';
+import TestSearchBar from './components/TestSearchBar';
 import ErrorBoundary from './components/ErrorBoundary';
 import categoriesData from './data/categories.json';
 import { COMPREHENSIVE_SAMPLE_EVENTS } from './data/comprehensiveSampleEvents';
@@ -987,13 +988,16 @@ function App() {
 
   return (
     <ErrorBoundary name="App">
+      {/* TEST SEARCH BAR - Simple version to verify rendering works */}
+      <TestSearchBar />
+      
       {/* Universal Search Bar - LAYER 9999 (Top-most UI element) - OUTSIDE container for maximum visibility */}
-      <UniversalSearchBar
+      {/* <UniversalSearchBar
         onSearch={handleSearch}
         totalEvents={COMPREHENSIVE_SAMPLE_EVENTS.length}
         filteredCount={filteredEvents.length}
         events={COMPREHENSIVE_SAMPLE_EVENTS}
-      />
+      /> */}
 
       <div className="unified-app-container">
         {/* Full-screen Map Background - LAYER 0 */}
